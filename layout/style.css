@@ -70,21 +70,36 @@ footer {
   background-color: #4f5a6e;
 }
 .inputQuestionPanel {
-  /* padding-top: 15px;
-  padding-bottom: 15px; */
   width: 70%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  background-color: #4f5a6e;
-  border-radius: 8px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  background-color: #424b5f;
+  border-radius: 5px;
+
+  border: none;
+}
+.inputQuestionPanel::-webkit-input-placeholder {
+  color: #a7b3cb;
+  text-align: center;
 }
 .inputQuestionPanel:hover {
   background-color: #3a4357;
 }
 .inputQuestionPanel:focus {
   background-color: #3a4357;
+  outline: none;
+  caret-color: #a7b3cb;
 }
 .buttonQuestionPanel {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  padding-right: 37px;
+  padding-left: 37px;
+  background-color: #65c178;
+  border-radius: 5px;
+  border: none;
+  color: #ffff;
+}
+.buttonQuestionPanel:hover {
+  background-color: #0f6a53;
 }
