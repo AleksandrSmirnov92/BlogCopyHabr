@@ -1,0 +1,90 @@
+.container {
+  display: grid;
+  height: 100vh;
+  grid-template-areas: "header header header " "nav questionPanel questionPanel" "nav main aside" "nav footer aside";
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: 55px 85px 1fr 55px;
+}
+ul {
+  padding: 0;
+  margin: 0;
+}
+li {
+  list-style-type: none;
+  border: 1px black solid;
+  padding: 10px;
+  color: #a7b3cb;
+}
+h1 {
+  margin: 0;
+}
+
+nav,
+div,
+aside,
+main,
+footer {
+  border: 1px gray solid;
+}
+.navigation {
+  grid-area: nav;
+  background-color: #4f5a6e;
+  /* width: 100px; */
+}
+.aside {
+  grid-area: aside;
+}
+.main {
+  grid-area: main;
+}
+.footer {
+  grid-area: footer;
+}
+
+/* Header */
+.header {
+  grid-area: header;
+  background: #303b44;
+}
+.headerText {
+  display: flex;
+  flex-direction: row;
+  border: none;
+}
+.headerH1 {
+  padding-top: 10px;
+  padding-left: 20px;
+  color: white;
+}
+.headerQA {
+  padding-top: 10px;
+  padding-left: 10px;
+  font-weight: 200;
+  color: white;
+}
+/* questionPanel */
+.questionPanel {
+  display: flex;
+  justify-content: space-around;
+  grid-area: questionPanel;
+  background-color: #4f5a6e;
+}
+.inputQuestionPanel {
+  /* padding-top: 15px;
+  padding-bottom: 15px; */
+  width: 70%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #4f5a6e;
+  border-radius: 8px;
+}
+.inputQuestionPanel:hover {
+  background-color: #3a4357;
+}
+.inputQuestionPanel:focus {
+  background-color: #3a4357;
+}
+.buttonQuestionPanel {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
