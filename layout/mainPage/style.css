@@ -136,78 +136,78 @@ a.text:hover {
   padding-left: 40px;
   padding-right: 40px;
 }
-.questionCategoriesWrapper {
-  display: inline-block;
-  /* display: flex;
-  justify-content: space-between; */
-  border: 0.5px rgb(210, 207, 207) solid;
-  font-weight: 700;
-  padding: 12px 0 14px 0;
+.tagsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  border: 1px black solid;
 }
-a.questionCategories {
-  text-decoration: none;
-  font-size: 13px;
-  color: #4f6173;
-  padding: 15px;
-}
-a.questionCategories:hover {
-  color: #2d72d9;
-}
-a.questionCategories:focus {
-  border: 0.5px #2d72d9 solid;
-  color: #2d72d9;
-}
-/* Questions */
-.questionsContainer {
-  margin-top: 30px;
-}
-.question {
-  border-bottom: 1px #f0f0f0 solid;
-}
-.questionHeader {
+div.tag {
+  padding-top: 15px;
+  padding-left: 15px;
   display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px #f0f0f0 solid;
 }
-img.questionTagIcon {
-  width: 16px;
-  height: 16px;
+img.tagImg {
+  width: 80px;
+  height: 80px;
 }
-.questionTag {
-  text-decoration: none;
-  color: #9c7fda;
-  font-size: 12px;
-  padding-top: 3px;
-}
-.questionTag:hover {
-  text-decoration: underline;
-}
-.questionMain {
-  display: flex;
-  justify-content: space-between;
+a.textTag {
   padding-top: 5px;
-  padding-bottom: 20px;
-}
-.questionMainSpan {
+  padding-bottom: 5px;
   text-decoration: none;
-  font-size: 21px;
-  font-weight: 700;
-  color: #333333;
-}
-.questionMainSpan:hover {
-  text-decoration: underline;
-  color: #2d72d9;
-}
-.countNumber {
-  text-decoration: none;
-  text-align: center;
-  color: #a7b3cb;
-}
-span.counter {
+  color: black;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: bold;
 }
-span.questionMainSpanTwo {
-  color: #a7b3cb;
-  font-size: 13px;
+a.textTag:hover {
+  text-decoration: underline;
+}
+a.countQuestion {
+  border-bottom: 1px #f0f0f0 solid;
+  border-top: 1px #f0f0f0 solid;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-decoration: none;
+  color: #2d72d9;
+  font-size: 15px;
+  font-weight: bold;
+}
+a.countQuestion:hover {
+  text-decoration: underline;
+}
+.buttonTag {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  width: 60%;
+  background-color: #2d72d9;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  justify-content: center;
+}
+.buttonTag:hover {
+  background-color: #0c55c3;
+}
+.tagHtml {
+  background-color: white;
+}
+.tagCSS {
+  background-color: blue;
+}
+.tagReact {
+  background-color: white;
+}
+.tagVue {
+  background-color: #48a7f5;
+}
+.tagGit {
+  background-color: blueviolet;
 }
 /* Footer */
 .footer {
