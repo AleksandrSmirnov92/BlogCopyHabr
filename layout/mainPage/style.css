@@ -136,78 +136,38 @@ a.text:hover {
   padding-left: 40px;
   padding-right: 40px;
 }
-.tagsContainer {
+h3.usersText {
+  border-bottom: 1px #f0f0f0 solid;
+  padding-bottom: 20px;
+}
+.usersContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  border: 1px black solid;
+  /* border: 1px black solid; */
 }
-div.tag {
+.userCard {
+  display: flex;
   padding-top: 15px;
   padding-left: 15px;
-  display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   background-color: white;
   border: 1px #f0f0f0 solid;
 }
-img.tagImg {
-  width: 80px;
-  height: 80px;
+img.photoProfil {
+  width: 100%;
+  height: 100%;
+  /* border-radius: 50%; */
 }
-a.textTag {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  text-decoration: none;
-  color: black;
-  font-size: 17px;
-  font-weight: bold;
-}
-a.textTag:hover {
-  text-decoration: underline;
-}
-a.countQuestion {
-  border-bottom: 1px #f0f0f0 solid;
-  border-top: 1px #f0f0f0 solid;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  text-decoration: none;
-  color: #2d72d9;
-  font-size: 15px;
-  font-weight: bold;
-}
-a.countQuestion:hover {
-  text-decoration: underline;
-}
-.buttonTag {
-  margin-top: 10px;
-  margin-bottom: 10px;
+a.photoProfil {
+  overflow: hidden;
   display: flex;
-  width: 60%;
-  background-color: #2d72d9;
-  border: none;
-  border-radius: 4px;
-  color: white;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  justify-content: center;
-}
-.buttonTag:hover {
-  background-color: #0c55c3;
-}
-.tagHtml {
-  background-color: white;
-}
-.tagCSS {
-  background-color: blue;
-}
-.tagReact {
-  background-color: white;
-}
-.tagVue {
-  background-color: #48a7f5;
-}
-.tagGit {
-  background-color: blueviolet;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  /* border: 1px black solid; */
+  border-radius: 50%;
 }
 /* Footer */
 .footer {
