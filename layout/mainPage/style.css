@@ -144,12 +144,12 @@ h3.usersText {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  /* border: 1px black solid; */
 }
 .userCard {
   display: flex;
   padding-top: 15px;
   padding-left: 15px;
+  padding-right: 15px;
   flex-direction: column;
   justify-content: flex-start;
   background-color: white;
@@ -158,7 +158,6 @@ h3.usersText {
 img.photoProfil {
   width: 100%;
   height: 100%;
-  /* border-radius: 50%; */
 }
 a.photoProfil {
   overflow: hidden;
@@ -166,8 +165,21 @@ a.photoProfil {
   align-items: center;
   width: 70px;
   height: 70px;
-  /* border: 1px black solid; */
   border-radius: 50%;
+}
+a.nickName {
+  width: 40%;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  text-decoration: none;
+  color: black;
+}
+.usersResponce {
+  margin-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: 1px #f0f0f0 solid;
+  border-bottom: 1px #f0f0f0 solid;
 }
 /* Footer */
 .footer {
