@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AskQuestion</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="mainContainer">
+      <h3 class="questionText">Новый вопрос</h3>
+      <div class="questionContainer">
+        <form class="questionForm">
+          <label class="questionLabel">Суть вопроса</label>
+          <span class="questionClarification"
+            >Сформулируйте вопрос так, чтобы сразу было понятно, о чём речь.
+          </span>
+          <input type="text" class="questionInput" />
+          <label class="questionLabel">Тэги вопроса</label>
+          <span class="questionClarification"
+            >Укажите от 1 до 5 тегов — предметных областей, к которым вопрос
+            относится.
+          </span>
+          <input type="text" class="questionInput" />
+          <label class="questionLabel">Детали вопроса</label>
+          <span class="questionClarification"
+            >Опишите в подробностях свой вопрос, чтобы получить более точный
+            ответ.
+          </span>
+          <textarea></textarea>
+          <button class="postQuestion" disabled>
+            <span>Опубликовать</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

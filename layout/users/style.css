@@ -1,0 +1,56 @@
+.mainContainer {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+h3.usersText {
+  border-bottom: 1px #f0f0f0 solid;
+  padding-bottom: 20px;
+}
+.usersContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+.userCard {
+  display: flex;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: white;
+  border: 1px #f0f0f0 solid;
+}
+img.photoProfil {
+  width: 100%;
+  height: 100%;
+}
+a.photoProfil {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+a.nickName {
+  width: 40%;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  text-decoration: none;
+  color: black;
+}
+.usersResponce {
+  margin-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: 1px #f0f0f0 solid;
+  border-bottom: 1px #f0f0f0 solid;
+}
+.usersCountAnswer {
+  text-decoration: none;
+  color: #2d72d9;
+}
+.usersCountAnswer:hover {
+  text-decoration: underline;
+}
