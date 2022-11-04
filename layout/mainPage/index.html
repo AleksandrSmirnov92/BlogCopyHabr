@@ -51,20 +51,63 @@
       </div>
       <main class="main">
         <div class="mainContainer">
-          <div class="avatarAndName">
+          <h3>Настройки профиля</h3>
+          <div class="navigationPanel">
+            <a href="#" class="links"><span>Анкета</span></a>
+            <a href="#" class="links"><span>Аккаунт</span></a>
+          </div>
+          <div class="changeAvatar">
             <a href="#" class="avatar"
               ><img src="../img/photoProfil.png" class="imgAvatar"
             /></a>
-            <span class="userNickName">Aleksandr</span>
-          </div>
-          <div class="navigationPanel">
-            <a href="#"><span>Информация</span></a>
-            <a href="#"><span>Ответы</span></a>
-          </div>
-          <div class="informationFromNavigationPanel">
-            <div>
-              <span>Контакты</span>
+            <span class="changeAvatarText"
+              >Ваша фотография.<br />
+              Размер загружаемого файла<br />
+              не должен превышать 2 Мб.</span
+            >
+            <div class="buttonContainer">
+              <button class="buttonUpload">Загрузить</button>
+              <button class="buttonDelete">Удалить</button>
             </div>
+          </div>
+          <div class="personalInformationContainer">
+            <label class="title" for="name">Имя</label>
+            <input class="personalInfomation" type="text" id="name" />
+            <label class="title" for="lastName">Фамилия</label>
+            <input class="personalInfomation" type="text" id="lastName" />
+            <label class="title" for="brieflyAboutYourself"
+              >Кратко о себе</label
+            >
+            <input
+              class="personalInfomation"
+              type="text"
+              id="brieflyAboutYourself"
+            />
+            <label class="title" for="aboutMySelf">О себе</label>
+            <textarea class="personalInfomation" id="aboutMySelf"></textarea>
+            <label class="title">Мои контакты</label>
+            <div class="myContactsContainer">
+              <select class="contacts">
+                <option>Vkontakte</option>
+                <option>Githab</option>
+                <option>E-mail</option>
+              </select>
+              <input class="personalInfomation contacts" type="text" />
+            </div>
+            <button class="add">Добавить</button>
+            <label class="title location">Местоположение</label>
+            <div class="myLocationContainer">
+              <select class="location">
+                <option>Россия</option>
+              </select>
+              <select class="location" name="" id="">
+                <option>Регион</option>
+              </select>
+              <select class="location">
+                <option value="">Город</option>
+              </select>
+            </div>
+            <button class="saveСhanges">Сохранить изменения</button>
           </div>
         </div>
       </main>
