@@ -1,0 +1,20 @@
+.header {
+  grid-area: header;
+  background: #303b44;
+}
+.headerText {
+  display: flex;
+  flex-direction: row;
+  border: none;
+}
+.headerH1 {
+  padding-top: 10px;
+  padding-left: 20px;
+  color: white;
+}
+.headerQA {
+  padding-top: 10px;
+  padding-left: 10px;
+  font-weight: 200;
+  color: white;
+}
