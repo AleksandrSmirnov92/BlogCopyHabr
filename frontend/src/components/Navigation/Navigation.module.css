@@ -42,3 +42,25 @@ a.text:hover {
   text-decoration: underline;
   color: #fff;
 }
+img.photoProfil {
+  width: 100%;
+  height: 100%;
+}
+a.photoProfil {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+.myProfile {
+  display: flex;
+  text-align: center;
+  /* justify-content: center; */
+  background-color: rgb(147, 211, 211);
+}
+.textProfile {
+  color: #fff;
+}
