@@ -22,7 +22,7 @@ const SignIn = () => {
           </form>
           <div className={AccountCSS.questionAboutRegestration}>
             <span>Еще нет аккаунта?</span>
-            <NavLink to="./SignUp" className={AccountCSS.registrationText}>
+            <NavLink to="/SignUp" className={AccountCSS.registrationText}>
               Зарегистрируйтесь
             </NavLink>
           </div>
