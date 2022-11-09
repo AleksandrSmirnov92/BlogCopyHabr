@@ -1,11 +1,11 @@
 import React from "react";
 import TagsCSS from "./Tags.module.css";
-import JavaScriptTag from "../../../../images/JavascriptTag.png";
-import HTMLTag from "../../../../images/HTMLtag.png";
-import CSSTag from "../../../../images/CSStag.png";
-import VueTag from "../../../../images/Vuetag.png";
-import ReactTag from "../../../../images/Reacttag.png";
-import GitTag from "../../../../images/Gittag.png";
+import JavaScriptTag from "../../../../../../images/JavascriptTag.png";
+import HTMLTag from "../../../../../../images/HTMLtag.png";
+import CSSTag from "../../../../../../images/CSStag.png";
+import VueTag from "../../../../../../images/Vuetag.png";
+import ReactTag from "../../../../../../images/Reacttag.png";
+import GitTag from "../../../../../../images/Gittag.png";
 const Tags = () => {
   return (
     <div className={TagsCSS.mainContainer}>

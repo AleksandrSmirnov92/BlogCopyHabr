@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
-import ProfilIMG from "../../../../images/photoProfil.png";
+import ProfilIMG from "../../../../../../images/photoProfil.png";
 const ProfileSettings = () => {
   return (
     <div className={ProfileSettingsCSS.mainContainer}>

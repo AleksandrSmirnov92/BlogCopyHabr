@@ -1,6 +1,6 @@
 import React from "react";
 import UsersCSS from "./Users.module.css";
-import UsersProfilIMG from "../../../../images/photoProfil.png";
+import UsersProfilIMG from "../../../../../../images/photoProfil.png";
 const Users = () => {
   return (
     <div className={UsersCSS.mainContainer}>

@@ -1,6 +1,7 @@
 import React from "react";
-import AccountCSS from "./Account.module.css";
-const Account = () => {
+import { NavLink } from "react-router-dom";
+import AccountCSS from "./SignIn.module.css";
+const SignIn = () => {
   return (
     <div className={AccountCSS.container}>
       <header className={AccountCSS.header}>
@@ -21,13 +22,13 @@ const Account = () => {
           </form>
           <div className={AccountCSS.questionAboutRegestration}>
             <span>Еще нет аккаунта?</span>
-            <a href="#" className={AccountCSS.registrationText}>
+            <NavLink to="./SignUp" className={AccountCSS.registrationText}>
               Зарегистрируйтесь
-            </a>
+            </NavLink>
           </div>
         </div>
       </main>
     </div>
   );
 };
-export default Account;
+export default SignIn;

@@ -1,6 +1,6 @@
 import React from "react";
 import AllQuestionsCSS from "./AllQuestionsCSS.module.css";
-import JsIconIMG from "../../../../images/JsIcon.png";
+import JsIconIMG from "../../../../../../images/JsIcon.png";
 const AllQuestions = () => {
   return (
     <div className={AllQuestionsCSS.mainContainer}>

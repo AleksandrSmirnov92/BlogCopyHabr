@@ -1,12 +1,12 @@
 import React from "react";
 import NavigationCSS from "./Navigation.module.css";
-import signInIMG from "../../images/signIn.png";
-import allQuestionsIMG from "../../images/allQuestions.png";
-import ExitIMG from "../../images/Exit.png";
-import SettingsIMG from "../../images/Settings.png";
-import allTagsIMG from "../../images/allTags.png";
-import usersIMG from "../../images/users.png";
-import myProfile from "../../images/photoProfil.png";
+import signInIMG from "../../../../images/signIn.png";
+import allQuestionsIMG from "../../../../images/allQuestions.png";
+// import ExitIMG from "../../../../images/Exit.png";
+// import SettingsIMG from "../../../../images/Settings.png";
+import allTagsIMG from "../../../../images/allTags.png";
+import usersIMG from "../../../../images/users.png";
+// import myProfile from "../../../../images/photoProfil.png";
 import { NavLink } from "react-router-dom";
 const Navigation = () => {
   return (
@@ -41,17 +41,14 @@ const Navigation = () => {
         </li> */}
         <li className={NavigationCSS.signIn}>
           <img src={signInIMG} alt="" />
-          <a
-            href="http://localhost:3001/account"
-            className={NavigationCSS.signIn}
-          >
+          <NavLink to="/SignIn" className={NavigationCSS.signIn}>
             Войти на сайт
-          </a>
+          </NavLink>
         </li>
         <li className={NavigationCSS.allQuestions}>
           <img src={allQuestionsIMG} alt="" />
           <NavLink
-            to="./questions"
+            to="/questions"
             className={(NavigationCSS.allQuestions, NavigationCSS.text)}
           >
             Все вопросы
