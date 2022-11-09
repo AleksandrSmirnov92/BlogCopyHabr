@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
-
+import ProfilIMG from "../../../../images/photoProfil.png";
 const ProfileSettings = () => {
   return (
     <div className={ProfileSettingsCSS.mainContainer}>
@@ -15,10 +15,7 @@ const ProfileSettings = () => {
       </div>
       <div className={ProfileSettingsCSS.changeAvatar}>
         <a href="#" className={ProfileSettingsCSS.avatar}>
-          <img
-            src="../img/photoProfil.png"
-            className={ProfileSettingsCSS.imgAvatar}
-          />
+          <img src={ProfilIMG} className={ProfileSettingsCSS.imgAvatar} />
         </a>
         <span className={ProfileSettingsCSS.changeAvatarText}>
           Ваша фотография.

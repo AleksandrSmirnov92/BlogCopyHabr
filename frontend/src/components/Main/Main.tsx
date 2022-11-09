@@ -9,7 +9,7 @@ const Main = () => {
   return (
     <main className={MainCSS.main}>
       <Routes>
-        <Route path="/myProfile" element={<ProfileSettings />} />
+        <Route path="/settingsProfil" element={<ProfileSettings />} />
         <Route path="/questions" element={<AllQuestions />} />
         {/* <Route path="/" element={<AllQuestions />} /> */}
         <Route path="/tags" element={<Tags />} />
