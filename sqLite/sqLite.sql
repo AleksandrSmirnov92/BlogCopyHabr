@@ -1,1 +1,4 @@
 -- CREATE TABLE USERS (EMAIL TEXT PRIMARY KEY, NickName TEXT NOT NULL, Password TEXT NOT NULL)
+-- INSERT INTO USERS (Email,NickName,Password)
+-- VALUES("kostyaa@mail.ru","Kostya","12345")
+SELECT * FROM USERS
