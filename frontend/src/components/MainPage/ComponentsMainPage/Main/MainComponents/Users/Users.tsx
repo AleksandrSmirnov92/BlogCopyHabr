@@ -1,95 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import UsersCSS from "./Users.module.css";
-import UsersProfilIMG from "../../../../../../images/photoProfil.png";
-const Users = () => {
+// import UsersProfilIMG from "../../../../../../images/photoProfil.png";
+import { NavLink } from "react-router-dom";
+
+const Users = (props: any) => {
+  // const [users, setUsers] = useState(props);
+  // console.log(users.users);
+
+  // debugger;
   return (
     <div className={UsersCSS.mainContainer}>
       <h3 className={UsersCSS.usersText}>Пользователи</h3>
       <div className={UsersCSS.usersContainer}>
-        <div className={UsersCSS.userCard}>
-          <a href="#" className={UsersCSS.photoProfil}>
-            <img src={UsersProfilIMG} className={UsersCSS.photoProfil} />
-          </a>
-          <a href="#" className={UsersCSS.nickName}>
-            Aleksandr
-          </a>
-          <span className={UsersCSS.usersResponce}>
-            <a href="#" className={UsersCSS.usersCountAnswer}>
-              4К ответов
-            </a>{" "}
-            | 0 вопросов{" "}
-          </span>
-        </div>
-        <div className={UsersCSS.userCard}>
-          <a href="#" className={UsersCSS.photoProfil}>
-            <img src={UsersProfilIMG} className={UsersCSS.photoProfil} />
-          </a>
-          <a href="#" className={UsersCSS.nickName}>
-            Kostya
-          </a>
-          <span className={UsersCSS.usersResponce}>
-            <a href="#" className={UsersCSS.usersCountAnswe}>
-              4К ответов
-            </a>{" "}
-            | 0 вопросов{" "}
-          </span>
-        </div>
-        <div className={UsersCSS.userCard}>
-          <a href="#" className={UsersCSS.photoProfil}>
-            <img src={UsersProfilIMG} className={UsersCSS.photoProfil} />
-          </a>
-          <a href="#" className={UsersCSS.nickName}>
-            Marina
-          </a>
-          <span className={UsersCSS.usersResponce}>
-            <a href="#" className={UsersCSS.usersCountAnswer}>
-              4К ответов
-            </a>{" "}
-            | 0 вопросов{" "}
-          </span>
-        </div>
-        <div className={UsersCSS.userCard}>
-          <a href="#" className={UsersCSS.photoProfil}>
-            <img src={UsersProfilIMG} className={UsersCSS.photoProfil} />
-          </a>
-          <a href="#" className={UsersCSS.nickName}>
-            Sveta
-          </a>
-          <span className={UsersCSS.usersResponce}>
-            <a href="#" className={UsersCSS.usersCountAnswer}>
-              4К ответов
-            </a>{" "}
-            | 0 вопросов{" "}
-          </span>
-        </div>
-        <div className={UsersCSS.userCard}>
-          <a href="#" className={UsersCSS.photoProfil}>
-            <img src={UsersProfilIMG} className={UsersCSS.photoProfil} />
-          </a>
-          <a href="#" className={UsersCSS.nickName}>
-            Sergey
-          </a>
-          <span className={UsersCSS.usersResponce}>
-            <a href="#" className={UsersCSS.usersCountAnswer}>
-              4К ответов
-            </a>{" "}
-            | 0 вопросов{" "}
-          </span>
-        </div>
-        <div className={UsersCSS.userCard}>
-          <a href="#" className={UsersCSS.photoProfil}>
-            <img src={UsersProfilIMG} className={UsersCSS.photoProfil} />
-          </a>
-          <a href="#" className={UsersCSS.nickName}>
-            Anton
-          </a>
-          <span className={UsersCSS.usersResponce}>
-            <a href="#" className={UsersCSS.usersCountAnswer}>
-              4К ответов
-            </a>{" "}
-            | 0 вопросов{" "}
-          </span>
-        </div>
+        {props.users.map((user: any) => {
+          // debugger;
+          return (
+            <div className={UsersCSS.userCard}>
+              <NavLink
+                to={`/users/${user.id}`}
+                className={UsersCSS.photoProfil}
+              >
+                <img src={user.photo} className={UsersCSS.photoProfil} alt="" />
+              </NavLink>
+              <NavLink to={`/users/${user.id}`} className={UsersCSS.nickName}>
+                {user.name}
+              </NavLink>
+              <span className={UsersCSS.usersResponce}>
+                <a href="#" className={UsersCSS.usersCountAnswer}>
+                  {user.responseAndQuestions.response}
+                </a>{" "}
+                | {user.responseAndQuestions.questions}{" "}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
