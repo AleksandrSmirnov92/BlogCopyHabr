@@ -1,4 +1,4 @@
-CREATE TABLE person (id BIGSERIAL, firstName VARCHAR(50) NOT NULL,lastName VARCHAR(50) NOT NULL,email VARCHAR(50) NOT NULL,dateOfberth DATE NOT NULL);
+CREATE TABLE person (id BIGSERIAL PRIMARY KEY, firstName VARCHAR(50) NOT NULL,lastName VARCHAR(50) NOT NULL,email VARCHAR(50) NOT NULL,dateOfberth DATE NOT NULL);
 INSERT INTO person (firstName,lastName,email,dateofberth)
 VALUES('Sasha','Smirnov','ryan00@mail.ru','1992-11-21');
 INSERT INTO person (firstName,lastName,email,dateofberth)
