@@ -1,0 +1,12 @@
+SELECT *FROM person WHERE gender='Male'; позволит выбрать всех пользователей у которых пол мужской
+SELECT *FROM person WHERE gender='Male' AND country = 'poland'; выберет всех мужчин из города poland
+SELECT *FROM person WHERE gender='Male' AND (country = 'poland' OR country='China'); - теперь выберет или poland или china
+SELECT *FROM person WHERE gender='Male' AND (country = 'poland' OR country='China') AND lastname="Smirnov"; - теперь выберет по фамилии
+IN - принимает массив значений 
+SELECT * FROM person country IN (BRAZIL,FRANCES,CHINA) - выведит результат сразу по трем странам (не нужно указывать OR)
+SELECT * FROM PERSON WHERE berthDAY BEETWIN DATE '1992-11-21' AND '1999-11-21'; - выберет все результаты между данными 
+SELECT * FROM person WHERE mail LIKE ='%.com'; - выберет из email все которые заканчиваются .com (%) - означает выбрать все перед .com
+SELECT * FROM person WHERE mail LIKE ='_____.com'; - выберет у кого пять символов перед точкой 
+ILIKE - игнорирует регистр 
+SELECT country,COUNT() FROM person GROUP BY country - ВЫБЕРЕТ СТРАННЫ и число людей в ней 
+
