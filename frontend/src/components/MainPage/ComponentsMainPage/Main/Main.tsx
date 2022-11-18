@@ -143,7 +143,8 @@ const Main = () => {
         <Route path="/questions" element={<AllQuestions />} />
         {/* <Route path="/" element={<AllQuestions />} /> */}
         <Route path="/tags" element={<Tags />} />
-        <Route path="/users" element={<Users users={users} />} />/
+        <Route path="/users" element={<Users users={users} />} />
+        /
         <Route path="/users/:userId" element={<User users={users} />} />
       </Routes>
     </main>

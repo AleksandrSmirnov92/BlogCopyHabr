@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UsersCSS from "./Users.module.css";
 // import UsersProfilIMG from "../../../../../../images/photoProfil.png";
 import { NavLink } from "react-router-dom";
@@ -6,7 +6,20 @@ import { NavLink } from "react-router-dom";
 const Users = (props: any) => {
   // const [users, setUsers] = useState(props);
   // console.log(users.users);
-
+  useEffect(() => {
+    fetch("http://localhost:5000/users", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response.message);
+        // получить id пользователя
+        // получить photo
+        // получить имя
+        // получить ответы и вопросы
+      });
+  });
   // debugger;
   return (
     <div className={UsersCSS.mainContainer}>
