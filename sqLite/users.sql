@@ -3,8 +3,6 @@
 --  img VARCHAR(100), 
 --  fullname VARCHAR(50),
 --  lastname VARCHAR(50),
---  briefly_about_yourself VARCHAR(200),
---  about_yourself VARCHAR(1000)
 --  );
 
 -- CREATE TABLE Users (
@@ -12,16 +10,15 @@
 -- email VARCHAR(50) NOT NULL,
 -- nickname VARCHAR(50) NOT NULL,
 -- password VARCHAR(50) NOT NULL,
--- about_user_id BIGINT REFERENCES about_user (id_about_user), UNIQUE (about_user_id)
 -- );
 
-CREATE TABLE questions (
-questions_id BIGSERIAL PRIMARY KEY,
-essens_question VARCHAR(100),
-tags_question VARCHAR(50),
-datails_question VARCHAR(5000),
-user_id BIGINT REFERENCES users (user_id)
-);
+-- CREATE TABLE questions (
+-- questions_id BIGSERIAL PRIMARY KEY,
+-- essens_question VARCHAR(100),
+-- tags_question VARCHAR(50),
+-- datails_question VARCHAR(5000),
+-- user_id BIGINT REFERENCES users (user_id)
+-- );
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)
 
 -- INSERT INTO users (email,nickname,password)

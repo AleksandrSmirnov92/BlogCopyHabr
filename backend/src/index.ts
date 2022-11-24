@@ -8,8 +8,19 @@ app.use(cors());
 // get allusers
 app.post("/signUp", async (req, res) => {
   try {
-    console.log(req.body);
-    res.status(200).json({ message: "SignUp обьект получен" });
+    const { email, nickName, password } = req.body;
+    console.log(email, nickName, password);
+    // const newUser = pool.query(
+    //   "INSER INTO users(email,nickname,password)VALUES()"
+    // );
+    res.status(200).json({
+      message: "SignUp обьект получен",
+      // description: {
+      //   email,
+      //   nickName,
+      //   password,
+      // },
+    });
   } catch (err) {
     console.log(err);
   }
