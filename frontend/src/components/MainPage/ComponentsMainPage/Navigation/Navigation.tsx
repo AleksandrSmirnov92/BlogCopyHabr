@@ -13,7 +13,7 @@ const Navigation = () => {
   return (
     <nav className={NavigationCSS.navigation}>
       <ul>
-        <li className={NavigationCSS.myProfile}>
+        {/* <li className={NavigationCSS.myProfile}>
           <a href="#" className={NavigationCSS.photoProfil}>
             <img src={myProfile} className={NavigationCSS.photoProfil} />
           </a>
@@ -38,13 +38,14 @@ const Navigation = () => {
           >
             Выход
           </NavLink>
-        </li>
-        {/* <li className={NavigationCSS.signIn}>
+        </li> */}
+        {/* ------------------------------------------------------------------------------ */}
+        <li className={NavigationCSS.signIn}>
           <img src={signInIMG} alt="" />
           <NavLink to="/SignIn" className={NavigationCSS.signIn}>
             Войти на сайт
           </NavLink>
-        </li> */}
+        </li>
         <li className={NavigationCSS.allQuestions}>
           <img src={allQuestionsIMG} alt="" />
           <NavLink

@@ -88,3 +88,18 @@ input:hover {
   text-decoration: none;
   color: #558cb7;
 }
+.inputError {
+  border: red 1px solid;
+  margin-bottom: 10px;
+}
+.inputError:focus {
+  border: red 1px solid;
+}
+.inputError:hover {
+  border: red 1px solid;
+}
+.error {
+  color: red;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
