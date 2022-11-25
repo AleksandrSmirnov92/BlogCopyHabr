@@ -5,12 +5,12 @@
 --  lastname VARCHAR(50),
 --  );
 
--- CREATE TABLE Users (
--- user_id BIGSERIAL PRIMARY KEY, 
--- email VARCHAR(50) NOT NULL,
--- nickname VARCHAR(50) NOT NULL,
--- password VARCHAR(50) NOT NULL,
--- );
+CREATE TABLE Users (
+user_id BIGSERIAL PRIMARY KEY, 
+email VARCHAR(50)  NOT NULL,
+nickname VARCHAR(50) NOT NULL,
+password VARCHAR(50) NOT NULL,
+);
 
 -- CREATE TABLE questions (
 -- questions_id BIGSERIAL PRIMARY KEY,
@@ -52,26 +52,26 @@
 -- VALUES('avatar','Антон','Пейтер','Люблю автомобили mersedes','Люблю автомобили mersedes, ат так же люблю ездить на мотоцикле и тд');
 
 --------------------------------------------------------------------------------------------------------
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Объясните смысл vue + vuex?','#vue','Вместо писания кода, хочу несколько выкрутить на бинокле перспективу.
-Вот есть Vue, реактивность, декомпозиция — всё замечательно. Но у меня есть ощущение, что разделив приложение на компоненты с изолированными данными, люди поняли, что хоть оно всё и красиво, но зашли, куда-то не туда, нужны глобальные переменные, без них жить плохо, поэтому и придумали Vuex. Не покидает ощущение, что Vue + Vuex это какие-то костыли, один исправляет другой. Типа концептуально правильные навороты, не просто, а мутациями... А общий смысл и цель потерялась при этом.');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Не могу сделать аналог вывода простых чисел. В чем проблема?','#javascript','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как сделать такой поиск?','#react','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как установить яндекс капчу &quot;я не робот&quot?','#javascript','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как при помощи метода forEach указать условие?','#javascript','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как подключить общий sass файл в проект vue3?','#vue','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как написать функцию hover?','#javascript','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как внедрить шаблон админки во vue laravel?','#vue','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как повесить класс active на элемент?','#react','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как оставить открытым элемент срываемый с помощью чекбокса?','#javascript','osdkokfsodfksdfldsfksd;lf');
-INSERT INTO questions (essens_question,tags_question,datails_question)
-VALUES('Как сделать(стилизовать) несколько элементов с множественным выбором?','#javascript','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Объясните смысл vue + vuex?','#vue','Вместо писания кода, хочу несколько выкрутить на бинокле перспективу.
+-- Вот есть Vue, реактивность, декомпозиция — всё замечательно. Но у меня есть ощущение, что разделив приложение на компоненты с изолированными данными, люди поняли, что хоть оно всё и красиво, но зашли, куда-то не туда, нужны глобальные переменные, без них жить плохо, поэтому и придумали Vuex. Не покидает ощущение, что Vue + Vuex это какие-то костыли, один исправляет другой. Типа концептуально правильные навороты, не просто, а мутациями... А общий смысл и цель потерялась при этом.');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Не могу сделать аналог вывода простых чисел. В чем проблема?','#javascript','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как сделать такой поиск?','#react','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как установить яндекс капчу &quot;я не робот&quot?','#javascript','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как при помощи метода forEach указать условие?','#javascript','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как подключить общий sass файл в проект vue3?','#vue','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как написать функцию hover?','#javascript','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как внедрить шаблон админки во vue laravel?','#vue','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как повесить класс active на элемент?','#react','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как оставить открытым элемент срываемый с помощью чекбокса?','#javascript','osdkokfsodfksdfldsfksd;lf');
+-- INSERT INTO questions (essens_question,tags_question,datails_question)
+-- VALUES('Как сделать(стилизовать) несколько элементов с множественным выбором?','#javascript','osdkokfsodfksdfldsfksd;lf');

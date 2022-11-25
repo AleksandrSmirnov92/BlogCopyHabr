@@ -21,7 +21,14 @@ const onSubmit = async (values: MyValues, actions: any) => {
   })
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
+      if (response.status === "SUCCESS") {
+        setTimeout(() => {
+          window.location.href = "http://localhost:3000/";
+        }, 1000);
+        console.log(response.newUser);
+      } else {
+        console.log(response.error);
+      }
     });
   await new Promise((resolve) => setTimeout(resolve, 1000));
   actions.resetForm();

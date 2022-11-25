@@ -1,30 +1,36 @@
 import express from "express";
-// const pool = require("./db.ts");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const pool = require("./db.js");
+const path = require("path");
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 // Routes
 // get allusers
+
 app.post("/signUp", async (req, res) => {
+  console.log(req.cookies);
   try {
     const { email, nickName, password } = req.body;
     console.log(email, nickName, password);
-    // const newUser = pool.query(
-    //   "INSER INTO users(email,nickname,password)VALUES()"
-    // );
-    res.status(200).json({
-      message: "SignUp обьект получен",
-      // description: {
-      //   email,
-      //   nickName,
-      //   password,
-      // },
+    const newUser = await pool.query(
+      "INSERT INTO users (email,nickname,password) VALUES($1, $2, $3) RETURNING * ",
+      [email, nickName, password]
+    );
+    return res.status(200).cookie("nickname", `${nickName}`).json({
+      status: "SUCCESS",
+      newUser: newUser.rows,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    return res.status(406).json({
+      error: err.detail,
+    });
   }
 });
+
 app.post("/signIn", async (req, res) => {
   try {
     console.log(req.body);

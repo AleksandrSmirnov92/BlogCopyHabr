@@ -25,7 +25,7 @@ users-# JOIN about_user ON users.about_user_id = about_user.id_about_user;
 
 
 
-
+ALTER TABLE users ADD CONSTRAINT unique_email_address UNIQUE (email); - Делает столбец уникальным
 
 
 
