@@ -2,7 +2,7 @@ import express from "express";
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const pool = require("./db.js");
+import pool from "./db.js";
 const path = require("path");
 app.use(express.json());
 app.use(cors());
