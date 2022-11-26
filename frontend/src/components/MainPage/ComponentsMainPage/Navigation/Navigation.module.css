@@ -78,3 +78,9 @@ a.photoProfil {
   text-decoration: underline;
   background-color: #424b5f;
 }
+.notRegistered {
+  display: none;
+}
+.registered {
+  display: block;
+}

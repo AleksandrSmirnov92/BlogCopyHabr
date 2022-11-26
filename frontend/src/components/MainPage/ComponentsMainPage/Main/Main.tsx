@@ -6,6 +6,7 @@ import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";
 import Tags from "./MainComponents/Tags/Tags";
 import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
+import MyFeed from "./MainComponents/myFeed/myFeed";
 import UsersProfilIMG from "../../../../images/photoProfil.png";
 let users: {}[] = [
   {
@@ -141,6 +142,7 @@ const Main = () => {
       <Routes>
         <Route path="/settingsProfil" element={<ProfileSettings />} />
         <Route path="/questions" element={<AllQuestions />} />
+        <Route path="/myFeed" element={<MyFeed />} />
         {/* <Route path="/" element={<AllQuestions />} /> */}
         <Route path="/tags" element={<Tags />} />
         <Route path="/users" element={<Users users={users} />} />

@@ -23,7 +23,7 @@ const onSubmit = async (values: MyValues, actions: any) => {
     .then((response) => {
       if (response.status === "SUCCESS") {
         setTimeout(() => {
-          window.location.href = "http://localhost:3000/";
+          window.location.href = "http://localhost:3000/myFeed";
         }, 1000);
         console.log(response.newUser);
       } else {
