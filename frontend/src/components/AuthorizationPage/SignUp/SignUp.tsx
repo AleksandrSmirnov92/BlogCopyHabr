@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useFormik } from "formik";
 import { schemaForSignUp } from "../Schemas/Schema";
 import { NavLink } from "react-router-dom";
@@ -25,7 +26,8 @@ const onSubmit = async (values: MyValues, actions: any) => {
         setTimeout(() => {
           window.location.href = "http://localhost:3000/myFeed";
         }, 1000);
-        console.log(response.newUser);
+        document.cookie = `nickname=${response.message};max-age=3600`;
+        console.log(response.message);
       } else {
         console.log(response.error);
       }

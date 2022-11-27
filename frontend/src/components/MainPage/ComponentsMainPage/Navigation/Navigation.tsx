@@ -15,7 +15,7 @@ const Navigation = () => {
 
   const exit = (): any => {
     setTimeout(() => {
-      document.cookie = "nickname = ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     }, 1000);
   };
   useEffect(() => {
@@ -64,13 +64,16 @@ const Navigation = () => {
           </li>
           <li className={NavigationCSS.exit}>
             <img src={ExitIMG} alt="" />
-            <a
-              href="http://localhost:3000/questions"
+            <NavLink
+              to="./questions"
               className={(NavigationCSS.allQuestions, NavigationCSS.textProfil)}
-              onClick={exit()}
+              onClick={() => {
+                exit();
+                setUserRegistred(false);
+              }}
             >
               Выход
-            </a>
+            </NavLink>
           </li>
           <li className={NavigationCSS.allTags}>
             <img src={allTagsIMG} alt="" />

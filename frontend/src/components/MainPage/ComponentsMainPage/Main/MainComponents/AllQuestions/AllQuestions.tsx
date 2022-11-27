@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AllQuestionsCSS from "./AllQuestionsCSS.module.css";
 import JsIconIMG from "../../../../../../images/JsIcon.png";
 const AllQuestions = () => {
+  useEffect(() => {
+    console.log("все вопросы");
+  });
   return (
     <div className={AllQuestionsCSS.mainContainer}>
       <h3>Все Вопросы</h3>

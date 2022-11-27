@@ -7,7 +7,7 @@ const Users = (props: any) => {
   // const [users, setUsers] = useState(props);
   // console.log(users.users);
   useEffect(() => {
-    fetch("http://localhost:5000/users", {
+    fetch("http://localhost:9999/users", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })

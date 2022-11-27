@@ -1,11 +1,17 @@
 import express from "express";
+import { pool } from "./db.js";
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-import pool from "./db.js";
+
 const path = require("path");
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    // origin: "http://localhost:3000",
+    // optionsSuccessStatus: 200,
+  })
+);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 // Routes
@@ -20,10 +26,15 @@ app.post("/signUp", async (req, res) => {
       "INSERT INTO users (email,nickname,password) VALUES($1, $2, $3) RETURNING * ",
       [email, nickName, password]
     );
-    return res.status(200).cookie("nickname", `${nickName}`).json({
-      status: "SUCCESS",
-      newUser: newUser.rows,
-    });
+    return (
+      res
+        .status(200)
+        // .cookie("nickname", `${nickName}`, { maxAge: 60 * 60 * 24 })
+        .json({
+          status: "SUCCESS",
+          message: nickName,
+        })
+    );
   } catch (err: any) {
     return res.status(406).json({
       error: err.detail,
@@ -41,7 +52,7 @@ app.post("/signIn", async (req, res) => {
 });
 app.get("/users", async (req, res) => {
   try {
-    res.status(200).json({ message: "Сервер работает на порту 5000" });
+    res.status(200).json({ message: "Сервер работает на порту 9999" });
   } catch (err) {
     console.log(err);
   }
@@ -54,7 +65,8 @@ app.post("/users", async (req, res) => {
   }
 });
 // get information user
-// get information about question
-app.listen("5000", () => {
-  console.log("Server has started on port: 5000");
+// get information about questions
+const port = process.env.PORT || "9999";
+app.listen(port, () => {
+  console.log("Server has started on port: 9999");
 });
