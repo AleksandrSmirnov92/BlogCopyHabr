@@ -6,12 +6,7 @@ const cookieParser = require("cookie-parser");
 
 const path = require("path");
 app.use(express.json());
-app.use(
-  cors({
-    // origin: "http://localhost:3000",
-    // optionsSuccessStatus: 200,
-  })
-);
+app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 // Routes
@@ -29,7 +24,7 @@ app.post("/signUp", async (req, res) => {
     return (
       res
         .status(200)
-        // .cookie("nickname", `${nickName}`, { maxAge: 60 * 60 * 24 })
+        // .cookie("nickname", `${nickName}`, { maxAge: 60 * 60 * 24 }) - куки не передает на mac
         .json({
           status: "SUCCESS",
           message: nickName,
@@ -44,12 +39,22 @@ app.post("/signUp", async (req, res) => {
 
 app.post("/signIn", async (req, res) => {
   try {
-    console.log(req.body);
-    res.status(200).json({ message: "SignIn обьект получен" });
-  } catch (err) {
-    console.log(err);
+    const { email, password } = req.body;
+    const getUser = await pool.query(
+      `SELECT * FROM users WHERE email = $1 AND password = $2`,
+      [email, password]
+    );
+    if (!getUser.rows.length) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "Пользователь не существует" });
+    }
+    res.status(200).json({ status: "SUCCESS", user: getUser.rows[0] });
+  } catch (err: any) {
+    console.log(err.message);
   }
 });
+
 app.get("/users", async (req, res) => {
   try {
     res.status(200).json({ message: "Сервер работает на порту 9999" });

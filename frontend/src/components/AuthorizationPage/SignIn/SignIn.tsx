@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { schemaForSignIn } from "../Schemas/ShemaSignIn";
 import { NavLink } from "react-router-dom";
@@ -7,23 +7,39 @@ interface MyValues {
   email: string;
   password: string;
 }
-const onSubmit = async (values: MyValues, actions: any) => {
-  fetch("http://localhost:5000/signIn", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: values.email,
-      password: values.password,
-    }),
-  })
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response);
-    });
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  actions.resetForm();
-};
+
 const SignIn = () => {
+  const [error, setError] = useState({ status: "", message: "" });
+  const onSubmit = async (values: MyValues, actions: any) => {
+    fetch("/signIn", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: values.email,
+        password: values.password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === "SUCCESS") {
+          setTimeout(() => {
+            window.location.href = "http://localhost:3000/myFeed";
+          }, 1000);
+          document.cookie = `nickname=${response.user.nickname};max-age=3600`;
+          console.log(response.user);
+        }
+        if (response.status === "ERROR") {
+          setError(response);
+          setTimeout(() => {
+            setError({ status: "", message: "" });
+          }, 1000);
+          console.log(response);
+        }
+      });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    actions.resetForm();
+  };
+
   const {
     values,
     errors,
@@ -88,11 +104,20 @@ const SignIn = () => {
             )}
             <button
               type="submit"
-              className={AccountCSS.button}
+              className={
+                error.status === "ERROR"
+                  ? AccountCSS.buttonError
+                  : AccountCSS.button
+              }
               disabled={isSubmitting}
             >
               Войти
             </button>
+            {error.status === "ERROR" ? (
+              <span className={AccountCSS.errorResponse}>{error.message}</span>
+            ) : (
+              ""
+            )}
           </form>
           <div className={AccountCSS.questionAboutRegestration}>
             <span>Еще нет аккаунта?</span>

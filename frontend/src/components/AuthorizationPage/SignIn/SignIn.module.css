@@ -16,8 +16,6 @@ h1 {
   padding-top: 15px;
   padding-bottom: 15px;
 }
-.headerH1 {
-}
 .headerAccount {
   padding-left: 10px;
   font-weight: 200;
@@ -72,7 +70,7 @@ input:focus {
 input:hover {
   border: 1px #558cb7 solid;
 }
-.button {
+button {
   padding-top: 10px;
   padding-bottom: 10px;
   margin-bottom: 150px;
@@ -102,4 +100,13 @@ input:hover {
   color: red;
   font-weight: bold;
   padding-bottom: 20px;
+}
+.errorResponse {
+  padding-top: 20px;
+  margin-bottom: 150px;
+  text-align: center;
+  color: red;
+}
+.buttonError {
+  margin-bottom: 0;
 }
