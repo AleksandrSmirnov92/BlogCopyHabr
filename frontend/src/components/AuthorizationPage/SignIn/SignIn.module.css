@@ -11,7 +11,7 @@ h1 {
 }
 .headerText {
   display: flex;
-  /* text-align: center; */
+
   padding-left: 300px;
   padding-top: 15px;
   padding-bottom: 15px;
