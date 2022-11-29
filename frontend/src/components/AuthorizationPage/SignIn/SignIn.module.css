@@ -17,8 +17,10 @@ h1 {
   font-weight: 200;
 }
 /* Main */
-body {
+.container {
   background-color: #f4f4f4;
+  margin: 0;
+  /* height: 100%; */
 }
 .Main {
   display: flex;
