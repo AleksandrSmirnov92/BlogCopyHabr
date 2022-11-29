@@ -27,6 +27,7 @@ const onSubmit = async (values: MyValues, actions: any) => {
           window.location.href = "http://localhost:3000/myFeed";
         }, 1000);
         document.cookie = `nickname=${response.message};max-age=3600`;
+        localStorage.setItem("userId", JSON.stringify(response.userId));
         console.log(response.message);
       } else {
         console.log(response.error);

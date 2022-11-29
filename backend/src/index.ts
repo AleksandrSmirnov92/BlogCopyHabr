@@ -21,15 +21,15 @@ app.post("/signUp", async (req, res) => {
       "INSERT INTO users (email,nickname,password) VALUES($1, $2, $3) RETURNING * ",
       [email, nickName, password]
     );
-    return (
-      res
-        .status(200)
-        // .cookie("nickname", `${nickName}`, { maxAge: 60 * 60 * 24 }) - куки не передает на mac
-        .json({
-          status: "SUCCESS",
-          message: nickName,
-        })
+    const newQuestions = await pool.query(
+      "INSERT INTO questions (user_id) VALUES($1)",
+      [newUser.rows[0].user_id]
     );
+    return res.status(200).json({
+      status: "SUCCESS",
+      message: nickName,
+      userId: newUser.rows[0].user_id,
+    });
   } catch (err: any) {
     return res.status(406).json({
       error: err.detail,

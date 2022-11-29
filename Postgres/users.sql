@@ -5,20 +5,20 @@
 --  lastname VARCHAR(50),
 --  );
 
-CREATE TABLE Users (
-user_id BIGSERIAL PRIMARY KEY, 
-email VARCHAR(50)  NOT NULL,
-nickname VARCHAR(50) NOT NULL,
-password VARCHAR(50) NOT NULL,
-);
-
--- CREATE TABLE questions (
--- questions_id BIGSERIAL PRIMARY KEY,
--- essens_question VARCHAR(100),
--- tags_question VARCHAR(50),
--- datails_question VARCHAR(5000),
--- user_id BIGINT REFERENCES users (user_id)
+-- CREATE TABLE Users (
+-- user_id BIGSERIAL PRIMARY KEY, 
+-- email VARCHAR(50)  NOT NULL,
+-- nickname VARCHAR(50) NOT NULL,
+-- password VARCHAR(50) NOT NULL,
 -- );
+
+CREATE TABLE questions (
+questions_id BIGSERIAL PRIMARY KEY,
+essens_question VARCHAR(100),
+tags_question VARCHAR(50),
+datails_question VARCHAR(5000),
+user_id BIGINT REFERENCES users (user_id)
+);
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)
 
 -- INSERT INTO users (email,nickname,password)

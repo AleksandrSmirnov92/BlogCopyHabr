@@ -1,10 +1,14 @@
 .footer {
+  padding-left: 40px;
+  padding-right: 40px;
   align-items: center;
   display: flex;
   grid-area: footer;
   border-top: 1px #f0f0f0 solid;
+  background-color: white;
 }
 .feedBack {
+  /* border-top: 1px #f0f0f0 solid; */
   padding-left: 20px;
   padding-top: 10px;
   padding-bottom: 10px;

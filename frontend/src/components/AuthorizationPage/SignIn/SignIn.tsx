@@ -26,6 +26,7 @@ const SignIn = () => {
             window.location.href = "http://localhost:3000/myFeed";
           }, 1000);
           document.cookie = `nickname=${response.user.nickname};max-age=3600`;
+          localStorage.setItem("userId", JSON.stringify(response.user.user_id));
           console.log(response.user);
         }
         if (response.status === "ERROR") {

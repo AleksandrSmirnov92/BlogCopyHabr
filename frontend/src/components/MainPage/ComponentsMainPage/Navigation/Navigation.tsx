@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import NavigationCSS from "./Navigation.module.css";
 import signInIMG from "../../../../images/signIn.png";
 import allQuestionsIMG from "../../../../images/allQuestions.png";
-
+import userIdContext from "../../../Context/Context";
 import ExitIMG from "../../../../images/Exit.png";
 import SettingsIMG from "../../../../images/Settings.png";
 import allTagsIMG from "../../../../images/allTags.png";
@@ -12,10 +12,12 @@ import { NavLink } from "react-router-dom";
 
 const Navigation = () => {
   let [userRegistred, setUserRegistred] = useState(false);
-
+  const { userId, setUserId } = useContext(userIdContext);
   const exit = (): any => {
     setTimeout(() => {
       document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      setUserId(localStorage.removeItem("userId"));
+      setUserRegistred(false);
     }, 1000);
   };
   useEffect(() => {
@@ -69,7 +71,6 @@ const Navigation = () => {
               className={(NavigationCSS.allQuestions, NavigationCSS.textProfil)}
               onClick={() => {
                 exit();
-                setUserRegistred(false);
               }}
             >
               Выход
