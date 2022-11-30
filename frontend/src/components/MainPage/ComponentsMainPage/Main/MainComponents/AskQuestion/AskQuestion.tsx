@@ -2,28 +2,37 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions";
 import AskQuestionsCSS from "./AskQuestion.module.css";
+import JavaScriptTag from "../../../../../../images/JavascriptTag.png";
+import HTMLTag from "../../../../../../images/HTMLtag.png";
+import CSSTag from "../../../../../../images/CSStag.png";
+import VueTag from "../../../../../../images/Vuetag.png";
+import ReactTag from "../../../../../../images/Reacttag.png";
+import GitTag from "../../../../../../images/Gittag.png";
 interface MyValues {
   questionHeader: string;
   questionTags: string;
   questionDetails: string;
 }
-let massivTags: { nameTag: string }[] = [
-  { nameTag: "JavaScript" },
-  { nameTag: "HTML" },
-  { nameTag: "CSS" },
-  { nameTag: "React" },
-  { nameTag: "Vue" },
-  { nameTag: "Git" },
+let massivTags: { nameTag: string; imgTag: any }[] = [
+  { nameTag: "JavaScript", imgTag: JavaScriptTag },
+  { nameTag: "HTML", imgTag: HTMLTag },
+  { nameTag: "CSS", imgTag: CSSTag },
+  { nameTag: "React", imgTag: ReactTag },
+  { nameTag: "Vue", imgTag: VueTag },
+  { nameTag: "Git", imgTag: GitTag },
 ];
-
-const filterTags = (searchTags: string, listOfTags: { nameTag: string }[]) => {
+let fullName: boolean = true;
+const filterTags = (
+  searchTags: string,
+  listOfTags: { nameTag: string; imgTag: any }[]
+) => {
   return listOfTags.filter(({ nameTag }) =>
     nameTag.toLowerCase().includes(searchTags.toLowerCase())
   );
 };
 
 const AskQuestion = () => {
-  let [tags, setTags] = useState([{ nameTag: "" }]);
+  let [tags, setTags] = useState([{ nameTag: "", imgTag: "" }]);
   let [searchTags, setSearchTags] = useState("");
   const filteredTags = filterTags(searchTags, massivTags);
   useEffect(() => {
@@ -102,16 +111,32 @@ const AskQuestion = () => {
             className={AskQuestionsCSS.questionInput}
           />
           <div className={AskQuestionsCSS.tags}>
-            {tags.map((item, index) => {
-              if (searchTags !== "") {
-                return (
-                  <button className="">
-                    <span key={index}>{item.nameTag}</span>
-                  </button>
-                );
+            <ul
+              className={
+                searchTags !== "" && tags.length !== 0
+                  ? AskQuestionsCSS.modalTagUL
+                  : ""
               }
-            })}
+            >
+              {tags.map((item, index) => {
+                if (searchTags !== "" && searchTags !== item.nameTag) {
+                  return (
+                    <li
+                      onClick={() => {
+                        setSearchTags(item.nameTag);
+                      }}
+                      key={index}
+                      className={AskQuestionsCSS.modalTag}
+                    >
+                      <img src={item.imgTag} alt="" />
+                      {item.nameTag}
+                    </li>
+                  );
+                }
+              })}
+            </ul>
           </div>
+
           <label className={AskQuestionsCSS.questionLabel}>
             Детали вопроса
           </label>
@@ -140,7 +165,7 @@ const AskQuestion = () => {
           <button
             type="submit"
             className={
-              !isSubmitting
+              isSubmitting
                 ? AskQuestionsCSS.postQuestionFalse
                 : AskQuestionsCSS.postQuestionTrue
             }

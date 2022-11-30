@@ -91,8 +91,30 @@ textarea:focus {
   font-weight: bold;
   padding-bottom: 20px;
 }
+
 .tags {
+  position: relative;
+}
+.modalTagUL {
+  position: absolute;
+  background-color: white;
+  border: 1px black solid;
+}
+.modalTag {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.modalTag:hover {
+  background-color: rgb(180, 177, 177);
+}
+/* .buttonTags {
+  margin: 10px;
+  width: 100%;
+  color: black;
+  background-color: white;
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid black;
+  border-radius: none;
   padding: 0px 3px 0px 3px;
-}
+} */
