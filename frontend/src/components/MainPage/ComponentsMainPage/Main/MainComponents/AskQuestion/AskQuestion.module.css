@@ -10,9 +10,7 @@ h3.questionText {
   border-bottom: 1px #f0f0f0 solid;
   padding-bottom: 25px;
 }
-.questionContainer {
-  /* border: 1px black solid; */
-}
+
 .questionForm {
   display: flex;
   flex-direction: column;
@@ -50,7 +48,7 @@ textarea:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-.postQuestion {
+.postQuestionFalse {
   display: flex;
   justify-content: center;
   margin-top: 40px;
@@ -60,4 +58,41 @@ textarea:focus {
   padding: 0;
   width: 20%;
   cursor: not-allowed;
+}
+.postQuestionTrue {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  background-color: white;
+  color: #64bd76;
+  border: 1px #64bd76 solid;
+  padding: 0;
+  width: 20%;
+  cursor: pointer;
+}
+.inputError {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+
+  /* margin-bottom: 10px; */
+}
+.inputError:focus {
+  border: red 1px solid;
+}
+.inputError:hover {
+  border: red 1px solid;
+}
+.error {
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+.tags {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 3px 0px 3px;
 }

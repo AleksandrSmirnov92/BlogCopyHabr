@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { schemaForSignIn } from "../Schemas/ShemaSignIn";
+import { schemaForSignIn } from "../../Schemas/ShemaSignIn";
 import { NavLink } from "react-router-dom";
 import AccountCSS from "./SignIn.module.css";
 interface MyValues {

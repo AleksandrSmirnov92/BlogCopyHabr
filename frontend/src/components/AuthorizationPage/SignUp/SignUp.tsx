@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useFormik } from "formik";
-import { schemaForSignUp } from "../Schemas/Schema";
+import { schemaForSignUp } from "../../Schemas/Schema";
 import { NavLink } from "react-router-dom";
 import SignUpCSS from "./SignUp.module.css";
 interface MyValues {
