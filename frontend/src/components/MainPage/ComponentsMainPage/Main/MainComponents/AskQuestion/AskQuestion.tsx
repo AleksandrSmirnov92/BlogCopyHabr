@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions";
 import AskQuestionsCSS from "./AskQuestion.module.css";
@@ -36,12 +36,19 @@ const toCase = (nameTag: string): string => {
 };
 
 const AskQuestion = () => {
+  const myRef: any = useRef();
+
   let [nameTag, setNameTag] = useState("");
   let [error, setError] = useState("");
   const onSubmit = async (values: MyValues, actions: any) => {
+    if (toCase(values.questionTags) === "такого тега не существует") {
+      setError(toCase(values.questionTags));
+    } else {
+      setError("");
+    }
     console.log(
       values.questionHeader,
-      values.questionTags,
+      toCase(values.questionTags),
       values.questionDetails
     );
   };
@@ -96,6 +103,7 @@ const AskQuestion = () => {
             относится.
           </span>
           <input
+            ref={myRef}
             id="questionTags"
             type="text"
             value={nameTag}
@@ -104,6 +112,7 @@ const AskQuestion = () => {
               setNameTag(e.target.value);
             }}
             onBlur={(e) => {
+              handleChange(e);
               handleBlur(e);
               if (toCase(e.target.value) !== "такого тега не существует") {
                 setNameTag(toCase(e.target.value));
@@ -120,6 +129,7 @@ const AskQuestion = () => {
           ) : (
             ""
           )}
+          {error ? <span className={AskQuestionsCSS.error}>{error}</span> : ""}
           <div className={AskQuestionsCSS.tags}>
             <ul className={nameTag !== "" ? AskQuestionsCSS.modalTagUL : ""}>
               {massivTags
@@ -131,7 +141,10 @@ const AskQuestion = () => {
                     return (
                       <li
                         onClick={() => {
-                          setNameTag(toCase(item.nameTag));
+                          setNameTag(nameTag);
+                        }}
+                        onMouseEnter={() => {
+                          myRef.current.value = item.nameTag;
                         }}
                         key={index}
                         className={AskQuestionsCSS.modalTag}
