@@ -1,10 +1,18 @@
--- CREATE TABLE about_user (
---  id_about_user BIGSERIAL PRIMARY KEY,
---  img VARCHAR(100), 
---  fullname VARCHAR(50),
---  lastname VARCHAR(50),
---  );
 
+-- 1 Таблица
+
+CREATE TABLE about_user (
+ id_about_user BIGSERIAL PRIMARY KEY,
+ user_id_from_users BIGINT REFERENCES users (user_id),
+ img VARCHAR(100), 
+ fullname VARCHAR(50),
+ lastname VARCHAR(50),
+ briefly_about_yourself VARCHAR(500) 
+ );
+--  - уникальный столбец user_id
+-- alter table about_user add constraint unique_user_id unique(user_id_from_users); 
+
+-- 2 таблица 
 -- CREATE TABLE Users (
 -- user_id BIGSERIAL PRIMARY KEY, 
 -- email VARCHAR(50)  NOT NULL,
@@ -14,11 +22,29 @@
 
 CREATE TABLE questions (
 questions_id BIGSERIAL PRIMARY KEY,
-essens_question VARCHAR(100),
-tags_question VARCHAR(50),
-datails_question VARCHAR(5000),
-user_id BIGINT REFERENCES users (user_id)
+user_id BIGINT REFERENCES users (user_id),
+question_title VARCHAR(100),
+question_tags BIGINT REFERENCES tags(tags_id),
+question_details VARCHAR(5000)
 );
+
+-- CREATE TABLE tags (
+-- tags_id BIGSERIAL PRIMARY KEY,
+-- name_tag VARCHAR(50) 
+-- );
+-- INSERT INTO tags (name_tag)
+-- VALUES('JavaScript');
+-- INSERT INTO tags (name_tag)
+-- VALUES('HTML');
+-- INSERT INTO tags (name_tag)
+-- VALUES('CSS');
+-- INSERT INTO tags (name_tag)
+-- VALUES('React');
+-- INSERT INTO tags (name_tag)
+-- VALUES('Vue');
+-- INSERT INTO tags (name_tag)
+-- VALUES('Git');
+
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)
 
 -- INSERT INTO users (email,nickname,password)

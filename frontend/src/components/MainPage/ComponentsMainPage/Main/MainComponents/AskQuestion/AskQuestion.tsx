@@ -21,25 +21,23 @@ let massivTags: { nameTag: string; imgTag: any }[] = [
   { nameTag: "Vue", imgTag: VueTag },
   { nameTag: "Git", imgTag: GitTag },
 ];
-let fullName: boolean = true;
-const filterTags = (
-  searchTags: string,
-  listOfTags: { nameTag: string; imgTag: any }[]
-) => {
-  return listOfTags.filter(({ nameTag }) =>
-    nameTag.toLowerCase().includes(searchTags.toLowerCase())
+
+const toCase = (nameTag: string): string => {
+  let include = massivTags
+    .map((item) => item.nameTag.toLowerCase())
+    .includes(nameTag.toLowerCase());
+  let find = massivTags.find(
+    (item) => item.nameTag.toLowerCase() === nameTag.toLowerCase()
   );
+  if (!include) {
+    return "такого тега не существует";
+  }
+  return find.nameTag;
 };
 
 const AskQuestion = () => {
-  let [tags, setTags] = useState([{ nameTag: "", imgTag: "" }]);
-  let [searchTags, setSearchTags] = useState("");
-  const filteredTags = filterTags(searchTags, massivTags);
-  useEffect(() => {
-    setTags(filteredTags);
-    values.questionTags = searchTags;
-  }, [searchTags]);
-
+  let [nameTag, setNameTag] = useState("");
+  let [error, setError] = useState("");
   const onSubmit = async (values: MyValues, actions: any) => {
     console.log(
       values.questionHeader,
@@ -64,7 +62,6 @@ const AskQuestion = () => {
     onSubmit,
     validationSchema: schemaForAskQuestions,
   });
-
   return (
     <div className={AskQuestionsCSS.mainContainer}>
       <h3 className={AskQuestionsCSS.questionText}>Новый вопрос</h3>
@@ -101,39 +98,50 @@ const AskQuestion = () => {
           <input
             id="questionTags"
             type="text"
-            value={searchTags}
-            // onChange={handleChange}
+            value={nameTag}
             onChange={(e) => {
               handleChange(e);
-              setSearchTags(e.target.value);
+              setNameTag(e.target.value);
             }}
-            onBlur={handleBlur}
-            className={AskQuestionsCSS.questionInput}
-          />
-          <div className={AskQuestionsCSS.tags}>
-            <ul
-              className={
-                searchTags !== "" && tags.length !== 0
-                  ? AskQuestionsCSS.modalTagUL
-                  : ""
+            onBlur={(e) => {
+              handleBlur(e);
+              if (toCase(e.target.value) !== "такого тега не существует") {
+                setNameTag(toCase(e.target.value));
               }
-            >
-              {tags.map((item, index) => {
-                if (searchTags !== "" && searchTags !== item.nameTag) {
-                  return (
-                    <li
-                      onClick={() => {
-                        setSearchTags(item.nameTag);
-                      }}
-                      key={index}
-                      className={AskQuestionsCSS.modalTag}
-                    >
-                      <img src={item.imgTag} alt="" />
-                      {item.nameTag}
-                    </li>
-                  );
-                }
-              })}
+            }}
+            className={
+              errors.questionTags && touched.questionTags
+                ? AskQuestionsCSS.inputError
+                : AskQuestionsCSS.questionInput
+            }
+          />
+          {errors.questionTags && touched.questionTags ? (
+            <span className={AskQuestionsCSS.error}>{errors.questionTags}</span>
+          ) : (
+            ""
+          )}
+          <div className={AskQuestionsCSS.tags}>
+            <ul className={nameTag !== "" ? AskQuestionsCSS.modalTagUL : ""}>
+              {massivTags
+                .filter((item) =>
+                  item.nameTag.toLowerCase().includes(nameTag.toLowerCase())
+                )
+                .map((item, index) => {
+                  if (nameTag !== "" && nameTag !== item.nameTag) {
+                    return (
+                      <li
+                        onClick={() => {
+                          setNameTag(toCase(item.nameTag));
+                        }}
+                        key={index}
+                        className={AskQuestionsCSS.modalTag}
+                      >
+                        <img src={item.imgTag} alt="" />
+                        {item.nameTag}
+                      </li>
+                    );
+                  }
+                })}
             </ul>
           </div>
 
