@@ -22,7 +22,7 @@ let massivTags: { nameTag: string; imgTag: any }[] = [
   { nameTag: "Git", imgTag: GitTag },
 ];
 
-const toCase = (nameTag: string): string => {
+const correctName = (nameTag: string): any => {
   let include = massivTags
     .map((item) => item.nameTag.toLowerCase())
     .includes(nameTag.toLowerCase());
@@ -30,25 +30,42 @@ const toCase = (nameTag: string): string => {
     (item) => item.nameTag.toLowerCase() === nameTag.toLowerCase()
   );
   if (!include) {
-    return "такого тега не существует";
+    return false;
   }
   return find.nameTag;
 };
 
 const AskQuestion = () => {
-  const myRef: any = useRef();
-
   let [nameTag, setNameTag] = useState("");
   let [error, setError] = useState("");
   const onSubmit = async (values: MyValues, actions: any) => {
-    if (toCase(values.questionTags) === "такого тега не существует") {
-      setError(toCase(values.questionTags));
+    if (!correctName(values.questionTags)) {
+      setError("Такого тега не существует");
     } else {
       setError("");
+      fetch("/createQuestion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          questionTitle: values.questionHeader,
+          questionTags: values.questionTags,
+          questionDetails: values.questionDetails,
+          userId: localStorage.getItem("userId"),
+        }),
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          if (response.status === "SUCCESS") {
+            setTimeout(() => {
+              window.location.href = "http://localhost:3000/questions";
+            });
+            console.log(response);
+          }
+        });
     }
     console.log(
       values.questionHeader,
-      toCase(values.questionTags),
+      correctName(values.questionTags),
       values.questionDetails
     );
   };
@@ -103,7 +120,6 @@ const AskQuestion = () => {
             относится.
           </span>
           <input
-            ref={myRef}
             id="questionTags"
             type="text"
             value={nameTag}
@@ -112,10 +128,16 @@ const AskQuestion = () => {
               setNameTag(e.target.value);
             }}
             onBlur={(e) => {
-              handleChange(e);
-              handleBlur(e);
-              if (toCase(e.target.value) !== "такого тега не существует") {
-                setNameTag(toCase(e.target.value));
+              if (!correctName(nameTag)) {
+                if (nameTag === "") {
+                  return setError("Обязательное поле");
+                }
+                return setError("Такого тега не существует");
+              } else {
+                setNameTag(correctName(e.target.value));
+                setError("");
+                handleChange(e);
+                handleBlur(e);
               }
             }}
             className={
@@ -131,7 +153,13 @@ const AskQuestion = () => {
           )}
           {error ? <span className={AskQuestionsCSS.error}>{error}</span> : ""}
           <div className={AskQuestionsCSS.tags}>
-            <ul className={nameTag !== "" ? AskQuestionsCSS.modalTagUL : ""}>
+            <ul
+              className={
+                nameTag !== "" && !correctName(nameTag)
+                  ? AskQuestionsCSS.modalTagUL
+                  : ""
+              }
+            >
               {massivTags
                 .filter((item) =>
                   item.nameTag.toLowerCase().includes(nameTag.toLowerCase())
@@ -141,10 +169,12 @@ const AskQuestion = () => {
                     return (
                       <li
                         onClick={() => {
-                          setNameTag(nameTag);
-                        }}
-                        onMouseEnter={() => {
-                          myRef.current.value = item.nameTag;
+                          setNameTag(item.nameTag);
+                          if (!correctName(item.nameTag)) {
+                            setError("Такого тега не существует");
+                          } else {
+                            setError("");
+                          }
                         }}
                         key={index}
                         className={AskQuestionsCSS.modalTag}

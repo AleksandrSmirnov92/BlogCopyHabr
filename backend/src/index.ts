@@ -55,7 +55,7 @@ app.post("/signIn", async (req, res) => {
   }
 });
 
-app.post("/createQuestions", async (req, res) => {
+app.post("/createQuestion", async (req, res) => {
   try {
     const { questionTitle, questionTags, questionDetails, userId } = req.body;
     console.log(questionTitle, questionTags, questionDetails, userId);
@@ -75,7 +75,15 @@ app.post("/createQuestions", async (req, res) => {
     //   "INSERT INTO questions (user_id, question_title,question_tags,question_details) VALUES($1,$2,$3,$4)",
     //   [userId, questionTitle, idTags.rows[0].tags_id, questionDetails]
     // );
-    res.status(200).json({ message: "Сервер работает на порту 9999" });
+    res.status(200).json({
+      status: "SUCCESS",
+      questions: {
+        questionTitle: questionTitle,
+        questionTags: questionTags,
+        questionDetails: questionDetails,
+        userId: userId,
+      },
+    });
   } catch (err) {
     console.log(err);
   }

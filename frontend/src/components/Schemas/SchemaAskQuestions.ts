@@ -15,6 +15,7 @@ export const schemaForAskQuestions = yup.object().shape({
     )
     .required("Это обязательное поле"),
   questionTags: yup.string().max(10, "Название тега слишком длинное"),
+
   questionDetails: yup
     .string()
     .min(30, "Текст вопроса не может быть менее 30 и более 10 тысяч символов")
