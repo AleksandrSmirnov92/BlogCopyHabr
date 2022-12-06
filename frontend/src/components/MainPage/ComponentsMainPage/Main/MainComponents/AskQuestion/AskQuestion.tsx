@@ -13,6 +13,7 @@ interface MyValues {
   questionTags: string;
   questionDetails: string;
 }
+
 let massivTags: { nameTag: string; imgTag: any }[] = [
   { nameTag: "JavaScript", imgTag: JavaScriptTag },
   { nameTag: "HTML", imgTag: HTMLTag },
@@ -22,7 +23,10 @@ let massivTags: { nameTag: string; imgTag: any }[] = [
   { nameTag: "Git", imgTag: GitTag },
 ];
 
-const correctName = (nameTag: string): any => {
+const correctName = (
+  nameTag: string,
+  massivTags: { nameTag: string; imgTag: string }[]
+): any => {
   let include = massivTags
     .map((item) => item.nameTag.toLowerCase())
     .includes(nameTag.toLowerCase());
@@ -39,7 +43,7 @@ const AskQuestion = () => {
   let [nameTag, setNameTag] = useState("");
   let [error, setError] = useState("");
   const onSubmit = async (values: MyValues, actions: any) => {
-    if (!correctName(values.questionTags)) {
+    if (!correctName(values.questionTags, massivTags)) {
       setError("Такого тега не существует");
     } else {
       setError("");
@@ -65,7 +69,7 @@ const AskQuestion = () => {
     }
     console.log(
       values.questionHeader,
-      correctName(values.questionTags),
+      correctName(values.questionTags, massivTags),
       values.questionDetails
     );
   };
@@ -128,13 +132,13 @@ const AskQuestion = () => {
               setNameTag(e.target.value);
             }}
             onBlur={(e) => {
-              if (!correctName(nameTag)) {
+              if (!correctName(nameTag, massivTags)) {
                 if (nameTag === "") {
                   return setError("Обязательное поле");
                 }
                 return setError("Такого тега не существует");
               } else {
-                setNameTag(correctName(e.target.value));
+                setNameTag(correctName(e.target.value, massivTags));
                 setError("");
                 handleChange(e);
                 handleBlur(e);
@@ -155,7 +159,7 @@ const AskQuestion = () => {
           <div className={AskQuestionsCSS.tags}>
             <ul
               className={
-                nameTag !== "" && !correctName(nameTag)
+                nameTag !== "" && !correctName(nameTag, massivTags)
                   ? AskQuestionsCSS.modalTagUL
                   : ""
               }
@@ -170,7 +174,7 @@ const AskQuestion = () => {
                       <li
                         onClick={() => {
                           setNameTag(item.nameTag);
-                          if (!correctName(item.nameTag)) {
+                          if (!correctName(item.nameTag, massivTags)) {
                             setError("Такого тега не существует");
                           } else {
                             setError("");

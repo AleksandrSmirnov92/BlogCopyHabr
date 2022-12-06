@@ -20,30 +20,39 @@ CREATE TABLE about_user (
 -- password VARCHAR(50) NOT NULL,
 -- );
 
-CREATE TABLE questions (
-questions_id BIGSERIAL PRIMARY KEY,
-user_id BIGINT REFERENCES users (user_id),
-question_title VARCHAR(100),
-question_tags BIGINT REFERENCES tags(tags_id),
-question_details VARCHAR(5000)
-);
+-- CREATE TABLE questions (
+-- questions_id BIGSERIAL PRIMARY KEY,
+-- user_id BIGINT REFERENCES users (user_id),
+-- question_title VARCHAR(100),
+-- question_tags BIGINT REFERENCES tags(tags_id),
+-- question_details VARCHAR(5000)
+-- );
+
+
+CREATE TABLE question_and_tags (
+ id_questions_and_tags BIGSERIAL PRIMARY KEY,
+ user_id_from_users BIGINT REFERENCES users (user_id),
+ tag_id_from_tags BIGINT REFERENCES tags (tags_Id)
+ );
+
+
 
 -- CREATE TABLE tags (
 -- tags_id BIGSERIAL PRIMARY KEY,
 -- name_tag VARCHAR(50) 
 -- );
--- INSERT INTO tags (name_tag)
--- VALUES('JavaScript');
--- INSERT INTO tags (name_tag)
--- VALUES('HTML');
--- INSERT INTO tags (name_tag)
--- VALUES('CSS');
--- INSERT INTO tags (name_tag)
--- VALUES('React');
--- INSERT INTO tags (name_tag)
--- VALUES('Vue');
--- INSERT INTO tags (name_tag)
--- VALUES('Git');
+-- INSERT INTO tags (name_tag,img_tag)
+-- VALUES('JavaScript',' JavaScriptTag');
+-- INSERT INTO tags (name_tag,img_tag))
+-- VALUES('HTML',' HTMLTag');
+-- INSERT INTO tags (name_tag,img_tag))
+-- VALUES('CSS',' CSSTag');
+-- INSERT INTO tags (name_tag,img_tag))
+-- VALUES('React',' ReactTag');
+-- INSERT INTO tags (name_tag,img_tag))
+-- VALUES('Vue',' VueTag');
+-- INSERT INTO tags (name_tag,img_tag))
+-- VALUES('Git',' GitTag');
 
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)
 
@@ -101,3 +110,16 @@ question_details VARCHAR(5000)
 -- VALUES('Как оставить открытым элемент срываемый с помощью чекбокса?','#javascript','osdkokfsodfksdfldsfksd;lf');
 -- INSERT INTO questions (essens_question,tags_question,datails_question)
 -- VALUES('Как сделать(стилизовать) несколько элементов с множественным выбором?','#javascript','osdkokfsodfksdfldsfksd;lf');
+
+
+
+
+
+
+
+
+
+
+
+
+
