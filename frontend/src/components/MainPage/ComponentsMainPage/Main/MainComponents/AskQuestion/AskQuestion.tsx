@@ -14,34 +14,47 @@ interface MyValues {
   questionDetails: string;
 }
 
-let massivTags: { nameTag: string; imgTag: any }[] = [
-  { nameTag: "JavaScript", imgTag: JavaScriptTag },
-  { nameTag: "HTML", imgTag: HTMLTag },
-  { nameTag: "CSS", imgTag: CSSTag },
-  { nameTag: "React", imgTag: ReactTag },
-  { nameTag: "Vue", imgTag: VueTag },
-  { nameTag: "Git", imgTag: GitTag },
+let massivTags: { tags_id: string; name_Tag: string; img_Tag: any }[] = [
+  { tags_id: "1", name_Tag: "JavaScript", img_Tag: JavaScriptTag },
+  { tags_id: "2", name_Tag: "HTML", img_Tag: HTMLTag },
+  { tags_id: "3", name_Tag: "CSS", img_Tag: CSSTag },
+  { tags_id: "4", name_Tag: "React", img_Tag: ReactTag },
+  { tags_id: "5", name_Tag: "Vue", img_Tag: VueTag },
+  { tags_id: "6", name_Tag: "Git", img_Tag: GitTag },
 ];
 
 const correctName = (
   nameTag: string,
-  massivTags: { nameTag: string; imgTag: string }[]
+  massivTags: { name_Tag: string; img_Tag: string }[]
 ): any => {
   let include = massivTags
-    .map((item) => item.nameTag.toLowerCase())
+    .map((item) => item.name_Tag.toLowerCase())
     .includes(nameTag.toLowerCase());
   let find = massivTags.find(
-    (item) => item.nameTag.toLowerCase() === nameTag.toLowerCase()
+    (item) => item.name_Tag.toLowerCase() === nameTag.toLowerCase()
   );
   if (!include) {
     return false;
   }
-  return find.nameTag;
+  return find.name_Tag;
 };
 
 const AskQuestion = () => {
   let [nameTag, setNameTag] = useState("");
   let [error, setError] = useState("");
+  // let [massivTagss, setMassivTags] = useState(massivTags);
+  // useEffect(() => {
+  //   fetch("/tags", {
+  //     method: "GET",
+  //     headers: { "Content-Type": "application/json" },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       console.log(response.tags);
+  //       setMassivTags(response.tags);
+  //       console.log(massivTagss);
+  //     });
+  // }, []);
   const onSubmit = async (values: MyValues, actions: any) => {
     if (!correctName(values.questionTags, massivTags)) {
       setError("Такого тега не существует");
@@ -67,11 +80,6 @@ const AskQuestion = () => {
           }
         });
     }
-    console.log(
-      values.questionHeader,
-      correctName(values.questionTags, massivTags),
-      values.questionDetails
-    );
   };
   const {
     values,
@@ -166,15 +174,15 @@ const AskQuestion = () => {
             >
               {massivTags
                 .filter((item) =>
-                  item.nameTag.toLowerCase().includes(nameTag.toLowerCase())
+                  item.name_Tag.toLowerCase().includes(nameTag.toLowerCase())
                 )
                 .map((item, index) => {
-                  if (nameTag !== "" && nameTag !== item.nameTag) {
+                  if (nameTag !== "" && nameTag !== item.name_Tag) {
                     return (
                       <li
                         onClick={() => {
-                          setNameTag(item.nameTag);
-                          if (!correctName(item.nameTag, massivTags)) {
+                          setNameTag(item.name_Tag);
+                          if (!correctName(item.name_Tag, massivTags)) {
                             setError("Такого тега не существует");
                           } else {
                             setError("");
@@ -183,8 +191,8 @@ const AskQuestion = () => {
                         key={index}
                         className={AskQuestionsCSS.modalTag}
                       >
-                        <img src={item.imgTag} alt="" />
-                        {item.nameTag}
+                        <img src={item.img_Tag} alt="" />
+                        {item.name_Tag}
                       </li>
                     );
                   }

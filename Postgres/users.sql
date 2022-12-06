@@ -1,14 +1,14 @@
 
 -- 1 Таблица
 
-CREATE TABLE about_user (
- id_about_user BIGSERIAL PRIMARY KEY,
- user_id_from_users BIGINT REFERENCES users (user_id),
- img VARCHAR(100), 
- fullname VARCHAR(50),
- lastname VARCHAR(50),
- briefly_about_yourself VARCHAR(500) 
- );
+-- CREATE TABLE about_user (
+--  id_about_user BIGSERIAL PRIMARY KEY,
+--  user_id_from_users BIGINT REFERENCES users (user_id),
+--  img VARCHAR(100), 
+--  fullname VARCHAR(50),
+--  lastname VARCHAR(50),
+--  briefly_about_yourself VARCHAR(500) 
+--  );
 --  - уникальный столбец user_id
 -- alter table about_user add constraint unique_user_id unique(user_id_from_users); 
 
@@ -29,29 +29,30 @@ CREATE TABLE about_user (
 -- );
 
 
-CREATE TABLE question_and_tags (
- id_questions_and_tags BIGSERIAL PRIMARY KEY,
- user_id_from_users BIGINT REFERENCES users (user_id),
- tag_id_from_tags BIGINT REFERENCES tags (tags_Id)
- );
+-- CREATE TABLE question_and_tags (
+--  id_questions_and_tags BIGSERIAL PRIMARY KEY,
+--  user_id_from_users BIGINT REFERENCES users (user_id),
+--  tag_id_from_tags BIGINT REFERENCES tags (tags_Id)
+--  );
 
 
 
 -- CREATE TABLE tags (
 -- tags_id BIGSERIAL PRIMARY KEY,
--- name_tag VARCHAR(50) 
+-- name_tag VARCHAR(50),
+-- img_tag VARCHAR(60)
 -- );
 -- INSERT INTO tags (name_tag,img_tag)
 -- VALUES('JavaScript',' JavaScriptTag');
--- INSERT INTO tags (name_tag,img_tag))
+-- INSERT INTO tags (name_tag,img_tag)
 -- VALUES('HTML',' HTMLTag');
--- INSERT INTO tags (name_tag,img_tag))
+-- INSERT INTO tags (name_tag,img_tag)
 -- VALUES('CSS',' CSSTag');
--- INSERT INTO tags (name_tag,img_tag))
+-- INSERT INTO tags (name_tag,img_tag)
 -- VALUES('React',' ReactTag');
--- INSERT INTO tags (name_tag,img_tag))
+-- INSERT INTO tags (name_tag,img_tag)
 -- VALUES('Vue',' VueTag');
--- INSERT INTO tags (name_tag,img_tag))
+-- INSERT INTO tags (name_tag,img_tag)
 -- VALUES('Git',' GitTag');
 
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)
