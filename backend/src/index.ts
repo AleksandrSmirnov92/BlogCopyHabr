@@ -109,6 +109,14 @@ app.get("/tags", async (req, res) => {
   }
 });
 
+app.get("/settingsProfil", async (req, res) => {
+  try {
+    res.status(200).json({ message: "Сервер работает на порту 9999" });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.get("/users", async (req, res) => {
   try {
     res.status(200).json({ message: "Сервер работает на порту 9999" });

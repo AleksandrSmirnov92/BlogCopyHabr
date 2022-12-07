@@ -114,6 +114,7 @@ textarea.personalInfomation:focus {
 }
 select.contacts {
   width: 15%;
+  height: 30px;
   padding-top: 5px;
   padding-bottom: 5px;
   border: 1px #d2d6d7 solid;
@@ -187,4 +188,9 @@ button.saveСhanges {
 button.saveСhanges:hover {
   color: #63936d;
   border: 1px #63936d solid;
+}
+span.links {
+  padding: 8px;
+
+  color: #9099a3;
 }

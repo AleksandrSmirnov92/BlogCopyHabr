@@ -1,17 +1,44 @@
 import React from "react";
+import { useFormik } from "formik";
+import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
+
+interface MyValues {
+  name: string;
+  lastName: string;
+  brieflyAboutYourself: string;
+  aboutMySelf: string;
+  contacts: string;
+}
 const ProfileSettings = () => {
+  const onSubmit = () => {};
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+  } = useFormik<MyValues>({
+    initialValues: {
+      name: "",
+      lastName: "",
+      brieflyAboutYourself: "",
+      aboutMySelf: "",
+      contacts: "",
+    },
+    onSubmit,
+    validationSchema: schemaForProfileSettings,
+  });
   return (
     <div className={ProfileSettingsCSS.mainContainer}>
       <h3>Настройки профиля</h3>
       <div className={ProfileSettingsCSS.navigationPanel}>
-        <a href="#" className={ProfileSettingsCSS.links}>
-          <span>Анкета</span>
-        </a>
-        <a href="#" className={ProfileSettingsCSS.links}>
-          <span>Аккаунт</span>
-        </a>
+        {/* <a href="#" className={ProfileSettingsCSS.links}> */}
+        <span className={ProfileSettingsCSS.links}>Анкета</span>
+        {/* </a> */}
       </div>
       <div className={ProfileSettingsCSS.changeAvatar}>
         <a href="#" className={ProfileSettingsCSS.avatar}>
@@ -65,6 +92,7 @@ const ProfileSettings = () => {
               (ProfileSettingsCSS.personalInfomation,
               ProfileSettingsCSS.contacts)
             }
+            id="contacts"
             type="text"
           />
         </div>
