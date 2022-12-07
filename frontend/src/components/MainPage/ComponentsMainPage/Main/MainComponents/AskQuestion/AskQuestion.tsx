@@ -2,60 +2,43 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions";
 import AskQuestionsCSS from "./AskQuestion.module.css";
-import JavaScriptTag from "../../../../../../images/JavascriptTag.png";
-import HTMLTag from "../../../../../../images/HTMLtag.png";
-import CSSTag from "../../../../../../images/CSStag.png";
-import VueTag from "../../../../../../images/Vuetag.png";
-import ReactTag from "../../../../../../images/Reacttag.png";
-import GitTag from "../../../../../../images/Gittag.png";
 interface MyValues {
   questionHeader: string;
   questionTags: string;
   questionDetails: string;
 }
-
-let massivTags: { tags_id: string; name_Tag: string; img_Tag: any }[] = [
-  { tags_id: "1", name_Tag: "JavaScript", img_Tag: JavaScriptTag },
-  { tags_id: "2", name_Tag: "HTML", img_Tag: HTMLTag },
-  { tags_id: "3", name_Tag: "CSS", img_Tag: CSSTag },
-  { tags_id: "4", name_Tag: "React", img_Tag: ReactTag },
-  { tags_id: "5", name_Tag: "Vue", img_Tag: VueTag },
-  { tags_id: "6", name_Tag: "Git", img_Tag: GitTag },
-];
-
 const correctName = (
   nameTag: string,
-  massivTags: { name_Tag: string; img_Tag: string }[]
+  massivTags: { name_tag: string; img_Tag: string }[]
 ): any => {
   let include = massivTags
-    .map((item) => item.name_Tag.toLowerCase())
+    .map((item) => item.name_tag.toLowerCase())
     .includes(nameTag.toLowerCase());
   let find = massivTags.find(
-    (item) => item.name_Tag.toLowerCase() === nameTag.toLowerCase()
+    (item) => item.name_tag.toLowerCase() === nameTag.toLowerCase()
   );
   if (!include) {
     return false;
   }
-  return find.name_Tag;
+  return find.name_tag;
 };
 
 const AskQuestion = () => {
   let [nameTag, setNameTag] = useState("");
   let [error, setError] = useState("");
-  // let [massivTagss, setMassivTags] = useState(massivTags);
-  // useEffect(() => {
-  //   fetch("/tags", {
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       console.log(response.tags);
-  //       setMassivTags(response.tags);
-  //       console.log(massivTagss);
-  //     });
-  // }, []);
+  let [massivTags, setMassivTags] = useState([]);
+  useEffect(() => {
+    fetch("/tags", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMassivTags(response.tags);
+      });
+  }, [setMassivTags]);
   const onSubmit = async (values: MyValues, actions: any) => {
+    values.questionTags = nameTag;
     if (!correctName(values.questionTags, massivTags)) {
       setError("Такого тега не существует");
     } else {
@@ -76,11 +59,11 @@ const AskQuestion = () => {
             setTimeout(() => {
               window.location.href = "http://localhost:3000/questions";
             });
-            console.log(response);
           }
         });
     }
   };
+
   const {
     values,
     errors,
@@ -174,15 +157,16 @@ const AskQuestion = () => {
             >
               {massivTags
                 .filter((item) =>
-                  item.name_Tag.toLowerCase().includes(nameTag.toLowerCase())
+                  item.name_tag.toLowerCase().includes(nameTag.toLowerCase())
                 )
                 .map((item, index) => {
-                  if (nameTag !== "" && nameTag !== item.name_Tag) {
+                  if (nameTag !== "" && nameTag !== item.name_tag) {
                     return (
                       <li
                         onClick={() => {
-                          setNameTag(item.name_Tag);
-                          if (!correctName(item.name_Tag, massivTags)) {
+                          setNameTag(item.name_tag);
+                          console.log(item.name_tag);
+                          if (!correctName(item.name_tag, massivTags)) {
                             setError("Такого тега не существует");
                           } else {
                             setError("");
@@ -191,8 +175,8 @@ const AskQuestion = () => {
                         key={index}
                         className={AskQuestionsCSS.modalTag}
                       >
-                        <img src={item.img_Tag} alt="" />
-                        {item.name_Tag}
+                        <img src={item.img_tag} alt="" />
+                        {item.name_tag}
                       </li>
                     );
                   }
