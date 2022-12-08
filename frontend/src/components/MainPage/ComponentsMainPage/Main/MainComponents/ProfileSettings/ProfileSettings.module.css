@@ -48,17 +48,25 @@ a.links:focus {
   justify-content: space-between;
   padding-top: 20px;
   width: 20%;
+  margin: 0;
 }
 .buttonUpload {
+  /* text-decoration: none; */
   padding: 5px;
   background-color: white;
   color: #93d3a0;
   border: 1px #93d3a0 solid;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+input[type="file"] {
+  display: none;
 }
 .buttonUpload:hover {
   border: 1px #689170 solid;
 }
 .buttonDelete {
+  margin-bottom: 30px;
   padding: 5px;
   background-color: white;
   color: #9099a3;
@@ -70,7 +78,7 @@ a.links:focus {
 .personalInformationContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+
   border-top: 1px #f0f0f0 solid;
 }
 label.title {
@@ -193,4 +201,25 @@ span.links {
   padding: 8px;
 
   color: #9099a3;
+}
+.inputError {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+
+  /* margin-bottom: 10px; */
+}
+.inputError:focus {
+  border: red 1px solid;
+}
+.inputError:hover {
+  border: red 1px solid;
+}
+.error {
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 20px;
 }
