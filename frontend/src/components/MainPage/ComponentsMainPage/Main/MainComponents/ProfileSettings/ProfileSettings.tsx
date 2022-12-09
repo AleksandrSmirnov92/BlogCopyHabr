@@ -41,13 +41,15 @@ const ProfileSettings = () => {
       body: formData,
     });
     const data = await res.json();
-
+    console.log(data);
     setPathImg(data.filePath);
   };
   useEffect(() => {
     if (selectedFile) {
       sendAvatar();
-      setSelectedFiles(null);
+      console.log("render1");
+      console.log(pathImg);
+      // setSelectedFiles(null);
     }
   }, [selectedFile]);
   const {
@@ -81,13 +83,13 @@ const ProfileSettings = () => {
         {/* </a> */}
       </div>
       <div className={ProfileSettingsCSS.changeAvatar}>
-        <a href="#" className={ProfileSettingsCSS.avatar}>
+        <div className={ProfileSettingsCSS.avatar}>
           <img
-            src={!pathImg ? ProfilIMG : ""}
+            src={!pathImg ? ProfilIMG : pathImg}
             className={ProfileSettingsCSS.imgAvatar}
             alt=""
           />
-        </a>
+        </div>
         <span className={ProfileSettingsCSS.changeAvatarText}>
           Ваша фотография.
           <br />
@@ -98,8 +100,8 @@ const ProfileSettings = () => {
         <div className={ProfileSettingsCSS.buttonContainer}>
           <input
             onChange={(e) => {
+              // e.preventDefault();
               setSelectedFiles(e.target.files[0]);
-              // sendAvatar(e.target.files[0]);
               console.log("отправить");
             }}
             id="img"

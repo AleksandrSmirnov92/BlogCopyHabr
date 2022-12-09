@@ -11,11 +11,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
-app.use(
-  fileUpload({
-    createParentPath: true,
-  })
-);
+app.use(fileUpload());
 // app.use(() => console.log(`${__dirname}`));
 // Routes
 // get allusers
@@ -124,13 +120,10 @@ app.post("/upload", async (req: any, res) => {
     });
   }
   const file = req.files.file;
-  const pathUpload = path.resolve(
-    __dirname,
-    "../../Frontend/src/images/uploads"
-  );
+  const pathUpload = path.resolve(__dirname, "../../Frontend/public/uploads");
   file.mv(`${pathUpload}/${file.name}`, (err: any) => {
     if (err) {
-      return res.status(500).send(err);
+      return res.status(500).json({ err: err });
     }
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
