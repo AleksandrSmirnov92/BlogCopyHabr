@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
+
 import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
@@ -13,14 +14,42 @@ interface MyValues {
   contacts: string;
   linkToContacts: string;
 }
+
 const ProfileSettings = () => {
   let [selectedFile, setSelectedFiles] = useState(null);
+  let [pathImg, setPathImg] = useState(null);
+  // useEffect(() => {
+  //   setSelectedFiles("Привет");
+  // }, []);
+
   const onSubmit = () => {
     console.log(values.name.trim(), values.lastName.trim());
     console.log(values.brieflyAboutYourself.trim());
     console.log(values.contacts, values.linkToContacts.trim());
     console.log(values.img);
   };
+  const sendAvatar = async () => {
+    if (!selectedFile) {
+      alert("Пожалуйста загрузите файл");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    const res = await fetch("/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+
+    setPathImg(data.filePath);
+  };
+  useEffect(() => {
+    if (selectedFile) {
+      sendAvatar();
+      setSelectedFiles(null);
+    }
+  }, [selectedFile]);
   const {
     values,
     errors,
@@ -42,6 +71,7 @@ const ProfileSettings = () => {
     onSubmit,
     validationSchema: schemaForProfileSettings,
   });
+
   return (
     <div className={ProfileSettingsCSS.mainContainer}>
       <h3>Настройки профиля</h3>
@@ -52,7 +82,11 @@ const ProfileSettings = () => {
       </div>
       <div className={ProfileSettingsCSS.changeAvatar}>
         <a href="#" className={ProfileSettingsCSS.avatar}>
-          <img src={ProfilIMG} className={ProfileSettingsCSS.imgAvatar} />
+          <img
+            src={!pathImg ? ProfilIMG : ""}
+            className={ProfileSettingsCSS.imgAvatar}
+            alt=""
+          />
         </a>
         <span className={ProfileSettingsCSS.changeAvatarText}>
           Ваша фотография.
@@ -64,8 +98,9 @@ const ProfileSettings = () => {
         <div className={ProfileSettingsCSS.buttonContainer}>
           <input
             onChange={(e) => {
-              console.log(e.target.files);
               setSelectedFiles(e.target.files[0]);
+              // sendAvatar(e.target.files[0]);
+              console.log("отправить");
             }}
             id="img"
             type="file"
@@ -77,7 +112,7 @@ const ProfileSettings = () => {
           <button className={ProfileSettingsCSS.buttonDelete}>Удалить</button>
         </div>
       </div>
-
+      {/* ------------------------------------------------------------------------------------------------------------------------------ */}
       <form
         onSubmit={handleSubmit}
         className={ProfileSettingsCSS.personalInformationContainer}

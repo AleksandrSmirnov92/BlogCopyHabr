@@ -166,6 +166,7 @@ const AskQuestion = () => {
                         onClick={() => {
                           setNameTag(item.name_tag);
                           console.log(item.name_tag);
+                          console.log(item.img_tag);
                           if (!correctName(item.name_tag, massivTags)) {
                             setError("Такого тега не существует");
                           } else {

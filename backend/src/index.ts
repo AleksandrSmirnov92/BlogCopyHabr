@@ -1,5 +1,7 @@
 import express from "express";
+
 import { pool } from "./db.js";
+const fileUpload = require("express-fileupload");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -9,6 +11,12 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
+app.use(
+  fileUpload({
+    createParentPath: true,
+  })
+);
+// app.use(() => console.log(`${__dirname}`));
 // Routes
 // get allusers
 
@@ -109,9 +117,30 @@ app.get("/tags", async (req, res) => {
   }
 });
 
-app.get("/settingsProfil", async (req, res) => {
+app.post("/upload", async (req: any, res) => {
+  if (!req.files) {
+    return res.status(404).json({
+      message: "Загрузите фотографию",
+    });
+  }
+  const file = req.files.file;
+  const pathUpload = path.resolve(
+    __dirname,
+    "../../Frontend/src/images/uploads"
+  );
+  file.mv(`${pathUpload}/${file.name}`, (err: any) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    return res.status(200).json({
+      filePath: `/uploads/${file.name}`,
+    });
+  });
+});
+
+app.post("/settingsProfil", async (req, res) => {
   try {
-    res.status(200).json({ message: "Сервер работает на порту 9999" });
+    res.status(200).json({ message: "Вы загрузили форму о пользователе" });
   } catch (err) {
     console.log(err);
   }
