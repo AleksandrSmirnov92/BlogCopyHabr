@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 
 import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
@@ -18,16 +18,10 @@ interface MyValues {
 const ProfileSettings = () => {
   let [selectedFile, setSelectedFiles] = useState(null);
   let [pathImg, setPathImg] = useState(null);
+  const myRef: any = useRef();
   // useEffect(() => {
   //   setSelectedFiles("Привет");
   // }, []);
-
-  const onSubmit = () => {
-    console.log(values.name.trim(), values.lastName.trim());
-    console.log(values.brieflyAboutYourself.trim());
-    console.log(values.contacts, values.linkToContacts.trim());
-    console.log(values.img);
-  };
   const sendAvatar = async () => {
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
@@ -44,6 +38,13 @@ const ProfileSettings = () => {
     console.log(data);
     setPathImg(data.filePath);
   };
+  const onSubmit = () => {
+    console.log(values.name.trim(), values.lastName.trim());
+    console.log(values.brieflyAboutYourself.trim());
+    console.log(values.contacts, values.linkToContacts.trim());
+    console.log(values.img);
+  };
+
   useEffect(() => {
     if (selectedFile) {
       sendAvatar();
@@ -99,8 +100,9 @@ const ProfileSettings = () => {
         </span>
         <div className={ProfileSettingsCSS.buttonContainer}>
           <input
+            ref={myRef}
             onChange={(e) => {
-              // e.preventDefault();
+              console.log(myRef.current.value);
               setSelectedFiles(e.target.files[0]);
               console.log("отправить");
             }}
