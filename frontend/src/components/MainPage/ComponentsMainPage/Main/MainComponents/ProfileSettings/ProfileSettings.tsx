@@ -31,15 +31,19 @@ const ProfileSettings = () => {
     const formData = new FormData();
 
     formData.set("file", selectedFile);
-    console.log(formData.has("file"));
-    console.log(formData);
     const res = await fetch("/upload", {
       method: "POST",
       body: formData,
     });
     const data = await res.json();
-    console.log(data);
     setPathImg(data.filePath);
+    // if (!data.message) {
+    //   console.log(data);
+    //   setPathImg(data.filePath);
+    // } else {
+    //   console.log(data);
+    //   setPathImg(data.filePath);
+    // }
   };
 
   const onSubmit = () => {
@@ -106,7 +110,7 @@ const ProfileSettings = () => {
           <input
             // ref={myRef}
             onChange={(e) => {
-              setSelectedFiles(e.target.files[0]);
+              // setSelectedFiles(e.target.files[0]);
               console.log("Отправить");
               sendAvatar(e.target.files[0]);
             }}

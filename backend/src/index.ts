@@ -5,7 +5,7 @@ const fileUpload = require("express-fileupload");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
+const fs = require("fs");
 const path = require("path");
 app.use(express.json());
 app.use(cors());
@@ -114,13 +114,18 @@ app.get("/tags", async (req, res) => {
 });
 
 app.post("/upload", async (req: any, res) => {
+  const file = req.files.file;
+  const pathUpload = path.resolve(__dirname, "../../Frontend/public/uploads");
   if (!req.files) {
     return res.status(404).json({
       message: "Загрузите фотографию",
     });
   }
-  const file = req.files.file;
-  const pathUpload = path.resolve(__dirname, "../../Frontend/public/uploads");
+  if (fs.existsSync(`${pathUpload}/${file.name}`)) {
+    return res.status(200).json({
+      filePath: `/uploads/${file.name}`,
+    });
+  }
   file.mv(
     `${pathUpload}/${file.name}`,
 
