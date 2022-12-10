@@ -3,7 +3,7 @@
 -- VALUES("kostyaa@mail.ru","Kostya","12345"); /* Добавить в таблицу значения*/
 SELECT * FROM USERS /*Показать таблицу*/
 
-
+-- /static/media/JavascriptTag.037c7c5544d99bb1b1f6.png
 -- добвляем в таблицу 
 /*
 --  UPDATE users SET user_id = 1 WHERE id_about_users = 1;

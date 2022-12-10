@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { schemaForSignIn } from "../Schemas/ShemaSignIn";
+import { schemaForSignIn } from "../../Schemas/ShemaSignIn";
 import { NavLink } from "react-router-dom";
 import AccountCSS from "./SignIn.module.css";
 interface MyValues {
@@ -26,6 +26,10 @@ const SignIn = () => {
             window.location.href = "http://localhost:3000/myFeed";
           }, 1000);
           document.cookie = `nickname=${response.user.nickname};max-age=3600`;
+          localStorage.setItem(
+            "userId",
+            JSON.stringify(Number(response.user.user_id))
+          );
           console.log(response.user);
         }
         if (response.status === "ERROR") {

@@ -1,0 +1,120 @@
+.mainContainer {
+  padding-left: 40px;
+  padding-right: 40px;
+  /* background-color: white; */
+  height: 100%;
+}
+h3.questionText {
+  margin-top: 0;
+  padding-top: 15px;
+  border-bottom: 1px #f0f0f0 solid;
+  padding-bottom: 25px;
+}
+
+.questionForm {
+  display: flex;
+  flex-direction: column;
+}
+label.questionLabel {
+  color: black;
+  font-size: 15px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+span.questionClarification {
+  color: #aeb8bc;
+  font-size: 13px;
+  padding-bottom: 10px;
+}
+input.questionInput {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: 1px #f0f0f0 solid;
+  border-radius: 4px;
+}
+input.questionInput:focus {
+  outline: none;
+  border: 1px #2d72d9 solid;
+}
+textarea {
+  resize: vertical;
+  width: 100%;
+  height: 100px;
+  border: 1px #f0f0f0 solid;
+  border-radius: 4px;
+}
+textarea:focus {
+  outline: none;
+  border: 1px #2d72d9 solid;
+}
+.postQuestionFalse {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  background-color: white;
+  color: #93d3a0;
+  border: 1px #93d3a0 solid;
+  padding: 0;
+  width: 20%;
+  cursor: not-allowed;
+}
+.postQuestionTrue {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  background-color: white;
+  color: #64bd76;
+  border: 1px #64bd76 solid;
+  padding: 0;
+  width: 20%;
+  cursor: pointer;
+}
+.inputError {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+
+  /* margin-bottom: 10px; */
+}
+.inputError:focus {
+  border: red 1px solid;
+}
+.inputError:hover {
+  border: red 1px solid;
+}
+.error {
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+
+.tags {
+  position: relative;
+}
+.modalTagUL {
+  position: absolute;
+  background-color: white;
+  border: 1px black solid;
+}
+.modalTag {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.modalTag:hover {
+  background-color: rgb(180, 177, 177);
+}
+/* .buttonTags {
+  margin: 10px;
+  width: 100%;
+  color: black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid black;
+  border-radius: none;
+  padding: 0px 3px 0px 3px;
+} */

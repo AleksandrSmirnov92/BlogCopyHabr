@@ -1,26 +1,28 @@
--- CREATE TABLE about_user (
---  id_about_user BIGSERIAL PRIMARY KEY,
---  img VARCHAR(100), 
---  fullname VARCHAR(50),
---  lastname VARCHAR(50),
---  );
 
-CREATE TABLE Users (
-user_id BIGSERIAL PRIMARY KEY, 
-email VARCHAR(50)  NOT NULL,
-nickname VARCHAR(50) NOT NULL,
-password VARCHAR(50) NOT NULL,
-);
+-- 1 Таблица
 
--- CREATE TABLE questions (
--- questions_id BIGSERIAL PRIMARY KEY,
--- essens_question VARCHAR(100),
--- tags_question VARCHAR(50),
--- datails_question VARCHAR(5000),
--- user_id BIGINT REFERENCES users (user_id)
+CREATE TABLE about_user (
+ id_about_user BIGSERIAL PRIMARY KEY,
+ user_id_from_users BIGINT REFERENCES users (user_id),
+ img VARCHAR(100), 
+ fullname VARCHAR(50),
+ lastname VARCHAR(50),
+ briefly_about_yourself VARCHAR(500),
+ informattion_about_user VARCHAR(1000),
+ country VARCHAR(100),
+ region VARCHAR(500),
+ town VARCHAR(100)
+ );
+--  - уникальный столбец user_id
+-- alter table about_user add constraint unique_user_id unique(user_id_from_users); 
+
+-- 2 таблица 
+-- CREATE TABLE Users (
+-- user_id BIGSERIAL PRIMARY KEY, 
+-- email VARCHAR(50)  NOT NULL,
+-- nickname VARCHAR(50) NOT NULL,
+-- password VARCHAR(50) NOT NULL,
 -- );
--- carID BIGINT REFERENCES cars (id), UNIQUE (carID)
-
 -- INSERT INTO users (email,nickname,password)
 -- VALUES('ryan00@mail.ru','Aleksandr','12345');
 -- INSERT INTO users (email,nickname,password)
@@ -35,6 +37,53 @@ password VARCHAR(50) NOT NULL,
 -- VALUES('valery00@mail.ru','Valery','pushpush');
 -- INSERT INTO users (email,nickname,password)
 -- VALUES('anton00@mail.ru','Anton','antonyPeyter24');
+
+-- 3 таблица
+-- CREATE TABLE questions (
+-- questions_id BIGSERIAL PRIMARY KEY,
+-- user_id BIGINT REFERENCES users (user_id),
+-- question_title VARCHAR(100),
+-- question_tags BIGINT REFERENCES tags(tags_id),
+-- question_details VARCHAR(5000)
+-- );
+
+-- 4 таблица
+-- CREATE TABLE question_and_tags (
+--  id_questions_and_tags BIGSERIAL PRIMARY KEY,
+--  user_id_from_users BIGINT REFERENCES users (user_id),
+--  tag_id_from_tags BIGINT REFERENCES tags (tags_Id)
+--  );
+
+
+-- 5 таблица
+-- CREATE TABLE tags (
+-- tags_id BIGSERIAL PRIMARY KEY,
+-- name_tag VARCHAR(50),
+-- img_tag VARCHAR(60)
+-- );
+-- INSERT INTO tags (name_tag,img_tag)
+-- VALUES('JavaScript','/images/JavascriptTag.png');
+-- INSERT INTO tags (name_tag,img_tag)
+-- VALUES('HTML','/images/HTMLtag.png');
+-- INSERT INTO tags (name_tag,img_tag)
+-- VALUES('CSS','/images/CSStag.png');
+-- INSERT INTO tags (name_tag,img_tag)
+-- VALUES('React',' /images/Reacttag.png');
+-- INSERT INTO tags (name_tag,img_tag)
+-- VALUES('Vue','/images/Vuetag.png');
+-- INSERT INTO tags (name_tag,img_tag)
+-- VALUES('Git','/images/Gittag.png');
+
+
+
+
+
+
+
+-- другая инфа
+-- carID BIGINT REFERENCES cars (id), UNIQUE (carID)
+
+
 --------------------------------------------------------------
 -- INSERT INTO about_user (img, fullname,lastname,briefly_about_yourself, about_yourself)
 -- VALUES('avatar','Aleksandr','Smirnov','Занимаюсь спортом,учусь программировать','Катаюсь на бмх,учу программирование,занимаюсь спортом и тд');
@@ -75,3 +124,16 @@ password VARCHAR(50) NOT NULL,
 -- VALUES('Как оставить открытым элемент срываемый с помощью чекбокса?','#javascript','osdkokfsodfksdfldsfksd;lf');
 -- INSERT INTO questions (essens_question,tags_question,datails_question)
 -- VALUES('Как сделать(стилизовать) несколько элементов с множественным выбором?','#javascript','osdkokfsodfksdfldsfksd;lf');
+
+
+
+
+
+
+
+
+
+
+
+
+

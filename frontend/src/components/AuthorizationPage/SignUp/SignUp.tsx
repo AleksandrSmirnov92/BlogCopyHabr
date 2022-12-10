@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useFormik } from "formik";
-import { schemaForSignUp } from "../Schemas/Schema";
+import { schemaForSignUp } from "../../Schemas/Schema";
 import { NavLink } from "react-router-dom";
 import SignUpCSS from "./SignUp.module.css";
 interface MyValues {
@@ -27,6 +27,7 @@ const onSubmit = async (values: MyValues, actions: any) => {
           window.location.href = "http://localhost:3000/myFeed";
         }, 1000);
         document.cookie = `nickname=${response.message};max-age=3600`;
+        localStorage.setItem("userId", JSON.stringify(Number(response.userId)));
         console.log(response.message);
       } else {
         console.log(response.error);

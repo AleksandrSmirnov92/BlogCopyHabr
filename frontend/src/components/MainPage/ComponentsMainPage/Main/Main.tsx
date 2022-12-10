@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
 import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";
+import AskQuestion from "./MainComponents/AskQuestion/AskQuestion";
 import Tags from "./MainComponents/Tags/Tags";
 import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
@@ -142,11 +143,12 @@ const Main = () => {
       <Routes>
         <Route path="/settingsProfil" element={<ProfileSettings />} />
         <Route path="/questions" element={<AllQuestions />} />
+        <Route path="/askQuestions" element={<AskQuestion />} />
         <Route path="/myFeed" element={<MyFeed />} />
         {/* <Route path="/" element={<AllQuestions />} /> */}
         <Route path="/tags" element={<Tags />} />
         <Route path="/users" element={<Users users={users} />} />
-        /
+
         <Route path="/users/:userId" element={<User users={users} />} />
       </Routes>
     </main>
