@@ -18,18 +18,21 @@ interface MyValues {
 const ProfileSettings = () => {
   let [selectedFile, setSelectedFiles] = useState(null);
   let [pathImg, setPathImg] = useState(null);
-  const myRef: any = useRef();
+  // const myRef: any = useRef();
   // useEffect(() => {
   //   setSelectedFiles("Привет");
   // }, []);
-  const sendAvatar = async () => {
+  const sendAvatar = async (selectedFile: any) => {
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", selectedFile);
+
+    formData.set("file", selectedFile);
+    console.log(formData.has("file"));
+    console.log(formData);
     const res = await fetch("/upload", {
       method: "POST",
       body: formData,
@@ -38,6 +41,7 @@ const ProfileSettings = () => {
     console.log(data);
     setPathImg(data.filePath);
   };
+
   const onSubmit = () => {
     console.log(values.name.trim(), values.lastName.trim());
     console.log(values.brieflyAboutYourself.trim());
@@ -45,14 +49,14 @@ const ProfileSettings = () => {
     console.log(values.img);
   };
 
-  useEffect(() => {
-    if (selectedFile) {
-      sendAvatar();
-      console.log("render1");
-      console.log(pathImg);
-      // setSelectedFiles(null);
-    }
-  }, [selectedFile]);
+  // useEffect(() => {
+  //   if (selectedFile) {
+  //     sendAvatar();
+  //     console.log("render1");
+  //     console.log(pathImg);
+  //     // setSelectedFiles(null);
+  //   }
+  // }, [selectedFile]);
   const {
     values,
     errors,
@@ -100,11 +104,11 @@ const ProfileSettings = () => {
         </span>
         <div className={ProfileSettingsCSS.buttonContainer}>
           <input
-            ref={myRef}
+            // ref={myRef}
             onChange={(e) => {
-              console.log(myRef.current.value);
               setSelectedFiles(e.target.files[0]);
-              console.log("отправить");
+              console.log("Отправить");
+              sendAvatar(e.target.files[0]);
             }}
             id="img"
             type="file"

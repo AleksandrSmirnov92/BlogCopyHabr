@@ -121,14 +121,18 @@ app.post("/upload", async (req: any, res) => {
   }
   const file = req.files.file;
   const pathUpload = path.resolve(__dirname, "../../Frontend/public/uploads");
-  file.mv(`${pathUpload}/${file.name}`, (err: any) => {
-    if (err) {
-      return res.status(500).json({ err: err });
+  file.mv(
+    `${pathUpload}/${file.name}`,
+
+    (err: any) => {
+      if (err) {
+        return res.status(500).json({ err: err });
+      }
+      return res.status(200).json({
+        filePath: `/uploads/${file.name}`,
+      });
     }
-    return res.status(200).json({
-      filePath: `/uploads/${file.name}`,
-    });
-  });
+  );
 });
 
 app.post("/settingsProfil", async (req, res) => {

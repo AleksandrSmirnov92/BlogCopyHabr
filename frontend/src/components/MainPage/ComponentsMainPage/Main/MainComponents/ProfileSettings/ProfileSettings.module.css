@@ -61,6 +61,8 @@ a.links:focus {
 }
 input[type="file"] {
   display: none;
+  /* margin-bottom: 20px;
+  width: 50px; */
 }
 .buttonUpload:hover {
   border: 1px #689170 solid;
@@ -222,4 +224,10 @@ span.links {
   font-size: 13px;
   font-weight: bold;
   padding-bottom: 20px;
+}
+input.test {
+  display: block;
+  width: 80%;
+  height: 20px;
+  background-color: #2d72d9;
 }
