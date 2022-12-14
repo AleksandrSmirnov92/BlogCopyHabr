@@ -13,6 +13,9 @@ interface MyValues {
   aboutMySelf: string;
   contacts: string;
   linkToContacts: string;
+  country: string;
+  region: string;
+  town: string;
 }
 
 const ProfileSettings = () => {
@@ -37,20 +40,17 @@ const ProfileSettings = () => {
     });
     const data = await res.json();
     setPathImg(data.filePath);
-    // if (!data.message) {
-    //   console.log(data);
-    //   setPathImg(data.filePath);
-    // } else {
-    //   console.log(data);
-    //   setPathImg(data.filePath);
-    // }
   };
 
   const onSubmit = () => {
+    values.img = pathImg;
     console.log(values.name.trim(), values.lastName.trim());
     console.log(values.brieflyAboutYourself.trim());
     console.log(values.contacts, values.linkToContacts.trim());
     console.log(values.img);
+    console.log(values.country);
+    console.log(values.region);
+    console.log(values.town);
   };
 
   // useEffect(() => {
@@ -78,6 +78,9 @@ const ProfileSettings = () => {
       aboutMySelf: "",
       contacts: "",
       linkToContacts: "",
+      country: "",
+      region: "",
+      town: "",
     },
     onSubmit,
     validationSchema: schemaForProfileSettings,
@@ -121,7 +124,14 @@ const ProfileSettings = () => {
           <label className={ProfileSettingsCSS.buttonUpload} htmlFor="img">
             Загрузить
           </label>
-          <button className={ProfileSettingsCSS.buttonDelete}>Удалить</button>
+          <button
+            onClick={() => {
+              setPathImg("");
+            }}
+            className={ProfileSettingsCSS.buttonDelete}
+          >
+            Удалить
+          </button>
         </div>
       </div>
       {/* ------------------------------------------------------------------------------------------------------------------------------ */}
@@ -247,17 +257,39 @@ const ProfileSettings = () => {
           Местоположение
         </label>
         <div className={ProfileSettingsCSS.myLocationContainer}>
-          <select className={ProfileSettingsCSS.location}>
-            <option>Страна</option>
+          <select
+            id="country"
+            value={values.country}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={ProfileSettingsCSS.location}
+          >
+            <option selected id="country">
+              Страна
+            </option>
             <option>Россия</option>
           </select>
-          <select className={ProfileSettingsCSS.location} name="" id="">
-            <option>Регион</option>
+          <select
+            className={ProfileSettingsCSS.location}
+            id="region"
+            value={values.region}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          >
+            <option id="region">Регион</option>
             <option>Московская область</option>
           </select>
-          <select className={ProfileSettingsCSS.location}>
-            <option value="">Город</option>
-            <option value="">Дубна</option>
+          <select
+            id="town"
+            value={values.town}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={ProfileSettingsCSS.location}
+          >
+            <option id="town" value="">
+              Город
+            </option>
+            <option>Дубна</option>
           </select>
         </div>
 
