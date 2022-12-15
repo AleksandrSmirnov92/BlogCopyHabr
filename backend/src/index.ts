@@ -139,10 +139,53 @@ app.post("/upload", async (req: any, res) => {
     }
   );
 });
+app.delete("/deleteImg", async (req, res) => {
+  let filePath = req.body.path;
+  const pathUpload = path.resolve(
+    __dirname,
+    `../../Frontend/public/${filePath}`
+  );
+  fs.unlink(pathUpload, (err: any) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({
+        filePath: ``,
+      });
+    }
+  });
+  console.log(pathUpload);
+});
 
 app.post("/settingsProfil", async (req, res) => {
+  let {
+    img,
+    fullName,
+    lastName,
+    contacts,
+    linkToContacts,
+    briefly_about_yourself,
+    informattion_about_user,
+    country,
+    region,
+    town,
+  } = req.body;
   try {
-    res.status(200).json({ message: "Вы загрузили форму о пользователе" });
+    res.status(200).json({
+      message: "Вы загрузили форму о пользователе",
+      body: {
+        img,
+        fullName,
+        lastName,
+        contacts,
+        linkToContacts,
+        briefly_about_yourself,
+        informattion_about_user,
+        country,
+        region,
+        town,
+      },
+    });
   } catch (err) {
     console.log(err);
   }

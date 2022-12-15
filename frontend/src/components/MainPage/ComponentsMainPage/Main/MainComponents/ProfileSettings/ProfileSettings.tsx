@@ -21,7 +21,7 @@ interface MyValues {
 const ProfileSettings = () => {
   let [selectedFile, setSelectedFiles] = useState(null);
   let [pathImg, setPathImg] = useState(null);
-  // const myRef: any = useRef();
+  const myRef: any = useRef();
   // useEffect(() => {
   //   setSelectedFiles("Привет");
   // }, []);
@@ -30,9 +30,7 @@ const ProfileSettings = () => {
       alert("Пожалуйста загрузите файл");
       return;
     }
-
     const formData = new FormData();
-
     formData.set("file", selectedFile);
     const res = await fetch("/upload", {
       method: "POST",
@@ -42,17 +40,39 @@ const ProfileSettings = () => {
     setPathImg(data.filePath);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     values.img = pathImg;
-    console.log(values.name.trim(), values.lastName.trim());
-    console.log(values.brieflyAboutYourself.trim());
-    console.log(values.contacts, values.linkToContacts.trim());
-    console.log(values.img);
-    console.log(values.country);
-    console.log(values.region);
-    console.log(values.town);
+    const res = await fetch("/settingsProfil", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        img: values.img,
+        fullName: values.name.trim(),
+        lastName: values.lastName.trim(),
+        contacts: values.contacts,
+        linkToContacts: values.linkToContacts.trim(),
+        briefly_about_yourself: values.brieflyAboutYourself.trim(),
+        informattion_about_user: values.aboutMySelf.trim(),
+        country: values.country,
+        region: values.region,
+        town: values.town,
+      }),
+    });
+    const data = await res.json();
+    console.log(data);
   };
-
+  const deleteImg = async (filePath: string) => {
+    const res = await fetch("/deleteImg", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        path: filePath,
+      }),
+    });
+    const data = await res.json();
+    setPathImg(data.filePath);
+    myRef.current.value = "";
+  };
   // useEffect(() => {
   //   if (selectedFile) {
   //     sendAvatar();
@@ -111,7 +131,7 @@ const ProfileSettings = () => {
         </span>
         <div className={ProfileSettingsCSS.buttonContainer}>
           <input
-            // ref={myRef}
+            ref={myRef}
             onChange={(e) => {
               // setSelectedFiles(e.target.files[0]);
               console.log("Отправить");
@@ -126,7 +146,8 @@ const ProfileSettings = () => {
           </label>
           <button
             onClick={() => {
-              setPathImg("");
+              deleteImg(pathImg);
+              console.log(pathImg);
             }}
             className={ProfileSettingsCSS.buttonDelete}
           >
@@ -220,10 +241,12 @@ const ProfileSettings = () => {
             onBlur={handleBlur}
             className={ProfileSettingsCSS.contacts}
             id="contacts"
+            // defaultValue={"Vkontakte"}
           >
-            <option id="contacts">Vkontakte</option>
-            <option id="contacts">Githab</option>
-            <option id="contacts">E-mail</option>
+            <option>Koнтакты</option>
+            <option>Vkontakte</option>
+            <option>Githab</option>
+            <option>E-mail</option>
           </select>
           <input
             // className={
@@ -264,9 +287,7 @@ const ProfileSettings = () => {
             onBlur={handleBlur}
             className={ProfileSettingsCSS.location}
           >
-            <option selected id="country">
-              Страна
-            </option>
+            <option>Страна</option>
             <option>Россия</option>
           </select>
           <select
@@ -276,7 +297,7 @@ const ProfileSettings = () => {
             onChange={handleChange}
             onBlur={handleBlur}
           >
-            <option id="region">Регион</option>
+            <option>Регион</option>
             <option>Московская область</option>
           </select>
           <select
@@ -286,9 +307,7 @@ const ProfileSettings = () => {
             onBlur={handleBlur}
             className={ProfileSettingsCSS.location}
           >
-            <option id="town" value="">
-              Город
-            </option>
+            <option>Город</option>
             <option>Дубна</option>
           </select>
         </div>
