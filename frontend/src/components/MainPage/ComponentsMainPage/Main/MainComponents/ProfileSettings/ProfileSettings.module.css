@@ -143,6 +143,7 @@ input.contacts {
   padding-bottom: 5px;
   border: 1px #d2d6d7 solid;
   border-radius: 4px;
+  margin-bottom: 10px;
 }
 input.contacts:hover {
   border: 1px #2d72d9 solid;
@@ -210,8 +211,6 @@ span.links {
   margin-bottom: 10px;
   border: red 1px solid;
   border-radius: 4px;
-
-  /* margin-bottom: 10px; */
 }
 .inputError:focus {
   border: red 1px solid;
@@ -230,4 +229,12 @@ input.test {
   width: 80%;
   height: 20px;
   background-color: #2d72d9;
+}
+.inputErrorContacts {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+  width: 80%;
 }

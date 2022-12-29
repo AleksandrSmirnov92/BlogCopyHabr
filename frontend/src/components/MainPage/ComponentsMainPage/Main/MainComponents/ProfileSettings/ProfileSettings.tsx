@@ -21,6 +21,8 @@ interface MyValues {
 const ProfileSettings = () => {
   let [selectedFile, setSelectedFiles] = useState(null);
   let [pathImg, setPathImg] = useState(null);
+  // let [resetContact, setResetContacts] = useState("");
+  let [linkContactsValue, setLinkContactsValue] = useState("");
   const myRef: any = useRef();
   // useEffect(() => {
   //   setSelectedFiles("Привет");
@@ -41,6 +43,7 @@ const ProfileSettings = () => {
   };
 
   const onSubmit = async () => {
+    values.linkToContacts = linkContactsValue;
     values.img = pathImg;
     const res = await fetch("/settingsProfil", {
       method: "POST",
@@ -73,6 +76,12 @@ const ProfileSettings = () => {
     setPathImg(data.filePath);
     myRef.current.value = "";
   };
+  const resetContacts = (e: string) => {
+    if (e === "Контакты") {
+      setLinkContactsValue("");
+    }
+  };
+
   // useEffect(() => {
   //   if (selectedFile) {
   //     sendAvatar();
@@ -96,7 +105,7 @@ const ProfileSettings = () => {
       lastName: "",
       brieflyAboutYourself: "",
       aboutMySelf: "",
-      contacts: "",
+      contacts: "Контакты",
       linkToContacts: "",
       country: "",
       region: "",
@@ -237,38 +246,56 @@ const ProfileSettings = () => {
         <div className={ProfileSettingsCSS.myContactsContainer}>
           <select
             value={values.contacts}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              // setResetContacts(e.target.value);
+              resetContacts(e.target.value);
+            }}
             onBlur={handleBlur}
             className={ProfileSettingsCSS.contacts}
             id="contacts"
-            // defaultValue={"Vkontakte"}
           >
-            <option>Koнтакты</option>
-            <option>Vkontakte</option>
-            <option>Githab</option>
-            <option>E-mail</option>
+            <option value={"Контакты"}>Koнтакты</option>
+            <option value={"Vkontakte"}>Vkontakte</option>
+            <option value={"Githab"}>Githab</option>
+            <option value={"E-mail"}>E-mail</option>
           </select>
           <input
-            // className={
-            //   (ProfileSettingsCSS.personalInfomation,
-            //   ProfileSettingsCSS.contacts)
-            // }
             className={
-              errors.linkToContacts && touched.linkToContacts
-                ? (ProfileSettingsCSS.inputError, ProfileSettingsCSS.contacts)
-                : (ProfileSettingsCSS.personalInfomation,
-                  ProfileSettingsCSS.contacts)
+              errors.linkToContacts &&
+              touched.linkToContacts &&
+              values.contacts !== "Контакты"
+                ? ProfileSettingsCSS.inputErrorContacts
+                : ProfileSettingsCSS.contacts
             }
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              setLinkContactsValue(e.target.value);
+            }}
             onBlur={handleBlur}
             id="linkToContacts"
             type="text"
-            placeholder="Вставьте ссылку на контакты"
+            placeholder={
+              values.contacts === "Контакты"
+                ? "Выберите контакт"
+                : "Вставьте ссылку на контакты"
+            }
+            value={linkContactsValue}
+            disabled={values.contacts === "Контакты" ? true : false}
           />
         </div>
-        {errors.linkToContacts && touched.linkToContacts ? (
+        {errors.linkToContacts &&
+        touched.linkToContacts &&
+        values.contacts !== "Контакты" ? (
           <span className={ProfileSettingsCSS.error}>
             {errors.linkToContacts}
+          </span>
+        ) : (
+          ""
+        )}
+        {values.contacts !== "Контакты" && values.linkToContacts === "" ? (
+          <span className={ProfileSettingsCSS.error}>
+            Обязательно поле для заполнения
           </span>
         ) : (
           ""
