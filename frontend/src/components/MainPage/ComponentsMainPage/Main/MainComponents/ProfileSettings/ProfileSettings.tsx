@@ -19,10 +19,13 @@ interface MyValues {
 }
 
 const ProfileSettings = () => {
-  let [selectedFile, setSelectedFiles] = useState(null);
+  // let [selectedFile, setSelectedFiles] = useState(null);
   let [pathImg, setPathImg] = useState(null);
   // let [resetContact, setResetContacts] = useState("");
   let [linkContactsValue, setLinkContactsValue] = useState("");
+  let [country, setCountry] = useState("Страна");
+  let [region, setRegion] = useState("Регион");
+  let [town, setTown] = useState("Город");
   const myRef: any = useRef();
   // useEffect(() => {
   //   setSelectedFiles("Привет");
@@ -43,22 +46,22 @@ const ProfileSettings = () => {
   };
 
   const onSubmit = async () => {
-    values.linkToContacts = linkContactsValue;
-    values.img = pathImg;
+    // values.linkToContacts = linkContactsValue;
+    // values.img = pathImg;
     const res = await fetch("/settingsProfil", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        img: values.img,
+        img: (values.img = pathImg),
         fullName: values.name.trim(),
         lastName: values.lastName.trim(),
         contacts: values.contacts,
-        linkToContacts: values.linkToContacts.trim(),
+        linkToContacts: (values.linkToContacts = linkContactsValue.trim()),
         briefly_about_yourself: values.brieflyAboutYourself.trim(),
         informattion_about_user: values.aboutMySelf.trim(),
-        country: values.country,
-        region: values.region,
-        town: values.town,
+        country: (values.country = country),
+        region: (values.region = region),
+        town: (values.town = town),
       }),
     });
     const data = await res.json();
@@ -81,7 +84,17 @@ const ProfileSettings = () => {
       setLinkContactsValue("");
     }
   };
-
+  const locationCheck = (e: string) => {
+    switch (e) {
+      case "Страна":
+        setRegion("Регион");
+        setTown("Страна");
+        break;
+      case "Регион":
+        setTown("Город");
+        break;
+    }
+  };
   // useEffect(() => {
   //   if (selectedFile) {
   //     sendAvatar();
@@ -107,9 +120,9 @@ const ProfileSettings = () => {
       aboutMySelf: "",
       contacts: "Контакты",
       linkToContacts: "",
-      country: "",
-      region: "",
-      town: "",
+      country: "Страна",
+      region: "Регион",
+      town: "Город",
     },
     onSubmit,
     validationSchema: schemaForProfileSettings,
@@ -309,33 +322,46 @@ const ProfileSettings = () => {
         <div className={ProfileSettingsCSS.myLocationContainer}>
           <select
             id="country"
-            value={values.country}
-            onChange={handleChange}
+            value={country}
+            onChange={(e) => {
+              handleChange(e);
+              setCountry(e.target.value);
+              locationCheck(e.target.value);
+            }}
             onBlur={handleBlur}
             className={ProfileSettingsCSS.location}
           >
-            <option>Страна</option>
-            <option>Россия</option>
+            <option value={"Страна"}>Страна</option>
+            <option value={"Россия"}>Россия</option>
           </select>
           <select
             className={ProfileSettingsCSS.location}
             id="region"
-            value={values.region}
-            onChange={handleChange}
+            value={region}
+            onChange={(e) => {
+              handleChange(e);
+              setRegion(e.target.value);
+              locationCheck(e.target.value);
+            }}
             onBlur={handleBlur}
+            disabled={country === "Страна" ? true : false}
           >
-            <option>Регион</option>
-            <option>Московская область</option>
+            <option value={"Регион"}>Регион</option>
+            <option value={"Московская область"}>Московская область</option>
           </select>
           <select
             id="town"
-            value={values.town}
-            onChange={handleChange}
+            value={town}
+            onChange={(e) => {
+              handleChange(e);
+              setTown(e.target.value);
+            }}
             onBlur={handleBlur}
             className={ProfileSettingsCSS.location}
+            disabled={region === "Регион" ? true : false}
           >
-            <option>Город</option>
-            <option>Дубна</option>
+            <option value={"Город"}>Город</option>
+            <option value={"Дубна"}>Дубна</option>
           </select>
         </div>
 
