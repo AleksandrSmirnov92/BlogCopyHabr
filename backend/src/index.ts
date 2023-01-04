@@ -113,8 +113,13 @@ app.get("/tags", async (req, res) => {
   }
 });
 
-app.post("/upload", async (req: any, res) => {
+app.post("/upload/:id", async (req: any, res) => {
+  let { id } = req.params;
   const file = req.files.file;
+  let addInformationInAboutUser = await pool.query(
+    `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
+    [`/uploads/${file.name}`, id]
+  );
   const pathUpload = path.resolve(__dirname, "../../Frontend/public/uploads");
   if (!req.files) {
     return res.status(404).json({
@@ -139,7 +144,12 @@ app.post("/upload", async (req: any, res) => {
     }
   );
 });
-app.delete("/deleteImg", async (req, res) => {
+app.delete("/deleteImg/:id", async (req, res) => {
+  let { id } = req.params;
+  let addInformationInAboutUser = await pool.query(
+    `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
+    [``, id]
+  );
   let filePath = req.body.path;
   const pathUpload = path.resolve(
     __dirname,
@@ -157,8 +167,9 @@ app.delete("/deleteImg", async (req, res) => {
   console.log(pathUpload);
 });
 
-app.post("/settingsProfil", async (req, res) => {
+app.post("/settingsProfile", async (req, res) => {
   let {
+    id,
     img,
     fullName,
     lastName,
@@ -170,11 +181,11 @@ app.post("/settingsProfil", async (req, res) => {
     region,
     town,
   } = req.body;
+
   try {
-    res.status(200).json({
-      message: "Вы загрузили форму о пользователе",
-      body: {
-        img,
+    let addInformationInAboutUser = await pool.query(
+      `UPDATE about_user SET fullname = $1,lastname = $2,contacts = $3,linktocontacts = $4,briefly_about_yourself = $5,informattion_about_user = $6,country = $7,region = $8,town = $9 WHERE user_id_from_users = $10`,
+      [
         fullName,
         lastName,
         contacts,
@@ -184,13 +195,36 @@ app.post("/settingsProfil", async (req, res) => {
         country,
         region,
         town,
-      },
+        id,
+      ]
+    );
+    let getInfomationAboutUser = await pool.query(
+      `SELECT * FROM about_user WHERE user_id_from_users = $1`,
+      [id]
+    );
+    res.status(200).json({
+      message: "Вы загрузили форму о пользователе",
+      body: getInfomationAboutUser.rows[0],
     });
   } catch (err) {
     console.log(err);
   }
 });
-
+app.get("/getInformationAboutUser/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let getInfomationAboutUser = await pool.query(
+      `SELECT * FROM about_user WHERE user_id_from_users = $1`,
+      [id]
+    );
+    res.status(200).json({
+      message: "Вы получили информацию о пользователе",
+      body: getInfomationAboutUser.rows[0],
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 app.get("/users", async (req, res) => {
   try {
     res.status(200).json({ message: "Сервер работает на порту 9999" });

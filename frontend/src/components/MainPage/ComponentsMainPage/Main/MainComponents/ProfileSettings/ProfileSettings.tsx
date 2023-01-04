@@ -37,7 +37,7 @@ const ProfileSettings = () => {
     }
     const formData = new FormData();
     formData.set("file", selectedFile);
-    const res = await fetch("/upload", {
+    const res = await fetch(`/upload/${localStorage.getItem("userId")}`, {
       method: "POST",
       body: formData,
     });
@@ -48,10 +48,11 @@ const ProfileSettings = () => {
   const onSubmit = async () => {
     // values.linkToContacts = linkContactsValue;
     // values.img = pathImg;
-    const res = await fetch("/settingsProfil", {
+    const res = await fetch("/settingsProfile", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        id: localStorage.getItem("userId"),
         img: (values.img = pathImg),
         fullName: values.name.trim(),
         lastName: values.lastName.trim(),
@@ -68,7 +69,7 @@ const ProfileSettings = () => {
     console.log(data);
   };
   const deleteImg = async (filePath: string) => {
-    const res = await fetch("/deleteImg", {
+    const res = await fetch(`/deleteImg/${localStorage.getItem("userId")}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -95,14 +96,21 @@ const ProfileSettings = () => {
         break;
     }
   };
-  // useEffect(() => {
-  //   if (selectedFile) {
-  //     sendAvatar();
-  //     console.log("render1");
-  //     console.log(pathImg);
-  //     // setSelectedFiles(null);
-  //   }
-  // }, [selectedFile]);
+  const getSettingsInformation = async () => {
+    const res = await fetch(
+      `/getInformationAboutUser/${localStorage.getItem("userId")}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const data = await res.json();
+    setPathImg(data.body.img);
+  };
+  useEffect(() => {
+    console.log("settingsProfile");
+    getSettingsInformation();
+  }, [pathImg]);
   const {
     values,
     errors,

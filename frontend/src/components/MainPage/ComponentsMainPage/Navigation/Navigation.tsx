@@ -32,6 +32,7 @@ const Navigation = () => {
       return matches ? decodeURIComponent(matches[1]) : "";
     }
     if (getCookie("nickname") !== "") {
+      console.log("navigation");
       setUserRegistred(true);
     } else {
       console.log("пользователь не зарегестрирован");

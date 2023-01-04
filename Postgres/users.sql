@@ -7,6 +7,8 @@ CREATE TABLE about_user (
  img VARCHAR(100), 
  fullname VARCHAR(50),
  lastname VARCHAR(50),
+ contacts VARCHAR(50),
+ linkToContacts VARCHAR(200),
  briefly_about_yourself VARCHAR(500),
  informattion_about_user VARCHAR(1000),
  country VARCHAR(100),
