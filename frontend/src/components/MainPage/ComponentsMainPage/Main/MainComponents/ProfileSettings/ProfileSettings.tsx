@@ -106,6 +106,19 @@ const ProfileSettings = () => {
     );
     const data = await res.json();
     setPathImg(data.body.img);
+    values.name = data.body.fullname;
+    values.lastName = data.body.lastname;
+    values.brieflyAboutYourself = data.body.briefly_about_yourself;
+    values.aboutMySelf = data.body.informattion_about_user;
+    values.contacts = data.body.contacts;
+    values.linkToContacts = data.body.linktocontacts;
+    setLinkContactsValue(data.body.linktocontacts);
+    setCountry(data.body.country);
+    values.country = data.body.country;
+    setRegion(data.body.region);
+    values.region = data.body.region;
+    setTown(data.body.town);
+    values.town = data.body.town;
   };
   useEffect(() => {
     console.log("settingsProfile");
@@ -321,7 +334,7 @@ const ProfileSettings = () => {
         ) : (
           ""
         )}
-        <button className={ProfileSettingsCSS.add}>Добавить</button>
+        {/* <button className={ProfileSettingsCSS.add}>Добавить</button> */}
         <label
           className={(ProfileSettingsCSS.title, ProfileSettingsCSS.location)}
         >
