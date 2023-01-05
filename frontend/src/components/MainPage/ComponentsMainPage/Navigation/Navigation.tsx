@@ -13,6 +13,9 @@ import { NavLink } from "react-router-dom";
 const Navigation = () => {
   let [userRegistred, setUserRegistred] = useState(false);
   const { userId, setUserId } = useContext(userIdContext);
+  let [pathImg, setPathImg] = useState("");
+  let [fullName, setFullName] = useState("");
+  let [lastName, setLastName] = useState("");
   const exit = (): any => {
     setTimeout(() => {
       document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
@@ -20,7 +23,28 @@ const Navigation = () => {
       setUserRegistred(false);
     }, 1000);
   };
+  const getInformationAboutUser = async () => {
+    const res = await fetch(
+      `/getInformationAboutUser/${localStorage.getItem("userId")}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const data = await res.json();
+    setPathImg(data.body.img);
+    if (data.body.fullname !== "" || data.body.lastname !== "") {
+      return setFullName(data.body.fullname), setLastName(data.body.lastname);
+    }
+    const resUser = await fetch(`/users/${localStorage.getItem("userId")}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const dataUser = await resUser.json();
+    setFullName(dataUser.body.email);
+  };
   useEffect(() => {
+    getInformationAboutUser();
     function getCookie(name: string): string {
       let matches = document.cookie.match(
         new RegExp(
@@ -49,11 +73,24 @@ const Navigation = () => {
           }
         >
           <li className={NavigationCSS.myProfile}>
-            <a href="#" className={NavigationCSS.photoProfil}>
-              <img src={myProfile} className={NavigationCSS.photoProfil} />
+            <a
+              href={`http://localhost:3000/users/${localStorage.getItem(
+                "userId"
+              )}`}
+              className={NavigationCSS.photoProfil}
+            >
+              <img
+                src={pathImg !== "" ? pathImg : myProfile}
+                className={NavigationCSS.photoProfil}
+              />
             </a>
-            <a href="#" className={NavigationCSS.textProfil}>
-              Александр Смирнов
+            <a
+              href={`http://localhost:3000/users/${localStorage.getItem(
+                "userId"
+              )}`}
+              className={NavigationCSS.textProfil}
+            >
+              {`${fullName} ${lastName}`}
             </a>
           </li>
           <li className={NavigationCSS.settings}>

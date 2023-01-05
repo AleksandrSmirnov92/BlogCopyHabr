@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
-
 import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
@@ -19,17 +18,12 @@ interface MyValues {
 }
 
 const ProfileSettings = () => {
-  // let [selectedFile, setSelectedFiles] = useState(null);
   let [pathImg, setPathImg] = useState(null);
-  // let [resetContact, setResetContacts] = useState("");
   let [linkContactsValue, setLinkContactsValue] = useState("");
   let [country, setCountry] = useState("Страна");
   let [region, setRegion] = useState("Регион");
   let [town, setTown] = useState("Город");
   const myRef: any = useRef();
-  // useEffect(() => {
-  //   setSelectedFiles("Привет");
-  // }, []);
   const sendAvatar = async (selectedFile: any) => {
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
@@ -46,8 +40,6 @@ const ProfileSettings = () => {
   };
 
   const onSubmit = async () => {
-    // values.linkToContacts = linkContactsValue;
-    // values.img = pathImg;
     const res = await fetch("/settingsProfile", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -65,6 +57,11 @@ const ProfileSettings = () => {
         town: (values.town = town),
       }),
     });
+    setTimeout(() => {
+      window.location.href = `http://localhost:3000/users/${localStorage.getItem(
+        "userId"
+      )}`;
+    }, 1000);
     const data = await res.json();
     console.log(data);
   };
@@ -176,8 +173,6 @@ const ProfileSettings = () => {
           <input
             ref={myRef}
             onChange={(e) => {
-              // setSelectedFiles(e.target.files[0]);
-              console.log("Отправить");
               sendAvatar(e.target.files[0]);
             }}
             id="img"
@@ -282,7 +277,6 @@ const ProfileSettings = () => {
             value={values.contacts}
             onChange={(e) => {
               handleChange(e);
-              // setResetContacts(e.target.value);
               resetContacts(e.target.value);
             }}
             onBlur={handleBlur}

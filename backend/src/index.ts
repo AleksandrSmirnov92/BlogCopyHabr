@@ -232,6 +232,21 @@ app.get("/users", async (req, res) => {
     console.log(err);
   }
 });
+app.get("/users/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let getInformationAboutUser = await pool.query(
+      `SELECT * FROM users WHERE user_id = $1`,
+      [id]
+    );
+    res.status(200).json({
+      message: "Вы получили информацию о зарегестрированом пользователе",
+      body: getInformationAboutUser.rows[0],
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 app.post("/users", async (req, res) => {
   try {
     console.log(req.body);
