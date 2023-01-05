@@ -16,13 +16,10 @@ const User = (props: any) => {
   let [town, setTown] = useState("");
   let [informattionAboutUser, setInformattionAboutUser] = useState("");
   const getSettingsInformation = async () => {
-    const res = await fetch(
-      `/getInformationAboutUser/${localStorage.getItem("userId")}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const res = await fetch(`/getInformationAboutUser/${userId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await res.json();
     console.log(data.body);
     let {
@@ -79,9 +76,11 @@ const User = (props: any) => {
       <div className={UserCSS.informationPanel}>
         {informattionAboutUser}
         <div>
-          <h4 className={UserCSS.text}>{contacts !== "" ? "Контакты" : ""}</h4>
+          <h4 className={UserCSS.text}>
+            {contacts !== "Контакты" ? "Контакты" : ""}
+          </h4>
           <span className={UserCSS.contacts}>
-            {contacts}:
+            {contacts !== "Контакты" ? `${contacts} :` : ""}
             <a href={linkToContacts} className={UserCSS.contacts}>
               {linkToContacts}
             </a>
@@ -89,10 +88,10 @@ const User = (props: any) => {
         </div>
         <div className={UserCSS.location}>
           <h4 className={UserCSS.text}>
-            {country !== "" ? "Местоположение" : ""}
+            {country !== "Страна" ? "Местоположение" : ""}
           </h4>
           <span className={UserCSS.location}>
-            {country !== "" ? `${country},${region},${town}` : ""}
+            {country !== "Страна" ? `${country},${region},${town}` : ""}
           </span>
         </div>
       </div>

@@ -26,8 +26,20 @@ app.post("/signUp", async (req, res) => {
       [email, nickName, password]
     );
     const newInformationAboutUser = await pool.query(
-      "INSERT INTO about_user (user_id_from_users) VALUES($1)",
-      [newUser.rows[0].user_id]
+      "INSERT INTO about_user (user_id_from_users,img,fullname,lastname,contacts,linktocontacts,briefly_about_yourself,informattion_about_user,country,region,town) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
+      [
+        newUser.rows[0].user_id,
+        "",
+        "",
+        "",
+        "Контакты",
+        "",
+        "",
+        "",
+        "Страна",
+        "Регион",
+        "Город",
+      ]
     );
     return res.status(200).json({
       status: "SUCCESS",
@@ -205,6 +217,17 @@ app.post("/settingsProfile", async (req, res) => {
     res.status(200).json({
       message: "Вы загрузили форму о пользователе",
       body: getInfomationAboutUser.rows[0],
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+app.get("/getInformationAboutUser", async (req, res) => {
+  try {
+    let getInfomationAboutUser = await pool.query(`SELECT * FROM about_user;`);
+    res.status(200).json({
+      message: "Вы получили информацию о пользователе",
+      body: getInfomationAboutUser.rows,
     });
   } catch (err) {
     console.log(err);

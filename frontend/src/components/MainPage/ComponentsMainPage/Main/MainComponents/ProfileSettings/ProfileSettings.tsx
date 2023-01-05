@@ -86,7 +86,7 @@ const ProfileSettings = () => {
     switch (e) {
       case "Страна":
         setRegion("Регион");
-        setTown("Страна");
+        setTown("Город");
         break;
       case "Регион":
         setTown("Город");

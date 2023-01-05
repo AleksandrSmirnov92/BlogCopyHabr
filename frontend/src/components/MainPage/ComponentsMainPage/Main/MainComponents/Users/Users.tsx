@@ -7,13 +7,13 @@ const Users = (props: any) => {
   // const [users, setUsers] = useState(props);
   // console.log(users.users);
   useEffect(() => {
-    fetch("http://localhost:9999/users", {
+    fetch("http://localhost:9999/getInformationAboutUser", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.message);
+        console.log(response.body);
         // получить id пользователя
         // получить photo
         // получить имя
