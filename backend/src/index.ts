@@ -112,19 +112,6 @@ app.post("/createQuestion", async (req, res) => {
     console.log(err);
   }
 });
-
-app.get("/tags", async (req, res) => {
-  try {
-    let getTags = await pool.query("SELECT * FROM tags");
-    res.status(200).json({
-      status: "SUCCESS",
-      tags: getTags.rows,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 app.post("/upload/:id", async (req: any, res) => {
   let { id } = req.params;
   const file = req.files.file;
@@ -224,7 +211,9 @@ app.post("/settingsProfile", async (req, res) => {
 });
 app.get("/getInformationAboutUser", async (req, res) => {
   try {
-    let getInfomationAboutUser = await pool.query(`SELECT * FROM about_user;`);
+    let getInfomationAboutUser =
+      await pool.query(`select users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
+    join users on user_id_from_users = user_id;`);
     res.status(200).json({
       message: "Вы получили информацию о пользователе",
       body: getInfomationAboutUser.rows,
@@ -265,6 +254,63 @@ app.get("/users/:id", async (req, res) => {
     res.status(200).json({
       message: "Вы получили информацию о зарегестрированом пользователе",
       body: getInformationAboutUser.rows[0],
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+// app.get("/tags", async (req, res) => {
+//   try {
+//     let getTags = await pool.query("SELECT * FROM tags");
+//     res.status(200).json({
+//       status: "SUCCESS",
+//       tags: getTags.rows,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
+app.get("/tags", async (req, res) => {
+  try {
+    let getInformationAboutUser = await pool.query(
+      `SELECT tags.tags_id,tags.name_tag,tags.img_tag,followers.javascript,followers.html,followers.css,followers.react,followers.vue,followers.git FROM tags join followers on followers_id_from_users = tags_id;`
+    );
+    let countFollowersJavaScript = await pool.query(
+      "SELECT COUNT(*) FROM followers where javascript = $1",
+      ["true"]
+    );
+    let countFollowersHTML = await pool.query(
+      "SELECT COUNT(*) FROM followers where html = $1",
+      ["true"]
+    );
+    let countFollowersCSS = await pool.query(
+      "SELECT COUNT(*) FROM followers where css = $1",
+      ["true"]
+    );
+    let countFollowersReact = await pool.query(
+      "SELECT COUNT(*) FROM followers where react = $1",
+      ["true"]
+    );
+    let countFollowersVue = await pool.query(
+      "SELECT COUNT(*) FROM followers where vue = $1",
+      ["true"]
+    );
+    let countFollowersGit = await pool.query(
+      "SELECT COUNT(*) FROM followers where git = $1",
+      ["true"]
+    );
+
+    res.status(200).json({
+      message: "Вы получили информацию о всех тегах",
+      tagsInfo: getInformationAboutUser.rows,
+      countFollowers: {
+        Javascript: countFollowersJavaScript.rows[0].count,
+        HTML: countFollowersHTML.rows[0].count,
+        CSS: countFollowersCSS.rows[0].count,
+        React: countFollowersReact.rows[0].count,
+        Vue: countFollowersVue.rows[0].count,
+        Git: countFollowersGit.rows[0].count,
+      },
     });
   } catch (err) {
     console.log(err);

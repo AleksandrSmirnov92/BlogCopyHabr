@@ -76,11 +76,29 @@ CREATE TABLE about_user (
 -- INSERT INTO tags (name_tag,img_tag)
 -- VALUES('Git','/images/Gittag.png');
 
-
-
-
-
-
+-- 6 таблица
+-- CREATE TABLE followers (
+-- followers_id BIGSERIAL PRIMARY KEY,
+-- followers_id_from_users BIGINT REFERENCES users (user_id),
+-- JavaScript BOOLEAN NOT NULL,
+-- HTML BOOLEAN NOT NULL,
+-- CSS BOOLEAN NOT NULL,
+-- React BOOLEAN NOT NULL,
+-- Vue BOOLEAN NOT NULL,
+-- Git BOOLEAN NOT NULL
+-- );
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('1','true','false','false','false','true','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('2','true','false','false','false','false','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('3','false','false','false','true','true','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('4','false','false','false','true','false','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('5','true','false','false','true','false','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('6','false','false','false','true','false','false');
 
 -- другая инфа
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)

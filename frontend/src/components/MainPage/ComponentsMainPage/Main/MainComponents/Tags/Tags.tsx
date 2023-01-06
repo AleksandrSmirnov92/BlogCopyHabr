@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TagsCSS from "./Tags.module.css";
 import JavaScriptTag from "../../../../../../images/JavascriptTag.png";
 import HTMLTag from "../../../../../../images/HTMLtag.png";
@@ -51,6 +51,32 @@ const Tags = () => {
       allFolowers: "72K",
     },
   ]);
+  const [tags, setTags] = useState([]);
+  const [folowersJavascript, setfolowersJavascript] = useState(0);
+  const [folowersHTML, setfolowersHTML] = useState(0);
+  const [folowersCSS, setfolowersCSS] = useState(0);
+  const [folowersReact, setfolowersReact] = useState(0);
+  const [folowersVue, setfolowersVue] = useState(0);
+  const [folowersGit, setfolowersGit] = useState(0);
+  const getInfoTags = async () => {
+    const res = await fetch(`/tags`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    console.log(data);
+    setTags(data.tagsInfo);
+    setfolowersJavascript(Number(data.countFollowers.Javascript));
+    setfolowersHTML(Number(data.countFollowers.HTML));
+    setfolowersCSS(Number(data.countFollowers.CSS));
+    setfolowersReact(Number(data.countFollowers.React));
+    setfolowersVue(Number(data.countFollowers.Vue));
+    setfolowersGit(Number(data.countFollowers.Git));
+    console.log(folowersJavascript);
+  };
+  useEffect(() => {
+    getInfoTags();
+  }, []);
   return (
     <div className={TagsCSS.mainContainer}>
       <h3>Все теги</h3>
@@ -79,82 +105,6 @@ const Tags = () => {
             </div>
           );
         })}
-        {/* <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={JavaScriptTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            JavaScript
-          </a>
-
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonUnsubscribe}>
-            Вы подписаны | 72К
-          </button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={HTMLTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            HTML
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            203713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={CSSTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            CSS
-          </a>
-
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={ReactTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            React
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={VueTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            Vue
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={GitTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            Git
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div> */}
       </div>
     </div>
   );
