@@ -58,14 +58,20 @@ const Tags = () => {
   const [folowersReact, setfolowersReact] = useState(0);
   const [folowersVue, setfolowersVue] = useState(0);
   const [folowersGit, setfolowersGit] = useState(0);
+  const searchFollow = (tag: any): boolean => {
+    let currentName = tag.name_tag.toLowerCase();
+
+    console.log(tag[`${currentName.toLowerCase()}`]);
+    return tag[`${currentName.toLowerCase()}`];
+  };
   const getInfoTags = async () => {
-    const res = await fetch(`/tags`, {
+    const res = await fetch(`/tags/${localStorage.getItem("userId")}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
     console.log(data);
-    setTags(data.tagsInfo);
+    setTags(data.tags);
     setfolowersJavascript(Number(data.countFollowers.Javascript));
     setfolowersHTML(Number(data.countFollowers.HTML));
     setfolowersCSS(Number(data.countFollowers.CSS));
@@ -81,26 +87,26 @@ const Tags = () => {
     <div className={TagsCSS.mainContainer}>
       <h3>Все теги</h3>
       <div className={TagsCSS.tagsContainer}>
-        {allTags.map((tag) => {
+        {tags.map((tag) => {
           return (
-            <div className={TagsCSS.tag}>
+            <div key={tag.tags_id} className={TagsCSS.tag}>
               <a href="#">
-                <img src={tag.imgTag} className={TagsCSS.tagImg} />
+                <img src={tag.img_tag} className={TagsCSS.tagImg} />
               </a>
               <a href="#" className={TagsCSS.textTag}>
-                {tag.nameTag}
+                {tag.name_tag}
               </a>
               <a href="#" className={TagsCSS.countQuestion}>
-                {tag.questionsTags}
+                {"103713"}
               </a>
               <button
                 className={
-                  tag.folow
+                  searchFollow(tag)
                     ? TagsCSS.buttonUnsubscribe
                     : TagsCSS.buttonSubscribe
                 }
               >
-                {tag.folow ? "Вы подписаны" : "Подписаться"} | {tag.allFolowers}
+                {searchFollow(tag) ? "Вы подписаны" : "Подписаться"} | {50}
               </button>
             </div>
           );
