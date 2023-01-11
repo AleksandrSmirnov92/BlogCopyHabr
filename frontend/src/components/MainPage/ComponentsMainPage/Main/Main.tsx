@@ -5,138 +5,139 @@ import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
 import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";
 import AskQuestion from "./MainComponents/AskQuestion/AskQuestion";
 import Tags from "./MainComponents/Tags/Tags";
+import Tag from "./MainComponents/Tags/Tag/Tag";
 import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
-import UsersProfilIMG from "../../../../images/photoProfil.png";
-let users: {}[] = [
-  {
-    id: "1",
-    photo: UsersProfilIMG,
-    name: "Aleksandr",
-    responseAndQuestions: {
-      response: "4K ответов",
-      questions: "0 вопросов",
-    },
-    aboutUser: {
-      contacts: {
-        email: "",
-        Githab: "",
-        Vkontakte: "",
-      },
-      location: {
-        country: "",
-        region: "",
-        city: "",
-      },
-    },
-  },
-  {
-    id: "2",
-    photo: UsersProfilIMG,
-    name: "Kostya",
-    responseAndQuestions: {
-      response: "4K ответов",
-      questions: "0 вопросов",
-    },
-    aboutUser: {
-      contacts: {
-        email: "",
-        Githab: "",
-        Vkontakte: "",
-      },
-      location: {
-        country: "",
-        region: "",
-        city: "",
-      },
-    },
-  },
-  {
-    id: "3",
-    photo: UsersProfilIMG,
-    name: "Marina",
-    responseAndQuestions: {
-      response: "4K ответов",
-      questions: "0 вопросов",
-    },
-    aboutUser: {
-      contacts: {
-        email: "",
-        Githab: "",
-        Vkontakte: "",
-      },
-      location: {
-        country: "",
-        region: "",
-        city: "",
-      },
-    },
-  },
-  {
-    id: "4",
-    photo: UsersProfilIMG,
-    name: "Sveta",
-    responseAndQuestions: {
-      response: "4K ответов",
-      questions: "0 вопросов",
-    },
-    aboutUser: {
-      contacts: {
-        email: "",
-        Githab: "",
-        Vkontakte: "",
-      },
-      location: {
-        country: "",
-        region: "",
-        city: "",
-      },
-    },
-  },
-  {
-    id: "5",
-    photo: UsersProfilIMG,
-    name: "Sergey",
-    responseAndQuestions: {
-      response: "4K ответов",
-      questions: "0 вопросов",
-    },
-    aboutUser: {
-      contacts: {
-        email: "",
-        Githab: "",
-        Vkontakte: "",
-      },
-      location: {
-        country: "",
-        region: "",
-        city: "",
-      },
-    },
-  },
-  {
-    id: "6",
-    photo: UsersProfilIMG,
-    name: "Anton",
-    responseAndQuestions: {
-      response: "4K ответов",
-      questions: "0 вопросов",
-    },
-    aboutUser: {
-      contacts: {
-        email: "",
-        Githab: "",
-        Vkontakte: "",
-      },
-      location: {
-        country: "",
-        region: "",
-        city: "",
-      },
-    },
-  },
-];
+// import UsersProfilIMG from "../../../../images/photoProfil.png";
+// let users: {}[] = [
+//   {
+//     id: "1",
+//     photo: UsersProfilIMG,
+//     name: "Aleksandr",
+//     responseAndQuestions: {
+//       response: "4K ответов",
+//       questions: "0 вопросов",
+//     },
+//     aboutUser: {
+//       contacts: {
+//         email: "",
+//         Githab: "",
+//         Vkontakte: "",
+//       },
+//       location: {
+//         country: "",
+//         region: "",
+//         city: "",
+//       },
+//     },
+//   },
+//   {
+//     id: "2",
+//     photo: UsersProfilIMG,
+//     name: "Kostya",
+//     responseAndQuestions: {
+//       response: "4K ответов",
+//       questions: "0 вопросов",
+//     },
+//     aboutUser: {
+//       contacts: {
+//         email: "",
+//         Githab: "",
+//         Vkontakte: "",
+//       },
+//       location: {
+//         country: "",
+//         region: "",
+//         city: "",
+//       },
+//     },
+//   },
+//   {
+//     id: "3",
+//     photo: UsersProfilIMG,
+//     name: "Marina",
+//     responseAndQuestions: {
+//       response: "4K ответов",
+//       questions: "0 вопросов",
+//     },
+//     aboutUser: {
+//       contacts: {
+//         email: "",
+//         Githab: "",
+//         Vkontakte: "",
+//       },
+//       location: {
+//         country: "",
+//         region: "",
+//         city: "",
+//       },
+//     },
+//   },
+//   {
+//     id: "4",
+//     photo: UsersProfilIMG,
+//     name: "Sveta",
+//     responseAndQuestions: {
+//       response: "4K ответов",
+//       questions: "0 вопросов",
+//     },
+//     aboutUser: {
+//       contacts: {
+//         email: "",
+//         Githab: "",
+//         Vkontakte: "",
+//       },
+//       location: {
+//         country: "",
+//         region: "",
+//         city: "",
+//       },
+//     },
+//   },
+//   {
+//     id: "5",
+//     photo: UsersProfilIMG,
+//     name: "Sergey",
+//     responseAndQuestions: {
+//       response: "4K ответов",
+//       questions: "0 вопросов",
+//     },
+//     aboutUser: {
+//       contacts: {
+//         email: "",
+//         Githab: "",
+//         Vkontakte: "",
+//       },
+//       location: {
+//         country: "",
+//         region: "",
+//         city: "",
+//       },
+//     },
+//   },
+//   {
+//     id: "6",
+//     photo: UsersProfilIMG,
+//     name: "Anton",
+//     responseAndQuestions: {
+//       response: "4K ответов",
+//       questions: "0 вопросов",
+//     },
+//     aboutUser: {
+//       contacts: {
+//         email: "",
+//         Githab: "",
+//         Vkontakte: "",
+//       },
+//       location: {
+//         country: "",
+//         region: "",
+//         city: "",
+//       },
+//     },
+//   },
+// ];
 const Main = () => {
   return (
     <main className={MainCSS.main}>
@@ -147,9 +148,9 @@ const Main = () => {
         <Route path="/myFeed" element={<MyFeed />} />
         {/* <Route path="/" element={<AllQuestions />} /> */}
         <Route path="/tags" element={<Tags />} />
-        <Route path="/users" element={<Users users={users} />} />
-
-        <Route path="/users/:userId" element={<User users={users} />} />
+        <Route path="/tag/:tagId" element={<Tag />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:userId" element={<User />} />
       </Routes>
     </main>
   );

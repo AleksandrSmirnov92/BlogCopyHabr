@@ -1,3 +1,4 @@
+import { Console } from "console";
 import express from "express";
 
 import { pool } from "./db.js";
@@ -273,60 +274,111 @@ app.get("/users/:id", async (req, res) => {
 app.get("/tags/:id", async (req, res) => {
   let { id } = req.params;
   try {
-    // let getInformationAboutTags = await pool.query(
-    //   `SELECT tags.tags_id,tags.name_tag,tags.img_tag,followers.javascript,followers.html,followers.css,followers.react,followers.vue,followers.git FROM tags join followers on followers_id_from_users = tags_id;`
-    // );
-    // let followers = await pool.query(
-    //   `SELECT css,react,javascript,vue,html FROM followers where followers_id_from_users = $1`,
-    //   [id]
-    // );
     let getTags = await pool.query(
       `SELECT * FROM tags join followers on followers_id_from_users = $1`,
       [id]
     );
-    // let countFollowersJavaScript = await pool.query(
-    //   "SELECT COUNT(*) FROM followers where javascript = $1",
-    //   ["true"]
-    // );
-    // let countFollowersHTML = await pool.query(
-    //   "SELECT COUNT(*) FROM followers where html = $1",
-    //   ["true"]
-    // );
-    // let countFollowersCSS = await pool.query(
-    //   "SELECT COUNT(*) FROM followers where css = $1",
-    //   ["true"]
-    // );
-    // let countFollowersReact = await pool.query(
-    //   "SELECT COUNT(*) FROM followers where react = $1",
-    //   ["true"]
-    // );
-    // let countFollowersVue = await pool.query(
-    //   "SELECT COUNT(*) FROM followers where vue = $1",
-    //   ["true"]
-    // );
-    // let countFollowersGit = await pool.query(
-    //   "SELECT COUNT(*) FROM followers where git = $1",
-    //   ["true"]
-    // );
+    let countFollowersJavaScript = await pool.query(
+      "SELECT COUNT(*) FROM followers where javascript = $1",
+      ["true"]
+    );
+    let countFollowersHTML = await pool.query(
+      "SELECT COUNT(*) FROM followers where html = $1",
+      ["true"]
+    );
+    let countFollowersCSS = await pool.query(
+      "SELECT COUNT(*) FROM followers where css = $1",
+      ["true"]
+    );
+    let countFollowersReact = await pool.query(
+      "SELECT COUNT(*) FROM followers where react = $1",
+      ["true"]
+    );
+    let countFollowersVue = await pool.query(
+      "SELECT COUNT(*) FROM followers where vue = $1",
+      ["true"]
+    );
+    let countFollowersGit = await pool.query(
+      "SELECT COUNT(*) FROM followers where git = $1",
+      ["true"]
+    );
 
     res.status(200).json({
       message: "Вы получили информацию о всех тегах",
-      // followers: followers.rows[0],
-      // tagsInfo: getInformationAboutTags.rows,
       tags: getTags.rows,
       countFollowers: {
-        // Javascript: countFollowersJavaScript.rows[0].count,
-        // HTML: countFollowersHTML.rows[0].count,
-        // CSS: countFollowersCSS.rows[0].count,
-        // React: countFollowersReact.rows[0].count,
-        // Vue: countFollowersVue.rows[0].count,
-        // Git: countFollowersGit.rows[0].count,
+        JavaScript: countFollowersJavaScript.rows[0].count,
+        HTML: countFollowersHTML.rows[0].count,
+        CSS: countFollowersCSS.rows[0].count,
+        React: countFollowersReact.rows[0].count,
+        Vue: countFollowersVue.rows[0].count,
+        Git: countFollowersGit.rows[0].count,
       },
     });
   } catch (err) {
     console.log(err);
   }
 });
+app.post("/followers/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let { nameTag } = req.body;
+
+    let getFollower = await pool.query(
+      `SELECT ${nameTag.toLowerCase()} FROM followers WHERE followers_id_from_users = $1 `,
+      [id]
+    );
+    let updateFollower = await pool.query(
+      `UPDATE followers SET ${nameTag.toLowerCase()} = $1 WHERE followers_id_from_users = $2`,
+      [!getFollower.rows[0][nameTag.toLowerCase()], id]
+    );
+    let getTags = await pool.query(
+      `SELECT * FROM tags join followers on followers_id_from_users = $1`,
+      [id]
+    );
+    let countFollowersJavaScript = await pool.query(
+      "SELECT COUNT(*) FROM followers where javascript = $1",
+      ["true"]
+    );
+    let countFollowersHTML = await pool.query(
+      "SELECT COUNT(*) FROM followers where html = $1",
+      ["true"]
+    );
+    let countFollowersCSS = await pool.query(
+      "SELECT COUNT(*) FROM followers where css = $1",
+      ["true"]
+    );
+    let countFollowersReact = await pool.query(
+      "SELECT COUNT(*) FROM followers where react = $1",
+      ["true"]
+    );
+    let countFollowersVue = await pool.query(
+      "SELECT COUNT(*) FROM followers where vue = $1",
+      ["true"]
+    );
+    let countFollowersGit = await pool.query(
+      "SELECT COUNT(*) FROM followers where git = $1",
+      ["true"]
+    );
+    res.status(200).json({
+      message: "Вы получили информацию о всех тегах",
+      getSubscribe: getTags.rows,
+      countFollowers: {
+        JavaScript: countFollowersJavaScript.rows[0].count,
+        HTML: countFollowersHTML.rows[0].count,
+        CSS: countFollowersCSS.rows[0].count,
+        React: countFollowersReact.rows[0].count,
+        Vue: countFollowersVue.rows[0].count,
+        Git: countFollowersGit.rows[0].count,
+      },
+    });
+    console.log(getFollower.rows[0][nameTag.toLowerCase()]);
+    console.log(!getFollower.rows[0][nameTag.toLowerCase()]);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.post("/users", async (req, res) => {
   try {
     console.log(req.body);

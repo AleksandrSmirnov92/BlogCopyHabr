@@ -4,7 +4,7 @@ import photoProfilIMG from "../../../../../../../images/photoProfil.png";
 import { useParams } from "react-router-dom";
 const User = (props: any) => {
   let { userId } = useParams();
-  let user = props.users.find((item: any) => item.id === userId);
+  // let user = props.users.find((item: any) => item.id === userId);
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
   let [brieflyAboutYourself, setBrieflyAboutYourself] = useState("");
