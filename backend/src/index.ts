@@ -271,6 +271,54 @@ app.get("/users/:id", async (req, res) => {
 //     console.log(err);
 //   }
 // });
+app.get("/informationTag/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let descriptionTag = await pool.query(
+      "SELECT * FROM tags WHERE tags_id = $1",
+      [id]
+    );
+    let countFollowersJavaScript = await pool.query(
+      "SELECT COUNT(*) FROM followers where javascript = $1",
+      ["true"]
+    );
+    let countFollowersHTML = await pool.query(
+      "SELECT COUNT(*) FROM followers where html = $1",
+      ["true"]
+    );
+    let countFollowersCSS = await pool.query(
+      "SELECT COUNT(*) FROM followers where css = $1",
+      ["true"]
+    );
+    let countFollowersReact = await pool.query(
+      "SELECT COUNT(*) FROM followers where react = $1",
+      ["true"]
+    );
+    let countFollowersVue = await pool.query(
+      "SELECT COUNT(*) FROM followers where vue = $1",
+      ["true"]
+    );
+    let countFollowersGit = await pool.query(
+      "SELECT COUNT(*) FROM followers where git = $1",
+      ["true"]
+    );
+
+    res.status(200).json({
+      message: "Вы получили информацию о тэге",
+      body: descriptionTag.rows[0],
+      countFollowers: {
+        JavaScript: countFollowersJavaScript.rows[0],
+        HTML: countFollowersHTML.rows[0],
+        CSS: countFollowersCSS.rows[0],
+        React: countFollowersReact.rows[0],
+        Vue: countFollowersVue.rows[0],
+        Git: countFollowersGit.rows[0],
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 app.get("/tags/:id", async (req, res) => {
   let { id } = req.params;
   try {

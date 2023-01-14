@@ -48,3 +48,8 @@
   color: black;
   border-bottom: 2px black solid;
 }
+.main__desciption {
+  font-size: 15px;
+  padding-top: 20px;
+  color: #333;
+}

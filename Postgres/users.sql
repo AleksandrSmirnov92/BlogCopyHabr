@@ -61,44 +61,45 @@ VALUES('Sofia@mail.ru','Sofia','22222');
 -- CREATE TABLE tags (
 -- tags_id BIGSERIAL PRIMARY KEY,
 -- name_tag VARCHAR(50),
--- img_tag VARCHAR(60)
+-- img_tag VARCHAR(60),
+-- description VARCHAR(1000)
 -- );
--- INSERT INTO tags (name_tag,img_tag)
--- VALUES('JavaScript','/images/JavascriptTag.png');
--- INSERT INTO tags (name_tag,img_tag)
--- VALUES('HTML','/images/HTMLtag.png');
--- INSERT INTO tags (name_tag,img_tag)
--- VALUES('CSS','/images/CSStag.png');
--- INSERT INTO tags (name_tag,img_tag)
--- VALUES('React',' /images/Reacttag.png');
--- INSERT INTO tags (name_tag,img_tag)
--- VALUES('Vue','/images/Vuetag.png');
--- INSERT INTO tags (name_tag,img_tag)
--- VALUES('Git','/images/Gittag.png');
+-- INSERT INTO tags (name_tag,img_tag,description)
+-- VALUES('JavaScript','/images/JavascriptTag.png',' JavaScript - прототипно-ориентированный сценарный язык программирования. Обычно используется как встраиваемый язык для программного доступа к объектам приложений. Наиболее широкое применение находит в браузерах как язык сценариев для придания интерактивности веб-страницам.');
+-- INSERT INTO tags (name_tag,img_tag,description)
+-- VALUES('HTML','/images/HTMLtag.png','HTML (от англ. HyperText Markup Language - <язык гипертекстовой разметки>) - стандартный язык разметки документов во Всемирной паутине. Большинство веб-страниц содержат описание разметки на языке HTML (или XHTML). Язык HTML интерпретируется браузерами и отображается в виде документа в удобной для человека форме.');
+-- INSERT INTO tags (name_tag,img_tag,description)
+-- VALUES('CSS','/images/CSStag.png',' CSS (англ. Cascading Style Sheets - каскадные таблицы стилей) - формальный язык описания внешнего вида документа, написанного с использованием языка разметки.');
+-- INSERT INTO tags (name_tag,img_tag,description)
+-- VALUES('React',' /images/Reacttag.png',' React - это JavaScript библиотека для создания пользовательских интерфейсов от Facebook.');
+-- INSERT INTO tags (name_tag,img_tag,description)
+-- VALUES('Vue','/images/Vuetag.png','Vue - это прогрессивный фреймворк для создания пользовательских интерфейсов. В отличие от фреймворков-монолитов, Vue создан пригодным для постепенного внедрения. Его ядро в первую очередь решает задачи уровня представления (view), что упрощает интеграцию с другими библиотеками и существующими проектами.');
+-- INSERT INTO tags (name_tag,img_tag,description)
+-- VALUES('Git','/images/Gittag.png',' Git - распределённая система управления версиями файлов и совместной работы. Проект был создан Линусом Торвальдсом для управления разработкой ядра Linux. На сегодняшний день поддерживается Джунио Хамано (Junio C. Hamano).');
 
 -- 6 таблица
-CREATE TABLE followers (
-followers_id BIGSERIAL PRIMARY KEY,
-followers_id_from_users BIGINT REFERENCES users (user_id),
-JavaScript BOOLEAN NOT NULL,
-HTML BOOLEAN NOT NULL,
-CSS BOOLEAN NOT NULL,
-React BOOLEAN NOT NULL,
-Vue BOOLEAN NOT NULL,
-Git BOOLEAN NOT NULL
-);
-INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
-VALUES('1','true','false','false','false','true','false');
-INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
-VALUES('2','true','false','false','false','false','false');
-INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
-VALUES('3','false','false','false','true','true','false');
-INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
-VALUES('4','false','false','false','true','false','false');
-INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
-VALUES('5','true','false','false','true','false','false');
-INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
-VALUES('6','false','false','false','true','false','false');
+-- CREATE TABLE followers (
+-- followers_id BIGSERIAL PRIMARY KEY,
+-- followers_id_from_users BIGINT REFERENCES users (user_id),
+-- JavaScript BOOLEAN NOT NULL,
+-- HTML BOOLEAN NOT NULL,
+-- CSS BOOLEAN NOT NULL,
+-- React BOOLEAN NOT NULL,
+-- Vue BOOLEAN NOT NULL,
+-- Git BOOLEAN NOT NULL
+-- );
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('1','true','false','false','false','true','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('2','true','false','false','false','false','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('3','false','false','false','true','true','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('4','false','false','false','true','false','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('5','true','false','false','true','false','false');
+-- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
+-- VALUES('6','false','false','false','true','false','false');
 
 -- другая инфа
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)

@@ -47,6 +47,9 @@ a.countQuestion {
 a.countQuestion:hover {
   text-decoration: underline;
 }
+button {
+  cursor: pointer;
+}
 .buttonUnsubscribe {
   margin-top: 10px;
   margin-bottom: 10px;
