@@ -8,9 +8,10 @@ const Tag = () => {
   let [pathImg, setPathImg] = useState("");
   let [nameTag, setNameTag] = useState("");
   let [countFollowers, setCountFollowers] = useState("");
-  const searchCountFollowers = (tag: any, countFollowers: any): number => {
-    let currentName = tag.name_tag;
-    return countFollowers[currentName];
+  const searchCountFollowers = (nameTag: string, countFollowers: any): any => {
+    console.log(countFollowers[`${nameTag}`]);
+    setCountFollowers(countFollowers[nameTag].count);
+    return countFollowers[nameTag].count;
   };
   const getInformationTag = async () => {
     let res = await fetch(`/informationTag/${tagId}`, {
@@ -19,9 +20,11 @@ const Tag = () => {
     });
     let data = await res.json();
     console.log(data.body);
+    console.log(data.countFollowers);
     setDescription(data.body.description);
     setPathImg(data.body.img_tag);
     setNameTag(data.body.name_tag);
+    searchCountFollowers(data.body.name_tag, data.countFollowers);
   };
   useEffect(() => {
     getInformationTag();

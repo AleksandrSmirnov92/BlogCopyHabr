@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import AllQuestionsCSS from "./AllQuestionsCSS.module.css";
 import JsIconIMG from "../../../../../../images/JsIcon.png";
+import { NavLink } from "react-router-dom";
 const AllQuestions = () => {
   useEffect(() => {
     console.log("все вопросы");
@@ -33,9 +34,12 @@ const AllQuestions = () => {
           </div>
           <div className={AllQuestionsCSS.questionMain}>
             <div>
-              <a href="#" className={AllQuestionsCSS.questionMainSpan}>
+              <NavLink
+                to={`/question`}
+                className={AllQuestionsCSS.questionMainSpan}
+              >
                 Почему не работа onClick ?
-              </a>
+              </NavLink>
               <br />
               <span className={AllQuestionsCSS.questionMainSpanTwo}>
                 1 подписчик &#96424 4 минуты назад #9642 12 просмотров

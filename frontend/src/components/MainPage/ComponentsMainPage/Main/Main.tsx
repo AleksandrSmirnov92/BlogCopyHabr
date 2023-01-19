@@ -9,135 +9,7 @@ import Tag from "./MainComponents/Tags/Tag/Tag";
 import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
-// import UsersProfilIMG from "../../../../images/photoProfil.png";
-// let users: {}[] = [
-//   {
-//     id: "1",
-//     photo: UsersProfilIMG,
-//     name: "Aleksandr",
-//     responseAndQuestions: {
-//       response: "4K ответов",
-//       questions: "0 вопросов",
-//     },
-//     aboutUser: {
-//       contacts: {
-//         email: "",
-//         Githab: "",
-//         Vkontakte: "",
-//       },
-//       location: {
-//         country: "",
-//         region: "",
-//         city: "",
-//       },
-//     },
-//   },
-//   {
-//     id: "2",
-//     photo: UsersProfilIMG,
-//     name: "Kostya",
-//     responseAndQuestions: {
-//       response: "4K ответов",
-//       questions: "0 вопросов",
-//     },
-//     aboutUser: {
-//       contacts: {
-//         email: "",
-//         Githab: "",
-//         Vkontakte: "",
-//       },
-//       location: {
-//         country: "",
-//         region: "",
-//         city: "",
-//       },
-//     },
-//   },
-//   {
-//     id: "3",
-//     photo: UsersProfilIMG,
-//     name: "Marina",
-//     responseAndQuestions: {
-//       response: "4K ответов",
-//       questions: "0 вопросов",
-//     },
-//     aboutUser: {
-//       contacts: {
-//         email: "",
-//         Githab: "",
-//         Vkontakte: "",
-//       },
-//       location: {
-//         country: "",
-//         region: "",
-//         city: "",
-//       },
-//     },
-//   },
-//   {
-//     id: "4",
-//     photo: UsersProfilIMG,
-//     name: "Sveta",
-//     responseAndQuestions: {
-//       response: "4K ответов",
-//       questions: "0 вопросов",
-//     },
-//     aboutUser: {
-//       contacts: {
-//         email: "",
-//         Githab: "",
-//         Vkontakte: "",
-//       },
-//       location: {
-//         country: "",
-//         region: "",
-//         city: "",
-//       },
-//     },
-//   },
-//   {
-//     id: "5",
-//     photo: UsersProfilIMG,
-//     name: "Sergey",
-//     responseAndQuestions: {
-//       response: "4K ответов",
-//       questions: "0 вопросов",
-//     },
-//     aboutUser: {
-//       contacts: {
-//         email: "",
-//         Githab: "",
-//         Vkontakte: "",
-//       },
-//       location: {
-//         country: "",
-//         region: "",
-//         city: "",
-//       },
-//     },
-//   },
-//   {
-//     id: "6",
-//     photo: UsersProfilIMG,
-//     name: "Anton",
-//     responseAndQuestions: {
-//       response: "4K ответов",
-//       questions: "0 вопросов",
-//     },
-//     aboutUser: {
-//       contacts: {
-//         email: "",
-//         Githab: "",
-//         Vkontakte: "",
-//       },
-//       location: {
-//         country: "",
-//         region: "",
-//         city: "",
-//       },
-//     },
-//   },
-// ];
+import Question from "./MainComponents/AllQuestions/Question/Question";
 const Main = () => {
   return (
     <main className={MainCSS.main}>
@@ -151,6 +23,7 @@ const Main = () => {
         <Route path="/tag/:tagId" element={<Tag />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:userId" element={<User />} />
+        <Route path="/question" element={<Question />} />
       </Routes>
     </main>
   );
