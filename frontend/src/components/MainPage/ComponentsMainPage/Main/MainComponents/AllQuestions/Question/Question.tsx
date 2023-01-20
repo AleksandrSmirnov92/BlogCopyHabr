@@ -57,10 +57,17 @@ const Question = () => {
         </p>
       </div>
       <h2 className={QuestionCSS.answers__title}>Ваш ответ на вопрос</h2>
-      <div className={QuestionCSS.answers__container}>
-        <textarea className={QuestionCSS.my_answer} name="" id=""></textarea>
-        <button>Опубликовать</button>
-      </div>
+      <form className={QuestionCSS.my_answer__container}>
+        <div className={QuestionCSS.my_answer_text}>
+          <a href="#" className={QuestionCSS.my_answer__img_link}>
+            <img src={imageProfil} className={QuestionCSS.my_answer__img} />
+          </a>
+          <textarea className={QuestionCSS.my_answer} name="" id=""></textarea>
+        </div>
+        <button className={QuestionCSS.my_answer_btn}>
+          <span>Опубликовать</span>
+        </button>
+      </form>
     </div>
   );
 };

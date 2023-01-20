@@ -79,6 +79,7 @@ app.post("/createQuestion", async (req, res) => {
     let idTags = await pool.query("SELECT * FROM tags WHERE name_tag = $1", [
       questionTags,
     ]);
+
     if (!idTags.rows[0]) {
       return res.status(404).json({
         status: "ERROR",
@@ -99,7 +100,15 @@ app.post("/createQuestion", async (req, res) => {
       "INSERT INTO question_and_tags (user_id_from_users, tag_id_from_tags ) VALUES($1,$2)",
       [userId, idTags.rows[0].tags_id]
     );
-
+    let IdQustions = await pool.query(
+      "SELECT * FROM questions WHERE user_id = $1",
+      [userId]
+    );
+    console.log(IdQustions.rows[0].questions_id);
+    let addUserIdInAnswers = await pool.query(
+      "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
+      [IdQustions.rows[0].questions_id, userId]
+    );
     return res.status(200).json({
       status: "SUCCESS",
       questions: {
@@ -108,6 +117,7 @@ app.post("/createQuestion", async (req, res) => {
         questionDetails: questionDetails,
         userId: userId,
       },
+      message: "Записал в базу answers",
     });
   } catch (err) {
     console.log(err);
@@ -260,17 +270,17 @@ app.get("/users/:id", async (req, res) => {
     console.log(err);
   }
 });
-// app.get("/tags", async (req, res) => {
-//   try {
-//     let getTags = await pool.query("SELECT * FROM tags");
-//     res.status(200).json({
-//       status: "SUCCESS",
-//       tags: getTags.rows,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+app.get("/tags", async (req, res) => {
+  try {
+    let getTags = await pool.query("SELECT * FROM tags");
+    res.status(200).json({
+      status: "SUCCESS",
+      tags: getTags.rows,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 app.get("/informationTag/:id", async (req, res) => {
   try {
     let { id } = req.params;

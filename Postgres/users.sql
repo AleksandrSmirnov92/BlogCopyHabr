@@ -29,8 +29,8 @@ CREATE TABLE about_user (
 -- VALUES('ryan00@mail.ru','Aleksandr','12345');
 -- INSERT INTO users (email,nickname,password)
 -- VALUES('Kolya00@mail.ru','Kolya','111110');
-INSERT INTO  users (email,nickname,password)
-VALUES('Sofia@mail.ru','Sofia','22222');
+-- INSERT INTO  users (email,nickname,password)
+-- VALUES('Sofia@mail.ru','Sofia','22222');
 -- INSERT INTO users (email,nickname,password)
 -- VALUES('prozorovap@mail.ru','Polina','252525');
 -- INSERT INTO users (email,nickname,password)
@@ -100,6 +100,17 @@ VALUES('Sofia@mail.ru','Sofia','22222');
 -- VALUES('5','true','false','false','true','false','false');
 -- INSERT INTO followers (followers_id_from_users,JavaScript,HTML,CSS,React,Vue,Git)
 -- VALUES('6','false','false','false','true','false','false');
+
+
+-- Таблица 7
+CREATE TABLE answers (
+answer_id BIGSERIAL PRIMARY KEY,
+question_id_from_questions BIGINT REFERENCES questions (questions_id),
+user_id_from_users BIGINT REFERENCES users (user_id),
+answers VARCHAR(2000)
+);
+
+
 
 -- другая инфа
 -- carID BIGINT REFERENCES cars (id), UNIQUE (carID)

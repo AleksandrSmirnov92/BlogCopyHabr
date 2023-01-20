@@ -135,6 +135,7 @@
 }
 .my_answer {
   margin-top: 10px;
+  margin-left: 20px;
   border: 2px #dee1e5 solid;
 }
 .my_answer:hover {
@@ -142,4 +143,42 @@
 }
 .my_answer:focus {
   border: 2px #2d72d9 solid;
+}
+.my_answer__container {
+  margin-top: 10px;
+  border-top: 3px black solid;
+  padding: 0;
+}
+.my_answer__img_link {
+  margin-top: 10px;
+  margin-left: 5px;
+  width: 40px;
+  height: 40px;
+  /* border-radius: 50%; */
+  overflow: hidden;
+}
+.my_answer__img {
+  padding: 0;
+  /* margin-top: 20px; */
+  /* margin-left: 5px; */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.my_answer_text {
+  display: flex;
+  /* align-items: center; */
+}
+.my_answer_btn {
+  margin-top: 20px;
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  background-color: white;
+  color: #64bd76;
+  border: 1px #64bd76 solid;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
 }
