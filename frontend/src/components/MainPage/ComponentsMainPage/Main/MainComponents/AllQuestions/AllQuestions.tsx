@@ -3,9 +3,21 @@ import AllQuestionsCSS from "./AllQuestionsCSS.module.css";
 import JsIconIMG from "../../../../../../images/JsIcon.png";
 import { NavLink } from "react-router-dom";
 const AllQuestions = () => {
+  let getQuestions = async () => {
+    const res = await fetch(`/questions`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    console.log(data.message);
+    console.log(data.questions);
+    let date = new Date(`${data.questions[0].date_of_creation}`);
+    console.log(date.getHours());
+  };
   useEffect(() => {
+    getQuestions();
     console.log("все вопросы");
-  });
+  }, []);
   return (
     <div className={AllQuestionsCSS.mainContainer}>
       <h3>Все Вопросы</h3>

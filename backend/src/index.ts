@@ -1,5 +1,6 @@
 import { Console } from "console";
 import express from "express";
+import { networkInterfaces } from "os";
 
 import { pool } from "./db.js";
 const fileUpload = require("express-fileupload");
@@ -86,29 +87,38 @@ app.post("/createQuestion", async (req, res) => {
         message: "Не правильно заполненны поля",
       });
     }
+    let date = new Date();
+    let date2 = Date.now();
+    let getDate = await pool.query(`SELECT NOW()::TIME`);
 
     let createNewQustions = await pool.query(
-      "INSERT INTO questions (user_id, question_title,question_tags,question_details) VALUES($1,$2,$3,$4)",
-      [userId, questionTitle, idTags.rows[0].tags_id, questionDetails]
+      "INSERT INTO questions (user_id, question_title,question_tags,question_details,date_of_creation) VALUES($1,$2,$3,$4,$5)",
+      [
+        userId,
+        questionTitle,
+        idTags.rows[0].tags_id,
+        questionDetails,
+        getDate.rows[0].now,
+      ]
     );
-    let getIdQustions = await pool.query(
-      "SELECT * FROM questions WHERE user_id = $1 AND question_title = $2 AND question_tags = $3 AND question_details = $4",
-      [userId, questionTitle, idTags.rows[0].tags_id, questionDetails]
-    );
+    // let getIdQustions = await pool.query(
+    //   "SELECT * FROM questions WHERE user_id = $1 AND question_title = $2 AND question_tags = $3 AND question_details = $4",
+    //   [userId, questionTitle, idTags.rows[0].tags_id, questionDetails]
+    // );
 
-    let addInQuestionAndTags = await pool.query(
-      "INSERT INTO question_and_tags (user_id_from_users, tag_id_from_tags ) VALUES($1,$2)",
-      [userId, idTags.rows[0].tags_id]
-    );
-    let IdQustions = await pool.query(
-      "SELECT * FROM questions WHERE user_id = $1",
-      [userId]
-    );
-    console.log(IdQustions.rows[0].questions_id);
-    let addUserIdInAnswers = await pool.query(
-      "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
-      [IdQustions.rows[0].questions_id, userId]
-    );
+    // let addInQuestionAndTags = await pool.query(
+    //   "INSERT INTO question_and_tags (user_id_from_users, tag_id_from_tags ) VALUES($1,$2)",
+    //   [userId, idTags.rows[0].tags_id]
+    // );
+    // let IdQustions = await pool.query(
+    //   "SELECT * FROM questions WHERE user_id = $1",
+    //   [userId]
+    // );
+    // console.log(IdQustions.rows[0].questions_id);
+    // let addUserIdInAnswers = await pool.query(
+    //   "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
+    //   [IdQustions.rows[0].questions_id, userId]
+    // );
     return res.status(200).json({
       status: "SUCCESS",
       questions: {
@@ -117,7 +127,6 @@ app.post("/createQuestion", async (req, res) => {
         questionDetails: questionDetails,
         userId: userId,
       },
-      message: "Записал в базу answers",
     });
   } catch (err) {
     console.log(err);
@@ -432,6 +441,18 @@ app.post("/followers/:id", async (req, res) => {
     });
     console.log(getFollower.rows[0][nameTag.toLowerCase()]);
     console.log(!getFollower.rows[0][nameTag.toLowerCase()]);
+  } catch (err) {
+    console.log(err);
+  }
+});
+app.get("/questions", async (req, res) => {
+  try {
+    let getQuestions = await pool.query(`SELECT * FROM questions;`);
+    console.log(req.body);
+    res.status(200).json({
+      message: "Вы получили информацию о всех вопросах",
+      questions: getQuestions.rows,
+    });
   } catch (err) {
     console.log(err);
   }
