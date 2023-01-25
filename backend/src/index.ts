@@ -89,7 +89,7 @@ app.post("/createQuestion", async (req, res) => {
     }
     let date = new Date();
     let date2 = Date.now();
-    let getDate = await pool.query(`SELECT NOW()::TIME`);
+    let getDate = await pool.query(`SELECT NOW()`);
 
     let createNewQustions = await pool.query(
       "INSERT INTO questions (user_id, question_title,question_tags,question_details,date_of_creation) VALUES($1,$2,$3,$4,$5)",
@@ -447,8 +447,9 @@ app.post("/followers/:id", async (req, res) => {
 });
 app.get("/questions", async (req, res) => {
   try {
-    let getQuestions = await pool.query(`SELECT * FROM questions;`);
-    console.log(req.body);
+    let getQuestions =
+      await pool.query(`select questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions
+    join tags on questions.question_tags = tags_id;`);
     res.status(200).json({
       message: "Вы получили информацию о всех вопросах",
       questions: getQuestions.rows,
