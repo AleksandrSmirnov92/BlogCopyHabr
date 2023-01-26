@@ -18,13 +18,17 @@ const AllQuestions = () => {
       unitDisplay: "long",
     });
     let currentTime = new Date();
-    if (date.getHours() - currentTime.getHours() > 24) {
-      return `Опубликован ${date.getDate()}`;
-    }
-    if (currentTime.getHours() - date.getHours() === 0) {
-      return `Опубликован ${formatterMinutes.format(
-        currentTime.getMinutes() - date.getMinutes()
-      )} назад`;
+    console.log(date.getUTCDate());
+    if (
+      date.getDate() !== currentTime.getDate() ||
+      date.getMonth() !== currentTime.getMonth() ||
+      date.getFullYear() !== currentTime.getFullYear()
+    ) {
+      return `Опубликован ${date.getDate()}.${
+        date.getMonth() + 1
+      }.${date.getFullYear()} в  ${formatterHour.format(
+        date.getHours()
+      )} ${formatterMinutes.format(date.getMinutes())}`;
     }
     let currentHours = currentTime.getHours() - date.getHours();
     let currentMinutes = currentTime.getMinutes() - date.getMinutes();
@@ -83,7 +87,7 @@ const AllQuestions = () => {
               <div className={AllQuestionsCSS.questionMain}>
                 <div>
                   <NavLink
-                    to={`/question`}
+                    to={`/question/${question.questions_id}`}
                     className={AllQuestionsCSS.questionMainSpan}
                   >
                     {question.question_title}

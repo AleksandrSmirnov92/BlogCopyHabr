@@ -448,7 +448,7 @@ app.post("/followers/:id", async (req, res) => {
 app.get("/questions", async (req, res) => {
   try {
     let getQuestions =
-      await pool.query(`select questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions
+      await pool.query(`select questions.questions_id,questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions
     join tags on questions.question_tags = tags_id;`);
     res.status(200).json({
       message: "Вы получили информацию о всех вопросах",
@@ -458,7 +458,30 @@ app.get("/questions", async (req, res) => {
     console.log(err);
   }
 });
-
+app.get("/question/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    console.log(id);
+    let getQuestion = await pool.query(
+      `SELECT * FROM questions WHERE  questions_id = $1`,
+      [id]
+    );
+    let usersInfo = await pool.query(
+      `SELECT * FROM about_user JOIN users on about_user.user_id_from_users = $1 `,
+      [getQuestion.rows[0].user_id]
+    );
+    // let getQuestions =
+    //   await pool.query(`select questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions
+    // join tags on questions.question_tags = tags_id;`);
+    res.status(200).json({
+      message: "Вы получили информацию о вопросе",
+      question: getQuestion.rows[0],
+      userInfo: usersInfo.rows[0],
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 app.post("/users", async (req, res) => {
   try {
     console.log(req.body);

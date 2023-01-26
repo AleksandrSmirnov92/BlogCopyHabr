@@ -23,7 +23,7 @@ const Main = () => {
         <Route path="/tag/:tagId" element={<Tag />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:userId" element={<User />} />
-        <Route path="/question" element={<Question />} />
+        <Route path="/question/:questionId" element={<Question />} />
       </Routes>
     </main>
   );

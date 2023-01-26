@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import imageProfil from "../../../../../../../images/photoProfil.png";
 import JavaScriptIcon from "../../../../../../../images/JsIcon.png";
 import QuestionCSS from "./Question.module.css";
-import { link } from "fs";
+import { NavLink, useParams } from "react-router-dom";
 const Question = () => {
+  let [pathImg, setPathImg] = useState("");
+  let { questionId } = useParams();
+  let getQuestion = async () => {
+    const res = await fetch(`/question/${questionId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    console.log(data);
+    setPathImg(data.userInfo.img);
+  };
+  useEffect(() => {
+    getQuestion();
+    console.log("Страница вопроса");
+  });
   return (
     <div className={QuestionCSS.mainContainer}>
       <div className={QuestionCSS.infoUser}>
         <div className={QuestionCSS.infoUser__container}>
-          <a href="#" className={QuestionCSS.imgLink}>
-            <img src={imageProfil} alt="" className={QuestionCSS.imgProfil} />
-          </a>
+          <NavLink
+            to={`/users/${localStorage.getItem("userId")}`}
+            className={QuestionCSS.imgLink}
+          >
+            <img
+              src={pathImg ? pathImg : imageProfil}
+              alt=""
+              className={QuestionCSS.imgProfil}
+            />
+          </NavLink>
           <a href="#" className={QuestionCSS.userName}>
             UserName
           </a>
