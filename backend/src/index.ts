@@ -101,24 +101,24 @@ app.post("/createQuestion", async (req, res) => {
         getDate.rows[0].now,
       ]
     );
-    // let getIdQustions = await pool.query(
-    //   "SELECT * FROM questions WHERE user_id = $1 AND question_title = $2 AND question_tags = $3 AND question_details = $4",
-    //   [userId, questionTitle, idTags.rows[0].tags_id, questionDetails]
-    // );
+    let getIdQustions = await pool.query(
+      "SELECT * FROM questions WHERE user_id = $1 AND question_title = $2 AND question_tags = $3 AND question_details = $4",
+      [userId, questionTitle, idTags.rows[0].tags_id, questionDetails]
+    );
 
-    // let addInQuestionAndTags = await pool.query(
-    //   "INSERT INTO question_and_tags (user_id_from_users, tag_id_from_tags ) VALUES($1,$2)",
-    //   [userId, idTags.rows[0].tags_id]
-    // );
-    // let IdQustions = await pool.query(
-    //   "SELECT * FROM questions WHERE user_id = $1",
-    //   [userId]
-    // );
-    // console.log(IdQustions.rows[0].questions_id);
-    // let addUserIdInAnswers = await pool.query(
-    //   "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
-    //   [IdQustions.rows[0].questions_id, userId]
-    // );
+    let addInQuestionAndTags = await pool.query(
+      "INSERT INTO question_and_tags (user_id_from_users, tag_id_from_tags ) VALUES($1,$2)",
+      [userId, idTags.rows[0].tags_id]
+    );
+    let IdQustions = await pool.query(
+      "SELECT * FROM questions WHERE user_id = $1",
+      [userId]
+    );
+    console.log(IdQustions.rows[0].questions_id);
+    let addUserIdInAnswers = await pool.query(
+      "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
+      [IdQustions.rows[0].questions_id, userId]
+    );
     return res.status(200).json({
       status: "SUCCESS",
       questions: {
@@ -461,7 +461,6 @@ app.get("/questions", async (req, res) => {
 app.get("/question/:id", async (req, res) => {
   try {
     let { id } = req.params;
-    console.log(id);
     let getQuestion = await pool.query(
       `SELECT * FROM questions WHERE  questions_id = $1`,
       [id]
@@ -470,6 +469,9 @@ app.get("/question/:id", async (req, res) => {
       `SELECT * FROM about_user JOIN users on about_user.user_id_from_users = $1 `,
       [getQuestion.rows[0].user_id]
     );
+    let getTags = await pool.query(`SELECT * FROM tags WHERE tags_id = $1`, [
+      getQuestion.rows[0].question_tags,
+    ]);
     // let getQuestions =
     //   await pool.query(`select questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions
     // join tags on questions.question_tags = tags_id;`);
@@ -477,6 +479,7 @@ app.get("/question/:id", async (req, res) => {
       message: "Вы получили информацию о вопросе",
       question: getQuestion.rows[0],
       userInfo: usersInfo.rows[0],
+      tagsInfo: getTags.rows[0],
     });
   } catch (err) {
     console.log(err);

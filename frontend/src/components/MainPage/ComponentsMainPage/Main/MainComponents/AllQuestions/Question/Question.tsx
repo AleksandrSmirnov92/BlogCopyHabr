@@ -1,11 +1,55 @@
 import React, { useEffect, useState } from "react";
+import { schemaAnswers } from "../../../../../../Schemas/SchemaAnswers";
 import imageProfil from "../../../../../../../images/photoProfil.png";
-import JavaScriptIcon from "../../../../../../../images/JsIcon.png";
+import { useFormik } from "formik";
 import QuestionCSS from "./Question.module.css";
 import { NavLink, useParams } from "react-router-dom";
+interface MyValues {
+  answers: string;
+}
 const Question = () => {
   let [pathImg, setPathImg] = useState("");
+  let [name, setName] = useState("");
+  let [email, setEmail] = useState("");
+  let [tagsId, setTagsId] = useState("");
+  let [nameTag, setNameTag] = useState("");
+  let [tagImgPath, setTagImgPath] = useState("");
+  let [questionTitle, setQuestionTitle] = useState("");
+  let [questionDescription, setQuestionDescription] = useState("");
+  let [questionTimeCreation, setQuestionTimeCreation] = useState("");
   let { questionId } = useParams();
+
+  let currentTime = (date: Date) => {
+    let formatterHour = new Intl.NumberFormat("ru", {
+      style: "unit",
+      unit: "hour",
+      unitDisplay: "long",
+    });
+    let formatterMinutes = new Intl.NumberFormat("ru", {
+      style: "unit",
+      unit: "minute",
+      unitDisplay: "long",
+    });
+    let currentTime = new Date();
+    console.log(date.getUTCDate());
+    if (
+      date.getDate() !== currentTime.getDate() ||
+      date.getMonth() !== currentTime.getMonth() ||
+      date.getFullYear() !== currentTime.getFullYear()
+    ) {
+      return `Опубликован ${date.getDate()}.${
+        date.getMonth() + 1
+      }.${date.getFullYear()} в  ${formatterHour.format(
+        date.getHours()
+      )} ${formatterMinutes.format(date.getMinutes())}`;
+    }
+    let currentHours = currentTime.getHours() - date.getHours();
+    let currentMinutes = currentTime.getMinutes() - date.getMinutes();
+    console.log(currentHours, currentMinutes);
+    return `Опубликован ${formatterHour.format(
+      currentHours
+    )} ${formatterMinutes.format(currentMinutes)} назад`;
+  };
   let getQuestion = async () => {
     const res = await fetch(`/question/${questionId}`, {
       method: "GET",
@@ -14,11 +58,53 @@ const Question = () => {
     const data = await res.json();
     console.log(data);
     setPathImg(data.userInfo.img);
+    setName(
+      `${
+        data.userInfo.fullname !== ""
+          ? `${data.userInfo.fullname} ${data.userInfo.lastname}`
+          : data.userInfo.nickname
+      }`
+    );
+    setEmail(data.userInfo.email);
+    setTagsId(data.tagsInfo.tags_id);
+    setNameTag(data.tagsInfo.name_tag);
+    setTagImgPath(data.tagsInfo.img_tag);
+    setQuestionTitle(data.question.question_title);
+    setQuestionDescription(data.question.question_details);
+    setQuestionTimeCreation(
+      currentTime(new Date(`${data.question.date_of_creation}`))
+    );
   };
+  const onSubmit = async () => {
+    const res = await fetch("/answers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
   useEffect(() => {
     getQuestion();
     console.log("Страница вопроса");
   });
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+  } = useFormik<MyValues>({
+    initialValues: {
+      answers: "",
+    },
+    onSubmit,
+    validationSchema: schemaAnswers,
+  });
+
   return (
     <div className={QuestionCSS.mainContainer}>
       <div className={QuestionCSS.infoUser}>
@@ -33,27 +119,27 @@ const Question = () => {
               className={QuestionCSS.imgProfil}
             />
           </NavLink>
-          <a href="#" className={QuestionCSS.userName}>
-            UserName
-          </a>
-          <span className={QuestionCSS.userEmail}>ryan00@mail.ru</span>
+          <NavLink
+            to={`/users/${localStorage.getItem("userId")}`}
+            className={QuestionCSS.userName}
+          >
+            {name}
+          </NavLink>
+          <span className={QuestionCSS.userEmail}>{email}</span>
         </div>
       </div>
       <div className={QuestionCSS.questionInfo}>
-        <a href="#" className={QuestionCSS.imgLinkTag}>
-          <img src={JavaScriptIcon} alt="" className={QuestionCSS.imgTag} />
-        </a>
-        <a href="#" className={QuestionCSS.nameTag}>
-          JavaScript
-        </a>
+        <NavLink to={`/tag/${tagsId}`} className={QuestionCSS.imgLinkTag}>
+          <img src={tagImgPath} alt="" className={QuestionCSS.imgTag} />
+        </NavLink>
+        <NavLink to={`/tag/${tagsId}`} className={QuestionCSS.nameTag}>
+          {nameTag}
+        </NavLink>
       </div>
-      <h1 className={QuestionCSS.title}>Заголовок вопроса?</h1>
+      <h1 className={QuestionCSS.title}>{questionTitle}</h1>
       <div className={QuestionCSS.info}>
-        <p className={QuestionCSS.info__text}>
-          Какую информацию можно узнать о пользователе, который зашел на сайт,
-          кроме userAgent?
-        </p>
-        <span className={QuestionCSS.info__data}>Опубликован 2 часа назад</span>
+        <p className={QuestionCSS.info__text}>{questionDescription}</p>
+        <span className={QuestionCSS.info__data}>{questionTimeCreation}</span>
       </div>
       <h2 className={QuestionCSS.answers__title}>Ответы на вопросы (3)</h2>
       <div className={QuestionCSS.answers__container}>
@@ -79,14 +165,38 @@ const Question = () => {
         </p>
       </div>
       <h2 className={QuestionCSS.answers__title}>Ваш ответ на вопрос</h2>
-      <form className={QuestionCSS.my_answer__container}>
+      <form
+        onSubmit={handleSubmit}
+        className={QuestionCSS.my_answer__container}
+      >
         <div className={QuestionCSS.my_answer_text}>
           <a href="#" className={QuestionCSS.my_answer__img_link}>
             <img src={imageProfil} className={QuestionCSS.my_answer__img} />
           </a>
-          <textarea className={QuestionCSS.my_answer} name="" id=""></textarea>
+          <textarea
+            // className={QuestionCSS.my_answer}
+            name=""
+            id="answers"
+            className={
+              errors.answers && touched.answers
+                ? QuestionCSS.inputError
+                : QuestionCSS.my_answer
+            }
+            value={values.answers}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          ></textarea>
         </div>
-        <button className={QuestionCSS.my_answer_btn}>
+        {errors.answers && touched.answers ? (
+          <span className={QuestionCSS.error}>{errors.answers}</span>
+        ) : (
+          ""
+        )}
+        <button
+          type="submit"
+          className={QuestionCSS.my_answer_btn}
+          disabled={isSubmitting}
+        >
           <span>Опубликовать</span>
         </button>
       </form>

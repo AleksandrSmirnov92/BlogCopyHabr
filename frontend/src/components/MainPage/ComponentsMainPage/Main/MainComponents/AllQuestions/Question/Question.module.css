@@ -32,6 +32,7 @@
   cursor: pointer;
   /* padding-bottom: 20px; */
 }
+
 .userName:hover {
   text-decoration: underline;
 }
@@ -181,4 +182,23 @@
   padding-top: 10px;
   padding-bottom: 10px;
   cursor: pointer;
+}
+.inputError {
+  margin-top: 10px;
+  margin-left: 20px;
+  /* border: 2px #dee1e5 solid; */
+  border: red 1px solid;
+  border-radius: 4px;
+}
+.inputError:focus {
+  border: red 1px solid;
+}
+.inputError:hover {
+  border: red 1px solid;
+}
+.error {
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 20px;
 }
