@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { schemaAnswers } from "../../../../../../Schemas/SchemaAnswers";
 import imageProfil from "../../../../../../../images/photoProfil.png";
+import lockImg from "../../../../../../../images/замок.png";
 import { useFormik } from "formik";
 import QuestionCSS from "./Question.module.css";
 import { NavLink, useParams } from "react-router-dom";
@@ -165,41 +166,71 @@ const Question = () => {
         </p>
       </div>
       <h2 className={QuestionCSS.answers__title}>Ваш ответ на вопрос</h2>
-      <form
-        onSubmit={handleSubmit}
-        className={QuestionCSS.my_answer__container}
+      <div
+        className={
+          localStorage.getItem("userId")
+            ? QuestionCSS.showAuthorisation
+            : QuestionCSS.hideAuthorisation
+        }
       >
-        <div className={QuestionCSS.my_answer_text}>
-          <a href="#" className={QuestionCSS.my_answer__img_link}>
-            <img src={imageProfil} className={QuestionCSS.my_answer__img} />
-          </a>
-          <textarea
-            // className={QuestionCSS.my_answer}
-            name=""
-            id="answers"
-            className={
-              errors.answers && touched.answers
-                ? QuestionCSS.inputError
-                : QuestionCSS.my_answer
-            }
-            value={values.answers}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          ></textarea>
-        </div>
-        {errors.answers && touched.answers ? (
-          <span className={QuestionCSS.error}>{errors.answers}</span>
-        ) : (
-          ""
-        )}
-        <button
-          type="submit"
-          className={QuestionCSS.my_answer_btn}
-          disabled={isSubmitting}
+        <form
+          onSubmit={handleSubmit}
+          className={QuestionCSS.my_answer__container}
         >
-          <span>Опубликовать</span>
-        </button>
-      </form>
+          <div className={QuestionCSS.my_answer_text}>
+            <a href="#" className={QuestionCSS.my_answer__img_link}>
+              <img src={imageProfil} className={QuestionCSS.my_answer__img} />
+            </a>
+            <textarea
+              // className={QuestionCSS.my_answer}
+              name=""
+              id="answers"
+              className={
+                errors.answers && touched.answers
+                  ? QuestionCSS.inputError
+                  : QuestionCSS.my_answer
+              }
+              value={values.answers}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            ></textarea>
+          </div>
+          {errors.answers && touched.answers ? (
+            <span className={QuestionCSS.error}>{errors.answers}</span>
+          ) : (
+            ""
+          )}
+          <button
+            type="submit"
+            className={QuestionCSS.my_answer_btn}
+            disabled={isSubmitting}
+          >
+            <span>Опубликовать</span>
+          </button>
+        </form>
+      </div>
+      <div
+        className={
+          localStorage.getItem("userId")
+            ? QuestionCSS.hideAuthorisation
+            : QuestionCSS.showAuthorisation
+        }
+      >
+        <div className={QuestionCSS.my_answer__container_Authorisation}>
+          <div className={QuestionCSS.lock_container}>
+            <img className={QuestionCSS.lockImg} src={lockImg} alt="" />
+          </div>
+          <h3>Войдите,чтобы написать ответ</h3>
+          <NavLink
+            to={"/SignIn"}
+            className={QuestionCSS.link_to_authorisation_container}
+          >
+            <span className={QuestionCSS.link_to_authorisation_text}>
+              Войдите через центр авторицации
+            </span>
+          </NavLink>
+        </div>
+      </div>
     </div>
   );
 };

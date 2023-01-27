@@ -202,3 +202,42 @@
   font-weight: bold;
   padding-bottom: 20px;
 }
+.showAuthorisation {
+  display: block;
+}
+.hideAuthorisation {
+  display: none;
+}
+.my_answer__container_Authorisation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-top: 10px;
+  border-top: 3px black solid;
+  padding: 0;
+}
+.lock_container {
+  margin-top: 80px;
+  margin-bottom: 20px;
+  width: 140px;
+  height: 140px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.lockImg {
+  width: 150px;
+  height: 150px;
+  /* margin: 0 125px 20px; */
+  border-radius: 50%;
+}
+.link_to_authorisation_container {
+  text-decoration: none;
+  color: #65c178;
+  border: 1px #65c178 solid;
+  margin-bottom: 60px;
+}
+.link_to_authorisation_text {
+  padding: 20px 20px 20px 20px;
+}
