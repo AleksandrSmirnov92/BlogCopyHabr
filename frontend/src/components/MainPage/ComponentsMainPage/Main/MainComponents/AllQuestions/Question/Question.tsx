@@ -18,7 +18,9 @@ const Question = () => {
   let [questionTitle, setQuestionTitle] = useState("");
   let [questionDescription, setQuestionDescription] = useState("");
   let [questionTimeCreation, setQuestionTimeCreation] = useState("");
+  let [questionUserId, setQuestionUserId] = useState("");
   let { questionId } = useParams();
+  let [answers, setAnswers] = useState("");
 
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
@@ -32,7 +34,6 @@ const Question = () => {
       unitDisplay: "long",
     });
     let currentTime = new Date();
-    console.log(date.getUTCDate());
     if (
       date.getDate() !== currentTime.getDate() ||
       date.getMonth() !== currentTime.getMonth() ||
@@ -46,7 +47,7 @@ const Question = () => {
     }
     let currentHours = currentTime.getHours() - date.getHours();
     let currentMinutes = currentTime.getMinutes() - date.getMinutes();
-    console.log(currentHours, currentMinutes);
+
     return `Опубликован ${formatterHour.format(
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
@@ -66,6 +67,7 @@ const Question = () => {
           : data.userInfo.nickname
       }`
     );
+    setQuestionUserId(data.question.user_id);
     setEmail(data.userInfo.email);
     setTagsId(data.tagsInfo.tags_id);
     setNameTag(data.tagsInfo.name_tag);
@@ -80,7 +82,12 @@ const Question = () => {
     const res = await fetch("/answers", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        answer: values.answers,
+        questionId: questionId,
+        questionUserId: questionUserId,
+        userId: localStorage.getItem("userId"),
+      }),
     });
     const data = await res.json();
     console.log(data);
@@ -89,7 +96,7 @@ const Question = () => {
   useEffect(() => {
     getQuestion();
     console.log("Страница вопроса");
-  });
+  }, []);
   const {
     values,
     errors,

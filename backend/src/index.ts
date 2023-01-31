@@ -114,11 +114,11 @@ app.post("/createQuestion", async (req, res) => {
       "SELECT * FROM questions WHERE user_id = $1",
       [userId]
     );
-    console.log(IdQustions.rows[0].questions_id);
-    let addUserIdInAnswers = await pool.query(
-      "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
-      [IdQustions.rows[0].questions_id, userId]
-    );
+    // console.log(IdQustions.rows[0].questions_id);
+    // let addUserIdInAnswers = await pool.query(
+    //   "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
+    //   [IdQustions.rows[0].questions_id, userId]
+    // );
     return res.status(200).json({
       status: "SUCCESS",
       questions: {
@@ -472,14 +472,40 @@ app.get("/question/:id", async (req, res) => {
     let getTags = await pool.query(`SELECT * FROM tags WHERE tags_id = $1`, [
       getQuestion.rows[0].question_tags,
     ]);
-    // let getQuestions =
-    //   await pool.query(`select questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions
-    // join tags on questions.question_tags = tags_id;`);
+    let getAnswers = await pool.query(
+      `SELECT answers.answers,p2.fullname,p2.lastname,p2.img,users.email FROM answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users JOIN users ON p2.user_id_from_users = user_id`
+    );
+
     res.status(200).json({
       message: "Вы получили информацию о вопросе",
       question: getQuestion.rows[0],
       userInfo: usersInfo.rows[0],
       tagsInfo: getTags.rows[0],
+      answersInfo: getAnswers.rows,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+app.post("/answers", async (req, res) => {
+  let { answer, questionId, questionUserId, userId } = req.body;
+  try {
+    let addInformationInAnswers = await pool.query(
+      `INSERT INTO answers (question_id_from_questions,user_id_from_users,answers,responce_userid) VALUES($1,$2,$3,$4)`,
+      [questionId, questionUserId, answer, userId]
+    );
+    let getInfotmationAnswers =
+      await pool.query(`SELECT answers.answers,users.nickname,users.email  FROM answers
+    JOIN users ON answers.responce_userid = user_id;`);
+    let getInformationAboutUser = await pool.query(
+      `SELECT fullname,lastname,img FROM about_user WHERE user_id_from_users = $1`,
+      [questionUserId]
+    );
+    res.status(200).json({
+      message: "Вы ответили",
+      answer: req.body,
+      informationAnswer: getInfotmationAnswers.rows[0],
+      informationUser: getInformationAboutUser.rows[0],
     });
   } catch (err) {
     console.log(err);

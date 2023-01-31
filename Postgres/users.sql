@@ -3,7 +3,7 @@
 
 CREATE TABLE about_user (
  id_about_user BIGSERIAL PRIMARY KEY,
- user_id_from_users BIGINT REFERENCES users (user_id),
+ user_id_from_users BIGINT REFERENCES users (user_id) UNIQUE,
  img VARCHAR(100), 
  fullname VARCHAR(50),
  lastname VARCHAR(50),
@@ -107,7 +107,8 @@ CREATE TABLE answers (
 answer_id BIGSERIAL PRIMARY KEY,
 question_id_from_questions BIGINT REFERENCES questions (questions_id),
 user_id_from_users BIGINT REFERENCES users (user_id),
-answers VARCHAR(2000)
+answers VARCHAR(2000),
+responce_user_id BIGINT REFERENCES about_user (user_id)
 );
 
 
