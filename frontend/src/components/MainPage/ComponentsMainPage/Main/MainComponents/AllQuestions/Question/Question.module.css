@@ -133,6 +133,8 @@
   font-size: 20px;
   color: #333;
   font-weight: 400;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #f0f0f0;
 }
 .my_answer {
   margin-top: 10px;
@@ -240,4 +242,7 @@
 }
 .link_to_authorisation_text {
   padding: 20px 20px 20px 20px;
+}
+.hide {
+  display: block;
 }

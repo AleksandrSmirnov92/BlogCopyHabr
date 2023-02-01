@@ -98,7 +98,8 @@ const AllQuestions = () => {
                   </span>
                 </div>
                 <a href="#" className={AllQuestionsCSS.countNumber}>
-                  <span className={AllQuestionsCSS.counter}>0</span> <br />
+                  <span className={AllQuestionsCSS.counter}>{}</span>
+                  <br />
                   Ответов
                 </a>
               </div>

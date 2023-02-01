@@ -10,6 +10,7 @@ interface MyValues {
 }
 const Question = () => {
   let [pathImg, setPathImg] = useState("");
+  let [pathMyImg, setPathMyImg] = useState("");
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
   let [tagsId, setTagsId] = useState("");
@@ -19,8 +20,8 @@ const Question = () => {
   let [questionDescription, setQuestionDescription] = useState("");
   let [questionTimeCreation, setQuestionTimeCreation] = useState("");
   let [questionUserId, setQuestionUserId] = useState("");
+  let [answers, setAnswers] = useState([]);
   let { questionId } = useParams();
-  let [answers, setAnswers] = useState("");
 
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
@@ -54,12 +55,16 @@ const Question = () => {
   };
   let getQuestion = async () => {
     const res = await fetch(`/question/${questionId}`, {
-      method: "GET",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId"),
+      }),
     });
     const data = await res.json();
     console.log(data);
     setPathImg(data.userInfo.img);
+    setPathMyImg(data.myImg);
     setName(
       `${
         data.userInfo.fullname !== ""
@@ -77,6 +82,7 @@ const Question = () => {
     setQuestionTimeCreation(
       currentTime(new Date(`${data.question.date_of_creation}`))
     );
+    setAnswers(data.answers);
   };
   const onSubmit = async () => {
     const res = await fetch("/answers", {
@@ -90,6 +96,8 @@ const Question = () => {
       }),
     });
     const data = await res.json();
+    setAnswers((prevState) => [...prevState, data.answer]);
+    values.answers = "";
     console.log(data);
   };
 
@@ -149,28 +157,49 @@ const Question = () => {
         <p className={QuestionCSS.info__text}>{questionDescription}</p>
         <span className={QuestionCSS.info__data}>{questionTimeCreation}</span>
       </div>
-      <h2 className={QuestionCSS.answers__title}>Ответы на вопросы (3)</h2>
-      <div className={QuestionCSS.answers__container}>
-        <div className={QuestionCSS.answer}>
-          <a href="#" className={QuestionCSS.answer__img_link}>
-            <img src={imageProfil} className={QuestionCSS.answer__img} />
-          </a>
-          <a href="#" className={QuestionCSS.answers_user_name_link}>
-            <h2 className={QuestionCSS.answers_user_name}>Николай Соболев</h2>
-          </a>
-
-          <span className={QuestionCSS.answers_user_email}>ryan00@mail.ru</span>
-        </div>
-        <span className={QuestionCSS.answer_user_clarification}>
-          Это мой ответ на твой вопрос
-        </span>
-        <p className={QuestionCSS.answer_user_text}>
-          Если на сайте установлены трекеры, а пользователь их не отключил через
-          блокировщик, то узнать можно очень и очень много. Практически всё. А
-          если пользователь разрешил дать геолокацию, доступ к камере и
-          микрофону, то за ним можно наблюдать в реальном времени. Какую задачу
-          решаешь?
-        </p>
+      <h2
+        className={
+          answers.length !== 0 ? QuestionCSS.answers__title : QuestionCSS.hide
+        }
+      >
+        Ответы на вопросы ({answers.length})
+      </h2>
+      <div
+        className={
+          answers.length !== 0
+            ? QuestionCSS.answers__container
+            : QuestionCSS.hide
+        }
+      >
+        {answers.map((answer) => {
+          return (
+            <div>
+              <div className={QuestionCSS.answer}>
+                <NavLink
+                  to={`/users/${answer.user_id_from_users}`}
+                  className={QuestionCSS.answer__img_link}
+                >
+                  <img src={answer.img} className={QuestionCSS.answer__img} />
+                </NavLink>
+                <NavLink
+                  to={`/users/${answer.user_id_from_users}`}
+                  className={QuestionCSS.answers_user_name_link}
+                >
+                  <h2 className={QuestionCSS.answers_user_name}>
+                    {`${answer.fullname} ${answer.lastname}`}
+                  </h2>
+                </NavLink>
+                <span className={QuestionCSS.answers_user_email}>
+                  {answer.email}
+                </span>
+              </div>
+              <span className={QuestionCSS.answer_user_clarification}>
+                Это мой ответ на твой вопрос
+              </span>
+              <p className={QuestionCSS.answer_user_text}>{answer.answers}</p>
+            </div>
+          );
+        })}
       </div>
       <h2 className={QuestionCSS.answers__title}>Ваш ответ на вопрос</h2>
       <div
@@ -185,9 +214,15 @@ const Question = () => {
           className={QuestionCSS.my_answer__container}
         >
           <div className={QuestionCSS.my_answer_text}>
-            <a href="#" className={QuestionCSS.my_answer__img_link}>
-              <img src={imageProfil} className={QuestionCSS.my_answer__img} />
-            </a>
+            <NavLink
+              to={`/users/${localStorage.getItem(`userId`)}`}
+              className={QuestionCSS.my_answer__img_link}
+            >
+              <img
+                src={pathMyImg ? pathMyImg : imageProfil}
+                className={QuestionCSS.my_answer__img}
+              />
+            </NavLink>
             <textarea
               // className={QuestionCSS.my_answer}
               name=""
