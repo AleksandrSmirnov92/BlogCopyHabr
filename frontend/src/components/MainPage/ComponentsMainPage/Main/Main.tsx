@@ -9,7 +9,7 @@ import Tag from "./MainComponents/Tags/Tag/Tag";
 import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
-import Question from "./MainComponents/AllQuestions/Question/Question";
+import QuestionInfo from "./MainComponents/AllQuestions/QuestionInfo/QuestionInfo";
 const Main = () => {
   return (
     <main className={MainCSS.main}>
@@ -23,7 +23,7 @@ const Main = () => {
         <Route path="/tag/:tagId" element={<Tag />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:userId" element={<User />} />
-        <Route path="/question/:questionId" element={<Question />} />
+        <Route path="/questionInfo/:questionId" element={<QuestionInfo />} />
       </Routes>
     </main>
   );

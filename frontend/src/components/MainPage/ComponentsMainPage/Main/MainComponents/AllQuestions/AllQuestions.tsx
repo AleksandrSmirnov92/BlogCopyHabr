@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AllQuestionsCSS from "./AllQuestionsCSS.module.css";
-import JsIconIMG from "../../../../../../images/JsIcon.png";
 import { NavLink } from "react-router-dom";
-
+import Question from "./Question/Question";
 const AllQuestions = () => {
-  let [time, setTime] = useState("");
   let [questions, setQuestions] = useState([]);
+  let [answers, setAnswers] = useState([]);
+  let [newQuestions, setNewQuestions] = useState("Новые вопросы");
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
       style: "unit",
@@ -18,7 +18,7 @@ const AllQuestions = () => {
       unitDisplay: "long",
     });
     let currentTime = new Date();
-    console.log(date.getUTCDate());
+    // console.log(date.getUTCDate());
     if (
       date.getDate() !== currentTime.getDate() ||
       date.getMonth() !== currentTime.getMonth() ||
@@ -32,12 +32,18 @@ const AllQuestions = () => {
     }
     let currentHours = currentTime.getHours() - date.getHours();
     let currentMinutes = currentTime.getMinutes() - date.getMinutes();
-    console.log(currentHours, currentMinutes);
+    // console.log(currentHours, currentMinutes);
     return `Опубликован ${formatterHour.format(
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
+  let countAnswers = (idQuestions: any, answers: any): any => {
+    let countAnswers = answers.filter(
+      (element: any) => element.question_id_from_questions === idQuestions
+    ).length;
 
+    return countAnswers;
+  };
   let getQuestions = async () => {
     const res = await fetch(`/questions`, {
       method: "GET",
@@ -47,7 +53,9 @@ const AllQuestions = () => {
     // let date = new Date(`${data.questions[0].date_of_creation}`);
     // setTime(currentTime(date));
     setQuestions(data.questions);
-    console.log(data.questions);
+    setAnswers(data.answers);
+    // console.log(data.questions);
+    // console.log(data.answers);
   };
   useEffect(() => {
     getQuestions();
@@ -57,86 +65,49 @@ const AllQuestions = () => {
     <div className={AllQuestionsCSS.mainContainer}>
       <h3>Все Вопросы</h3>
       <div className={AllQuestionsCSS.questionCategoriesWrapper}>
-        <a href="#" className={AllQuestionsCSS.questionCategories}>
+        <NavLink
+          to={`/questions`}
+          className={AllQuestionsCSS.questionCategories}
+          onClick={() => setNewQuestions("Новые вопросы")}
+        >
           Новые вопросы
-        </a>
-        <a href="#" className={AllQuestionsCSS.questionCategories}>
-          Интересные{" "}
-        </a>
-        <a href="#" className={AllQuestionsCSS.questionCategories}>
+        </NavLink>
+        <NavLink
+          to={`/questions`}
+          className={AllQuestionsCSS.questionCategories}
+          onClick={() => setNewQuestions("Без ответа")}
+        >
           Без ответа
-        </a>
+        </NavLink>
       </div>
       <div className={AllQuestionsCSS.questionsContainer}>
-        {questions.map((question) => {
-          return (
-            <div className={AllQuestionsCSS.question}>
-              <div className={AllQuestionsCSS.questionHeader}>
-                <img
-                  src={question.img_tag}
-                  className={AllQuestionsCSS.questionTagIcon}
-                  alt=""
-                />
-                <NavLink
-                  to={`/tag/${question.tags_id}`}
-                  className={AllQuestionsCSS.questionTag}
-                >
-                  {question.name_tag.toUpperCase()}
-                </NavLink>
-              </div>
-              <div className={AllQuestionsCSS.questionMain}>
-                <div>
-                  <NavLink
-                    to={`/question/${question.questions_id}`}
-                    className={AllQuestionsCSS.questionMainSpan}
-                  >
-                    {question.question_title}
-                  </NavLink>
-                  <br />
-                  <span className={AllQuestionsCSS.questionMainSpanTwo}>
-                    {currentTime(new Date(`${question.date_of_creation}`))}
-                  </span>
-                </div>
-                <a href="#" className={AllQuestionsCSS.countNumber}>
-                  <span className={AllQuestionsCSS.counter}>{}</span>
-                  <br />
-                  Ответов
-                </a>
-              </div>
-            </div>
-          );
-        })}
-        {/* <div className={AllQuestionsCSS.question}>
-          <div className={AllQuestionsCSS.questionHeader}>
-            <img
-              src={JsIconIMG}
-              className={AllQuestionsCSS.questionTagIcon}
-              alt=""
-            />
-            <a href="#" className={AllQuestionsCSS.questionTag}>
-              JAVASCRIPT
-            </a>
-          </div>
-          <div className={AllQuestionsCSS.questionMain}>
-            <div>
-              <NavLink
-                to={`/question`}
-                className={AllQuestionsCSS.questionMainSpan}
-              >
-                Почему не работа onClick ?
-              </NavLink>
-              <br />
-              <span className={AllQuestionsCSS.questionMainSpanTwo}>
-                {time}
-              </span>
-            </div>
-
-            <a href="#" className={AllQuestionsCSS.countNumber}>
-              <span className={AllQuestionsCSS.counter}>0</span> <br />
-              Ответов
-            </a>
-          </div>
-        </div> */}
+        {newQuestions === "Без ответа"
+          ? questions
+              .filter(
+                (question) => countAnswers(question.questions_id, answers) === 0
+              )
+              .map((question) => {
+                return (
+                  <Question
+                    question={question}
+                    currentTime={currentTime}
+                    countAnswers={countAnswers}
+                    answers={answers}
+                  />
+                );
+              })
+          : questions
+              .map((question) => {
+                return (
+                  <Question
+                    question={question}
+                    currentTime={currentTime}
+                    countAnswers={countAnswers}
+                    answers={answers}
+                  />
+                );
+              })
+              .reverse()}
       </div>
     </div>
   );
