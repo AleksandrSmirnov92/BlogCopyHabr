@@ -32,7 +32,7 @@ const AllQuestions = () => {
     }
     let currentHours = currentTime.getHours() - date.getHours();
     let currentMinutes = currentTime.getMinutes() - date.getMinutes();
-    // console.log(currentHours, currentMinutes);
+
     return `Опубликован ${formatterHour.format(
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
@@ -54,7 +54,7 @@ const AllQuestions = () => {
     // setTime(currentTime(date));
     setQuestions(data.questions);
     setAnswers(data.answers);
-    // console.log(data.questions);
+    console.log(data);
     // console.log(data.answers);
   };
   useEffect(() => {
