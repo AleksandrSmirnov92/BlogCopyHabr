@@ -7,9 +7,17 @@ interface MyValues {
   email: string;
   password: string;
 }
-
-const SignIn = () => {
-  const [error, setError] = useState({ status: "", message: "" });
+interface State {
+  status: string;
+  message: string;
+}
+interface Ressponse {
+  status: string;
+  message: string;
+  user: {};
+}
+const SignIn: React.FC = () => {
+  const [error, setError] = useState<State>({ status: "", message: "" });
   const onSubmit = async (values: MyValues, actions: any) => {
     fetch("/signIn", {
       method: "POST",
@@ -30,7 +38,7 @@ const SignIn = () => {
             "userId",
             JSON.stringify(Number(response.user.user_id))
           );
-          console.log(response.user);
+          console.log(response);
         }
         if (response.status === "ERROR") {
           setError({ status: response.status, message: response.message });
@@ -39,11 +47,10 @@ const SignIn = () => {
               status: ``,
               message: ``,
             });
-          }, 1000);
-          console.log(response);
+          }, 1500);
+          console.log(actions);
         }
       });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     actions.resetForm();
   };
 
