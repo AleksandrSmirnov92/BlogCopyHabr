@@ -340,11 +340,17 @@ app.get("/informationTag/:id", async (req, res) => {
 });
 app.get("/tags/:id", async (req, res) => {
   let { id } = req.params;
+  console.log(req.params);
   try {
-    let getTags = await pool.query(
-      `SELECT * FROM tags join followers on followers_id_from_users = $1`,
-      [id]
-    );
+    let getTags;
+    if (id !== "null") {
+      getTags = await pool.query(
+        `SELECT * FROM tags join followers on followers_id_from_users = $1`,
+        [id]
+      );
+    } else {
+      getTags = await pool.query(`SELECT * FROM tags`);
+    }
     let countFollowersJavaScript = await pool.query(
       "SELECT COUNT(*) FROM followers where javascript = $1",
       ["true"]

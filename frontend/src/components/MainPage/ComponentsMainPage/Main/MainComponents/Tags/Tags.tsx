@@ -1,57 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import TagsCSS from "./Tags.module.css";
-import JavaScriptTag from "../../../../../../images/JavascriptTag.png";
-import HTMLTag from "../../../../../../images/HTMLtag.png";
-import CSSTag from "../../../../../../images/CSStag.png";
-import VueTag from "../../../../../../images/Vuetag.png";
-import ReactTag from "../../../../../../images/Reacttag.png";
-import GitTag from "../../../../../../images/Gittag.png";
 const Tags = () => {
-  const [allTags, setAllTags] = useState([
-    {
-      nameTag: "JavaScript",
-      imgTag: JavaScriptTag,
-      questionsTags: "103713",
-      folow: true,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "HTML",
-      imgTag: HTMLTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "CSS",
-      imgTag: CSSTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "React",
-      imgTag: ReactTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "Vue",
-      imgTag: VueTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "Git",
-      imgTag: GitTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-  ]);
   const [tags, setTags] = useState([]);
   const [countFollowers, setCountFollowers] = useState({});
   // Добавить число вопросов

@@ -33,9 +33,12 @@ const SignIn = () => {
           console.log(response.user);
         }
         if (response.status === "ERROR") {
-          setError(response);
+          setError({ status: response.status, message: response.message });
           setTimeout(() => {
-            setError({ status: "", message: "" });
+            setError({
+              status: ``,
+              message: ``,
+            });
           }, 1000);
           console.log(response);
         }
@@ -63,72 +66,75 @@ const SignIn = () => {
   return (
     <div className={AccountCSS.container}>
       <header className={AccountCSS.header}>
-        <div className={AccountCSS.headerText}>
-          <h1 className={AccountCSS.headerH1}>Смир</h1>
-          <h1 className={AccountCSS.headerAccount}>Акаунт</h1>
-        </div>
+        <h1>
+          Смир <span className={AccountCSS.headerAccount}> Акаунт</span>
+        </h1>
       </header>
-      <main className={AccountCSS.Main}>
-        <div className={AccountCSS.containerMain}>
-          <form onSubmit={handleSubmit}>
-            <h2>Вход</h2>
-            <label htmlFor="email" className={AccountCSS.email}>
-              E-mail
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={
-                errors.email && touched.email ? AccountCSS.inputError : ""
-              }
-            />
-            {errors.email && touched.email ? (
-              <span className={AccountCSS.error}>{errors.password}</span>
-            ) : (
-              ""
-            )}
-            <label htmlFor="password">Пароль</label>
-            <input
-              type="password"
-              id="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={
-                errors.password && touched.password ? AccountCSS.inputError : ""
-              }
-            />
-            {errors.password && touched.password ? (
-              <span className={AccountCSS.error}>{errors.password}</span>
-            ) : (
-              ""
-            )}
-            <button
-              type="submit"
-              className={
-                error.status === "ERROR"
-                  ? AccountCSS.buttonError
-                  : AccountCSS.button
-              }
-              disabled={isSubmitting}
-            >
-              Войти
-            </button>
-            {error.status === "ERROR" ? (
-              <span className={AccountCSS.errorResponse}>{error.message}</span>
-            ) : (
-              ""
-            )}
-          </form>
-          <div className={AccountCSS.questionAboutRegestration}>
-            <span>Еще нет аккаунта?</span>
-            <NavLink to="/SignUp" className={AccountCSS.registrationText}>
-              Зарегистрируйтесь
-            </NavLink>
-          </div>
+      <main className={AccountCSS.main_block}>
+        <form onSubmit={handleSubmit} className={AccountCSS.input_group}>
+          <h2>Вход</h2>
+          <label htmlFor="email">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={
+              errors.email && touched.email
+                ? AccountCSS.form_control__error
+                : AccountCSS.form_control
+            }
+          />
+          {errors.email && touched.email ? (
+            <span className={AccountCSS.form_control__error__message}>
+              {errors.email}
+            </span>
+          ) : (
+            ""
+          )}
+          <label htmlFor="password">Пароль</label>
+          <input
+            type="password"
+            id="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={
+              errors.password && touched.password
+                ? AccountCSS.form_control__error
+                : AccountCSS.form_control
+            }
+          />
+          {errors.password && touched.password ? (
+            <span className={AccountCSS.form_control__error__message}>
+              {errors.password}
+            </span>
+          ) : (
+            ""
+          )}
+          <button
+            type="submit"
+            className={
+              error.status === "ERROR"
+                ? AccountCSS.error__server
+                : AccountCSS.form_control_button
+            }
+            disabled={isSubmitting}
+          >
+            Войти
+          </button>
+          {error.status === "ERROR" ? (
+            <span className={AccountCSS.error__server_message}>
+              {error.message}
+            </span>
+          ) : (
+            ""
+          )}
+        </form>
+        <div className={AccountCSS.button_registration}>
+          <span>Еще нет аккаунта?</span>
+          <NavLink to="/SignUp">Зарегистрируйтесь</NavLink>
         </div>
       </main>
     </div>
