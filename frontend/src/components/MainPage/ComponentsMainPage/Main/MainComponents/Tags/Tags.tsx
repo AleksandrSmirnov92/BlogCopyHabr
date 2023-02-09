@@ -43,6 +43,7 @@ const Tags = () => {
       <h3>Все теги</h3>
       <div className={TagsCSS.tagsContainer}>
         {tags.map((tag) => {
+          console.log(tag.img_tag);
           return (
             <div key={tag.tags_id} className={TagsCSS.tag}>
               <NavLink to={`/tag/${tag.tags_id}`}>

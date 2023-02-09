@@ -1,7 +1,4 @@
-import { Console } from "console";
-import express from "express";
-import { networkInterfaces } from "os";
-
+import express, { Request, Response } from "express";
 import { pool } from "./db.js";
 const fileUpload = require("express-fileupload");
 const app = express();
@@ -14,10 +11,37 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 app.use(fileUpload());
-// app.use(() => console.log(`${__dirname}`));
-// Routes
-// get allusers
 
+interface SignIn {
+  status: string;
+  message?: string;
+  user?: {
+    user_id: string;
+    nickname: string;
+  };
+}
+const signIn = async (
+  req: Request<{}, {}, { email: string; password: string }>,
+  res: Response<SignIn>
+) => {
+  try {
+    const { email, password } = req.body;
+    const getUser = await pool.query(
+      `SELECT users.user_id,users.nickname FROM users WHERE email = $1 AND password = $2`,
+      [email, password]
+    );
+    if (!getUser.rows.length) {
+      return res
+        .status(404)
+        .json({ status: "ERROR", message: "Пользователь не существует" });
+    }
+    return res.status(200).json({ status: "SUCCESS", user: getUser.rows[0] });
+  } catch (err: any) {
+    console.log(err.message);
+  }
+};
+app.route("/signIn").post(signIn);
+// ----------------------------------------
 app.post("/signUp", async (req, res) => {
   console.log(req.cookies);
   try {
@@ -52,24 +76,6 @@ app.post("/signUp", async (req, res) => {
     return res.status(406).json({
       error: err.detail,
     });
-  }
-});
-
-app.post("/signIn", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const getUser = await pool.query(
-      `SELECT * FROM users WHERE email = $1 AND password = $2`,
-      [email, password]
-    );
-    if (!getUser.rows.length) {
-      return res
-        .status(404)
-        .json({ status: "ERROR", message: "Пользователь не существует" });
-    }
-    res.status(200).json({ status: "SUCCESS", user: getUser.rows[0] });
-  } catch (err: any) {
-    console.log(err.message);
   }
 });
 

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
+import { FormikValues, useFormik } from "formik";
 import { schemaForSignIn } from "../../Schemas/ShemaSignIn";
 import { NavLink } from "react-router-dom";
 import AccountCSS from "./SignIn.module.css";
+
 interface MyValues {
   email: string;
   password: string;
@@ -11,14 +12,10 @@ interface State {
   status: string;
   message: string;
 }
-interface Ressponse {
-  status: string;
-  message: string;
-  user: {};
-}
+
 const SignIn: React.FC = () => {
   const [error, setError] = useState<State>({ status: "", message: "" });
-  const onSubmit = async (values: MyValues, actions: any) => {
+  const onSubmit = async (values: MyValues, actions: FormikValues) => {
     fetch("/signIn", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,12 +30,13 @@ const SignIn: React.FC = () => {
           setTimeout(() => {
             window.location.href = "http://localhost:3000/myFeed";
           }, 1000);
-          document.cookie = `nickname=${response.user.nickname};max-age=3600`;
+          let date = new Date();
+          date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+          document.cookie = `nickname=${response.user.nickname};max-age=${date}`;
           localStorage.setItem(
             "userId",
             JSON.stringify(Number(response.user.user_id))
           );
-          console.log(response);
         }
         if (response.status === "ERROR") {
           setError({ status: response.status, message: response.message });
@@ -48,7 +46,6 @@ const SignIn: React.FC = () => {
               message: ``,
             });
           }, 1500);
-          console.log(actions);
         }
       });
     actions.resetForm();
