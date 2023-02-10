@@ -1,7 +1,8 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
 import { pool } from "./db.js";
 const fileUpload = require("express-fileupload");
 const app = express();
+const signInRouter = require("../dist/Routes/SignInRouter");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
@@ -12,35 +13,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 app.use(fileUpload());
 
-interface SignIn {
-  status: string;
-  message?: string;
-  user?: {
-    user_id: string;
-    nickname: string;
-  };
-}
-const signIn = async (
-  req: Request<{}, {}, { email: string; password: string }>,
-  res: Response<SignIn>
-) => {
-  try {
-    const { email, password } = req.body;
-    const getUser = await pool.query(
-      `SELECT users.user_id,users.nickname FROM users WHERE email = $1 AND password = $2`,
-      [email, password]
-    );
-    if (!getUser.rows.length) {
-      return res
-        .status(404)
-        .json({ status: "ERROR", message: "Пользователь не существует" });
-    }
-    return res.status(200).json({ status: "SUCCESS", user: getUser.rows[0] });
-  } catch (err: any) {
-    console.log(err.message);
-  }
-};
-app.route("/signIn").post(signIn);
+app.use("/signIn", signInRouter);
 // ----------------------------------------
 app.post("/signUp", async (req, res) => {
   console.log(req.cookies);
@@ -563,9 +536,9 @@ app.post("/users", async (req, res) => {
     console.log(err);
   }
 });
-// get information user
-// get information about questions
-const port = process.env.PORT || "9999";
-app.listen(port, () => {
-  console.log("Server has started on port: 9999");
-});
+
+module.exports = app;
+// const port = process.env.PORT || "9999";
+// app.listen(port, () => {
+//   console.log("Server has started on port: 9999");
+// });
