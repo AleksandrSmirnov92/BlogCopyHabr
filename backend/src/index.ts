@@ -1,8 +1,9 @@
-import express, { Request, Response, Router } from "express";
+import express, { Request, Response } from "express";
 import { pool } from "./db.js";
 const fileUpload = require("express-fileupload");
 const app = express();
-const signInRouter = require("../dist/Routes/SignInRouter");
+const signInRouter = require("../dist/Routes/SignInRouters");
+const signUpRouter = require("../dist/Routes/SignUpRouters");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
@@ -15,43 +16,8 @@ app.use(fileUpload());
 
 app.use("/signIn", signInRouter);
 // ----------------------------------------
-app.post("/signUp", async (req, res) => {
-  console.log(req.cookies);
-  try {
-    const { email, nickName, password } = req.body;
-    console.log(email, nickName, password);
-    const newUser = await pool.query(
-      "INSERT INTO users (email,nickname,password) VALUES($1, $2, $3) RETURNING * ",
-      [email, nickName, password]
-    );
-    const newInformationAboutUser = await pool.query(
-      "INSERT INTO about_user (user_id_from_users,img,fullname,lastname,contacts,linktocontacts,briefly_about_yourself,informattion_about_user,country,region,town) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
-      [
-        newUser.rows[0].user_id,
-        "",
-        "",
-        "",
-        "Контакты",
-        "",
-        "",
-        "",
-        "Страна",
-        "Регион",
-        "Город",
-      ]
-    );
-    return res.status(200).json({
-      status: "SUCCESS",
-      message: nickName,
-      userId: newUser.rows[0].user_id,
-    });
-  } catch (err: any) {
-    return res.status(406).json({
-      error: err.detail,
-    });
-  }
-});
-
+app.use("/signUp", signUpRouter);
+// ----------------------------------------------
 app.post("/createQuestion", async (req, res) => {
   try {
     const { questionTitle, questionTags, questionDetails, userId } = req.body;

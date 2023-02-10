@@ -71,7 +71,7 @@ const SignIn: React.FC = () => {
     <div className={AccountCSS.container}>
       <header className={AccountCSS.header}>
         <h1>
-          Смир <span className={AccountCSS.headerAccount}> Акаунт</span>
+          Смир <span> Акаунт</span>
         </h1>
       </header>
       <main className={AccountCSS.main_block}>

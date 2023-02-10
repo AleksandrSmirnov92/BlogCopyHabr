@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { pool } from "../db.js";
-interface SignIn {
+interface SignInResponce {
   status: string;
   message?: string;
   user?: {
@@ -10,7 +10,7 @@ interface SignIn {
 }
 exports.signIn = async (
   req: Request<{}, {}, { email: string; password: string }>,
-  res: Response<SignIn>
+  res: Response<SignInResponce>
 ) => {
   try {
     const { email, password } = req.body;
