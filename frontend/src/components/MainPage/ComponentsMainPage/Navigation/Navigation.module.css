@@ -21,6 +21,8 @@ img {
   grid-area: nav;
   background-color: #4f5a6e;
   margin-left: 50px;
+  position: absolute;
+  z-index: 2;
 }
 li.signIn {
   padding-top: 33px;
@@ -91,7 +93,7 @@ a.photoProfil {
 }
 @media (max-width: 1200px) {
   .navigation {
-    display: none;
+    /* display: none; */
   }
 }
 @media (max-width: 991px) {
