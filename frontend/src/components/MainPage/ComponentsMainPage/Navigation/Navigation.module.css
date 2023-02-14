@@ -18,12 +18,13 @@ img {
   height: 17px;
 }
 .navigation {
+  /* display: none; */
   grid-area: nav;
+  position: relative;
   background-color: #4f5a6e;
   margin-left: 50px;
-  position: absolute;
-  z-index: 2;
 }
+
 li.signIn {
   padding-top: 33px;
   padding-bottom: 33px;
@@ -91,10 +92,35 @@ a.photoProfil {
 .registered {
   display: block;
 }
+.nav_btn {
+  display: none;
+  position: absolute;
+  right: -35px;
+  top: 20px;
+}
+.nav_btn > img {
+  width: 24px;
+  height: 24px;
+}
 @media (max-width: 1200px) {
-  .navigation {
-    /* display: none; */
+  .show_laptop {
+    display: block;
   }
+  .navigation {
+    margin-left: 0;
+    position: absolute;
+    z-index: 2;
+    height: 100%;
+  }
+  /* .navigation_active {
+    grid-area: nav;
+    position: absolute;
+    background-color: #4f5a6e;
+    transition: 1s;
+    transform: translateX(0%);
+    z-index: 2;
+    height: 100%;
+  } */
 }
 @media (max-width: 991px) {
 }

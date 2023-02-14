@@ -8,14 +8,16 @@ import SettingsIMG from "../../../../images/Settings.png";
 import allTagsIMG from "../../../../images/allTags.png";
 import usersIMG from "../../../../images/users.png";
 import myProfile from "../../../../images/photoProfil.png";
+import NavImg from "../../../../images/nav.png";
 import { NavLink } from "react-router-dom";
 
-const Navigation = () => {
+const Navigation = ({ toggleClass, setToggleClass }: any) => {
   let [userRegistred, setUserRegistred] = useState(false);
   const { userId, setUserId } = useContext(userIdContext);
   let [pathImg, setPathImg] = useState("");
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
+
   const exit = (): any => {
     setTimeout(() => {
       document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
@@ -63,7 +65,19 @@ const Navigation = () => {
     }
   }, []);
   return (
-    <nav className={NavigationCSS.navigation}>
+    <nav
+      className={
+        toggleClass ? NavigationCSS.navigation : NavigationCSS.navigation_active
+      }
+    >
+      <div
+        className={`${NavigationCSS.nav_btn} ${NavigationCSS.show_laptop}`}
+        onClick={() => {
+          setToggleClass((prevState: boolean) => !prevState);
+        }}
+      >
+        <img src={NavImg} alt="" />
+      </div>
       <ul>
         <div
           className={

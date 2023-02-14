@@ -40,7 +40,7 @@ const QuestionPanel = () => {
       <div
         className={`${QuestionPanelCSS.nav_menu} ${QuestionPanelCSS.show_laptop}`}
       >
-        <img src={NavImg} />
+        {/* <img src={NavImg} /> */}
         <h1>Смир</h1>
         <span>Q&A</span>
       </div>

@@ -118,6 +118,7 @@ h1 {
   align-items: center;
 }
 .nav_menu > h1 {
+  padding-left: 40px;
   color: white;
 }
 .nav_menu > img {
