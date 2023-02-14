@@ -2,19 +2,35 @@
   grid-area: header;
   background: #303b44;
 }
-.headerText {
+.header_title {
   display: flex;
   flex-direction: row;
   border: none;
 }
-.headerH1 {
+.header_title > h1 {
   padding-top: 10px;
   padding-left: 20px;
+  font-size: 35px;
   color: white;
 }
-.headerQA {
+.header_title > span {
   padding-top: 10px;
   padding-left: 10px;
   font-weight: 200;
+  font-size: 35px;
   color: white;
+}
+@media (max-width: 1200px) {
+  .hide_tablet {
+    display: none;
+  }
+  .show-tablet {
+    display: block;
+  }
+}
+@media (max-width: 991px) {
+}
+@media (max-width: 767px) {
+}
+@media (max-width: 480px) {
 }

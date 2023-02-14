@@ -89,3 +89,14 @@ a.photoProfil {
 .registered {
   display: block;
 }
+@media (max-width: 1200px) {
+  .navigation {
+    display: none;
+  }
+}
+@media (max-width: 991px) {
+}
+@media (max-width: 767px) {
+}
+@media (max-width: 480px) {
+}
