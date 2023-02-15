@@ -504,7 +504,3 @@ app.post("/users", async (req, res) => {
 });
 
 module.exports = app;
-// const port = process.env.PORT || "9999";
-// app.listen(port, () => {
-//   console.log("Server has started on port: 9999");
-// });

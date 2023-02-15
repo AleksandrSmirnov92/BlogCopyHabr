@@ -60,6 +60,9 @@ h1 {
   border: 1px #558cb7 solid;
 }
 .form_control__error {
+  margin-bottom: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   border: red 1px solid;
   margin-bottom: 10px;
 }

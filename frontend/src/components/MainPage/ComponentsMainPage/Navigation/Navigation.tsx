@@ -7,10 +7,9 @@ import ExitIMG from "../../../../images/Exit.png";
 import SettingsIMG from "../../../../images/Settings.png";
 import allTagsIMG from "../../../../images/allTags.png";
 import usersIMG from "../../../../images/users.png";
-import myProfile from "../../../../images/photoProfil.png";
+import ProfileImg from "../../../../images/photoProfil.png";
 import NavImg from "../../../../images/nav.png";
 import { NavLink } from "react-router-dom";
-
 interface Props {
   toggleClass: boolean;
   setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,12 +31,13 @@ const Navigation: React.FC<Props> = ({
   let [lastName, setLastName] = useState("");
 
   const exit = (
-    setUserId: any,
-    setUserRegistred: React.Dispatch<React.SetStateAction<boolean>>
+    setUserId: React.Dispatch<React.SetStateAction<string>>,
+    setUserRegistred: React.Dispatch<React.SetStateAction<boolean>>,
+    localStorage: any
   ) => {
     setTimeout(() => {
       document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-      setUserId(localStorage.removeItem("userId"));
+      setUserId(localStorage);
       setUserRegistred(false);
     }, 1000);
   };
@@ -74,7 +74,6 @@ const Navigation: React.FC<Props> = ({
       return matches ? decodeURIComponent(matches[1]) : "";
     }
     if (getCookie("nickname") !== "") {
-      console.log("navigation");
       setUserRegistred(true);
     } else {
       console.log("пользователь не зарегестрирован");
@@ -84,8 +83,8 @@ const Navigation: React.FC<Props> = ({
     <nav
       className={
         toggleClass
-          ? NavigationCSS.navigation
-          : `${NavigationCSS.navigation_active} ${NavigationCSS.navigation}`
+          ? NavigationCSS.nav
+          : `${NavigationCSS.nav_active} ${NavigationCSS.nav}`
       }
     >
       <div
@@ -104,11 +103,11 @@ const Navigation: React.FC<Props> = ({
         <div
           className={
             userRegistred
-              ? NavigationCSS.registered
-              : NavigationCSS.notRegistered
+              ? NavigationCSS.profile_block
+              : NavigationCSS.profile_hide
           }
         >
-          <li className={NavigationCSS.myProfile}>
+          <li className={NavigationCSS.profile}>
             <a
               href={`http://localhost:3000/users/${localStorage.getItem(
                 "userId"
@@ -116,7 +115,7 @@ const Navigation: React.FC<Props> = ({
               className={NavigationCSS.photoProfil}
             >
               <img
-                src={pathImg !== "" ? pathImg : myProfile}
+                src={pathImg !== "" ? pathImg : ProfileImg}
                 className={NavigationCSS.photoProfil}
               />
             </a>
@@ -144,7 +143,11 @@ const Navigation: React.FC<Props> = ({
               to="./questions"
               className={(NavigationCSS.allQuestions, NavigationCSS.textProfil)}
               onClick={() => {
-                exit(setUserId, setUserRegistred);
+                exit(
+                  setUserId,
+                  setUserRegistred,
+                  localStorage.removeItem("userId")
+                );
               }}
             >
               Выход
@@ -165,8 +168,8 @@ const Navigation: React.FC<Props> = ({
         <div
           className={
             userRegistred
-              ? NavigationCSS.notRegistered
-              : NavigationCSS.registered
+              ? NavigationCSS.profile_hide
+              : NavigationCSS.profile_block
           }
         >
           <li className={NavigationCSS.signIn}>
