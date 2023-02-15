@@ -2,8 +2,8 @@ h1 {
   margin: 0;
 }
 .question_panel {
-  min-width: 380px;
   position: relative;
+  min-width: 380px;
   z-index: 1;
   display: flex;
   justify-content: space-between;
@@ -152,6 +152,12 @@ h1 {
   .question_panel {
     background-color: #303b44;
     margin-right: 0;
+    transition: 1s;
+    transform: translateX(0%);
+  }
+  .question_panel_active {
+    transition: 1s;
+    transform: translateX(13%);
   }
   .show_laptop {
     display: block;
@@ -170,9 +176,15 @@ h1 {
   .show_tablet {
     display: block;
   }
+  .question_panel_active {
+    transition: 1s;
+    transform: translateX(14%);
+  }
+  .nav_menu > h1 {
+    padding-left: 80px;
+  }
 }
-@media (max-width: 991px) {
-}
+
 @media (max-width: 767px) {
   .show_mobile {
     display: block;
@@ -186,6 +198,14 @@ h1 {
   .header__toolbar {
     display: flex;
   }
+  .question_panel_active {
+    transition: 1s;
+    transform: translateX(20%);
+  }
 }
 @media (max-width: 480px) {
+  .question_panel_active {
+    transition: 1s;
+    transform: translateX(30%);
+  }
 }

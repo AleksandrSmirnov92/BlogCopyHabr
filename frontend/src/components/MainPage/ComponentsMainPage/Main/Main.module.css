@@ -1,3 +1,15 @@
 .main {
   grid-area: main;
 }
+@media (max-width: 1200px) {
+  .main_active {
+    transition: 1s;
+    transform: translateX(13%);
+  }
+}
+@media (max-width: 991px) {
+}
+@media (max-width: 767px) {
+}
+@media (max-width: 480px) {
+}

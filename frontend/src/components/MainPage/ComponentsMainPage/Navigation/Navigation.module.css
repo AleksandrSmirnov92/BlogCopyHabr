@@ -111,16 +111,13 @@ a.photoProfil {
     position: absolute;
     z-index: 2;
     height: 100%;
+    transition: 1s;
+    transform: translateX(-100%);
   }
-  /* .navigation_active {
-    grid-area: nav;
-    position: absolute;
-    background-color: #4f5a6e;
+  .navigation_active {
     transition: 1s;
     transform: translateX(0%);
-    z-index: 2;
-    height: 100%;
-  } */
+  }
 }
 @media (max-width: 991px) {
 }

@@ -67,7 +67,9 @@ const Navigation = ({ toggleClass, setToggleClass }: any) => {
   return (
     <nav
       className={
-        toggleClass ? NavigationCSS.navigation : NavigationCSS.navigation_active
+        toggleClass
+          ? NavigationCSS.navigation
+          : `${NavigationCSS.navigation_active} ${NavigationCSS.navigation}`
       }
     >
       <div

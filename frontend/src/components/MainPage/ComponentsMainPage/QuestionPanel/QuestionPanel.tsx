@@ -15,7 +15,7 @@ function getCookie(name: string): RegExp | string {
   );
   return matches ? decodeURIComponent(matches[1]) : "";
 }
-const QuestionPanel = () => {
+const QuestionPanel = ({ toggleClass }: any) => {
   const { userId, setUserId } = useContext(userIdContext);
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
   useEffect(() => {
@@ -23,7 +23,13 @@ const QuestionPanel = () => {
     setUserId(JSON.parse(localStorage.getItem("userId")));
   });
   return (
-    <div className={QuestionPanelCSS.question_panel}>
+    <div
+      className={
+        toggleClass
+          ? QuestionPanelCSS.question_panel
+          : `${QuestionPanelCSS.question_panel_active} ${QuestionPanelCSS.question_panel}`
+      }
+    >
       <div className={`${QuestionPanelCSS[classHideSearch]}`}>
         <input
           type="text"

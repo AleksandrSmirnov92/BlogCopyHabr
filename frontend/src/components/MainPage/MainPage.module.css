@@ -1,10 +1,5 @@
 .container {
   width: 100%;
-  /* display: grid;
-  grid-template-columns: 1fr;
-  height: 100vh; */
-}
-.content {
   position: relative;
   overflow-x: hidden;
   z-index: 1;
@@ -22,20 +17,12 @@ h3 {
   font-weight: 900;
 }
 @media (max-width: 1200px) {
-  .content {
+  .container {
+    min-width: 380px;
     grid-template-areas: "questionPanel questionPanel questionPanel" "main main main" "footer footer footer";
     grid-template-columns: 1fr;
     grid-template-rows: 65px;
-    transition: 1s;
-    transform: translateX(0%);
   }
-  /* .content_active {
-    grid-template-areas: "questionPanel questionPanel questionPanel" "main main main" "footer footer footer";
-    grid-template-columns: 1sfr;
-    grid-template-rows: 65px;
-    transition: 1s;
-    transform: translateX(20%);
-  } */
 }
 @media (max-width: 991px) {
 }

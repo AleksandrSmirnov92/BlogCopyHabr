@@ -10,9 +10,13 @@ import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
 import QuestionInfo from "./MainComponents/AllQuestions/QuestionInfo/QuestionInfo";
-const Main = () => {
+const Main = ({ toggleClass }: any) => {
   return (
-    <main className={MainCSS.main}>
+    <main
+      className={
+        toggleClass ? MainCSS.main : `${MainCSS.main} ${MainCSS.main_active}`
+      }
+    >
       <Routes>
         <Route path="/settingsProfil" element={<ProfileSettings />} />
         <Route path="/questions" element={<AllQuestions />} />
