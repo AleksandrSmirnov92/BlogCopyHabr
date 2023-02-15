@@ -20,7 +20,7 @@ img {
 .navigation {
   /* display: none; */
   grid-area: nav;
-  position: relative;
+  /* position: relative; */
   background-color: #4f5a6e;
   margin-left: 50px;
 }
@@ -109,7 +109,7 @@ a.photoProfil {
   .navigation {
     margin-left: 0;
     position: absolute;
-    z-index: 2;
+    z-index: 1;
     height: 100%;
     transition: 1s;
     transform: translateX(-100%);
@@ -117,6 +117,9 @@ a.photoProfil {
   .navigation_active {
     transition: 1s;
     transform: translateX(0%);
+  }
+  .hide_img {
+    display: none;
   }
 }
 @media (max-width: 991px) {

@@ -13,6 +13,7 @@ exports.signIn = async (
   res: Response<SignInResponce>
 ) => {
   try {
+    console.log(req.body);
     const { email, password } = req.body;
     const getUser = await pool.query(
       `SELECT users.user_id,users.nickname FROM users WHERE email = $1 AND password = $2`,

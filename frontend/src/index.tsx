@@ -6,8 +6,12 @@ import userIdContext from "./components/Context/Context";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-const Main = () => {
-  const [userId, setUserId] = useState(
+interface Context {
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
+}
+const Main: React.FC = () => {
+  const [userId, setUserId] = useState<Context>(
     JSON.parse(localStorage.getItem("userId")!)
   );
   return (

@@ -2,9 +2,9 @@ h1 {
   margin: 0;
 }
 .question_panel {
-  position: relative;
+  /* position: relative; */
   min-width: 380px;
-  z-index: 1;
+  /* z-index: 1; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,7 +82,7 @@ h1 {
   position: absolute;
   height: 100%;
   width: 100%;
-  z-index: 2;
+  z-index: 1;
   background-color: white;
 }
 .show_search > input {

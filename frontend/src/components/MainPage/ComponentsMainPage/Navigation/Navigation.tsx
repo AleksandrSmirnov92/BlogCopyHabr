@@ -11,14 +11,30 @@ import myProfile from "../../../../images/photoProfil.png";
 import NavImg from "../../../../images/nav.png";
 import { NavLink } from "react-router-dom";
 
-const Navigation = ({ toggleClass, setToggleClass }: any) => {
+interface Props {
+  toggleClass: boolean;
+  setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;
+  hideNavImg: boolean;
+}
+interface Context {
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
+}
+const Navigation: React.FC<Props> = ({
+  toggleClass,
+  setToggleClass,
+  hideNavImg,
+}: Props) => {
   let [userRegistred, setUserRegistred] = useState(false);
-  const { userId, setUserId } = useContext(userIdContext);
+  const { userId, setUserId } = useContext<Context>(userIdContext);
   let [pathImg, setPathImg] = useState("");
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
 
-  const exit = (): any => {
+  const exit = (
+    setUserId: any,
+    setUserRegistred: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
     setTimeout(() => {
       document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
       setUserId(localStorage.removeItem("userId"));
@@ -78,7 +94,11 @@ const Navigation = ({ toggleClass, setToggleClass }: any) => {
           setToggleClass((prevState: boolean) => !prevState);
         }}
       >
-        <img src={NavImg} alt="" />
+        <img
+          src={NavImg}
+          alt=""
+          className={hideNavImg ? NavigationCSS.hide_img : ""}
+        />
       </div>
       <ul>
         <div
@@ -124,7 +144,7 @@ const Navigation = ({ toggleClass, setToggleClass }: any) => {
               to="./questions"
               className={(NavigationCSS.allQuestions, NavigationCSS.textProfil)}
               onClick={() => {
-                exit();
+                exit(setUserId, setUserRegistred);
               }}
             >
               Выход

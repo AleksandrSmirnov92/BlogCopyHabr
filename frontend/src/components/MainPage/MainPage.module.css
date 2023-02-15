@@ -18,6 +18,8 @@ h3 {
 }
 @media (max-width: 1200px) {
   .container {
+    position: relative;
+    z-index: 1;
     min-width: 380px;
     grid-template-areas: "questionPanel questionPanel questionPanel" "main main main" "footer footer footer";
     grid-template-columns: 1fr;

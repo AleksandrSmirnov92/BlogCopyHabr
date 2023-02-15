@@ -4,7 +4,6 @@ import QuestionPanelCSS from "./QuestionPanel.module.css";
 import userIdContext from "../../../Context/Context";
 import PlusImg from "../../../../images/plus.png";
 import SearchImg from "../../../../images/searh.png";
-import NavImg from "../../../../images/nav.png";
 function getCookie(name: string): RegExp | string {
   let matches = document.cookie.match(
     new RegExp(
@@ -15,11 +14,21 @@ function getCookie(name: string): RegExp | string {
   );
   return matches ? decodeURIComponent(matches[1]) : "";
 }
-const QuestionPanel = ({ toggleClass }: any) => {
-  const { userId, setUserId } = useContext(userIdContext);
+interface Props {
+  toggleClass: boolean;
+  setHideNavImg: React.Dispatch<React.SetStateAction<boolean>>;
+}
+interface Context {
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
+}
+const QuestionPanel: React.FC<Props> = ({
+  toggleClass,
+  setHideNavImg,
+}: Props) => {
+  const { userId, setUserId } = useContext<Context>(userIdContext);
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
   useEffect(() => {
-    console.log("question panel");
     setUserId(JSON.parse(localStorage.getItem("userId")));
   });
   return (
@@ -38,6 +47,7 @@ const QuestionPanel = ({ toggleClass }: any) => {
         <span
           onClick={() => {
             setClassHideSearch("hide_search");
+            setHideNavImg((prevState) => !prevState);
           }}
         >
           Закрыть
@@ -46,7 +56,6 @@ const QuestionPanel = ({ toggleClass }: any) => {
       <div
         className={`${QuestionPanelCSS.nav_menu} ${QuestionPanelCSS.show_laptop}`}
       >
-        {/* <img src={NavImg} /> */}
         <h1>Смир</h1>
         <span>Q&A</span>
       </div>
@@ -71,7 +80,10 @@ const QuestionPanel = ({ toggleClass }: any) => {
         className={`${QuestionPanelCSS.header__toolbar} ${QuestionPanelCSS.show_tablet}`}
       >
         <img
-          onClick={() => setClassHideSearch("show_search")}
+          onClick={() => {
+            setClassHideSearch("show_search");
+            setHideNavImg((prevState) => !prevState);
+          }}
           src={SearchImg}
           alt=""
           className={`${QuestionPanelCSS.searh_img} ${QuestionPanelCSS.show_mobile}`}

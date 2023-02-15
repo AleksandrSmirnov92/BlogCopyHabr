@@ -6,14 +6,18 @@ import QuestionPanel from "./ComponentsMainPage/QuestionPanel/QuestionPanel";
 import Main from "./ComponentsMainPage/Main/Main";
 import Aside from "./ComponentsMainPage/Aside/Aside";
 import Footer from "./ComponentsMainPage/Footer/Footer";
-import { boolean } from "yup";
-const MainPage = () => {
+const MainPage: React.FC = () => {
   let [toggleClass, setToggleClass] = useState(true);
+  let [hideNavImg, setHideNavImg] = useState(false);
   return (
     <div className={MainPageCSS.container}>
       <Header />
-      <QuestionPanel toggleClass={toggleClass} />
-      <Navigation toggleClass={toggleClass} setToggleClass={setToggleClass} />
+      <QuestionPanel setHideNavImg={setHideNavImg} toggleClass={toggleClass} />
+      <Navigation
+        hideNavImg={hideNavImg}
+        toggleClass={toggleClass}
+        setToggleClass={setToggleClass}
+      />
       <Main toggleClass={toggleClass} />
       <Aside />
       <Footer toggleClass={toggleClass} />
