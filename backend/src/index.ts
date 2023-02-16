@@ -177,7 +177,7 @@ app.post("/settingsProfile", async (req, res) => {
 app.get("/getInformationAboutUser", async (req, res) => {
   try {
     let getInfomationAboutUser =
-      await pool.query(`select users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
+      await pool.query(`select users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
     join users on user_id_from_users = user_id;`);
     res.status(200).json({
       message: "Вы получили информацию о пользователе",
@@ -191,7 +191,8 @@ app.get("/getInformationAboutUser/:id", async (req, res) => {
   try {
     let { id } = req.params;
     let getInfomationAboutUser = await pool.query(
-      `SELECT * FROM about_user WHERE user_id_from_users = $1`,
+      `select users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
+      join users on user_id_from_users = user_id where user_id_from_users = $1`,
       [id]
     );
     res.status(200).json({

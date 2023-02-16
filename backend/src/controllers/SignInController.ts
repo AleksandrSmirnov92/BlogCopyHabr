@@ -9,7 +9,7 @@ interface SignInResponce {
   };
 }
 exports.signIn = async (
-  req: Request<{}, {}, { email: string; password: string }>,
+  req: Request<{}, {}, { email: string | null; password: string | null }>,
   res: Response<SignInResponce>
 ) => {
   try {

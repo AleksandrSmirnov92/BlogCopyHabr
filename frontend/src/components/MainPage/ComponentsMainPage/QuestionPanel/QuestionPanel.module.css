@@ -2,9 +2,7 @@ h1 {
   margin: 0;
 }
 .question_panel {
-  /* position: relative; */
   min-width: 380px;
-  /* z-index: 1; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -142,8 +140,6 @@ h1 {
   .button {
     margin-right: 40px;
   }
-  .input_group {
-  }
 }
 @media (max-width: 1200px) {
   .button {
@@ -152,12 +148,12 @@ h1 {
   .question_panel {
     background-color: #303b44;
     margin-right: 0;
-    transition: 1s;
+    transition: 0.5s;
     transform: translateX(0%);
   }
   .question_panel_active {
-    transition: 1s;
-    transform: translateX(13%);
+    transition: 0.5s;
+    transform: translateX(15%);
   }
   .show_laptop {
     display: block;
@@ -168,6 +164,13 @@ h1 {
   .nav_menu {
     display: flex;
   }
+  .nav_menu > h1 {
+    transition: 0.5s;
+    padding-left: 95px;
+  }
+  .nav_menu_active > h1 {
+    padding-left: 40px;
+  }
 }
 @media (max-width: 1050px) {
   .hide_tablet {
@@ -177,11 +180,24 @@ h1 {
     display: block;
   }
   .question_panel_active {
-    transition: 1s;
-    transform: translateX(14%);
+    transition: 0.5s;
+    transform: translateX(16%);
   }
   .nav_menu > h1 {
-    padding-left: 80px;
+    transition: 0.5s;
+    padding-left: 100px;
+  }
+  .nav_menu_active > h1 {
+    padding-left: 40px;
+  }
+}
+@media (max-width: 950px) {
+  .nav_menu > h1 {
+    transition: 0.5s;
+    padding-left: 120px;
+  }
+  .nav_menu_active > h1 {
+    padding-left: 40px;
   }
 }
 
@@ -199,13 +215,27 @@ h1 {
     display: flex;
   }
   .question_panel_active {
-    transition: 1s;
-    transform: translateX(20%);
+    transition: 0.5s;
+    transform: translateX(17%);
+  }
+  .nav_menu > h1 {
+    transition: 0.5s;
+    padding-left: 170px;
+  }
+  .nav_menu_active > h1 {
+    padding-left: 40px;
   }
 }
 @media (max-width: 480px) {
   .question_panel_active {
-    transition: 1s;
-    transform: translateX(30%);
+    transition: 0.5s;
+    transform: translateX(18%);
+  }
+  .nav_menu > h1 {
+    transition: 0.5s;
+    padding-left: 190px;
+  }
+  .nav_menu_active > h1 {
+    padding-left: 40px;
   }
 }

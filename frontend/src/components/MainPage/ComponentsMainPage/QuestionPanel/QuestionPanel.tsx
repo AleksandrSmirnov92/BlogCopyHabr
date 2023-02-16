@@ -54,7 +54,11 @@ const QuestionPanel: React.FC<Props> = ({
         </span>
       </div>
       <div
-        className={`${QuestionPanelCSS.nav_menu} ${QuestionPanelCSS.show_laptop}`}
+        className={
+          toggleClass
+            ? `${QuestionPanelCSS.nav_menu} ${QuestionPanelCSS.show_laptop} ${QuestionPanelCSS.nav_menu_active}`
+            : `${QuestionPanelCSS.nav_menu} ${QuestionPanelCSS.show_laptop}`
+        }
       >
         <h1>Смир</h1>
         <span>Q&A</span>

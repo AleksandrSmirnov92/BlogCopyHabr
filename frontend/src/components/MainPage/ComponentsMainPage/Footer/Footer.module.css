@@ -4,11 +4,10 @@
   align-items: flex-end;
   display: flex;
   grid-area: footer;
-  transition: 1s;
+  transition: 0.5s;
   transform: translateX(0%);
 }
 .feedBack {
-  /* border-top: 1px #f0f0f0 solid; */
   padding-left: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -23,8 +22,8 @@
     padding-left: 5px;
   }
   .footer_active {
-    transition: 1s;
-    transform: translateX(30%);
+    transition: 0.5s;
+    transform: translateX(50%);
   }
 }
 @media (max-width: 991px) {
@@ -35,7 +34,4 @@
   .footer {
     padding-left: 10%;
   }
-  /* .feedBack {
-    padding-left: 12%;
-  } */
 }

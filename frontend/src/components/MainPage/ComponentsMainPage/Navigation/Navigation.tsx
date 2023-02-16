@@ -41,7 +41,11 @@ const Navigation: React.FC<Props> = ({
       setUserRegistred(false);
     }, 1000);
   };
-  const getInformationAboutUser = async () => {
+  const getInformationAboutUser = async (
+    setPathImg: React.Dispatch<React.SetStateAction<string>>,
+    setFullName: React.Dispatch<React.SetStateAction<string>>,
+    setLastName: React.Dispatch<React.SetStateAction<string>>
+  ) => {
     const res = await fetch(
       `/getInformationAboutUser/${localStorage.getItem("userId")}`,
       {
@@ -52,17 +56,14 @@ const Navigation: React.FC<Props> = ({
     const data = await res.json();
     setPathImg(data.body.img);
     if (data.body.fullname !== "" || data.body.lastname !== "") {
-      return setFullName(data.body.fullname), setLastName(data.body.lastname);
+      setFullName(data.body.fullname);
+      setLastName(data.body.lastname);
+      return;
     }
-    const resUser = await fetch(`/users/${localStorage.getItem("userId")}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const dataUser = await resUser.json();
-    setFullName(dataUser.body.email);
+    setFullName(data.body.email);
   };
   useEffect(() => {
-    getInformationAboutUser();
+    getInformationAboutUser(setPathImg, setFullName, setLastName);
     function getCookie(name: string): string {
       let matches = document.cookie.match(
         new RegExp(
@@ -96,116 +97,127 @@ const Navigation: React.FC<Props> = ({
         <img
           src={NavImg}
           alt=""
-          className={hideNavImg ? NavigationCSS.hide_img : ""}
+          className={
+            hideNavImg ? NavigationCSS.hide_img : NavigationCSS.nav_img
+          }
         />
       </div>
-      <ul>
+      <ul className={NavigationCSS.nav_links}>
         <div
           className={
             userRegistred
-              ? NavigationCSS.profile_block
-              : NavigationCSS.profile_hide
+              ? NavigationCSS.profil_block
+              : NavigationCSS.profil_hide
           }
         >
-          <li className={NavigationCSS.profile}>
+          <li className={NavigationCSS.profil}>
             <a
               href={`http://localhost:3000/users/${localStorage.getItem(
                 "userId"
               )}`}
-              className={NavigationCSS.photoProfil}
+              className={NavigationCSS.profil_photo}
             >
-              <img
-                src={pathImg !== "" ? pathImg : ProfileImg}
-                className={NavigationCSS.photoProfil}
-              />
+              <img src={pathImg !== "" ? pathImg : ProfileImg} alt="" />
             </a>
             <a
               href={`http://localhost:3000/users/${localStorage.getItem(
                 "userId"
               )}`}
-              className={NavigationCSS.textProfil}
+              className={NavigationCSS.profil_nickname}
             >
               {`${fullName} ${lastName}`}
             </a>
           </li>
-          <li className={NavigationCSS.settings}>
-            <img src={SettingsIMG} alt="" />
-            <NavLink
-              to="./settingsProfil"
-              className={(NavigationCSS.settings, NavigationCSS.textProfil)}
-            >
+          <NavLink
+            to="./settingsProfil"
+            className={(NavigationCSS.profil_settings, NavigationCSS.nav_a)}
+            onClick={() => {
+              setToggleClass((prevState: boolean) => !prevState);
+            }}
+          >
+            <li className={NavigationCSS.profil_settings}>
+              <img src={SettingsIMG} alt="" className={NavigationCSS.nav_img} />
               Настройки
-            </NavLink>
-          </li>
-          <li className={NavigationCSS.exit}>
-            <img src={ExitIMG} alt="" />
-            <NavLink
-              to="./questions"
-              className={(NavigationCSS.allQuestions, NavigationCSS.textProfil)}
-              onClick={() => {
-                exit(
-                  setUserId,
-                  setUserRegistred,
-                  localStorage.removeItem("userId")
-                );
-              }}
-            >
+            </li>
+          </NavLink>
+          <NavLink
+            to="./questions"
+            className={NavigationCSS.nav_a}
+            onClick={() => {
+              exit(
+                setUserId,
+                setUserRegistred,
+                localStorage.removeItem("userId")
+              );
+              setToggleClass((prevState: boolean) => !prevState);
+            }}
+          >
+            <li className={NavigationCSS.profil_settings}>
+              <img src={ExitIMG} alt="" className={NavigationCSS.nav_img} />
               Выход
-            </NavLink>
-          </li>
-          <li className={NavigationCSS.allTags}>
-            <img src={allTagsIMG} alt="" />
-            <NavLink
-              to="./myFeed"
-              className={(NavigationCSS.allTags, NavigationCSS.text)}
-            >
+            </li>
+          </NavLink>
+          <NavLink
+            to="./myFeed"
+            className={NavigationCSS.nav_a}
+            onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+          >
+            <li className={NavigationCSS.nav_li}>
+              <img src={allTagsIMG} alt="" className={NavigationCSS.nav_img} />
               Моя лента
-            </NavLink>
-          </li>
+            </li>
+          </NavLink>
         </div>
 
         {/* ------------------------------------------------------------------------------ */}
         <div
           className={
             userRegistred
-              ? NavigationCSS.profile_hide
-              : NavigationCSS.profile_block
+              ? NavigationCSS.profil_hide
+              : NavigationCSS.profil_block
           }
         >
-          <li className={NavigationCSS.signIn}>
-            <img src={signInIMG} alt="" />
-            <NavLink to="/SignIn" className={NavigationCSS.signIn}>
+          <li className={NavigationCSS.profil_signin}>
+            <NavLink to="/SignIn" className={NavigationCSS.nav_a}>
+              <img src={signInIMG} alt="" className={NavigationCSS.nav_img} />
               Войти на сайт
             </NavLink>
           </li>
         </div>
-        <li className={NavigationCSS.allQuestions}>
-          <img src={allQuestionsIMG} alt="" />
-          <NavLink
-            to="/questions"
-            className={(NavigationCSS.allQuestions, NavigationCSS.text)}
-          >
+        <NavLink
+          to="/questions"
+          className={NavigationCSS.nav_a}
+          onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+        >
+          <li className={NavigationCSS.nav_li}>
+            <img
+              src={allQuestionsIMG}
+              alt=""
+              className={NavigationCSS.nav_img}
+            />
             Все вопросы
-          </NavLink>
-        </li>
-        <li className={NavigationCSS.allTags}>
-          <img src={allTagsIMG} alt="" />
-          <NavLink
-            to="./tags"
-            className={(NavigationCSS.allTags, NavigationCSS.text)}
-          >
+          </li>
+        </NavLink>
+        <NavLink
+          to="./tags"
+          className={NavigationCSS.nav_a}
+          onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+        >
+          <li className={NavigationCSS.nav_li}>
+            <img src={allTagsIMG} alt="" className={NavigationCSS.nav_img} />
             Все теги
-          </NavLink>
-        </li>
-        <li className={NavigationCSS.users}>
-          <img src={usersIMG} alt="" />
-          <NavLink
-            to="./users"
-            className={(NavigationCSS.users, NavigationCSS.text)}
-          >
+          </li>
+        </NavLink>
+        <NavLink
+          to="./users"
+          className={NavigationCSS.nav_a}
+          onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+        >
+          <li className={NavigationCSS.nav_li}>
+            <img src={usersIMG} alt="" className={NavigationCSS.nav_img} />
             Пользователи
-          </NavLink>
-        </li>
+          </li>
+        </NavLink>
       </ul>
     </nav>
   );
