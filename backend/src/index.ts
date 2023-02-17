@@ -4,6 +4,8 @@ const fileUpload = require("express-fileupload");
 const app = express();
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
+const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
+const createQuestion = require("../dist/Routes/CreateQuestionRoutes");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
@@ -17,66 +19,11 @@ app.use(fileUpload());
 app.use("/signIn", signInRouter);
 // ----------------------------------------
 app.use("/signUp", signUpRouter);
-// ----------------------------------------------
-app.post("/createQuestion", async (req, res) => {
-  try {
-    const { questionTitle, questionTags, questionDetails, userId } = req.body;
-    console.log(questionTitle, questionTags, questionDetails, userId);
-    let idTags = await pool.query("SELECT * FROM tags WHERE name_tag = $1", [
-      questionTags,
-    ]);
-
-    if (!idTags.rows[0]) {
-      return res.status(404).json({
-        status: "ERROR",
-        message: "Не правильно заполненны поля",
-      });
-    }
-    let date = new Date();
-    let date2 = Date.now();
-    let getDate = await pool.query(`SELECT NOW()`);
-
-    let createNewQustions = await pool.query(
-      "INSERT INTO questions (user_id, question_title,question_tags,question_details,date_of_creation) VALUES($1,$2,$3,$4,$5)",
-      [
-        userId,
-        questionTitle,
-        idTags.rows[0].tags_id,
-        questionDetails,
-        getDate.rows[0].now,
-      ]
-    );
-    let getIdQustions = await pool.query(
-      "SELECT * FROM questions WHERE user_id = $1 AND question_title = $2 AND question_tags = $3 AND question_details = $4",
-      [userId, questionTitle, idTags.rows[0].tags_id, questionDetails]
-    );
-
-    let addInQuestionAndTags = await pool.query(
-      "INSERT INTO question_and_tags (user_id_from_users, tag_id_from_tags ) VALUES($1,$2)",
-      [userId, idTags.rows[0].tags_id]
-    );
-    let IdQustions = await pool.query(
-      "SELECT * FROM questions WHERE user_id = $1",
-      [userId]
-    );
-    // console.log(IdQustions.rows[0].questions_id);
-    // let addUserIdInAnswers = await pool.query(
-    //   "INSERT INTO answers (question_id_from_questions, user_id_from_users) VALUES($1,$2)",
-    //   [IdQustions.rows[0].questions_id, userId]
-    // );
-    return res.status(200).json({
-      status: "SUCCESS",
-      questions: {
-        questionTitle: questionTitle,
-        questionTags: questionTags,
-        questionDetails: questionDetails,
-        userId: userId,
-      },
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
+// ----------------------------------------
+app.use("/getInformationAboutUser", getInfoAboutUserRouter);
+// ----------------------------------------
+app.use("/createQuestion", createQuestion);
+// ----------------------------------------
 app.post("/upload/:id", async (req: any, res) => {
   let { id } = req.params;
   const file = req.files.file;
@@ -174,35 +121,7 @@ app.post("/settingsProfile", async (req, res) => {
     console.log(err);
   }
 });
-app.get("/getInformationAboutUser", async (req, res) => {
-  try {
-    let getInfomationAboutUser =
-      await pool.query(`select users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
-    join users on user_id_from_users = user_id;`);
-    res.status(200).json({
-      message: "Вы получили информацию о пользователе",
-      body: getInfomationAboutUser.rows,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-app.get("/getInformationAboutUser/:id", async (req, res) => {
-  try {
-    let { id } = req.params;
-    let getInfomationAboutUser = await pool.query(
-      `select users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
-      join users on user_id_from_users = user_id where user_id_from_users = $1`,
-      [id]
-    );
-    res.status(200).json({
-      message: "Вы получили информацию о пользователе",
-      body: getInfomationAboutUser.rows[0],
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
+
 app.get("/users", async (req, res) => {
   try {
     res.status(200).json({ message: "Сервер работает на порту 9999" });

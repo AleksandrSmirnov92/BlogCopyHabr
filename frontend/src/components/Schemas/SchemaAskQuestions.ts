@@ -2,7 +2,7 @@ import * as yup from "yup";
 const upperCase = /(^[А-Я])/;
 const questionMarkAtTheEnd = /(\?$)/;
 export const schemaForAskQuestions = yup.object().shape({
-  questionHeader: yup
+  question_title: yup
     .string()
     .matches(
       upperCase,
@@ -14,10 +14,14 @@ export const schemaForAskQuestions = yup.object().shape({
       "Переформулируйте вопрос так, чтобы он заканчивался знаком вопроса"
     )
     .required("Это обязательное поле"),
-  questionTags: yup.string().max(10, "Название тега слишком длинное"),
+  question_tags: yup.string().max(10, "Название тега слишком длинное"),
 
-  questionDetails: yup
+  question_details: yup
     .string()
+    .matches(
+      upperCase,
+      "По правилам русского языка заголовок (и каждое новое предложение) начинается с заглавной буквы"
+    )
     .min(30, "Текст вопроса не может быть менее 30 и более 10 тысяч символов")
     .required("Это обязательное поле"),
 });

@@ -4,14 +4,14 @@ import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions
 import AskQuestionsCSS from "./AskQuestion.module.css";
 
 interface MyValues {
-  questionHeader: string;
-  questionTags: string;
-  questionDetails: string;
+  question_title: string;
+  question_tags: string;
+  question_details: string;
 }
 const correctName = (
   nameTag: string,
   massivTags: { name_tag: string; img_Tag: string }[]
-): any => {
+) => {
   let include = massivTags
     .map((item) => item.name_tag.toLowerCase())
     .includes(nameTag.toLowerCase());
@@ -19,12 +19,12 @@ const correctName = (
     (item) => item.name_tag.toLowerCase() === nameTag.toLowerCase()
   );
   if (!include) {
-    return false;
+    return "";
   }
   return find.name_tag;
 };
 
-const AskQuestion = () => {
+const AskQuestion: React.FC = () => {
   let [nameTag, setNameTag] = useState("");
   let [error, setError] = useState("");
   let [massivTags, setMassivTags] = useState([]);
@@ -39,8 +39,8 @@ const AskQuestion = () => {
       });
   }, [setMassivTags]);
   const onSubmit = async (values: MyValues, actions: any) => {
-    values.questionTags = nameTag;
-    if (!correctName(values.questionTags, massivTags)) {
+    values.question_tags = nameTag;
+    if (!correctName(values.question_tags, massivTags)) {
       setError("Такого тега не существует");
     } else {
       setError("");
@@ -48,9 +48,9 @@ const AskQuestion = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          questionTitle: values.questionHeader,
-          questionTags: values.questionTags,
-          questionDetails: values.questionDetails,
+          questionTitle: values.question_title,
+          questionTags: values.question_tags,
+          questionDetails: values.question_details,
           userId: localStorage.getItem("userId"),
         }),
       })
@@ -75,155 +75,159 @@ const AskQuestion = () => {
     handleSubmit,
   } = useFormik<MyValues>({
     initialValues: {
-      questionHeader: "",
-      questionTags: "",
-      questionDetails: "",
+      question_title: "",
+      question_tags: "",
+      question_details: "",
     },
     onSubmit,
     validationSchema: schemaForAskQuestions,
   });
-  return (
-    <div className={AskQuestionsCSS.mainContainer}>
-      <h3 className={AskQuestionsCSS.questionText}>Новый вопрос</h3>
-      <div className={AskQuestionsCSS.questionContainer}>
-        <form onSubmit={handleSubmit} className={AskQuestionsCSS.questionForm}>
-          <label className={AskQuestionsCSS.questionLabel}>Суть вопроса</label>
-          <span className={AskQuestionsCSS.questionClarification}>
-            Сформулируйте вопрос так, чтобы сразу было понятно, о чём речь.
-          </span>
-          <input
-            id="questionHeader"
-            type="text"
-            value={values.questionHeader}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={
-              errors.questionHeader && touched.questionHeader
-                ? AskQuestionsCSS.inputError
-                : AskQuestionsCSS.questionInput
-            }
-          />
-          {errors.questionHeader && touched.questionHeader ? (
-            <span className={AskQuestionsCSS.error}>
-              {errors.questionHeader}
-            </span>
-          ) : (
-            ""
-          )}
-          <label className={AskQuestionsCSS.questionLabel}>Тэги вопроса</label>
-          <span className={AskQuestionsCSS.questionClarification}>
-            Укажите от 1 до 5 тегов — предметных областей, к которым вопрос
-            относится.
-          </span>
-          <input
-            id="questionTags"
-            type="text"
-            value={nameTag}
-            onChange={(e) => {
-              handleChange(e);
-              setNameTag(e.target.value);
-            }}
-            onBlur={(e) => {
-              if (!correctName(nameTag, massivTags)) {
-                if (nameTag === "") {
-                  return setError("Обязательное поле");
-                }
-                return setError("Такого тега не существует");
-              } else {
-                setNameTag(correctName(e.target.value, massivTags));
-                setError("");
-                handleChange(e);
-                handleBlur(e);
-              }
-            }}
-            className={
-              errors.questionTags && touched.questionTags
-                ? AskQuestionsCSS.inputError
-                : AskQuestionsCSS.questionInput
-            }
-          />
-          {errors.questionTags && touched.questionTags ? (
-            <span className={AskQuestionsCSS.error}>{errors.questionTags}</span>
-          ) : (
-            ""
-          )}
-          {error ? <span className={AskQuestionsCSS.error}>{error}</span> : ""}
-          <div className={AskQuestionsCSS.tags}>
-            <ul
-              className={
-                nameTag !== "" && !correctName(nameTag, massivTags)
-                  ? AskQuestionsCSS.modalTagUL
-                  : ""
-              }
-            >
-              {massivTags
-                .filter((item) =>
-                  item.name_tag.toLowerCase().includes(nameTag.toLowerCase())
-                )
-                .map((item, index) => {
-                  if (nameTag !== "" && nameTag !== item.name_tag) {
-                    return (
-                      <li
-                        onClick={() => {
-                          setNameTag(item.name_tag);
-                          console.log(item.name_tag);
-                          console.log(item.img_tag);
-                          if (!correctName(item.name_tag, massivTags)) {
-                            setError("Такого тега не существует");
-                          } else {
-                            setError("");
-                          }
-                        }}
-                        key={index}
-                        className={AskQuestionsCSS.modalTag}
-                      >
-                        <img src={item.img_tag} alt="" />
-                        {item.name_tag}
-                      </li>
-                    );
-                  }
-                })}
-            </ul>
-          </div>
 
-          <label className={AskQuestionsCSS.questionLabel}>
-            Детали вопроса
-          </label>
-          <span className={AskQuestionsCSS.questionClarification}>
-            Опишите в подробностях свой вопрос, чтобы получить более точный
-            ответ.
+  return (
+    <div className={AskQuestionsCSS.question_container}>
+      <h3 className={AskQuestionsCSS.question_title}>Новый вопрос</h3>
+      <form onSubmit={handleSubmit} className={AskQuestionsCSS.input_group}>
+        <label>Суть вопроса</label>
+        <span className={AskQuestionsCSS.input_group_text}>
+          Сформулируйте вопрос так, чтобы сразу было понятно, о чём речь.
+        </span>
+        <input
+          id="question_title"
+          type="text"
+          value={values.question_title}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          className={
+            errors.question_title && touched.question_title
+              ? AskQuestionsCSS.form_control__error
+              : AskQuestionsCSS.form_control
+          }
+        />
+        {errors.question_title && touched.question_title ? (
+          <span className={AskQuestionsCSS.form_control__error__message}>
+            {errors.question_title}
           </span>
-          <textarea
-            id="questionDetails"
-            value={values.questionDetails}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={
-              errors.questionDetails && touched.questionDetails
-                ? AskQuestionsCSS.inputError
-                : AskQuestionsCSS.questionInput
+        ) : (
+          ""
+        )}
+        <label>Тэги вопроса</label>
+        <span className={AskQuestionsCSS.input_group_text}>
+          Укажите тег — предметных областей (HTML,CSS,JavaScript,React,Vue,Git),
+          к которым вопрос относится.
+        </span>
+        <input
+          id="question_tags"
+          type="text"
+          value={nameTag}
+          onChange={(e) => {
+            handleChange(e);
+            setNameTag(e.target.value);
+          }}
+          onBlur={(e) => {
+            if (!correctName(nameTag, massivTags)) {
+              if (nameTag === "") {
+                return setError("Обязательное поле");
+              }
+              return setError("Такого тега не существует");
+            } else {
+              setNameTag(correctName(e.target.value, massivTags));
+              setError("");
+              handleChange(e);
+              handleBlur(e);
             }
-          ></textarea>
-          {errors.questionDetails && touched.questionDetails ? (
-            <span className={AskQuestionsCSS.error}>
-              {errors.questionDetails}
-            </span>
-          ) : (
-            ""
-          )}
-          <button
-            type="submit"
+          }}
+          className={
+            errors.question_tags && touched.question_tags
+              ? AskQuestionsCSS.form_control__error
+              : AskQuestionsCSS.form_control
+          }
+        />
+        {errors.question_tags && touched.question_tags ? (
+          <span className={AskQuestionsCSS.form_control__error__message}>
+            {errors.question_tags}
+          </span>
+        ) : (
+          ""
+        )}
+        {error ? (
+          <span className={AskQuestionsCSS.form_control__error__message}>
+            {error}
+          </span>
+        ) : (
+          ""
+        )}
+        <div className={AskQuestionsCSS.pop_up_container}>
+          <ul
             className={
-              isSubmitting
-                ? AskQuestionsCSS.postQuestionFalse
-                : AskQuestionsCSS.postQuestionTrue
+              nameTag !== "" && !correctName(nameTag, massivTags)
+                ? AskQuestionsCSS.pop_up
+                : ""
             }
-            disabled={isSubmitting}
           >
-            <span>Опубликовать</span>
-          </button>
-        </form>
-      </div>
+            {massivTags
+              .filter((item) =>
+                item.name_tag.toLowerCase().includes(nameTag.toLowerCase())
+              )
+              .map((item, index) => {
+                if (nameTag !== "" && nameTag !== item.name_tag) {
+                  return (
+                    <li
+                      onClick={() => {
+                        setNameTag(item.name_tag);
+                        console.log(item.name_tag);
+                        console.log(item.img_tag);
+                        if (!correctName(item.name_tag, massivTags)) {
+                          setError("Такого тега не существует");
+                        } else {
+                          setError("");
+                        }
+                      }}
+                      key={index}
+                      className={AskQuestionsCSS.pop_up_tag}
+                    >
+                      <img
+                        src={item.img_tag}
+                        alt=""
+                        className={AskQuestionsCSS.pop_up_img}
+                      />
+                      {item.name_tag}
+                    </li>
+                  );
+                }
+              })}
+          </ul>
+        </div>
+
+        <label>Детали вопроса</label>
+        <span className={AskQuestionsCSS.input_group_text}>
+          Опишите в подробностях свой вопрос, чтобы получить более точный ответ.
+        </span>
+        <textarea
+          id="question_details"
+          value={values.question_details}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          className={
+            errors.question_details && touched.question_details
+              ? AskQuestionsCSS.form_control__error
+              : AskQuestionsCSS.form_control
+          }
+        ></textarea>
+        {errors.question_details && touched.question_details ? (
+          <span className={AskQuestionsCSS.form_control__error__message}>
+            {errors.question_details}
+          </span>
+        ) : (
+          ""
+        )}
+        <button
+          type="submit"
+          className={AskQuestionsCSS.btn}
+          disabled={isSubmitting}
+        >
+          <span>Опубликовать</span>
+        </button>
+      </form>
     </div>
   );
 };

@@ -1,41 +1,59 @@
-.mainContainer {
+.question_container {
   padding-left: 40px;
   padding-right: 40px;
-  /* background-color: white; */
   height: 100%;
 }
-h3.questionText {
+.question_title {
   margin-top: 0;
   padding-top: 15px;
   border-bottom: 1px #f0f0f0 solid;
   padding-bottom: 25px;
 }
 
-.questionForm {
+.input_group {
   display: flex;
   flex-direction: column;
 }
-label.questionLabel {
+.input_group > label {
   color: black;
   font-size: 15px;
   font-weight: bold;
   padding-bottom: 20px;
 }
-span.questionClarification {
+.input_group_text {
   color: #aeb8bc;
   font-size: 13px;
   padding-bottom: 10px;
 }
-input.questionInput {
+.form_control {
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 10px;
   border: 1px #f0f0f0 solid;
   border-radius: 4px;
 }
-input.questionInput:focus {
+.form_control:focus {
   outline: none;
   border: 1px #2d72d9 solid;
+}
+.form_control__error {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+}
+.form_control__error:focus {
+  border: red 1px solid;
+}
+.form_control__error:hover {
+  border: red 1px solid;
+}
+.form_control__error__message {
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 20px;
 }
 textarea {
   resize: vertical;
@@ -48,73 +66,55 @@ textarea:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-.postQuestionFalse {
+.btn {
   display: flex;
   justify-content: center;
   margin-top: 40px;
   background-color: white;
   color: #93d3a0;
   border: 1px #93d3a0 solid;
-  padding: 0;
-  width: 20%;
-  cursor: not-allowed;
-}
-.postQuestionTrue {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-  background-color: white;
-  color: #64bd76;
-  border: 1px #64bd76 solid;
-  padding: 0;
+  /* padding-left: 10px;
+  padding-right: 10px; */
   width: 20%;
   cursor: pointer;
 }
-.inputError {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  border: red 1px solid;
-  border-radius: 4px;
-
-  /* margin-bottom: 10px; */
+.btn > span {
+  font-size: 12px;
 }
-.inputError:focus {
-  border: red 1px solid;
-}
-.inputError:hover {
-  border: red 1px solid;
-}
-.error {
-  color: red;
-  font-size: 13px;
-  font-weight: bold;
-  padding-bottom: 20px;
-}
-
-.tags {
+.pop_up_container {
   position: relative;
 }
-.modalTagUL {
+.pop_up_img {
+  width: 40px;
+  height: 40px;
+}
+.pop_up {
+  list-style-type: none;
   position: absolute;
   background-color: white;
   border: 1px black solid;
+  cursor: pointer;
 }
-.modalTag {
+.pop_up_tag {
   padding-left: 40px;
   padding-right: 40px;
 }
-.modalTag:hover {
+.pop_up_tag:hover {
   background-color: rgb(180, 177, 177);
 }
-/* .buttonTags {
-  margin: 10px;
-  width: 100%;
-  color: black;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid black;
-  border-radius: none;
-  padding: 0px 3px 0px 3px;
-} */
+@media (max-width: 1350px) {
+}
+@media (max-width: 991px) {
+}
+@media (max-width: 767px) {
+  .btn {
+    width: 20%;
+  }
+}
+@media (max-width: 720px) {
+  .btn {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 30%;
+  }
+}

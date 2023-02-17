@@ -16,7 +16,6 @@ interface State {
 const SignIn: React.FC = () => {
   const [error, setError] = useState<State>({ status: "", message: "" });
   const onSubmit = async (values: MyValues, actions: FormikValues) => {
-    console.log(values);
     fetch("/signIn", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

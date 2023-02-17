@@ -10,6 +10,39 @@ import usersIMG from "../../../../images/users.png";
 import ProfileImg from "../../../../images/photoProfil.png";
 import NavImg from "../../../../images/nav.png";
 import { NavLink } from "react-router-dom";
+
+const exit = (
+  setUserId: React.Dispatch<React.SetStateAction<string>>,
+  setUserRegistred: React.Dispatch<React.SetStateAction<boolean>>,
+  localStorage: any
+) => {
+  setTimeout(() => {
+    document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    setUserId(localStorage);
+    setUserRegistred(false);
+  }, 1000);
+};
+const getInformationAboutUser = async (
+  setPathImg: React.Dispatch<React.SetStateAction<string>>,
+  setFullName: React.Dispatch<React.SetStateAction<string>>,
+  setLastName: React.Dispatch<React.SetStateAction<string>>
+) => {
+  const res = await fetch(
+    `/getInformationAboutUser/${localStorage.getItem("userId")}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  const data = await res.json();
+  setPathImg(data.body.img);
+  if (data.body.fullname !== "" || data.body.lastname !== "") {
+    setFullName(data.body.fullname);
+    setLastName(data.body.lastname);
+    return;
+  }
+  setFullName(data.body.email);
+};
 interface Props {
   toggleClass: boolean;
   setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,38 +63,6 @@ const Navigation: React.FC<Props> = ({
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
 
-  const exit = (
-    setUserId: React.Dispatch<React.SetStateAction<string>>,
-    setUserRegistred: React.Dispatch<React.SetStateAction<boolean>>,
-    localStorage: any
-  ) => {
-    setTimeout(() => {
-      document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-      setUserId(localStorage);
-      setUserRegistred(false);
-    }, 1000);
-  };
-  const getInformationAboutUser = async (
-    setPathImg: React.Dispatch<React.SetStateAction<string>>,
-    setFullName: React.Dispatch<React.SetStateAction<string>>,
-    setLastName: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    const res = await fetch(
-      `/getInformationAboutUser/${localStorage.getItem("userId")}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    const data = await res.json();
-    setPathImg(data.body.img);
-    if (data.body.fullname !== "" || data.body.lastname !== "") {
-      setFullName(data.body.fullname);
-      setLastName(data.body.lastname);
-      return;
-    }
-    setFullName(data.body.email);
-  };
   useEffect(() => {
     getInformationAboutUser(setPathImg, setFullName, setLastName);
     function getCookie(name: string): string {
