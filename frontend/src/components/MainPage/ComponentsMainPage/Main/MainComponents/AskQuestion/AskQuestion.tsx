@@ -159,7 +159,13 @@ const AskQuestion: React.FC = () => {
         <div className={AskQuestionsCSS.pop_up_container}>
           <ul
             className={
-              nameTag !== "" && !correctName(nameTag, massivTags)
+              nameTag !== null &&
+              nameTag !== "" &&
+              (!correctName(nameTag, massivTags) ||
+                correctName(nameTag, massivTags) !== nameTag) &&
+              massivTags.filter((item) =>
+                item.name_tag.toLowerCase().includes(nameTag.toLowerCase())
+              ).length > 0
                 ? AskQuestionsCSS.pop_up
                 : ""
             }
@@ -174,8 +180,6 @@ const AskQuestion: React.FC = () => {
                     <li
                       onClick={() => {
                         setNameTag(item.name_tag);
-                        console.log(item.name_tag);
-                        console.log(item.img_tag);
                         if (!correctName(item.name_tag, massivTags)) {
                           setError("Такого тега не существует");
                         } else {

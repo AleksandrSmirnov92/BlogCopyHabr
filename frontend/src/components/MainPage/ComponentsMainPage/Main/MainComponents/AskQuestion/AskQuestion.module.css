@@ -70,6 +70,7 @@ textarea:focus {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+  margin-bottom: 30px;
   background-color: white;
   color: #93d3a0;
   border: 1px #93d3a0 solid;
