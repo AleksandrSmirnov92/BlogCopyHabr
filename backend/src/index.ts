@@ -6,6 +6,8 @@ const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
 const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
 const createQuestion = require("../dist/Routes/CreateQuestionRoutes");
+const updateProfileRouter = require("../dist/Routes/UpdateProfileRoutes");
+const updateAvatarRouter = require("../dist/Routes/UpdateAvatarRouters");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
@@ -24,103 +26,10 @@ app.use("/getInformationAboutUser", getInfoAboutUserRouter);
 // ----------------------------------------
 app.use("/createQuestion", createQuestion);
 // ----------------------------------------
-app.post("/upload/:id", async (req: any, res) => {
-  let { id } = req.params;
-  const file = req.files.file;
-  let addInformationInAboutUser = await pool.query(
-    `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
-    [`/uploads/${file.name}`, id]
-  );
-  const pathUpload = path.resolve(__dirname, "../../Frontend/public/uploads");
-  if (!req.files) {
-    return res.status(404).json({
-      message: "Загрузите фотографию",
-    });
-  }
-  if (fs.existsSync(`${pathUpload}/${file.name}`)) {
-    return res.status(200).json({
-      filePath: `/uploads/${file.name}`,
-    });
-  }
-  file.mv(
-    `${pathUpload}/${file.name}`,
-
-    (err: any) => {
-      if (err) {
-        return res.status(500).json({ err: err });
-      }
-      return res.status(200).json({
-        filePath: `/uploads/${file.name}`,
-      });
-    }
-  );
-});
-app.delete("/deleteImg/:id", async (req, res) => {
-  let { id } = req.params;
-  let addInformationInAboutUser = await pool.query(
-    `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
-    [``, id]
-  );
-  let filePath = req.body.path;
-  const pathUpload = path.resolve(
-    __dirname,
-    `../../Frontend/public/${filePath}`
-  );
-  fs.unlink(pathUpload, (err: any) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.status(200).json({
-        filePath: ``,
-      });
-    }
-  });
-  console.log(pathUpload);
-});
-
-app.post("/settingsProfile", async (req, res) => {
-  let {
-    id,
-    img,
-    fullName,
-    lastName,
-    contacts,
-    linkToContacts,
-    briefly_about_yourself,
-    informattion_about_user,
-    country,
-    region,
-    town,
-  } = req.body;
-
-  try {
-    let addInformationInAboutUser = await pool.query(
-      `UPDATE about_user SET fullname = $1,lastname = $2,contacts = $3,linktocontacts = $4,briefly_about_yourself = $5,informattion_about_user = $6,country = $7,region = $8,town = $9 WHERE user_id_from_users = $10`,
-      [
-        fullName,
-        lastName,
-        contacts,
-        linkToContacts,
-        briefly_about_yourself,
-        informattion_about_user,
-        country,
-        region,
-        town,
-        id,
-      ]
-    );
-    let getInfomationAboutUser = await pool.query(
-      `SELECT * FROM about_user WHERE user_id_from_users = $1`,
-      [id]
-    );
-    res.status(200).json({
-      message: "Вы загрузили форму о пользователе",
-      body: getInfomationAboutUser.rows[0],
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
+app.use("/updateProfile", updateProfileRouter);
+// ----------------------------------------
+app.use("/updateAvatar", updateAvatarRouter);
+// ----------------------------------------
 
 app.get("/users", async (req, res) => {
   try {

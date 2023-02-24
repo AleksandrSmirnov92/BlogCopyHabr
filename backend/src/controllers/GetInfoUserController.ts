@@ -4,7 +4,7 @@ import { pool } from "../db.js";
 exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
   try {
     let getInfomationAboutUser =
-      await pool.query(`select users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
+      await pool.query(`select  users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
       join users on user_id_from_users = user_id;`);
     res.status(200).json({
       message: "Вы получили информацию о пользователе",
@@ -18,7 +18,7 @@ exports.getInfoAboutUser = async (req: Request, res: Response) => {
   try {
     let { id } = req.params;
     let getInfomationAboutUser = await pool.query(
-      `select users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
+      `select  users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname, about_user.contacts, about_user.linktocontacts, about_user.briefly_about_yourself,about_user.informattion_about_user ,about_user.country ,about_user.region ,about_user.town from about_user
         join users on user_id_from_users = user_id where user_id_from_users = $1`,
       [id]
     );
