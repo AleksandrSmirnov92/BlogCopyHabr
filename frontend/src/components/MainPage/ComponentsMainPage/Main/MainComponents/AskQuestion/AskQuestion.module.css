@@ -44,6 +44,7 @@
   border-radius: 4px;
 }
 .form_control__error:focus {
+  outline: none;
   border: red 1px solid;
 }
 .form_control__error:hover {

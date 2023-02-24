@@ -24,6 +24,7 @@ h3 {
     grid-template-areas: "questionPanel questionPanel questionPanel" "main main main" "footer footer footer";
     grid-template-columns: 1fr;
     grid-template-rows: 65px;
+    height: 100%;
   }
 }
 @media (max-width: 991px) {

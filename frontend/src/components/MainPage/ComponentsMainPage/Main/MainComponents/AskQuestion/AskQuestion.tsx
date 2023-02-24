@@ -124,20 +124,20 @@ const AskQuestion: React.FC = () => {
             setNameTag(e.target.value);
           }}
           onBlur={(e) => {
-            if (!correctName(nameTag, massivTags)) {
-              if (nameTag === "") {
-                return setError("Обязательное поле");
+            handleBlur(e);
+            if (!correctName(nameTag.trim(), massivTags)) {
+              if (nameTag.trim() === "") {
+                setNameTag(e.target.value.trim());
+                return setError("Это обязательное поле");
               }
               return setError("Такого тега не существует");
             } else {
-              setNameTag(correctName(e.target.value, massivTags));
+              setNameTag(correctName(e.target.value.trim(), massivTags));
               setError("");
-              handleChange(e);
-              handleBlur(e);
             }
           }}
           className={
-            errors.question_tags && touched.question_tags
+            (errors.question_tags || error !== "") && touched.question_tags
               ? AskQuestionsCSS.form_control__error
               : AskQuestionsCSS.form_control
           }
@@ -159,7 +159,6 @@ const AskQuestion: React.FC = () => {
         <div className={AskQuestionsCSS.pop_up_container}>
           <ul
             className={
-              nameTag !== null &&
               nameTag !== "" &&
               (!correctName(nameTag, massivTags) ||
                 correctName(nameTag, massivTags) !== nameTag) &&
@@ -178,13 +177,8 @@ const AskQuestion: React.FC = () => {
                 if (nameTag !== "" && nameTag !== item.name_tag) {
                   return (
                     <li
-                      onClick={() => {
+                      onMouseDown={(e) => {
                         setNameTag(item.name_tag);
-                        if (!correctName(item.name_tag, massivTags)) {
-                          setError("Такого тега не существует");
-                        } else {
-                          setError("");
-                        }
                       }}
                       key={index}
                       className={AskQuestionsCSS.pop_up_tag}
