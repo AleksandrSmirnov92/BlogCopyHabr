@@ -4,8 +4,12 @@ import { pool } from "../db.js";
 exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
   try {
     let getInfomationAboutUser =
-      await pool.query(`select  users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from about_user
-      join users on user_id_from_users = user_id;`);
+      await pool.query(`select (select count(*) from answers where responce_userid = user_id) as answers,(select count(*) from questions where questions.user_id = users.user_id) as questions, users.email, users.user_id, about_user.img,users.nickname,about_user.lastname,about_user.fullname from  about_user
+      join users on user_id_from_users = user_id ;`);
+    let get = await pool.query(
+      `select count(*) from questions where questions.user_id = user_id;`
+    );
+    console.log(get.rows);
     res.status(200).json({
       message: "Вы получили информацию о пользователе",
       body: getInfomationAboutUser.rows,
