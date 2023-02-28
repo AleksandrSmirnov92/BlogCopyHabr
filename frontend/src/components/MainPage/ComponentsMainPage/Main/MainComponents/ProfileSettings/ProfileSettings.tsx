@@ -38,21 +38,7 @@ const resetContacts = (
     setLinkContactsValue("");
   }
 };
-const locationCheck = (
-  e: string,
-  setRegion: React.Dispatch<React.SetStateAction<string>>,
-  setTown: React.Dispatch<React.SetStateAction<string>>
-) => {
-  switch (e) {
-    case "Страна":
-      setRegion("Регион");
-      setTown("Город");
-      break;
-    case "Регион":
-      setTown("Город");
-      break;
-  }
-};
+
 const sendAvatar = async (
   selectedFile: File,
   setPathImg: React.Dispatch<React.SetStateAction<string>>
@@ -130,6 +116,17 @@ const ProfileSettings: React.FC = () => {
   let [region, setRegion] = useState("Регион");
   let [town, setTown] = useState("Город");
   const myRef = useRef<HTMLInputElement>();
+  const locationCheck = (e: string) => {
+    switch (e) {
+      case "Страна":
+        setRegion("Регион");
+        setTown("Город");
+        break;
+      case "Регион":
+        setTown("Город");
+        break;
+    }
+  };
   const onSubmit = async () => {
     const res = await fetch("/updateProfile", {
       method: "PUT",
@@ -373,7 +370,7 @@ const ProfileSettings: React.FC = () => {
             onChange={(e) => {
               handleChange(e);
               setCountry(e.target.value);
-              locationCheck(e.target.value, setCountry, setTown);
+              locationCheck(e.target.value);
             }}
             onBlur={handleBlur}
             className={`${ProfileSettingsCSS.form_select} ${ProfileSettingsCSS.fs_wd_md}`}
@@ -388,7 +385,7 @@ const ProfileSettings: React.FC = () => {
             onChange={(e) => {
               handleChange(e);
               setRegion(e.target.value);
-              locationCheck(e.target.value, setCountry, setTown);
+              locationCheck(e.target.value);
             }}
             onBlur={handleBlur}
             disabled={country === "Страна" ? true : false}
