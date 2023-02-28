@@ -8,18 +8,18 @@ const Tag = () => {
   let [nameTag, setNameTag] = useState("");
   let [countFollowers, setCountFollowers] = useState("");
   const searchCountFollowers = (nameTag: string, countFollowers: any): any => {
-    console.log(countFollowers[`${nameTag}`]);
+    // console.log(countFollowers[`${nameTag}`]);
     setCountFollowers(countFollowers[nameTag].count);
     return countFollowers[nameTag].count;
   };
   const getInformationTag = async () => {
-    let res = await fetch(`/informationTag/${tagId}`, {
+    let res = await fetch(`/tag/${tagId}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     let data = await res.json();
     console.log(data.body);
-    console.log(data.countFollowers);
+    // console.log(data.countFollowers);
     setDescription(data.body.description);
     setPathImg(data.body.img_tag);
     setNameTag(data.body.name_tag);

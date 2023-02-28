@@ -64,15 +64,16 @@ app.get("/tags", async (req, res) => {
     console.log(err);
   }
 });
-app.get("/informationTag/:id", async (req, res) => {
+app.get("/tag/:id", async (req, res) => {
   try {
     let { id } = req.params;
     let descriptionTag = await pool.query(
       "SELECT * FROM tags WHERE tags_id = $1",
       [id]
     );
+    console.log(descriptionTag.rows[0].name_tag);
     let countFollowersJavaScript = await pool.query(
-      "SELECT COUNT(*) FROM followers where javascript = $1",
+      `SELECT COUNT(*) FROM followers where ${descriptionTag.rows[0].name_tag} = $1`,
       ["true"]
     );
     let countFollowersHTML = await pool.query(
