@@ -1,12 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useFormik } from "formik";
 import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions";
 import AskQuestionsCSS from "./AskQuestion.module.css";
-
+import userIdContext from "../../../../../Context/Context";
 interface MyValues {
   question_title: string;
   question_tags: string;
   question_details: string;
+}
+interface Context {
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
+}
+function getCookie(name: string): RegExp | string {
+  let matches = document.cookie.match(
+    new RegExp(
+      "(?:^|; )" +
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
+  );
+  return matches ? decodeURIComponent(matches[1]) : "";
 }
 const correctName = (
   nameTag: string,
@@ -25,18 +39,23 @@ const correctName = (
 };
 
 const AskQuestion: React.FC = () => {
+  const { userId, setUserId } = useContext<Context>(userIdContext);
   let [nameTag, setNameTag] = useState("");
   let [error, setError] = useState("");
   let [massivTags, setMassivTags] = useState([]);
   useEffect(() => {
-    fetch("/tags", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMassivTags(response.tags);
-      });
+    if (userId !== null && getCookie("nickname")) {
+      fetch("/tags", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          setMassivTags(response.tags);
+        });
+    } else {
+      window.location.href = `http://localhost:3000/SignIn`;
+    }
   }, [setMassivTags]);
   const onSubmit = async (values: MyValues, actions: any) => {
     values.question_tags = nameTag;

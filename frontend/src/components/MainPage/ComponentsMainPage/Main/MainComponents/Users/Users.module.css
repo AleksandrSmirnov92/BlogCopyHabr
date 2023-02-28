@@ -1,17 +1,17 @@
-.mainContainer {
+.users_container {
   padding-left: 40px;
   padding-right: 40px;
 }
-h3.usersText {
+.users_container > h3 {
   border-bottom: 1px #f0f0f0 solid;
   padding-bottom: 20px;
 }
-.usersContainer {
+.users_block {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 }
-.userCard {
+.user_card {
   display: flex;
   padding-top: 15px;
   padding-left: 15px;
@@ -21,36 +21,60 @@ h3.usersText {
   background-color: white;
   border: 1px #f0f0f0 solid;
 }
-img.photoProfil {
-  width: 100%;
-  height: 100%;
-}
-a.photoProfil {
-  overflow: hidden;
-  display: flex;
-  align-items: center;
+.user_avatar {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
 }
-a.nickName {
-  width: 40%;
+.user_avatar > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.users_nickname {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1em;
   padding-top: 10px;
   padding-bottom: 20px;
   text-decoration: none;
   color: black;
 }
-.usersResponce {
+.users_stat {
+  display: flex;
+  justify-content: start;
   margin-bottom: 10px;
   padding-top: 15px;
   padding-bottom: 15px;
   border-top: 1px #f0f0f0 solid;
   border-bottom: 1px #f0f0f0 solid;
 }
-.usersCountAnswer {
-  text-decoration: none;
-  color: #2d72d9;
+.users_stat > span {
+  padding-right: 5px;
+  padding-left: 5px;
 }
-.usersCountAnswer:hover {
-  text-decoration: underline;
+.users_count {
+  color: #2d72d9;
+  font-weight: 700;
+}
+.users_notcount {
+  color: #939090;
+}
+
+@media (max-width: 1350px) {
+}
+@media (max-width: 1050px) {
+}
+@media (max-width: 950px) {
+}
+
+@media (max-width: 767px) {
+  .users_block {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+}
+@media (max-width: 480px) {
 }

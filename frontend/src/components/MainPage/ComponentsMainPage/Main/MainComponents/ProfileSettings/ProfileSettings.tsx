@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useFormik } from "formik";
 import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
-
+import userIdContext from "../../../../../Context/Context";
 interface MyValues {
   img: string;
   name: string;
@@ -15,6 +15,20 @@ interface MyValues {
   country: string;
   region: string;
   town: string;
+}
+interface Context {
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
+}
+function getCookie(name: string): RegExp | string {
+  let matches = document.cookie.match(
+    new RegExp(
+      "(?:^|; )" +
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
+  );
+  return matches ? decodeURIComponent(matches[1]) : "";
 }
 const resetContacts = (
   e: string,
@@ -49,11 +63,12 @@ const sendAvatar = async (
   }
   const formData = new FormData();
   formData.set("file", selectedFile);
-  const res = await fetch(`/upload/${localStorage.getItem("userId")}`, {
+  const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
     method: "POST",
     body: formData,
   });
   const data = await res.json();
+  console.log(data.filePath);
   setPathImg(data.filePath);
 };
 const deleteImg = async (
@@ -61,7 +76,7 @@ const deleteImg = async (
   setPathImg: React.Dispatch<React.SetStateAction<string>>,
   myRef: React.MutableRefObject<HTMLInputElement>
 ) => {
-  const res = await fetch(`/deleteImg/${localStorage.getItem("userId")}`, {
+  const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -107,6 +122,7 @@ const getSettingsInformation = async (
 };
 
 const ProfileSettings: React.FC = () => {
+  const { userId, setUserId } = useContext<Context>(userIdContext);
   let [value, setValue] = useState("");
   let [pathImg, setPathImg] = useState("");
   let [linkContactsValue, setLinkContactsValue] = useState("");
@@ -138,15 +154,19 @@ const ProfileSettings: React.FC = () => {
     }, 1000);
   };
   useEffect(() => {
-    getSettingsInformation(
-      values,
-      setValue,
-      setPathImg,
-      setLinkContactsValue,
-      setCountry,
-      setRegion,
-      setTown
-    );
+    if (userId !== null && getCookie("nickname")) {
+      getSettingsInformation(
+        values,
+        setValue,
+        setPathImg,
+        setLinkContactsValue,
+        setCountry,
+        setRegion,
+        setTown
+      );
+    } else {
+      window.location.href = `http://localhost:3000/SignIn`;
+    }
   }, [pathImg]);
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
     useFormik<MyValues>({
