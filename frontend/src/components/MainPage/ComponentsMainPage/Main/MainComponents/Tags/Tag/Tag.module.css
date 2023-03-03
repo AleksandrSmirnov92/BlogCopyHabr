@@ -34,20 +34,34 @@
   border-top: 1px #9099a3 solid;
   border-bottom: 1px #9099a3 solid;
 }
-.nav > a {
+.nav > div {
+  cursor: pointer;
   padding: 8px;
   text-decoration: none;
   color: #9099a3;
 }
-/* .main__links:hover {
+.nav > div:hover {
   color: black;
+  text-decoration: underline;
 }
-.main__links:focus {
+.nav > div:focus {
   color: black;
   border-bottom: 2px black solid;
-} */
-main > p {
+}
+main > div {
   font-size: 15px;
   padding-top: 20px;
   color: #333;
+}
+main > div > h4 {
+  color: #4f6173;
+  font-weight: 700px;
+  margin: 0;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.active {
+  font-weight: bold;
+  color: black;
+  text-decoration: underline;
 }

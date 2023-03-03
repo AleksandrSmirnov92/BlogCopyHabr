@@ -8,6 +8,9 @@ const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
 const createQuestion = require("../dist/Routes/CreateQuestionRoutes");
 const updateProfileRouter = require("../dist/Routes/UpdateProfileRoutes");
 const updateAvatarRouter = require("../dist/Routes/UpdateAvatarRouters");
+const tagInfoRouter = require("../dist/Routes/TagInfoRoutes.js");
+const tagsInfoRouter = require("../dist/Routes/TagsInfoRouters.js");
+const followersRouter = require("../dist/Routes/TagsInfoRouters.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
@@ -29,6 +32,12 @@ app.use("/createQuestion", createQuestion);
 app.use("/updateProfile", updateProfileRouter);
 // ----------------------------------------
 app.use("/updateAvatar", updateAvatarRouter);
+// ----------------------------------------
+app.use("/tag", tagInfoRouter);
+// ----------------------------------------
+app.use("/tags", tagsInfoRouter);
+// ----------------------------------------
+app.use("/followers", followersRouter);
 // ----------------------------------------
 
 app.get("/users", async (req, res) => {
@@ -64,168 +73,7 @@ app.get("/tags", async (req, res) => {
     console.log(err);
   }
 });
-app.get("/tag/:id", async (req, res) => {
-  try {
-    let { id } = req.params;
-    let descriptionTag = await pool.query(
-      "SELECT * FROM tags WHERE tags_id = $1",
-      [id]
-    );
-    console.log(descriptionTag.rows[0].name_tag);
-    let countFollowersJavaScript = await pool.query(
-      `SELECT COUNT(*) FROM followers where ${descriptionTag.rows[0].name_tag} = $1`,
-      ["true"]
-    );
-    let countFollowersHTML = await pool.query(
-      "SELECT COUNT(*) FROM followers where html = $1",
-      ["true"]
-    );
-    let countFollowersCSS = await pool.query(
-      "SELECT COUNT(*) FROM followers where css = $1",
-      ["true"]
-    );
-    let countFollowersReact = await pool.query(
-      "SELECT COUNT(*) FROM followers where react = $1",
-      ["true"]
-    );
-    let countFollowersVue = await pool.query(
-      "SELECT COUNT(*) FROM followers where vue = $1",
-      ["true"]
-    );
-    let countFollowersGit = await pool.query(
-      "SELECT COUNT(*) FROM followers where git = $1",
-      ["true"]
-    );
 
-    res.status(200).json({
-      message: "Вы получили информацию о тэге",
-      body: descriptionTag.rows[0],
-      countFollowers: {
-        JavaScript: countFollowersJavaScript.rows[0],
-        HTML: countFollowersHTML.rows[0],
-        CSS: countFollowersCSS.rows[0],
-        React: countFollowersReact.rows[0],
-        Vue: countFollowersVue.rows[0],
-        Git: countFollowersGit.rows[0],
-      },
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-app.get("/tags/:id", async (req, res) => {
-  let { id } = req.params;
-  console.log(req.params);
-  try {
-    let getTags;
-    if (id !== "null") {
-      getTags = await pool.query(
-        `SELECT * FROM tags join followers on followers_id_from_users = $1`,
-        [id]
-      );
-    } else {
-      getTags = await pool.query(`SELECT * FROM tags`);
-    }
-    let countFollowersJavaScript = await pool.query(
-      "SELECT COUNT(*) FROM followers where javascript = $1",
-      ["true"]
-    );
-    let countFollowersHTML = await pool.query(
-      "SELECT COUNT(*) FROM followers where html = $1",
-      ["true"]
-    );
-    let countFollowersCSS = await pool.query(
-      "SELECT COUNT(*) FROM followers where css = $1",
-      ["true"]
-    );
-    let countFollowersReact = await pool.query(
-      "SELECT COUNT(*) FROM followers where react = $1",
-      ["true"]
-    );
-    let countFollowersVue = await pool.query(
-      "SELECT COUNT(*) FROM followers where vue = $1",
-      ["true"]
-    );
-    let countFollowersGit = await pool.query(
-      "SELECT COUNT(*) FROM followers where git = $1",
-      ["true"]
-    );
-
-    res.status(200).json({
-      message: "Вы получили информацию о всех тегах",
-      tags: getTags.rows,
-      countFollowers: {
-        JavaScript: countFollowersJavaScript.rows[0].count,
-        HTML: countFollowersHTML.rows[0].count,
-        CSS: countFollowersCSS.rows[0].count,
-        React: countFollowersReact.rows[0].count,
-        Vue: countFollowersVue.rows[0].count,
-        Git: countFollowersGit.rows[0].count,
-      },
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-app.post("/followers/:id", async (req, res) => {
-  try {
-    let { id } = req.params;
-    let { nameTag } = req.body;
-
-    let getFollower = await pool.query(
-      `SELECT ${nameTag.toLowerCase()} FROM followers WHERE followers_id_from_users = $1 `,
-      [id]
-    );
-    let updateFollower = await pool.query(
-      `UPDATE followers SET ${nameTag.toLowerCase()} = $1 WHERE followers_id_from_users = $2`,
-      [!getFollower.rows[0][nameTag.toLowerCase()], id]
-    );
-    let getTags = await pool.query(
-      `SELECT * FROM tags join followers on followers_id_from_users = $1`,
-      [id]
-    );
-    let countFollowersJavaScript = await pool.query(
-      "SELECT COUNT(*) FROM followers where javascript = $1",
-      ["true"]
-    );
-    let countFollowersHTML = await pool.query(
-      "SELECT COUNT(*) FROM followers where html = $1",
-      ["true"]
-    );
-    let countFollowersCSS = await pool.query(
-      "SELECT COUNT(*) FROM followers where css = $1",
-      ["true"]
-    );
-    let countFollowersReact = await pool.query(
-      "SELECT COUNT(*) FROM followers where react = $1",
-      ["true"]
-    );
-    let countFollowersVue = await pool.query(
-      "SELECT COUNT(*) FROM followers where vue = $1",
-      ["true"]
-    );
-    let countFollowersGit = await pool.query(
-      "SELECT COUNT(*) FROM followers where git = $1",
-      ["true"]
-    );
-    res.status(200).json({
-      message: "Вы получили информацию о всех тегах",
-      getSubscribe: getTags.rows,
-      countFollowers: {
-        JavaScript: countFollowersJavaScript.rows[0].count,
-        HTML: countFollowersHTML.rows[0].count,
-        CSS: countFollowersCSS.rows[0].count,
-        React: countFollowersReact.rows[0].count,
-        Vue: countFollowersVue.rows[0].count,
-        Git: countFollowersGit.rows[0].count,
-      },
-    });
-    console.log(getFollower.rows[0][nameTag.toLowerCase()]);
-    console.log(!getFollower.rows[0][nameTag.toLowerCase()]);
-  } catch (err) {
-    console.log(err);
-  }
-});
 app.get("/questions", async (req, res) => {
   try {
     let getQuestions =

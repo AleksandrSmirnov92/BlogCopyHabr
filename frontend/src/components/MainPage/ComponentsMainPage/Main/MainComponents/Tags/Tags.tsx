@@ -1,17 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import TagsCSS from "./Tags.module.css";
+interface ResponseData {
+  message: string;
+  tags: {
+    count?: string;
+    css: boolean;
+    followers_id: string;
+    followers_id_from_users: string;
+    git: boolean;
+    html: boolean;
+    img_tag: string;
+    javascript: boolean;
+    name_tag: string;
+    react: boolean;
+    tags_id: string;
+    vue: boolean;
+  }[];
+  countFollowers: {
+    CSS: string;
+    Git: string;
+    HTML: string;
+    JavaScript: string;
+    React: string;
+    Vue: string;
+  };
+}
+interface Tag {
+  count?: string;
+  css: boolean;
+  followers_id: string;
+  followers_id_from_users: string;
+  git: boolean;
+  html: boolean;
+  img_tag: string;
+  javascript: boolean;
+  name_tag: string;
+  react: boolean;
+  tags_id: string;
+  vue: boolean;
+}
+interface CountFollowers {
+  CSS: string;
+  Git: string;
+  HTML: string;
+  JavaScript: string;
+  React: string;
+  Vue: string;
+}
+
 const Tags = () => {
   const [tags, setTags] = useState([]);
-  const [countFollowers, setCountFollowers] = useState({});
-  // Добавить число вопросов
-  const searchFollow = (tag: any): boolean => {
+  const [countFollowers, setCountFollowers] = useState<CountFollowers | {}>({});
+  const searchFollow = (tag: Tag): boolean => {
     let currentName = tag.name_tag.toLowerCase();
-    return tag[`${currentName.toLowerCase()}`];
+    return tag[`${currentName.toLowerCase()}` as keyof typeof countFollowers];
   };
-  const searchCountFollowers = (tag: any, countFollowers: any): number => {
+  const searchCountFollowers = (
+    tag: Tag,
+    countFollowers: CountFollowers | {}
+  ): number => {
     let currentName = tag.name_tag;
-    return countFollowers[currentName];
+    return countFollowers[currentName as keyof typeof countFollowers];
   };
   const subscribeFollower = async (nameTag: string) => {
     const res = await fetch(`/followers/${localStorage.getItem("userId")}`, {
@@ -19,9 +69,8 @@ const Tags = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nameTag: nameTag }),
     });
-    const data = await res.json();
-    console.log(data.getSubscribe);
-    setTags(data.getSubscribe);
+    const data: ResponseData = await res.json();
+    setTags(data.tags);
     setCountFollowers(data.countFollowers);
   };
   const getInfoTags = async () => {
@@ -29,39 +78,50 @@ const Tags = () => {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    const data = await res.json();
-    console.log(data);
+    const data: ResponseData = await res.json();
     setTags(data.tags);
     setCountFollowers(data.countFollowers);
   };
   useEffect(() => {
     getInfoTags();
   }, []);
-  console.log(countFollowers);
   return (
-    <div className={TagsCSS.mainContainer}>
+    <div className={TagsCSS.tags_container}>
       <h3>Все теги</h3>
-      <div className={TagsCSS.tagsContainer}>
-        {tags.map((tag) => {
-          console.log(tag.img_tag);
+      <div className={TagsCSS.block}>
+        {tags.map((tag: Tag) => {
+          console.log(tag);
           return (
-            <div key={tag.tags_id} className={TagsCSS.tag}>
+            <div key={tag.tags_id} className={TagsCSS.item}>
               <NavLink to={`/tag/${tag.tags_id}`}>
-                <img src={tag.img_tag} className={TagsCSS.tagImg} />
+                <div className={TagsCSS.item_img}>
+                  <img src={tag.img_tag} alt="" />
+                </div>
               </NavLink>
-              <NavLink to={`/tag/${tag.tags_id}`} className={TagsCSS.textTag}>
+              <NavLink
+                to={`/tag/${tag.tags_id}`}
+                className={TagsCSS.item_title}
+              >
                 {tag.name_tag}
               </NavLink>
-              <a href="#" className={TagsCSS.countQuestion}>
-                {"103713"}
-              </a>
+              <Link
+                to={`/tag/${tag.tags_id}`}
+                state={{ question: "Вопросы" }}
+                className={TagsCSS.count}
+              >
+                {`${tag.count} вопросов`}
+              </Link>
               <button
                 className={
-                  searchFollow(tag)
-                    ? TagsCSS.buttonUnsubscribe
-                    : TagsCSS.buttonSubscribe
+                  tag.followers_id_from_users
+                    ? searchFollow(tag)
+                      ? TagsCSS.btn_unsubscribe
+                      : TagsCSS.btn_subscribe
+                    : TagsCSS.btn_none
                 }
-                onClick={() => subscribeFollower(tag.name_tag)}
+                onClick={() => {
+                  return subscribeFollower(tag.name_tag);
+                }}
               >
                 {searchFollow(tag) ? "Вы подписаны" : "Подписаться"} |{" "}
                 {searchCountFollowers(tag, countFollowers)}

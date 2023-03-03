@@ -78,7 +78,7 @@ CREATE TABLE about_user (
 -- VALUES('Git','/images/Gittag.png',' Git - распределённая система управления версиями файлов и совместной работы. Проект был создан Линусом Торвальдсом для управления разработкой ядра Linux. На сегодняшний день поддерживается Джунио Хамано (Junio C. Hamano).');
 
 -- 6 таблица
--- CREATE TABLE followers (
+-- CREATE TABLE follow (
 -- followers_id BIGSERIAL PRIMARY KEY,
 -- followers_id_from_users BIGINT REFERENCES users (user_id),
 -- JavaScript BOOLEAN NOT NULL,
@@ -162,8 +162,25 @@ responce_user_id BIGINT REFERENCES about_user (user_id)
 
 
 
+CREATE TABLE follow (
+followers_id BIGSERIAL PRIMARY KEY,
+followers_id_from_users BIGINT REFERENCES users (user_id),
+tag_name VARCHAR NOT NULL REFERENCES tags (name_tag)
+follow_tag BOOLEAN NOT NULL,
+);
 
-
+INSERT INTO follow (followers_id_from_users,tag_name,follow_tag)
+VALUES('1','JavaScript','true');
+INSERT INTO follow (followers_id_from_users,tag_name,follow_tag)
+VALUES('1','HTML','true');
+INSERT INTO follow (followers_id_from_users,tag_name,follow_tag)
+VALUES('1','CSS','false');
+INSERT INTO follow (followers_id_from_users,tag_name,follow_tag)
+VALUES('1','React','true');
+INSERT INTO follow (followers_id_from_users,tag_name,follow_tag)
+VALUES('1','Vue','true');
+INSERT INTO follow (followers_id_from_users,tag_name,follow_tag)
+VALUES('1','Git','true');
 
 
 
