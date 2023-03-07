@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import UserCSS from "./User.module.css";
 import photoProfilIMG from "../../../../../../../images/photoProfil.png";
-import { useParams } from "react-router-dom";
+import Question from "../../AllQuestions/Question/Question";
+import { useParams, useLocation } from "react-router-dom";
 interface ResponseData {
   message: string;
   body: {
@@ -17,7 +18,47 @@ interface ResponseData {
     town: string;
     informattion_about_user: string;
   };
+  questions: {}[];
+  answers: [];
+  myAnswers: [];
 }
+let currentTime = (date: Date) => {
+  let formatterHour = new Intl.NumberFormat("ru", {
+    style: "unit",
+    unit: "hour",
+    unitDisplay: "long",
+  });
+  let formatterMinutes = new Intl.NumberFormat("ru", {
+    style: "unit",
+    unit: "minute",
+    unitDisplay: "long",
+  });
+  let currentTime = new Date();
+  if (
+    date.getDate() !== currentTime.getDate() ||
+    date.getMonth() !== currentTime.getMonth() ||
+    date.getFullYear() !== currentTime.getFullYear()
+  ) {
+    return `Опубликован ${date.getDate()}.${
+      date.getMonth() + 1
+    }.${date.getFullYear()} в  ${formatterHour.format(
+      date.getHours()
+    )} ${formatterMinutes.format(date.getMinutes())}`;
+  }
+  let currentHours = currentTime.getHours() - date.getHours();
+  let currentMinutes = currentTime.getMinutes() - date.getMinutes();
+
+  return `Опубликован ${formatterHour.format(
+    currentHours
+  )} ${formatterMinutes.format(currentMinutes)} назад`;
+};
+let countAnswers = (idQuestions: string, answers: []): number => {
+  let countAnswers = answers.filter(
+    (element: any) => element.question_id_from_questions === idQuestions
+  ).length;
+
+  return countAnswers;
+};
 const getSettingsInformation = async (
   userId: string,
   setPathImg: React.Dispatch<React.SetStateAction<string>>,
@@ -29,7 +70,10 @@ const getSettingsInformation = async (
   setLinkContacts: React.Dispatch<React.SetStateAction<string>>,
   setCountry: React.Dispatch<React.SetStateAction<string>>,
   setRegion: React.Dispatch<React.SetStateAction<string>>,
-  setTown: React.Dispatch<React.SetStateAction<string>>
+  setTown: React.Dispatch<React.SetStateAction<string>>,
+  setQuestions: React.Dispatch<React.SetStateAction<any[]>>,
+  setAnswers: React.Dispatch<React.SetStateAction<any[]>>,
+  setMyAnswers: React.Dispatch<React.SetStateAction<any[]>>
 ) => {
   const res = await fetch(`/getInformationAboutUser/${userId}`, {
     method: "GET",
@@ -58,9 +102,14 @@ const getSettingsInformation = async (
   setCountry(country);
   setRegion(region);
   setTown(town);
+  setQuestions(data.questions);
+  setAnswers(data.answers);
+  setMyAnswers(data.myAnswers);
 };
 const User: React.FC = () => {
   let { userId } = useParams();
+  let location = useLocation();
+  let question: { question: string } = location.state;
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
   let [brieflyAboutYourself, setBrieflyAboutYourself] = useState("");
@@ -71,7 +120,12 @@ const User: React.FC = () => {
   let [region, setRegion] = useState("");
   let [town, setTown] = useState("");
   let [informattionAboutUser, setInformattionAboutUser] = useState("");
-
+  let [questions, setQuestions] = useState([]);
+  let [answers, setAnswers] = useState([]);
+  let [myAnswers, setMyAnswers] = useState([]);
+  let [linkValue, setLinkValue] = useState(
+    question ? `${question.question}` : "Информация"
+  );
   useEffect(() => {
     getSettingsInformation(
       userId,
@@ -84,8 +138,12 @@ const User: React.FC = () => {
       setLinkContacts,
       setCountry,
       setRegion,
-      setTown
+      setTown,
+      setQuestions,
+      setAnswers,
+      setMyAnswers
     );
+    window.history.replaceState({}, document.title);
   }, []);
   return (
     <div className={UserCSS.user_container}>
@@ -102,22 +160,77 @@ const User: React.FC = () => {
         <span className={UserCSS.user_subtitle}> {brieflyAboutYourself}</span>
       </header>
       <nav className={UserCSS.nav}>
-        <span>Информация</span>
+        <div onClick={() => setLinkValue("Информация")}>
+          <span className={linkValue === "Информация" ? UserCSS.active : ""}>
+            Информация
+          </span>
+        </div>
+        <div onClick={() => setLinkValue("Вопросы")}>
+          <span className={linkValue === "Вопросы" ? UserCSS.active : ""}>
+            Вопросы
+          </span>
+        </div>
+        <div onClick={() => setLinkValue("Ответы")}>
+          <span className={linkValue === "Ответы" ? UserCSS.active : ""}>
+            Ответы
+          </span>
+        </div>
       </nav>
+
       <div className={UserCSS.user_info_block}>
-        <h4>{informattionAboutUser !== "" ? "Обо мне" : ""}</h4>
-        <span> {informattionAboutUser} </span>
+        {linkValue === "Информация" ? (
+          <>
+            <h4>{informattionAboutUser !== "" ? "Обо мне" : ""}</h4>
+            <span> {informattionAboutUser} </span>
 
-        <h4>{contacts !== "Контакты" ? "Контакты" : ""}</h4>
-        <span>
-          {contacts !== "Контакты" ? `${contacts} :` : ""}
-          <a href={linkToContacts}>{linkToContacts}</a>
-        </span>
+            <h4>{contacts !== "Контакты" ? "Контакты" : ""}</h4>
+            <span>
+              {contacts !== "Контакты" ? `${contacts} :` : ""}
+              <a href={linkToContacts}>{linkToContacts}</a>
+            </span>
 
-        <h4>{country !== "Страна" ? "Местоположение" : ""}</h4>
-        <span>
-          {country !== "Страна" ? `${country},${region},${town}` : ""}
-        </span>
+            <h4>{country !== "Страна" ? "Местоположение" : ""}</h4>
+            <span>
+              {country !== "Страна" ? `${country},${region},${town}` : ""}
+            </span>
+          </>
+        ) : linkValue === "Вопросы" ? (
+          questions.length > 0 ? (
+            questions.map((question, index) => {
+              return (
+                <Question
+                  key={index}
+                  question={question}
+                  currentTime={currentTime}
+                  countAnswers={countAnswers}
+                  answers={answers}
+                />
+              );
+            })
+          ) : (
+            <h4>Вопросов нет</h4>
+          )
+        ) : myAnswers.length > 0 ? (
+          myAnswers.map((answer) => {
+            return (
+              <div className={UserCSS.question_container}>
+                <a href="#" className={UserCSS.question}>
+                  {answer.question_title}
+                </a>
+                <div className={UserCSS.answer_avatar}>
+                  <div>
+                    <img src={pathImg === "" ? photoProfilIMG : pathImg}></img>
+                  </div>
+                  <a href="#">{answer.nickname}</a>
+                  <span>{answer.email}</span>
+                </div>
+                <div className={UserCSS.answer_details}>{answer.answers}</div>
+              </div>
+            );
+          })
+        ) : (
+          <h4>Ответов нет</h4>
+        )}
       </div>
     </div>
   );

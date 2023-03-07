@@ -28,7 +28,7 @@ exports.tagInfo = async (req: Request, res: Response<ResponseData>) => {
       [id]
     );
     let getAnswers = await pool.query(`
-    select * from answers
+    select * from answers 
     `);
     res.status(200).json({
       message: "Вы получили информацию о тэге",

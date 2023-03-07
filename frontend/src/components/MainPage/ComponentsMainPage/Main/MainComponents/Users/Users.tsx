@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UsersCSS from "./Users.module.css";
 import UsersProfilIMG from "../../../../../../images/photoProfil.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 interface User {
   answers: string;
   email: string;
@@ -52,25 +52,33 @@ const Users: React.FC = () => {
                   {user.fullname !== "" ? `${user.fullname}` : user.nickname}
                 </NavLink>
                 <div className={UsersCSS.users_stat}>
-                  <span
-                    className={
-                      user.answers !== "0"
-                        ? UsersCSS.users_count
-                        : UsersCSS.users_notcount
-                    }
-                  >
-                    Ответов ({user.answers})
-                  </span>{" "}
+                  {user.answers !== "0" ? (
+                    <Link
+                      to={`/users/${user.user_id}`}
+                      state={{ question: "Ответы" }}
+                      className={UsersCSS.users_count}
+                    >
+                      Ответов ({user.answers})
+                    </Link>
+                  ) : (
+                    <span className={UsersCSS.users_notcount}>
+                      Ответов ({user.answers})
+                    </span>
+                  )}
                   |
-                  <span
-                    className={
-                      user.questions !== "0"
-                        ? UsersCSS.users_count
-                        : UsersCSS.users_notcount
-                    }
-                  >
-                    Вопросов ({user.questions})
-                  </span>
+                  {user.questions !== "0" ? (
+                    <Link
+                      to={`/users/${user.user_id}`}
+                      state={{ question: "Вопросы" }}
+                      className={UsersCSS.users_count}
+                    >
+                      Вопросов ({user.questions})
+                    </Link>
+                  ) : (
+                    <span className={UsersCSS.users_notcount}>
+                      Вопросов ({user.questions})
+                    </span>
+                  )}
                 </div>
               </div>
             );

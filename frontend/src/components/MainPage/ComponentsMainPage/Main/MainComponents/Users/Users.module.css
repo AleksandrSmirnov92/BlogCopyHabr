@@ -51,7 +51,8 @@
   border-top: 1px #f0f0f0 solid;
   border-bottom: 1px #f0f0f0 solid;
 }
-.users_stat > span {
+.users_stat > a {
+  text-decoration: none;
   padding-right: 5px;
   padding-left: 5px;
 }
@@ -59,8 +60,12 @@
   color: #2d72d9;
   font-weight: 700;
 }
+.users_count:hover {
+  text-decoration: underline;
+}
 .users_notcount {
   color: #939090;
+  padding-right: 5px;
 }
 
 @media (max-width: 1350px) {
