@@ -38,7 +38,7 @@ exports.getInfoAboutUser = async (req: Request, res: Response) => {
       "SELECT * from answers as an join questions on question_id_from_questions = questions_id join users on responce_userid = users.user_id WHERE an.responce_userid = $1",
       [id]
     );
-    console.log(getInformationAboutAnsers.rows);
+
     res.status(200).json({
       message: "Вы получили информацию о пользователе",
       body: getInfomationAboutUser.rows[0],
