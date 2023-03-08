@@ -10,7 +10,7 @@ const updateProfileRouter = require("../dist/Routes/UpdateProfileRoutes");
 const updateAvatarRouter = require("../dist/Routes/UpdateAvatarRouters");
 const tagInfoRouter = require("../dist/Routes/TagInfoRoutes.js");
 const tagsInfoRouter = require("../dist/Routes/TagsInfoRouters.js");
-const followersRouter = require("../dist/Routes/TagsInfoRouters.js");
+const followersRouter = require("../dist/Routes/FollowersInfoRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
@@ -157,16 +157,20 @@ app.post("/question/:id", async (req, res) => {
 app.post("/answers", async (req, res) => {
   let { answer, questionId, questionUserId, userId } = req.body;
   try {
-    let addInformationInAnswers = await pool.query(
-      `INSERT INTO answers (question_id_from_questions,user_id_from_users,answers,responce_userid) VALUES($1,$2,$3,$4)`,
-      [questionId, questionUserId, answer, userId]
-    );
+    // let addInformationInAnswers = await pool.query(
+    //   `INSERT INTO answers (question_id_from_questions,user_id_from_users,answers,responce_userid) VALUES($1,$2,$3,$4)`,
+    //   [questionId, questionUserId, answer, userId]
+    // );
     let getAnswers = await pool.query(
       `SELECT answers.answers,p2.fullname,p2.lastname,p2.img,users.email FROM answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users JOIN users ON p2.user_id_from_users = user_id`
     );
+    let getAnswers2 = await pool.query(
+      "SELECT answers.answers,p2.fullname,p2.lastname,p2.img from answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users;"
+    );
+    console.log(getAnswers2.rows);
     res.status(200).json({
       message: "Вы ответили",
-      answer: getAnswers.rows.at(-1),
+      answer: getAnswers.rows.at(-2),
     });
   } catch (err) {
     console.log(err);

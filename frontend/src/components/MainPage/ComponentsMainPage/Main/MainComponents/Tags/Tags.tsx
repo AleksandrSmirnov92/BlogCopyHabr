@@ -52,10 +52,23 @@ interface CountFollowers {
 const Tags = () => {
   const [tags, setTags] = useState([]);
   const [countFollowers, setCountFollowers] = useState<CountFollowers | {}>({});
+  const getInfoTags = async () => {
+    const res = await fetch(`/tags/${localStorage.getItem("userId")}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data: ResponseData = await res.json();
+    setTags(data.tags);
+    setCountFollowers(data.countFollowers);
+  };
+  useEffect(() => {
+    getInfoTags();
+  });
   const searchFollow = (tag: Tag): boolean => {
     let currentName = tag.name_tag.toLowerCase();
     return tag[`${currentName.toLowerCase()}` as keyof typeof countFollowers];
   };
+
   const searchCountFollowers = (
     tag: Tag,
     countFollowers: CountFollowers | {}
@@ -70,27 +83,14 @@ const Tags = () => {
       body: JSON.stringify({ nameTag: nameTag }),
     });
     const data: ResponseData = await res.json();
-    setTags(data.tags);
     setCountFollowers(data.countFollowers);
   };
-  const getInfoTags = async () => {
-    const res = await fetch(`/tags/${localStorage.getItem("userId")}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data: ResponseData = await res.json();
-    setTags(data.tags);
-    setCountFollowers(data.countFollowers);
-  };
-  useEffect(() => {
-    getInfoTags();
-  }, []);
+
   return (
     <div className={TagsCSS.tags_container}>
       <h3>Все теги</h3>
       <div className={TagsCSS.block}>
         {tags.map((tag: Tag) => {
-          console.log(tag);
           return (
             <div key={tag.tags_id} className={TagsCSS.item}>
               <NavLink to={`/tag/${tag.tags_id}`}>
@@ -120,7 +120,7 @@ const Tags = () => {
                     : TagsCSS.btn_none
                 }
                 onClick={() => {
-                  return subscribeFollower(tag.name_tag);
+                  subscribeFollower(tag.name_tag);
                 }}
               >
                 {searchFollow(tag) ? "Вы подписаны" : "Подписаться"} |{" "}

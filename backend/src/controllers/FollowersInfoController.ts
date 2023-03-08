@@ -23,6 +23,7 @@ exports.getInfoFollowers = async (
   try {
     let { id } = req.params;
     let { nameTag } = req.body;
+
     let getTags;
     if (id !== "null") {
       let getFollower = await pool.query(

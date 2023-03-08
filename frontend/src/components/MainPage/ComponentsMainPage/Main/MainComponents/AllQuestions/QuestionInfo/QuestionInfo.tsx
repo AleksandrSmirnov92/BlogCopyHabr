@@ -95,9 +95,9 @@ const QuestionInfo = () => {
       }),
     });
     const data = await res.json();
+    console.log(data.answer);
     setAnswers((prevState) => [...prevState, data.answer]);
     values.answers = "";
-    console.log(data);
   };
 
   useEffect(() => {
@@ -175,6 +175,7 @@ const QuestionInfo = () => {
         }
       >
         {answers.map((answer) => {
+          console.log(answers);
           return (
             <div>
               <div className={QuestionInfoCSS.answer}>
