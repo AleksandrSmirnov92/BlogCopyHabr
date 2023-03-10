@@ -6,6 +6,7 @@ const AllQuestions = () => {
   let [questions, setQuestions] = useState([]);
   let [answers, setAnswers] = useState([]);
   let [newQuestions, setNewQuestions] = useState("Новые вопросы");
+  let [valueLink, setValueLink] = useState("Новые вопросы");
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
       style: "unit",
@@ -18,7 +19,6 @@ const AllQuestions = () => {
       unitDisplay: "long",
     });
     let currentTime = new Date();
-    // console.log(date.getUTCDate());
     if (
       date.getDate() !== currentTime.getDate() ||
       date.getMonth() !== currentTime.getMonth() ||
@@ -37,7 +37,7 @@ const AllQuestions = () => {
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
-  let countAnswers = (idQuestions: any, answers: any): any => {
+  let countAnswers = (idQuestions: string, answers: {}[]): any => {
     let countAnswers = answers.filter(
       (element: any) => element.question_id_from_questions === idQuestions
     ).length;
@@ -50,37 +50,46 @@ const AllQuestions = () => {
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
-    // let date = new Date(`${data.questions[0].date_of_creation}`);
-    // setTime(currentTime(date));
     setQuestions(data.questions);
     setAnswers(data.answers);
-    console.log(data);
-    // console.log(data.answers);
   };
   useEffect(() => {
     getQuestions();
-    console.log("все вопросы");
   }, []);
   return (
-    <div className={AllQuestionsCSS.mainContainer}>
+    <div className={AllQuestionsCSS.all_questions_container}>
       <h3>Все Вопросы</h3>
-      <div className={AllQuestionsCSS.questionCategoriesWrapper}>
+      <nav className={AllQuestionsCSS.nav}>
         <NavLink
+          className={
+            valueLink === "Новые вопросы"
+              ? AllQuestionsCSS.nav_focus
+              : AllQuestionsCSS.nav_link
+          }
           to={`/questions`}
-          className={AllQuestionsCSS.questionCategories}
-          onClick={() => setNewQuestions("Новые вопросы")}
+          onClick={() => {
+            setNewQuestions("Новые вопросы");
+            setValueLink("Новые вопросы");
+          }}
         >
           Новые вопросы
         </NavLink>
         <NavLink
+          className={
+            valueLink === "Без ответа"
+              ? AllQuestionsCSS.nav_focus
+              : AllQuestionsCSS.nav_link
+          }
           to={`/questions`}
-          className={AllQuestionsCSS.questionCategories}
-          onClick={() => setNewQuestions("Без ответа")}
+          onClick={() => {
+            setNewQuestions("Без ответа");
+            setValueLink("Без ответа");
+          }}
         >
           Без ответа
         </NavLink>
-      </div>
-      <div className={AllQuestionsCSS.questionsContainer}>
+      </nav>
+      <div className={AllQuestionsCSS.questions_list}>
         {newQuestions === "Без ответа"
           ? questions
               .filter(
