@@ -14,20 +14,18 @@ const Question = ({
   answers,
 }: MyValue) => {
   return (
-    <div className={NewQuestionCSS.question}>
-      <div className={NewQuestionCSS.questionHeader}>
-        <img
-          src={question.img_tag}
-          className={NewQuestionCSS.questionTagIcon}
-          alt=""
-        />
+    <div className={NewQuestionCSS.question_container}>
+      <header className={NewQuestionCSS.header}>
+        <div className={NewQuestionCSS.header_icon}>
+          <img src={question.img_tag} alt="" />
+        </div>
         <NavLink
           to={`/tag/${question.tags_id}`}
           className={NewQuestionCSS.questionTag}
         >
           {question.name_tag.toUpperCase()}
         </NavLink>
-      </div>
+      </header>
       <div className={NewQuestionCSS.questionMain}>
         <div>
           <NavLink
