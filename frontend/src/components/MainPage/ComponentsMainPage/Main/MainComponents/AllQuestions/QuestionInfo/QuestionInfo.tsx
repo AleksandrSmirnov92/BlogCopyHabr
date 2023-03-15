@@ -53,6 +53,7 @@ const QuestionInfo = () => {
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
   let getQuestion = async () => {
+    console.log("Выполняю");
     const res = await fetch(`/question/${questionId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -121,47 +122,40 @@ const QuestionInfo = () => {
   });
 
   return (
-    <div className={QuestionInfoCSS.mainContainer}>
-      <div className={QuestionInfoCSS.infoUser}>
-        <div className={QuestionInfoCSS.infoUser__container}>
-          <NavLink
-            to={`/users/${localStorage.getItem("userId")}`}
-            className={QuestionInfoCSS.imgLink}
-          >
-            <img
-              src={pathImg ? pathImg : imageProfil}
-              alt=""
-              className={QuestionInfoCSS.imgProfil}
-            />
-          </NavLink>
-          <NavLink
-            to={`/users/${localStorage.getItem("userId")}`}
-            className={QuestionInfoCSS.userName}
-          >
-            {name}
-          </NavLink>
-          <span className={QuestionInfoCSS.userEmail}>{email}</span>
-        </div>
-      </div>
-      <div className={QuestionInfoCSS.questionInfo}>
-        <NavLink to={`/tag/${tagsId}`} className={QuestionInfoCSS.imgLinkTag}>
-          <img src={tagImgPath} alt="" className={QuestionInfoCSS.imgTag} />
+    <div className={QuestionInfoCSS.main_сontainer}>
+      <div className={QuestionInfoCSS.question_head}>
+        <NavLink
+          to={`/users/${localStorage.getItem("userId")}`}
+          className={QuestionInfoCSS.question_head_img}
+        >
+          <img src={pathImg ? pathImg : imageProfil} alt="" />
         </NavLink>
-        <NavLink to={`/tag/${tagsId}`} className={QuestionInfoCSS.nameTag}>
-          {nameTag}
+        <NavLink
+          to={`/users/${localStorage.getItem("userId")}`}
+          className={QuestionInfoCSS.question_head_user_name}
+        >
+          {name}
+        </NavLink>
+        <span>{email}</span>
+      </div>
+
+      <div className={QuestionInfoCSS.question_tags}>
+        <NavLink to={`/tag/${tagsId}`}>
+          <img src={tagImgPath} alt="" />
+        </NavLink>
+        <NavLink to={`/tag/${tagsId}`}>
+          <span>{nameTag}</span>
         </NavLink>
       </div>
-      <h1 className={QuestionInfoCSS.title}>{questionTitle}</h1>
-      <div className={QuestionInfoCSS.info}>
-        <p className={QuestionInfoCSS.info__text}>{questionDescription}</p>
-        <span className={QuestionInfoCSS.info__data}>
-          {questionTimeCreation}
-        </span>
+      <h1 className={QuestionInfoCSS.question_title}>{questionTitle}</h1>
+      <div className={QuestionInfoCSS.question_body}>
+        <p>{questionDescription}</p>
+        <span>{questionTimeCreation}</span>
       </div>
       <h2
         className={
           answers.length !== 0
-            ? QuestionInfoCSS.answers__title
+            ? QuestionInfoCSS.question_answers_title
             : QuestionInfoCSS.hide
         }
       >
@@ -170,48 +164,42 @@ const QuestionInfo = () => {
       <div
         className={
           answers.length !== 0
-            ? QuestionInfoCSS.answers__container
+            ? QuestionInfoCSS.question_answers_block
             : QuestionInfoCSS.hide
         }
       >
         {answers.map((answer) => {
           console.log(answers);
           return (
-            <div>
-              <div className={QuestionInfoCSS.answer}>
+            <>
+              <div className={QuestionInfoCSS.question_answer}>
                 <NavLink
                   to={`/users/${answer.user_id_from_users}`}
-                  className={QuestionInfoCSS.answer__img_link}
+                  className={QuestionInfoCSS.question_answer_img}
                 >
-                  <img
-                    src={answer.img}
-                    className={QuestionInfoCSS.answer__img}
-                  />
+                  <img src={answer.img} alt="" />
                 </NavLink>
                 <NavLink
                   to={`/users/${answer.user_id_from_users}`}
-                  className={QuestionInfoCSS.answers_user_name_link}
+                  className={QuestionInfoCSS.question_answer_username}
                 >
-                  <h2 className={QuestionInfoCSS.answers_user_name}>
-                    {`${answer.fullname} ${answer.lastname}`}
-                  </h2>
+                  <span>{`${answer.fullname} ${answer.lastname}`}</span>
                 </NavLink>
-                <span className={QuestionInfoCSS.answers_user_email}>
-                  {answer.email}
-                </span>
+                <span>{answer.email}</span>
               </div>
-
-              <span className={QuestionInfoCSS.answer_user_clarification}>
+              <span className={QuestionInfoCSS.question_answer_clarification}>
                 Это мой ответ на твой вопрос
               </span>
-              <p className={QuestionInfoCSS.answer_user_text}>
+              <p className={QuestionInfoCSS.question_answer_text}>
                 {answer.answers}
               </p>
-            </div>
+            </>
           );
         })}
       </div>
-      <h2 className={QuestionInfoCSS.answers__title}>Ваш ответ на вопрос</h2>
+      <h2 className={QuestionInfoCSS.question_answers_title}>
+        Ваш ответ на вопрос
+      </h2>
       <div
         className={
           localStorage.getItem("userId")
@@ -219,11 +207,8 @@ const QuestionInfo = () => {
             : QuestionInfoCSS.hideAuthorisation
         }
       >
-        <form
-          onSubmit={handleSubmit}
-          className={QuestionInfoCSS.my_answer__container}
-        >
-          <div className={QuestionInfoCSS.my_answer_text}>
+        <form onSubmit={handleSubmit}>
+          <div className={QuestionInfoCSS.question_answer_form}>
             <NavLink
               to={`/users/${localStorage.getItem(`userId`)}`}
               className={QuestionInfoCSS.my_answer__img_link}
@@ -234,13 +219,12 @@ const QuestionInfo = () => {
               />
             </NavLink>
             <textarea
-              // className={QuestionInfoCSS.my_answer}
               name=""
               id="answers"
               className={
                 errors.answers && touched.answers
-                  ? QuestionInfoCSS.inputError
-                  : QuestionInfoCSS.my_answer
+                  ? QuestionInfoCSS.form_control__error
+                  : QuestionInfoCSS.form_control
               }
               value={values.answers}
               onChange={handleChange}
@@ -248,7 +232,9 @@ const QuestionInfo = () => {
             ></textarea>
           </div>
           {errors.answers && touched.answers ? (
-            <span className={QuestionInfoCSS.error}>{errors.answers}</span>
+            <span className={QuestionInfoCSS.form_control__error__message}>
+              {errors.answers}
+            </span>
           ) : (
             ""
           )}
