@@ -118,65 +118,62 @@ app.post("/myQuestions", async (req, res) => {
     console.log(err);
   }
 });
-app.post("/question/:id", async (req, res) => {
+// ----------------------------------------------
+let getQuestions = async (req: Request, res: Response) => {
   try {
     let { id } = req.params;
-    let { userId } = req.body;
-    let getMyInfo = await pool.query(
-      `SELECT img FROM about_user WHERE user_id_from_users = $1`,
-      [userId]
-    );
-    let getQuestion = await pool.query(
-      `SELECT * FROM questions WHERE  questions_id = $1`,
-      [id]
-    );
-    let usersInfo = await pool.query(
-      `SELECT * FROM about_user JOIN users on about_user.user_id_from_users = $1 `,
-      [getQuestion.rows[0].user_id]
-    );
-    let getTags = await pool.query(`SELECT * FROM tags WHERE tags_id = $1`, [
-      getQuestion.rows[0].question_tags,
-    ]);
+    let userId;
+    let getInfoUser;
+    if (req.body.userId !== "Пользователь не зарегестрирован") {
+      userId = req.body.userId;
+      getInfoUser = await pool.query(
+        `SELECT * from users JOIN about_user on about_user.user_id_from_users = $1 WHERE users.user_id = $1`,
+        [userId]
+      );
+    } else {
+      getInfoUser = "";
+    }
     let getAnswers = await pool.query(
-      `SELECT answers.answers,p2.user_id_from_users,p2.fullname,p2.lastname,p2.img,users.email FROM answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users JOIN users ON p2.user_id_from_users = user_id where answers.question_id_from_questions = $1`,
+      `SELECT answers.answers,users.email,users.nickname,about_user.fullname,about_user.lastname,about_user.img,about_user.user_id_from_users from answers as answers JOIN users on users.user_id = answers.responce_userid JOIN about_user on about_user.user_id_from_users = answers.responce_userid WHERE answers.question_id_from_questions = $1 ORDER BY answer_id`,
       [id]
     );
-
+    let getQuestionInfo = await pool.query(
+      `SELECT * FROM questions as q JOIN tags on tags_id = q.question_tags JOIN users on users.user_id = q.user_id JOIN about_user on about_user.user_id_from_users = q.user_id WHERE q.questions_id = $1 `,
+      [id]
+    );
     res.status(200).json({
       message: "Вы получили информацию о вопросе",
-      question: getQuestion.rows[0],
-      userInfo: usersInfo.rows[0],
-      tagsInfo: getTags.rows[0],
-      myImg: getMyInfo.rows[0].img,
+      questionInfo: getQuestionInfo.rows[0],
       answers: getAnswers.rows,
+      userInfo: getInfoUser !== "" ? getInfoUser.rows[0] : "",
     });
   } catch (err) {
     console.log(err);
   }
-});
-app.post("/answers", async (req, res) => {
+};
+app.route("/question/:id").post(getQuestions);
+// --------------------------------------
+let getAnswers = async (req: Request, res: Response) => {
   let { answer, questionId, questionUserId, userId } = req.body;
   try {
-    // let addInformationInAnswers = await pool.query(
-    //   `INSERT INTO answers (question_id_from_questions,user_id_from_users,answers,responce_userid) VALUES($1,$2,$3,$4)`,
-    //   [questionId, questionUserId, answer, userId]
-    // );
+    let addInformationInAnswers = await pool.query(
+      `INSERT INTO answers (question_id_from_questions,user_id_from_users,answers,responce_userid) VALUES($1,$2,$3,$4)`,
+      [questionId, questionUserId, answer, userId]
+    );
     let getAnswers = await pool.query(
-      `SELECT answers.answers,p2.fullname,p2.lastname,p2.img,users.email FROM answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users JOIN users ON p2.user_id_from_users = user_id`
+      `SELECT answers.answers,p2.fullname,p2.lastname,p2.img,users.email FROM answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users JOIN users ON p2.user_id_from_users = user_id ORDER BY answer_id`
     );
-    let getAnswers2 = await pool.query(
-      "SELECT answers.answers,p2.fullname,p2.lastname,p2.img from answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users;"
-    );
-    console.log(getAnswers2.rows);
+    console.log(getAnswers.rows);
     res.status(200).json({
       message: "Вы ответили",
-      answer: getAnswers.rows.at(-2),
+      answer: getAnswers.rows.at(-1),
     });
   } catch (err) {
     console.log(err);
   }
-});
-
+};
+app.route("/answers").post(getAnswers);
+// -----------------------------------------------
 app.post("/users", async (req, res) => {
   try {
     console.log(req.body);

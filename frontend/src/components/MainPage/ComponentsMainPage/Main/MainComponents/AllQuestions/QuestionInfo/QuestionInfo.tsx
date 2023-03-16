@@ -10,17 +10,19 @@ interface MyValues {
 }
 const QuestionInfo = () => {
   let [pathImg, setPathImg] = useState("");
-  let [pathMyImg, setPathMyImg] = useState("");
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
+  let [pathMyImg, setPathMyImg] = useState("");
+  let [userActive, setUserActive] = useState("");
+  let [questionUserId, setQusestionUserId] = useState("");
   let [tagsId, setTagsId] = useState("");
   let [nameTag, setNameTag] = useState("");
   let [tagImgPath, setTagImgPath] = useState("");
   let [questionTitle, setQuestionTitle] = useState("");
   let [questionDescription, setQuestionDescription] = useState("");
   let [questionTimeCreation, setQuestionTimeCreation] = useState("");
-  let [questionUserId, setQuestionUserId] = useState("");
   let [answers, setAnswers] = useState([]);
+  let [userId, setUserId] = useState("");
   let { questionId } = useParams();
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
@@ -53,36 +55,40 @@ const QuestionInfo = () => {
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
   let getQuestion = async () => {
-    console.log("Выполняю");
     const res = await fetch(`/question/${questionId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: localStorage.getItem("userId"),
+        userId: localStorage.getItem("userId")
+          ? localStorage.getItem("userId")
+          : "Пользователь не зарегестрирован",
       }),
     });
     const data = await res.json();
     console.log(data);
-    setPathImg(data.userInfo.img);
-    setPathMyImg(data.myImg);
+    setPathImg(data.questionInfo.img);
     setName(
       `${
-        data.userInfo.fullname !== ""
-          ? `${data.userInfo.fullname} ${data.userInfo.lastname}`
-          : data.userInfo.nickname
+        data.questionInfo.fullname !== ""
+          ? `${data.questionInfo.fullname} ${data.questionInfo.lastname}`
+          : data.questionInfo.nickname
       }`
     );
-    setQuestionUserId(data.question.user_id);
-    setEmail(data.userInfo.email);
-    setTagsId(data.tagsInfo.tags_id);
-    setNameTag(data.tagsInfo.name_tag);
-    setTagImgPath(data.tagsInfo.img_tag);
-    setQuestionTitle(data.question.question_title);
-    setQuestionDescription(data.question.question_details);
+    setEmail(data.questionInfo.email);
+    setQusestionUserId(data.questionInfo.user_id_from_users);
+    setTagsId(data.questionInfo.tags_id);
+    setNameTag(data.questionInfo.name_tag);
+    setTagImgPath(data.questionInfo.img_tag);
+    setQuestionTitle(data.questionInfo.question_title);
+    setQuestionDescription(data.questionInfo.question_details);
     setQuestionTimeCreation(
-      currentTime(new Date(`${data.question.date_of_creation}`))
+      currentTime(new Date(`${data.questionInfo.date_of_creation}`))
     );
     setAnswers(data.answers);
+    // -------------------------------
+    setPathMyImg(data.userInfo.img);
+    setUserActive(data.userInfo);
+    setUserId(data.userInfo.user_id);
   };
   const onSubmit = async () => {
     const res = await fetch("/answers", {
@@ -92,11 +98,11 @@ const QuestionInfo = () => {
         answer: values.answers,
         questionId: questionId,
         questionUserId: questionUserId,
-        userId: localStorage.getItem("userId"),
+        userId: userId,
       }),
     });
     const data = await res.json();
-    console.log(data.answer);
+    console.log(data);
     setAnswers((prevState) => [...prevState, data.answer]);
     values.answers = "";
   };
@@ -125,13 +131,13 @@ const QuestionInfo = () => {
     <div className={QuestionInfoCSS.main_сontainer}>
       <div className={QuestionInfoCSS.question_head}>
         <NavLink
-          to={`/users/${localStorage.getItem("userId")}`}
+          to={`/users/${questionUserId}`}
           className={QuestionInfoCSS.question_head_img}
         >
           <img src={pathImg ? pathImg : imageProfil} alt="" />
         </NavLink>
         <NavLink
-          to={`/users/${localStorage.getItem("userId")}`}
+          to={`/users/${questionUserId}`}
           className={QuestionInfoCSS.question_head_user_name}
         >
           {name}
@@ -149,7 +155,9 @@ const QuestionInfo = () => {
       </div>
       <h1 className={QuestionInfoCSS.question_title}>{questionTitle}</h1>
       <div className={QuestionInfoCSS.question_body}>
-        <p>{questionDescription}</p>
+        <p>
+          <span>{questionDescription}</span>
+        </p>
         <span>{questionTimeCreation}</span>
       </div>
       <h2
@@ -168,11 +176,10 @@ const QuestionInfo = () => {
             : QuestionInfoCSS.hide
         }
       >
-        {answers.map((answer) => {
-          console.log(answers);
+        {answers.map((answer, index) => {
           return (
             <>
-              <div className={QuestionInfoCSS.question_answer}>
+              <div className={QuestionInfoCSS.question_answer} key={index}>
                 <NavLink
                   to={`/users/${answer.user_id_from_users}`}
                   className={QuestionInfoCSS.question_answer_img}
@@ -216,6 +223,7 @@ const QuestionInfo = () => {
               <img
                 src={pathMyImg ? pathMyImg : imageProfil}
                 className={QuestionInfoCSS.my_answer__img}
+                alt=""
               />
             </NavLink>
             <textarea
@@ -232,31 +240,31 @@ const QuestionInfo = () => {
             ></textarea>
           </div>
           {errors.answers && touched.answers ? (
-            <span className={QuestionInfoCSS.form_control__error__message}>
-              {errors.answers}
-            </span>
+            <div className={QuestionInfoCSS.form_control__error__message}>
+              <span>{errors.answers}</span>
+            </div>
           ) : (
             ""
           )}
           <button
             type="submit"
-            className={QuestionInfoCSS.my_answer_btn}
+            className={QuestionInfoCSS.btn}
             disabled={isSubmitting}
           >
-            <span>Опубликовать</span>
+            <span className={QuestionInfoCSS.btn__text}>Опубликовать</span>
           </button>
         </form>
       </div>
       <div
         className={
-          localStorage.getItem("userId")
+          userActive
             ? QuestionInfoCSS.hideAuthorisation
             : QuestionInfoCSS.showAuthorisation
         }
       >
-        <div className={QuestionInfoCSS.my_answer__container_Authorisation}>
-          <div className={QuestionInfoCSS.lock_container}>
-            <img className={QuestionInfoCSS.lockImg} src={lockImg} alt="" />
+        <div className={QuestionInfoCSS.authorisation}>
+          <div className={QuestionInfoCSS.authorisation__img}>
+            <img src={lockImg} alt="" />
           </div>
           <h3>Войдите,чтобы написать ответ</h3>
           <NavLink
