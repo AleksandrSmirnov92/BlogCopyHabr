@@ -119,7 +119,6 @@ var QuestionInfo = function () {
                     setQuestionDescription(data.questionInfo.question_details);
                     setQuestionTimeCreation(currentTime(new Date("" + data.questionInfo.date_of_creation)));
                     setAnswers(data.answers);
-                    // -------------------------------
                     setPathMyImg(data.userInfo.img);
                     setUserActive(data.userInfo);
                     setUserId(data.userInfo.user_id);

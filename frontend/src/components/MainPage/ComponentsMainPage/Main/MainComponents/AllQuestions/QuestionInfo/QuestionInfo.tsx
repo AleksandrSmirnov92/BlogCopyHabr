@@ -8,7 +8,7 @@ import { NavLink, useParams } from "react-router-dom";
 interface MyValues {
   answers: string;
 }
-const QuestionInfo = () => {
+const QuestionInfo: React.FC = () => {
   let [pathImg, setPathImg] = useState("");
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
@@ -85,7 +85,6 @@ const QuestionInfo = () => {
       currentTime(new Date(`${data.questionInfo.date_of_creation}`))
     );
     setAnswers(data.answers);
-    // -------------------------------
     setPathMyImg(data.userInfo.img);
     setUserActive(data.userInfo);
     setUserId(data.userInfo.user_id);
