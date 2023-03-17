@@ -49,9 +49,11 @@ var updateAvatarRouter = require("../dist/Routes/UpdateAvatarRouters");
 var tagInfoRouter = require("../dist/Routes/TagInfoRoutes.js");
 var tagsInfoRouter = require("../dist/Routes/TagsInfoRouters.js");
 var followersRouter = require("../dist/Routes/FollowersInfoRoutes.js");
+var getQuestionsRouter = require("../dist/Routes/GetQuestionRoutes.js");
+var getAnswersRouter = require("../dist/Routes/GetAnswerRoutes.js");
+var getMyFeedRouter = require("../dist/Routes/GetMyFeedRoutes.js");
 var cors = require("cors");
 var cookieParser = require("cookie-parser");
-var fs = require("fs");
 var path = require("path");
 app.use(express_1["default"].json());
 app.use(cors());
@@ -76,42 +78,13 @@ app.use("/tags", tagsInfoRouter);
 // ----------------------------------------
 app.use("/followers", followersRouter);
 // ----------------------------------------
-app.get("/users", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
-            res.status(200).json({ message: "Сервер работает на порту 9999" });
-        }
-        catch (err) {
-            console.log(err);
-        }
-        return [2 /*return*/];
-    });
-}); });
-app.get("/users/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getInformationAboutUser, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                id = req.params.id;
-                return [4 /*yield*/, db_js_1.pool.query("SELECT * FROM users WHERE user_id = $1", [id])];
-            case 1:
-                getInformationAboutUser = _a.sent();
-                res.status(200).json({
-                    message: "Вы получили информацию о зарегестрированом пользователе",
-                    body: getInformationAboutUser.rows[0]
-                });
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                console.log(err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); });
+app.use("/question", getQuestionsRouter);
+// ----------------------------------------
+app.use("/answers", getAnswersRouter);
+// ----------------------------------------
+app.use("/myFeed", getMyFeedRouter);
 app.get("/tags", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var getTags, err_2;
+    var getTags, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -125,156 +98,38 @@ app.get("/tags", function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 });
                 return [3 /*break*/, 3];
             case 2:
-                err_2 = _a.sent();
-                console.log(err_2);
+                err_1 = _a.sent();
+                console.log(err_1);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-app.get("/questions", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var getQuestions_1, getAnswers_1, err_3;
+var getAllQuestions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var getQuestions, getAnswers, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
                 return [4 /*yield*/, db_js_1.pool.query("select  questions.questions_id,questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions\n    join tags on questions.question_tags = tags_id;")];
             case 1:
-                getQuestions_1 = _a.sent();
+                getQuestions = _a.sent();
                 return [4 /*yield*/, db_js_1.pool.query("\n    select * from answers\n    ")];
             case 2:
-                getAnswers_1 = _a.sent();
-                // let countFollowersGit = await pool.query(
-                //   "SELECT COUNT(*) FROM followers where git = $1",
-                //   ["true"]
-                // );
+                getAnswers = _a.sent();
                 res.status(200).json({
                     message: "Вы получили информацию о всех вопросах",
-                    questions: getQuestions_1.rows,
-                    answers: getAnswers_1.rows
+                    questions: getQuestions.rows,
+                    answers: getAnswers.rows
                 });
                 return [3 /*break*/, 4];
             case 3:
-                err_3 = _a.sent();
-                console.log(err_3);
+                err_2 = _a.sent();
+                console.log(err_2);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
-}); });
-app.post("/myQuestions", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getQuestions_2, getFollower, getAnswers_2, err_4;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 4, , 5]);
-                id = req.body.id;
-                return [4 /*yield*/, db_js_1.pool.query("select  questions.questions_id,questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions\n    join tags on questions.question_tags = tags_id;")];
-            case 1:
-                getQuestions_2 = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("select followers.git,followers.javascript,followers.vue,followers.react,followers.html,followers.css from followers where followers_id_from_users = $1;", [id])];
-            case 2:
-                getFollower = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("\n    select * from answers\n    ")];
-            case 3:
-                getAnswers_2 = _a.sent();
-                res.status(200).json({
-                    message: "Вы получили информацию о интересных мне вопросах вопросах",
-                    followers: getFollower.rows[0],
-                    questions: getQuestions_2.rows,
-                    answers: getAnswers_2.rows
-                });
-                return [3 /*break*/, 5];
-            case 4:
-                err_4 = _a.sent();
-                console.log(err_4);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
-        }
-    });
-}); });
-// ----------------------------------------------
-var getQuestions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, userId, getInfoUser, getAnswers_3, getQuestionInfo, err_5;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 6, , 7]);
-                id = req.params.id;
-                userId = void 0;
-                getInfoUser = void 0;
-                if (!(req.body.userId !== "Пользователь не зарегестрирован")) return [3 /*break*/, 2];
-                userId = req.body.userId;
-                return [4 /*yield*/, db_js_1.pool.query("SELECT * from users JOIN about_user on about_user.user_id_from_users = $1 WHERE users.user_id = $1", [userId])];
-            case 1:
-                getInfoUser = _a.sent();
-                return [3 /*break*/, 3];
-            case 2:
-                getInfoUser = "";
-                _a.label = 3;
-            case 3: return [4 /*yield*/, db_js_1.pool.query("SELECT answers.answers,users.email,users.nickname,about_user.fullname,about_user.lastname,about_user.img,about_user.user_id_from_users from answers as answers JOIN users on users.user_id = answers.responce_userid JOIN about_user on about_user.user_id_from_users = answers.responce_userid WHERE answers.question_id_from_questions = $1 ORDER BY answer_id", [id])];
-            case 4:
-                getAnswers_3 = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT * FROM questions as q JOIN tags on tags_id = q.question_tags JOIN users on users.user_id = q.user_id JOIN about_user on about_user.user_id_from_users = q.user_id WHERE q.questions_id = $1 ", [id])];
-            case 5:
-                getQuestionInfo = _a.sent();
-                res.status(200).json({
-                    message: "Вы получили информацию о вопросе",
-                    questionInfo: getQuestionInfo.rows[0],
-                    answers: getAnswers_3.rows,
-                    userInfo: getInfoUser !== "" ? getInfoUser.rows[0] : ""
-                });
-                return [3 /*break*/, 7];
-            case 6:
-                err_5 = _a.sent();
-                console.log(err_5);
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
-        }
-    });
 }); };
-app.route("/question/:id").post(getQuestions);
-// --------------------------------------
-var getAnswers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, answer, questionId, questionUserId, userId, addInformationInAnswers, getAnswers_4, err_6;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, answer = _a.answer, questionId = _a.questionId, questionUserId = _a.questionUserId, userId = _a.userId;
-                _b.label = 1;
-            case 1:
-                _b.trys.push([1, 4, , 5]);
-                return [4 /*yield*/, db_js_1.pool.query("INSERT INTO answers (question_id_from_questions,user_id_from_users,answers,responce_userid) VALUES($1,$2,$3,$4)", [questionId, questionUserId, answer, userId])];
-            case 2:
-                addInformationInAnswers = _b.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT answers.answers,p2.fullname,p2.lastname,p2.img,users.email FROM answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users JOIN users ON p2.user_id_from_users = user_id ORDER BY answer_id")];
-            case 3:
-                getAnswers_4 = _b.sent();
-                console.log(getAnswers_4.rows);
-                res.status(200).json({
-                    message: "Вы ответили",
-                    answer: getAnswers_4.rows.at(-1)
-                });
-                return [3 /*break*/, 5];
-            case 4:
-                err_6 = _b.sent();
-                console.log(err_6);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
-        }
-    });
-}); };
-app.route("/answers").post(getAnswers);
-// -----------------------------------------------
-app.post("/users", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
-            console.log(req.body);
-        }
-        catch (err) {
-            console.log(err);
-        }
-        return [2 /*return*/];
-    });
-}); });
+app.route("/questions").get(getAllQuestions);
 module.exports = app;

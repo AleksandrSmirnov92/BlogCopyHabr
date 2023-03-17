@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useRoutes } from "react-router-dom";
 import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
 import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";
@@ -19,10 +19,10 @@ const Main = ({ toggleClass }: any) => {
     >
       <Routes>
         <Route path="/settingsProfil" element={<ProfileSettings />} />
+        <Route path="/" element={<AllQuestions />} />
         <Route path="/questions" element={<AllQuestions />} />
         <Route path="/askQuestions" element={<AskQuestion />} />
         <Route path="/myFeed" element={<MyFeed />} />
-        {/* <Route path="/" element={<AllQuestions />} /> */}
         <Route path="/tags" element={<Tags />} />
         <Route path="/tag/:tagId" element={<Tag />} />
         <Route path="/users" element={<Users />} />

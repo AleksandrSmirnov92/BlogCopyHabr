@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
 import MyFeedCSS from "./myFeed.module.css";
-// import JsIconIMG from "../../../../../../images/JsIcon.png";
 import Question from "../AllQuestions/Question/Question";
 import { NavLink } from "react-router-dom";
-
-const MyFeed = () => {
+function getCookie(name: string): RegExp | string {
+  let matches = document.cookie.match(
+    new RegExp(
+      "(?:^|; )" +
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
+  );
+  return matches ? decodeURIComponent(matches[1]) : "";
+}
+const MyFeed: React.FC = () => {
   let [questions, setQuestions] = useState([]);
   let [answers, setAnswers] = useState([]);
   let [nameTag, setNameTag] = useState({});
-  let [newQuestions, setNewQuestions] = useState("Новые вопросы");
+  let [navValue, setNavValue] = useState("Интересные");
+  let [userId, setUserId] = useState(localStorage.getItem("userId"));
+
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
       style: "unit",
@@ -39,7 +49,7 @@ const MyFeed = () => {
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
-  let countAnswers = (idQuestions: any, answers: any): any => {
+  let countAnswers = (idQuestions: string, answers: {}[]): any => {
     let countAnswers = answers.filter(
       (element: any) => element.question_id_from_questions === idQuestions
     ).length;
@@ -47,112 +57,87 @@ const MyFeed = () => {
     return countAnswers;
   };
   let getMyQuestions = async () => {
-    const res = await fetch(`/myQuestions`, {
+    const res = await fetch(`/myFeed`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        id: localStorage.getItem("userId"),
+        id: userId,
       }),
     });
     const data = await res.json();
     setQuestions(data.questions);
     setAnswers(data.answers);
     setNameTag(data.followers);
-    console.log(data);
   };
-  console.log(
-    questions.filter(
-      (question) =>
-        nameTag[question.name_tag.toLowerCase() as keyof typeof nameTag] &&
-        countAnswers(question.questions_id, answers) === 0
-    )
-  );
   useEffect(() => {
-    getMyQuestions();
-    console.log("Моя страница вопросов");
+    if (userId !== null && getCookie("nickname")) {
+      getMyQuestions();
+    } else {
+      window.location.href = `http://localhost:3000/SignIn`;
+    }
   }, []);
   return (
-    <div className={MyFeedCSS.mainContainer}>
+    <div className={MyFeedCSS.main_container}>
       <h3>Моя лента</h3>
-      <div className={MyFeedCSS.questionCategoriesWrapper}>
+      <nav className={MyFeedCSS.nav}>
         <NavLink
+          className={
+            navValue === "Интересные" ? MyFeedCSS.nav_focus : MyFeedCSS.nav_link
+          }
           to={`/myFeed`}
-          onClick={() => setNewQuestions("Новые вопросы")}
-          className={MyFeedCSS.questionCategories}
+          onClick={() => setNavValue("Интересные")}
         >
           Интересные
         </NavLink>
         <NavLink
+          className={
+            navValue === "Без ответа" ? MyFeedCSS.nav_focus : MyFeedCSS.nav_link
+          }
           to={`/myFeed`}
-          onClick={() => setNewQuestions("Без ответа")}
-          className={MyFeedCSS.questionCategories}
+          onClick={() => setNavValue("Без ответа")}
         >
           Без ответа
         </NavLink>
-      </div>
-      <div className={MyFeedCSS.questionsContainer}>
-        {
-          newQuestions === "Без ответа"
-            ? questions
-                .filter(
-                  (question) =>
-                    nameTag[
-                      question.name_tag.toLowerCase() as keyof typeof nameTag
-                    ] && countAnswers(question.questions_id, answers) === 0
-                )
-                .map((question) => {
-                  return (
-                    <Question
-                      question={question}
-                      currentTime={currentTime}
-                      countAnswers={countAnswers}
-                      answers={answers}
-                    />
-                  );
-                })
-            : questions
-                .filter(
-                  (question) =>
-                    nameTag[
-                      question.name_tag.toLowerCase() as keyof typeof nameTag
-                    ]
-                )
-                .map((question) => {
-                  return (
-                    <Question
-                      question={question}
-                      currentTime={currentTime}
-                      countAnswers={countAnswers}
-                      answers={answers}
-                    />
-                  );
-                })
-                .reverse()
-          /* <div className={MyFeedCSS.question}>
-          <div className={MyFeedCSS.questionHeader}>
-            <img src={JsIconIMG} className={MyFeedCSS.questionTagIcon} alt="" />
-            <a href="#" className={MyFeedCSS.questionTag}>
-              JAVASCRIPT
-            </a>
-          </div>
-          <div className={MyFeedCSS.questionMain}>
-            <div>
-              <a href="#" className={MyFeedCSS.questionMainSpan}>
-                Почему не работа onClick ?
-              </a>
-              <br />
-              <span className={MyFeedCSS.questionMainSpanTwo}>
-                1 подписчик &#96424 4 минуты назад #9642 12 просмотров
-              </span>
-            </div>
-
-            <a href="#" className={MyFeedCSS.countNumber}>
-              <span className={MyFeedCSS.counter}>0</span> <br />
-              Ответов
-            </a>
-          </div>
-        </div> */
-        }
+      </nav>
+      <div className={MyFeedCSS.questions_list}>
+        {navValue === "Без ответа"
+          ? questions
+              .filter(
+                (question) =>
+                  nameTag[
+                    question.name_tag.toLowerCase() as keyof typeof nameTag
+                  ] && countAnswers(question.questions_id, answers) === 0
+              )
+              .map((question, index) => {
+                return (
+                  <Question
+                    key={index}
+                    question={question}
+                    currentTime={currentTime}
+                    countAnswers={countAnswers}
+                    answers={answers}
+                  />
+                );
+              })
+          : questions
+              .filter(
+                (question) =>
+                  nameTag[
+                    question.name_tag.toLowerCase() as keyof typeof nameTag
+                  ]
+              )
+              .map((question, index) => {
+                return (
+                  <Question
+                    key={index}
+                    question={question}
+                    currentTime={currentTime}
+                    countAnswers={countAnswers}
+                    answers={answers}
+                  />
+                );
+              })
+              .reverse()}
       </div>
     </div>
   );
