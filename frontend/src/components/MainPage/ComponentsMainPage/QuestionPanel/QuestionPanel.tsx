@@ -28,9 +28,24 @@ const QuestionPanel: React.FC<Props> = ({
 }: Props) => {
   const { userId, setUserId } = useContext<Context>(userIdContext);
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
+  const [inputValue, setInputValue] = useState("");
+  const [collectionSearch, setCollectionSearch] = useState([]);
+  const getAllInfo = async () => {
+    const res = await fetch(`/getAllInfo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        search: inputValue,
+      }),
+    });
+    const data = await res.json();
+    setCollectionSearch(data.collection);
+  };
   useEffect(() => {
+    getAllInfo();
     setUserId(JSON.parse(localStorage.getItem("userId")));
-  });
+  }, [inputValue]);
+  console.log(collectionSearch);
   return (
     <div
       className={
@@ -63,13 +78,53 @@ const QuestionPanel: React.FC<Props> = ({
         <h1>Смир</h1>
         <span>Q&A</span>
       </div>
-
-      <input
-        className={`${QuestionPanelCSS.form_control} ${QuestionPanelCSS.hide_mobile}`}
-        type="text"
-        placeholder="Найди вопрос,ответ,тег или пользователя"
-      />
-
+      <div
+        className={`${QuestionPanelCSS.form_control__wrapper} ${QuestionPanelCSS.hide_mobile}`}
+      >
+        <input
+          className={`${QuestionPanelCSS.form_control}`}
+          value={inputValue}
+          type="text"
+          placeholder="Найди вопрос,ответ,тег или пользователя"
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            console.log(inputValue);
+          }}
+        />
+        <div
+          className={`${QuestionPanelCSS.form_control__search_menu_wrapper}`}
+        >
+          <ul className={`${QuestionPanelCSS.form_control__search_menu}`}>
+            {collectionSearch.map((item, index): any => {
+              return (
+                <li
+                  className={`${QuestionPanelCSS.form_control__search_menu__item}`}
+                  key={index}
+                >
+                  <div className={QuestionPanelCSS.search_menu__item_wrapper}>
+                    <a
+                      className={
+                        item.img_tag
+                          ? QuestionPanelCSS.form_control__search_menu__item__image
+                          : ""
+                      }
+                      href="#"
+                    >
+                      <img src={item.img_tag} alt="" />
+                    </a>
+                    <span>
+                      {item.name_tag ||
+                        item.nickname ||
+                        item.question_title ||
+                        item.answers}
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
       <NavLink
         to={
           userId !== null && getCookie("nickname")

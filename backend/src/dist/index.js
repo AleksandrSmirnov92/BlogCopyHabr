@@ -35,6 +35,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
 var express_1 = require("express");
 var db_js_1 = require("./db.js");
@@ -52,6 +59,8 @@ var followersRouter = require("../dist/Routes/FollowersInfoRoutes.js");
 var getQuestionsRouter = require("../dist/Routes/GetQuestionRoutes.js");
 var getAnswersRouter = require("../dist/Routes/GetAnswerRoutes.js");
 var getMyFeedRouter = require("../dist/Routes/GetMyFeedRoutes.js");
+var getAllTagsRoute = require("../dist/Routes/GetAllTagsRoutes.js");
+var getAllQuestions = require("../dist/Routes/GetAllQuestionsRoutes.js");
 var cors = require("cors");
 var cookieParser = require("cookie-parser");
 var path = require("path");
@@ -83,53 +92,42 @@ app.use("/question", getQuestionsRouter);
 app.use("/answers", getAnswersRouter);
 // ----------------------------------------
 app.use("/myFeed", getMyFeedRouter);
-app.get("/tags", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var getTags, err_1;
+// ----------------------------------------
+app.use("/tags", getAllTagsRoute);
+// ----------------------------------------
+app.use("/questions", getAllQuestions);
+// ----------------------------------------
+app.post("/getAllInfo", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var search, searchValue, upper, getSearchTags, getSearchUsers, getSearchQuestion, getSearchAnswers, searchCollection;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db_js_1.pool.query("SELECT * FROM tags")];
+                search = req.body.search;
+                searchValue = search ? "%" + search + "%" : search;
+                upper = searchValue[1]
+                    ? searchValue.charAt(0) +
+                        searchValue.charAt(1).toUpperCase() +
+                        searchValue.substr(2)
+                    : searchValue;
+                return [4 /*yield*/, db_js_1.pool.query("SELECT name_tag,img_tag FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;", [searchValue, upper])];
             case 1:
-                getTags = _a.sent();
-                res.status(200).json({
-                    status: "SUCCESS",
-                    tags: getTags.rows
-                });
-                return [3 /*break*/, 3];
+                getSearchTags = _a.sent();
+                return [4 /*yield*/, db_js_1.pool.query("SELECT nickname FROM users where nickname LIKE $2 or nickname LIKE $1;", [searchValue, upper])];
             case 2:
-                err_1 = _a.sent();
-                console.log(err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                getSearchUsers = _a.sent();
+                return [4 /*yield*/, db_js_1.pool.query("SELECT question_title FROM questions where question_title LIKE $2 or question_title LIKE $1;", [searchValue, upper])];
+            case 3:
+                getSearchQuestion = _a.sent();
+                return [4 /*yield*/, db_js_1.pool.query("SELECT a.answers FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;", [searchValue, upper])];
+            case 4:
+                getSearchAnswers = _a.sent();
+                searchCollection = __spreadArrays(getSearchTags.rows, getSearchUsers.rows, getSearchQuestion.rows, getSearchAnswers.rows);
+                res.status(200).json({
+                    message: "Вы получили информацию обо всех направлениях",
+                    collection: searchCollection
+                });
+                return [2 /*return*/];
         }
     });
 }); });
-var getAllQuestions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var getQuestions, getAnswers, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 3, , 4]);
-                return [4 /*yield*/, db_js_1.pool.query("select  questions.questions_id,questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions\n    join tags on questions.question_tags = tags_id;")];
-            case 1:
-                getQuestions = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("\n    select * from answers\n    ")];
-            case 2:
-                getAnswers = _a.sent();
-                res.status(200).json({
-                    message: "Вы получили информацию о всех вопросах",
-                    questions: getQuestions.rows,
-                    answers: getAnswers.rows
-                });
-                return [3 /*break*/, 4];
-            case 3:
-                err_2 = _a.sent();
-                console.log(err_2);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); };
-app.route("/questions").get(getAllQuestions);
 module.exports = app;

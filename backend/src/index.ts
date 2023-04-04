@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { pool } from "./db.js";
 const fileUpload = require("express-fileupload");
 const app = express();
@@ -14,6 +14,8 @@ const followersRouter = require("../dist/Routes/FollowersInfoRoutes.js");
 const getQuestionsRouter = require("../dist/Routes/GetQuestionRoutes.js");
 const getAnswersRouter = require("../dist/Routes/GetAnswerRoutes.js");
 const getMyFeedRouter = require("../dist/Routes/GetMyFeedRoutes.js");
+const getAllTagsRoute = require("../dist/Routes/GetAllTagsRoutes.js");
+const getAllQuestions = require("../dist/Routes/GetAllQuestionsRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -46,36 +48,45 @@ app.use("/question", getQuestionsRouter);
 app.use("/answers", getAnswersRouter);
 // ----------------------------------------
 app.use("/myFeed", getMyFeedRouter);
+// ----------------------------------------
+app.use("/tags", getAllTagsRoute);
+// ----------------------------------------
+app.use("/questions", getAllQuestions);
+// ----------------------------------------
+app.post("/getAllInfo", async (req, res) => {
+  let { search } = req.body;
+  let searchValue = search ? "%" + search + "%" : search;
+  let upper = searchValue[1]
+    ? searchValue.charAt(0) +
+      searchValue.charAt(1).toUpperCase() +
+      searchValue.substr(2)
+    : searchValue;
+  let getSearchTags = await pool.query(
+    `SELECT name_tag,img_tag FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;`,
+    [searchValue, upper]
+  );
+  let getSearchUsers = await pool.query(
+    `SELECT nickname FROM users where nickname LIKE $2 or nickname LIKE $1;`,
+    [searchValue, upper]
+  );
+  let getSearchQuestion = await pool.query(
+    `SELECT question_title FROM questions where question_title LIKE $2 or question_title LIKE $1;`,
+    [searchValue, upper]
+  );
+  let getSearchAnswers = await pool.query(
+    `SELECT a.answers FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;`,
+    [searchValue, upper]
+  );
+  let searchCollection = [
+    ...getSearchTags.rows,
+    ...getSearchUsers.rows,
+    ...getSearchQuestion.rows,
+    ...getSearchAnswers.rows,
+  ];
 
-app.get("/tags", async (req, res) => {
-  try {
-    let getTags = await pool.query("SELECT * FROM tags");
-    res.status(200).json({
-      status: "SUCCESS",
-      tags: getTags.rows,
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  res.status(200).json({
+    message: "Вы получили информацию обо всех направлениях",
+    collection: searchCollection,
+  });
 });
-let getAllQuestions = async (req: Request, res: Response) => {
-  try {
-    let getQuestions =
-      await pool.query(`select  questions.questions_id,questions.question_title, questions.date_of_creation,tags.img_tag, tags.name_tag, tags.tags_id from questions
-    join tags on questions.question_tags = tags_id;`);
-    let getAnswers = await pool.query(`
-    select * from answers
-    `);
-
-    res.status(200).json({
-      message: "Вы получили информацию о всех вопросах",
-      questions: getQuestions.rows,
-      answers: getAnswers.rows,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-app.route("/questions").get(getAllQuestions);
-
 module.exports = app;
