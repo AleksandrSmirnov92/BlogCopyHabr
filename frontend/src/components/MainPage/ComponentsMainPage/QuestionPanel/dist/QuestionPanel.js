@@ -79,16 +79,37 @@ var QuestionPanel = function (_a) {
         getAllInfo();
         setUserId(JSON.parse(localStorage.getItem("userId")));
     }, [inputValue]);
-    console.log(collectionSearch);
     return (react_1["default"].createElement("div", { className: toggleClass
             ? QuestionPanel_module_css_1["default"].question_panel
             : QuestionPanel_module_css_1["default"].question_panel_active + " " + QuestionPanel_module_css_1["default"].question_panel },
-        react_1["default"].createElement("div", { className: "" + QuestionPanel_module_css_1["default"][classHideSearch] },
-            react_1["default"].createElement("input", { type: "text", placeholder: "\u041D\u0430\u0439\u0434\u0438 \u0432\u043E\u043F\u0440\u043E\u0441,\u043E\u0442\u0432\u0435\u0442,\u0442\u0435\u0433 \u0438\u043B\u0438 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F" }),
+        react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"][classHideSearch] + " " + QuestionPanel_module_css_1["default"].hide_desktop + "\n        " },
+            react_1["default"].createElement("input", { className: QuestionPanel_module_css_1["default"].show_search__form_control, type: "text", placeholder: "\u041D\u0430\u0439\u0434\u0438 \u0432\u043E\u043F\u0440\u043E\u0441,\u043E\u0442\u0432\u0435\u0442,\u0442\u0435\u0433 \u0438\u043B\u0438 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F", value: inputValue, onChange: function (e) {
+                    setInputValue(e.target.value);
+                } }),
             react_1["default"].createElement("span", { onClick: function () {
                     setClassHideSearch("hide_search");
                     setHideNavImg(function (prevState) { return !prevState; });
-                } }, "\u0417\u0430\u043A\u0440\u044B\u0442\u044C")),
+                    setInputValue("");
+                } }, "\u0417\u0430\u043A\u0440\u044B\u0442\u044C"),
+            react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].show_search__modal },
+                react_1["default"].createElement("ul", { className: QuestionPanel_module_css_1["default"].show_search__menu }, collectionSearch.map(function (item, index) {
+                    return (react_1["default"].createElement("a", { href: "http://localhost:3000/" + item.route + "/" + (item.tags_id ||
+                            item.user_id ||
+                            item.questions_id ||
+                            item.question_id_from_questions), onClick: function () {
+                            setInputValue("");
+                        }, key: index },
+                        react_1["default"].createElement("li", { className: "" + QuestionPanel_module_css_1["default"].show_search__menu__item },
+                            react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].search_menu__item_wrapper },
+                                react_1["default"].createElement("div", { className: item.img_tag
+                                        ? QuestionPanel_module_css_1["default"].form_control__search_menu__item__image
+                                        : "" },
+                                    react_1["default"].createElement("img", { src: item.img_tag, alt: "" })),
+                                react_1["default"].createElement("span", null, item.name_tag ||
+                                    item.nickname ||
+                                    item.question_title ||
+                                    item.answers)))));
+                })))),
         react_1["default"].createElement("div", { className: toggleClass
                 ? QuestionPanel_module_css_1["default"].nav_menu + " " + QuestionPanel_module_css_1["default"].show_laptop + " " + QuestionPanel_module_css_1["default"].nav_menu_active
                 : QuestionPanel_module_css_1["default"].nav_menu + " " + QuestionPanel_module_css_1["default"].show_laptop },
@@ -97,20 +118,25 @@ var QuestionPanel = function (_a) {
         react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].form_control__wrapper + " " + QuestionPanel_module_css_1["default"].hide_mobile },
             react_1["default"].createElement("input", { className: "" + QuestionPanel_module_css_1["default"].form_control, value: inputValue, type: "text", placeholder: "\u041D\u0430\u0439\u0434\u0438 \u0432\u043E\u043F\u0440\u043E\u0441,\u043E\u0442\u0432\u0435\u0442,\u0442\u0435\u0433 \u0438\u043B\u0438 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F", onChange: function (e) {
                     setInputValue(e.target.value);
-                    console.log(inputValue);
                 } }),
             react_1["default"].createElement("div", { className: "" + QuestionPanel_module_css_1["default"].form_control__search_menu_wrapper },
                 react_1["default"].createElement("ul", { className: "" + QuestionPanel_module_css_1["default"].form_control__search_menu }, collectionSearch.map(function (item, index) {
-                    return (react_1["default"].createElement("li", { className: "" + QuestionPanel_module_css_1["default"].form_control__search_menu__item, key: index },
-                        react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].search_menu__item_wrapper },
-                            react_1["default"].createElement("a", { className: item.img_tag
-                                    ? QuestionPanel_module_css_1["default"].form_control__search_menu__item__image
-                                    : "", href: "#" },
-                                react_1["default"].createElement("img", { src: item.img_tag, alt: "" })),
-                            react_1["default"].createElement("span", null, item.name_tag ||
-                                item.nickname ||
-                                item.question_title ||
-                                item.answers))));
+                    return (react_1["default"].createElement("a", { href: "http://localhost:3000/" + item.route + "/" + (item.tags_id ||
+                            item.user_id ||
+                            item.questions_id ||
+                            item.question_id_from_questions), onClick: function () {
+                            setInputValue("");
+                        }, key: index },
+                        react_1["default"].createElement("li", { className: "" + QuestionPanel_module_css_1["default"].form_control__search_menu__item },
+                            react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].search_menu__item_wrapper },
+                                react_1["default"].createElement("div", { className: item.img_tag
+                                        ? QuestionPanel_module_css_1["default"].form_control__search_menu__item__image
+                                        : "" },
+                                    react_1["default"].createElement("img", { src: item.img_tag, alt: "" })),
+                                react_1["default"].createElement("span", null, item.name_tag ||
+                                    item.nickname ||
+                                    item.question_title ||
+                                    item.answers)))));
                 })))),
         react_1["default"].createElement(react_router_dom_1.NavLink, { to: userId !== null && getCookie("nickname")
                 ? "./askQuestions"
@@ -118,6 +144,7 @@ var QuestionPanel = function (_a) {
         react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].header__toolbar + " " + QuestionPanel_module_css_1["default"].show_tablet },
             react_1["default"].createElement("img", { onClick: function () {
                     setClassHideSearch("show_search");
+                    setInputValue("");
                     setHideNavImg(function (prevState) { return !prevState; });
                 }, src: searh_png_1["default"], alt: "", className: QuestionPanel_module_css_1["default"].searh_img + " " + QuestionPanel_module_css_1["default"].show_mobile }),
             react_1["default"].createElement(react_router_dom_1.NavLink, { to: userId !== null && getCookie("nickname")

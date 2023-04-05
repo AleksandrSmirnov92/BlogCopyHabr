@@ -30,6 +30,7 @@ const QuestionPanel: React.FC<Props> = ({
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
   const [inputValue, setInputValue] = useState("");
   const [collectionSearch, setCollectionSearch] = useState([]);
+
   const getAllInfo = async () => {
     const res = await fetch(`/getAllInfo`, {
       method: "POST",
@@ -45,7 +46,6 @@ const QuestionPanel: React.FC<Props> = ({
     getAllInfo();
     setUserId(JSON.parse(localStorage.getItem("userId")));
   }, [inputValue]);
-  console.log(collectionSearch);
   return (
     <div
       className={
@@ -54,20 +54,72 @@ const QuestionPanel: React.FC<Props> = ({
           : `${QuestionPanelCSS.question_panel_active} ${QuestionPanelCSS.question_panel}`
       }
     >
-      <div className={`${QuestionPanelCSS[classHideSearch]}`}>
+      <div
+        className={`${QuestionPanelCSS[classHideSearch]} ${QuestionPanelCSS.hide_desktop}
+        `}
+      >
         <input
+          className={QuestionPanelCSS.show_search__form_control}
           type="text"
           placeholder="Найди вопрос,ответ,тег или пользователя"
+          value={inputValue}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
         />
+
         <span
           onClick={() => {
             setClassHideSearch("hide_search");
             setHideNavImg((prevState) => !prevState);
+            setInputValue("");
           }}
         >
           Закрыть
         </span>
+
+        <div className={QuestionPanelCSS.show_search__modal}>
+          <ul className={QuestionPanelCSS.show_search__menu}>
+            {collectionSearch.map((item, index): any => {
+              return (
+                <a
+                  href={`http://localhost:3000/${item.route}/${
+                    item.tags_id ||
+                    item.user_id ||
+                    item.questions_id ||
+                    item.question_id_from_questions
+                  }`}
+                  onClick={() => {
+                    setInputValue("");
+                  }}
+                  key={index}
+                >
+                  <li className={`${QuestionPanelCSS.show_search__menu__item}`}>
+                    <div className={QuestionPanelCSS.search_menu__item_wrapper}>
+                      <div
+                        className={
+                          item.img_tag
+                            ? QuestionPanelCSS.form_control__search_menu__item__image
+                            : ""
+                        }
+                      >
+                        <img src={item.img_tag} alt="" />
+                      </div>
+                      <span>
+                        {item.name_tag ||
+                          item.nickname ||
+                          item.question_title ||
+                          item.answers}
+                      </span>
+                    </div>
+                  </li>
+                </a>
+              );
+            })}
+          </ul>
+        </div>
       </div>
+
       <div
         className={
           toggleClass
@@ -88,7 +140,6 @@ const QuestionPanel: React.FC<Props> = ({
           placeholder="Найди вопрос,ответ,тег или пользователя"
           onChange={(e) => {
             setInputValue(e.target.value);
-            console.log(inputValue);
           }}
         />
         <div
@@ -97,29 +148,40 @@ const QuestionPanel: React.FC<Props> = ({
           <ul className={`${QuestionPanelCSS.form_control__search_menu}`}>
             {collectionSearch.map((item, index): any => {
               return (
-                <li
-                  className={`${QuestionPanelCSS.form_control__search_menu__item}`}
+                <a
+                  href={`http://localhost:3000/${item.route}/${
+                    item.tags_id ||
+                    item.user_id ||
+                    item.questions_id ||
+                    item.question_id_from_questions
+                  }`}
+                  onClick={() => {
+                    setInputValue("");
+                  }}
                   key={index}
                 >
-                  <div className={QuestionPanelCSS.search_menu__item_wrapper}>
-                    <a
-                      className={
-                        item.img_tag
-                          ? QuestionPanelCSS.form_control__search_menu__item__image
-                          : ""
-                      }
-                      href="#"
-                    >
-                      <img src={item.img_tag} alt="" />
-                    </a>
-                    <span>
-                      {item.name_tag ||
-                        item.nickname ||
-                        item.question_title ||
-                        item.answers}
-                    </span>
-                  </div>
-                </li>
+                  <li
+                    className={`${QuestionPanelCSS.form_control__search_menu__item}`}
+                  >
+                    <div className={QuestionPanelCSS.search_menu__item_wrapper}>
+                      <div
+                        className={
+                          item.img_tag
+                            ? QuestionPanelCSS.form_control__search_menu__item__image
+                            : ""
+                        }
+                      >
+                        <img src={item.img_tag} alt="" />
+                      </div>
+                      <span>
+                        {item.name_tag ||
+                          item.nickname ||
+                          item.question_title ||
+                          item.answers}
+                      </span>
+                    </div>
+                  </li>
+                </a>
               );
             })}
           </ul>
@@ -141,6 +203,7 @@ const QuestionPanel: React.FC<Props> = ({
         <img
           onClick={() => {
             setClassHideSearch("show_search");
+            setInputValue("");
             setHideNavImg((prevState) => !prevState);
           }}
           src={SearchImg}

@@ -98,7 +98,7 @@ app.use("/tags", getAllTagsRoute);
 app.use("/questions", getAllQuestions);
 // ----------------------------------------
 app.post("/getAllInfo", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var search, searchValue, upper, getSearchTags, getSearchUsers, getSearchQuestion, getSearchAnswers, searchCollection;
+    var search, searchValue, upper, getSearchTags, getSearchUsers, getSearchQuestion, getSearchAnswers, searchCollection, collection;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -109,19 +109,43 @@ app.post("/getAllInfo", function (req, res) { return __awaiter(void 0, void 0, v
                         searchValue.charAt(1).toUpperCase() +
                         searchValue.substr(2)
                     : searchValue;
-                return [4 /*yield*/, db_js_1.pool.query("SELECT name_tag,img_tag FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;", [searchValue, upper])];
+                return [4 /*yield*/, db_js_1.pool.query("SELECT name_tag,img_tag,tags_id FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;", [searchValue, upper])];
             case 1:
                 getSearchTags = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT nickname FROM users where nickname LIKE $2 or nickname LIKE $1;", [searchValue, upper])];
+                return [4 /*yield*/, db_js_1.pool.query("SELECT nickname,user_id FROM users where nickname LIKE $2 or nickname LIKE $1;", [searchValue, upper])];
             case 2:
                 getSearchUsers = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT question_title FROM questions where question_title LIKE $2 or question_title LIKE $1;", [searchValue, upper])];
+                return [4 /*yield*/, db_js_1.pool.query("SELECT question_title,questions_id  FROM questions where question_title LIKE $2 or question_title LIKE $1;", [searchValue, upper])];
             case 3:
                 getSearchQuestion = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT a.answers FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;", [searchValue, upper])];
+                return [4 /*yield*/, db_js_1.pool.query("SELECT a.answers,a.question_id_from_questions FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;", [searchValue, upper])];
             case 4:
                 getSearchAnswers = _a.sent();
                 searchCollection = __spreadArrays(getSearchTags.rows, getSearchUsers.rows, getSearchQuestion.rows, getSearchAnswers.rows);
+                collection = function (m) { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, m.forEach(function (element) {
+                                    if ("name_tag" in element) {
+                                        element.route = "tag";
+                                    }
+                                    if ("nickname" in element) {
+                                        element.route = "users";
+                                    }
+                                    if ("question_title" in element) {
+                                        element.route = "questionInfo";
+                                    }
+                                    if ("answers" in element) {
+                                        element.route = "questionInfo";
+                                    }
+                                })];
+                            case 1:
+                                _a.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); };
+                collection(searchCollection);
                 res.status(200).json({
                     message: "Вы получили информацию обо всех направлениях",
                     collection: searchCollection

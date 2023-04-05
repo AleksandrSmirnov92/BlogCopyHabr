@@ -9,7 +9,7 @@ exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
     let get = await pool.query(
       `select count(*) from questions where questions.user_id = user_id;`
     );
-    console.log(get.rows);
+
     res.status(200).json({
       message: "Вы получили информацию о пользователе",
       body: getInfomationAboutUser.rows,

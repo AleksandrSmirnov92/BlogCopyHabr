@@ -62,19 +62,20 @@ app.post("/getAllInfo", async (req, res) => {
       searchValue.substr(2)
     : searchValue;
   let getSearchTags = await pool.query(
-    `SELECT name_tag,img_tag FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;`,
+    `SELECT name_tag,img_tag,tags_id FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;`,
     [searchValue, upper]
   );
+
   let getSearchUsers = await pool.query(
-    `SELECT nickname FROM users where nickname LIKE $2 or nickname LIKE $1;`,
+    `SELECT nickname,user_id FROM users where nickname LIKE $2 or nickname LIKE $1;`,
     [searchValue, upper]
   );
   let getSearchQuestion = await pool.query(
-    `SELECT question_title FROM questions where question_title LIKE $2 or question_title LIKE $1;`,
+    `SELECT question_title,questions_id  FROM questions where question_title LIKE $2 or question_title LIKE $1;`,
     [searchValue, upper]
   );
   let getSearchAnswers = await pool.query(
-    `SELECT a.answers FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;`,
+    `SELECT a.answers,a.question_id_from_questions FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;`,
     [searchValue, upper]
   );
   let searchCollection = [
@@ -84,6 +85,23 @@ app.post("/getAllInfo", async (req, res) => {
     ...getSearchAnswers.rows,
   ];
 
+  let collection = async (m: any) => {
+    await m.forEach((element: any) => {
+      if ("name_tag" in element) {
+        element.route = "tag";
+      }
+      if ("nickname" in element) {
+        element.route = "users";
+      }
+      if ("question_title" in element) {
+        element.route = "questionInfo";
+      }
+      if ("answers" in element) {
+        element.route = "questionInfo";
+      }
+    });
+  };
+  collection(searchCollection);
   res.status(200).json({
     message: "Вы получили информацию обо всех направлениях",
     collection: searchCollection,
