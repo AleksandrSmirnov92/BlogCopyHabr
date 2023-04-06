@@ -14,7 +14,7 @@ interface Error {
   status: string;
   message: string;
 }
-const SignUp = () => {
+const SignUp: React.FC = () => {
   const [error, setError] = useState<Error>({ status: "", message: "" });
   const onSubmit = async (values: MyValues, actions: FormikValues) => {
     fetch("/signUp", {
@@ -73,16 +73,25 @@ const SignUp = () => {
   });
 
   return (
-    <div className={SignUpCSS.container}>
-      <header className={SignUpCSS.header}>
-        <h1>
+    <div className={`${SignUpCSS["form-container"]}`}>
+      <header className={`${SignUpCSS["header"]} ${SignUpCSS["header_p"]}`}>
+        <h1 className={SignUpCSS["header__title"]}>
           Смир <span> Акаунт</span>
         </h1>
       </header>
-      <main className={SignUpCSS.main_block}>
-        <form onSubmit={handleSubmit} className={SignUpCSS.input_group}>
+      <main className={SignUpCSS["main-container"]}>
+        <form
+          onSubmit={handleSubmit}
+          className={`${SignUpCSS["input-group"]} ${SignUpCSS["input-group_outline"]} ${SignUpCSS["input-group_p"]}`}
+        >
           <h2>Регистрация</h2>
-          <label htmlFor="email">E-mail</label>
+          <label className={`${SignUpCSS["form-label"]}`} htmlFor="email">
+            <span
+              className={`${SignUpCSS["form-label__text"]} ${SignUpCSS["form-label__text_color-black"]} ${SignUpCSS["form-label__text_size"]}`}
+            >
+              E-mail
+            </span>
+          </label>
           <input
             type="email"
             id="email"
@@ -91,18 +100,26 @@ const SignUp = () => {
             onBlur={handleBlur}
             className={
               errors.email && touched.email
-                ? SignUpCSS.form_control__error
-                : SignUpCSS.form_control
+                ? `${SignUpCSS["form-control-error"]} ${SignUpCSS["form-control-error_outline"]} ${SignUpCSS["form-control-error_p"]}`
+                : `${SignUpCSS["form-control"]} ${SignUpCSS["form-control_outline"]} ${SignUpCSS["form-control_p"]}`
             }
           />
           {errors.email && touched.email ? (
-            <span className={SignUpCSS.form_control__error__message}>
+            <span
+              className={`${SignUpCSS["form-control-error__text"]} ${SignUpCSS["form-control-error__text_color-red"]} ${SignUpCSS["form-control-error__text_size"]}`}
+            >
               {errors.email}
             </span>
           ) : (
             ""
           )}
-          <label htmlFor="nickName">Никнэйм</label>
+          <label className={`${SignUpCSS["form-label"]}`} htmlFor="nickName">
+            <span
+              className={`${SignUpCSS["form-label__text"]} ${SignUpCSS["form-label__text_color-black"]} ${SignUpCSS["form-label__text_size"]}`}
+            >
+              Никнэйм
+            </span>{" "}
+          </label>
           <input
             type="text"
             id="nickName"
@@ -111,18 +128,27 @@ const SignUp = () => {
             onBlur={handleBlur}
             className={
               errors.nickName && touched.nickName
-                ? SignUpCSS.form_control__error
-                : SignUpCSS.form_control
+                ? `${SignUpCSS["form-control-error"]} ${SignUpCSS["form-control-error_outline"]} ${SignUpCSS["form-control-error_p"]}`
+                : `${SignUpCSS["form-control"]} ${SignUpCSS["form-control_outline"]} ${SignUpCSS["form-control_p"]}`
             }
           />
           {errors.nickName && touched.nickName ? (
-            <span className={SignUpCSS.form_control__error__message}>
+            <span
+              className={`${SignUpCSS["form-control-error__text"]} ${SignUpCSS["form-control-error__text_color-red"]} ${SignUpCSS["form-control-error__text_size"]}`}
+            >
               {errors.nickName}
             </span>
           ) : (
             ""
           )}
-          <label htmlFor="password">Пароль</label>
+          <label className={`${SignUpCSS["form-label"]}`} htmlFor="password">
+            {" "}
+            <span
+              className={`${SignUpCSS["form-label__text"]} ${SignUpCSS["form-label__text_color-black"]} ${SignUpCSS["form-label__text_size"]}`}
+            >
+              Пароль
+            </span>{" "}
+          </label>
           <input
             type="password"
             id="password"
@@ -131,18 +157,29 @@ const SignUp = () => {
             onBlur={handleBlur}
             className={
               errors.password && touched.password
-                ? SignUpCSS.form_control__error
-                : SignUpCSS.form_control
+                ? `${SignUpCSS["form-control-error"]} ${SignUpCSS["form-control-error_outline"]} ${SignUpCSS["form-control-error_p"]}`
+                : `${SignUpCSS["form-control"]} ${SignUpCSS["form-control_outline"]} ${SignUpCSS["form-control_p"]}`
             }
           />
           {errors.password && touched.password ? (
-            <span className={SignUpCSS.form_control__error__message}>
+            <span
+              className={`${SignUpCSS["form-control-error__text"]} ${SignUpCSS["form-control-error__text_color-red"]} ${SignUpCSS["form-control-error__text_size"]}`}
+            >
               {errors.password}
             </span>
           ) : (
             ""
           )}
-          <label htmlFor="confirmPassword">Пароль еще раз</label>
+          <label
+            className={`${SignUpCSS["form-label"]}`}
+            htmlFor="confirmPassword"
+          >
+            <span
+              className={`${SignUpCSS["form-label__text"]} ${SignUpCSS["form-label__text_color-black"]} ${SignUpCSS["form-label__text_size"]}`}
+            >
+              Пароль еще раз
+            </span>
+          </label>
           <input
             type="password"
             id="confirmPassword"
@@ -151,12 +188,14 @@ const SignUp = () => {
             onBlur={handleBlur}
             className={
               errors.confirmPassword && touched.confirmPassword
-                ? SignUpCSS.form_control__error
-                : SignUpCSS.form_control
+                ? `${SignUpCSS["form-control-error"]} ${SignUpCSS["form-control-error_outline"]} ${SignUpCSS["form-control-error_p"]}`
+                : `${SignUpCSS["form-control"]} ${SignUpCSS["form-control_outline"]} ${SignUpCSS["form-control_p"]}`
             }
           />
           {errors.confirmPassword && touched.confirmPassword ? (
-            <span className={SignUpCSS.form_control__error__message}>
+            <span
+              className={`${SignUpCSS["form-control-error__text"]} ${SignUpCSS["form-control-error__text_color-red"]} ${SignUpCSS["form-control-error__text_size"]}`}
+            >
               {errors.confirmPassword}
             </span>
           ) : (
@@ -166,24 +205,34 @@ const SignUp = () => {
             type="submit"
             className={
               error.status === "ERROR"
-                ? SignUpCSS.error__server
-                : SignUpCSS.form_control_button
+                ? `${SignUpCSS["form-control-error-server"]} ${SignUpCSS["form-control-error-server_outline"]} ${SignUpCSS["form-control-error-server_p"]} ${SignUpCSS["form-control-error-server_color"]}`
+                : `${SignUpCSS["form-control-button"]} ${SignUpCSS["form-control-button_outline"]} ${SignUpCSS["form-control-button_p"]}`
             }
             disabled={isSubmitting}
           >
-            Зарегистрироваться
+            <span
+              className={`${SignUpCSS["form-control-button__text"]} ${SignUpCSS["form-control-button__text_color"]}`}
+            >
+              Зарегистрироваться
+            </span>
           </button>
           {error.status === "ERROR" ? (
-            <span className={SignUpCSS.error__server_message}>
+            <span className={SignUpCSS["form-control-error-server__text"]}>
               {error.message}
             </span>
           ) : (
             ""
           )}
         </form>
-        <div className={SignUpCSS.button_registration}>
-          <span>Уже зарегестрированы?</span>
-          <NavLink to="/SignIn">Войдите</NavLink>
+        <div
+          className={`${SignUpCSS["button-come"]} ${SignUpCSS["button-come_outline"]} ${SignUpCSS["button-come_p"]}`}
+        >
+          <span className={`${SignUpCSS["button-come__text"]}`}>
+            Уже зарегестрированы?
+          </span>
+          <NavLink className={`${SignUpCSS["button-come__link"]}`} to="/SignIn">
+            Войдите
+          </NavLink>
         </div>
       </main>
     </div>

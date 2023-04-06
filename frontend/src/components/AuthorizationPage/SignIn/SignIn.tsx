@@ -68,16 +68,25 @@ const SignIn: React.FC = () => {
     validationSchema: schemaForSignIn,
   });
   return (
-    <div className={AccountCSS.container}>
-      <header className={AccountCSS.header}>
-        <h1>
-          Смир <span> Акаунт</span>
+    <div className={AccountCSS["form-container"]}>
+      <header className={AccountCSS["header"]}>
+        <h1 className={AccountCSS["header__title"]}>
+          Смир <span> Аккаунт</span>
         </h1>
       </header>
-      <main className={AccountCSS.main_block}>
-        <form onSubmit={handleSubmit} className={AccountCSS.input_group}>
+      <main className={AccountCSS["main-container"]}>
+        <form
+          onSubmit={handleSubmit}
+          className={`${AccountCSS["input-group"]} ${AccountCSS["input-group_outline"]} ${AccountCSS["input-group_p"]}`}
+        >
           <h2>Вход</h2>
-          <label htmlFor="email">E-mail</label>
+          <label className={AccountCSS["form-label"]} htmlFor="email">
+            <span
+              className={`${AccountCSS["form-label__text"]} ${AccountCSS["form-label__text_color-black"]} ${AccountCSS["form-label__text_size"]}`}
+            >
+              E-mail
+            </span>
+          </label>
           <input
             type="email"
             id="email"
@@ -86,18 +95,26 @@ const SignIn: React.FC = () => {
             onBlur={handleBlur}
             className={
               errors.email && touched.email
-                ? AccountCSS.form_control__error
-                : AccountCSS.form_control
+                ? `${AccountCSS["form-control-error"]} ${AccountCSS["form-control-error_outline"]} ${AccountCSS["form-control-error_p"]}`
+                : `${AccountCSS["form-control"]} ${AccountCSS["form-control_outline"]} ${AccountCSS["form-control_p"]}`
             }
           />
           {errors.email && touched.email ? (
-            <span className={AccountCSS.form_control__error__message}>
+            <span
+              className={`${AccountCSS["form-control-error__text"]} ${AccountCSS["form-control-error__text_color-red"]} ${AccountCSS["form-control-error__text_size"]}`}
+            >
               {errors.email}
             </span>
           ) : (
             ""
           )}
-          <label htmlFor="password">Пароль</label>
+          <label className={AccountCSS["form-label"]} htmlFor="password">
+            <span
+              className={`${AccountCSS["form-label__text"]} ${AccountCSS["form-label__text_color-black"]} ${AccountCSS["form-label__text_size"]}`}
+            >
+              Пароль
+            </span>
+          </label>
           <input
             type="password"
             id="password"
@@ -106,12 +123,14 @@ const SignIn: React.FC = () => {
             onBlur={handleBlur}
             className={
               errors.password && touched.password
-                ? AccountCSS.form_control__error
-                : AccountCSS.form_control
+                ? `${AccountCSS["form-control-error"]} ${AccountCSS["form-control-error_outline"]} ${AccountCSS["form-control-error_p"]}`
+                : `${AccountCSS["form-control"]} ${AccountCSS["form-control_outline"]} ${AccountCSS["form-control_p"]}`
             }
           />
           {errors.password && touched.password ? (
-            <span className={AccountCSS.form_control__error__message}>
+            <span
+              className={`${AccountCSS["form-control-error__text"]} ${AccountCSS["form-control-error__text_color-red"]} ${AccountCSS["form-control-error__text_size"]}`}
+            >
               {errors.password}
             </span>
           ) : (
@@ -121,24 +140,37 @@ const SignIn: React.FC = () => {
             type="submit"
             className={
               error.status === "ERROR"
-                ? AccountCSS.error__server
-                : AccountCSS.form_control_button
+                ? `${AccountCSS["form-control-error-server"]} ${AccountCSS["form-control-error-server_outline"]} ${AccountCSS["form-control-error-server_p"]} ${AccountCSS["form-control-error-server_color"]}`
+                : `${AccountCSS["form-control-button"]} ${AccountCSS["form-control-button_outline"]} ${AccountCSS["form-control-button_p"]}`
             }
             disabled={isSubmitting}
           >
-            Войти
+            <span
+              className={`${AccountCSS["form-control-button__text"]} ${AccountCSS["form-control-button__text_color"]}`}
+            >
+              Войти
+            </span>
           </button>
           {error.status === "ERROR" ? (
-            <span className={AccountCSS.error__server_message}>
+            <span className={AccountCSS["form-control-error-server__text"]}>
               {error.message}
             </span>
           ) : (
             ""
           )}
         </form>
-        <div className={AccountCSS.button_registration}>
-          <span>Еще нет аккаунта?</span>
-          <NavLink to="/SignUp">Зарегистрируйтесь</NavLink>
+        <div
+          className={`${AccountCSS["button-registration"]} ${AccountCSS["button-registration_outline"]} ${AccountCSS["button-registration_p"]}`}
+        >
+          <span className={`${AccountCSS["button-registration__text"]}`}>
+            Еще нет аккаунта?
+          </span>
+          <NavLink
+            className={`${AccountCSS["button-registration__link"]}`}
+            to="/SignUp"
+          >
+            Зарегистрируйтесь
+          </NavLink>
         </div>
       </main>
     </div>
