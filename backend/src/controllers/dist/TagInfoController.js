@@ -36,30 +36,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+// import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
-exports.signIn = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, _b, data, error;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+exports.tagInfo = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var nameTag, count, id, _a, data, error, _b, data_1, error_1;
+    var _c;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
-                _a = req.body, email = _a.email, password = _a.password;
+                id = req.params.id;
                 return [4 /*yield*/, usersDataBase_js_1.supabase
-                        .from("users")
-                        .select("user_id,nickname")
-                        .match({ email: email, password: password })
+                        .from("tags")
+                        .select()
+                        .eq("tags_id", id)
                         .single()];
             case 1:
-                _b = _c.sent(), data = _b.data, error = _b.error;
+                _a = _d.sent(), data = _a.data, error = _a.error;
+                return [4 /*yield*/, data.name_tag.toLowerCase()];
+            case 2:
+                nameTag = _d.sent();
                 if (error) {
                     console.log(error);
-                    return [2 /*return*/, res
-                            .status(404)
-                            .json({ status: "ERROR", message: "Пользователь не существует" })];
                 }
-                if (data) {
-                    return [2 /*return*/, res.status(200).json({ status: "SUCCESS", user: data })];
-                }
-                return [2 /*return*/];
+                if (!data) return [3 /*break*/, 4];
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("followers")
+                        .select("*", { count: "exact" })
+                        .match((_c = {}, _c[nameTag] = true, _c))];
+            case 3:
+                _b = _d.sent(), data_1 = _b.data, error_1 = _b.error;
+                count = data_1.length;
+                _d.label = 4;
+            case 4: return [2 /*return*/];
         }
     });
 }); };
