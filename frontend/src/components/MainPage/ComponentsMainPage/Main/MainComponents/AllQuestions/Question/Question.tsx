@@ -13,6 +13,7 @@ const Question = ({
   countAnswers,
   answers,
 }: MyValue) => {
+  console.log(question);
   return (
     <div className={NewQuestionCSS.question_container}>
       <header className={NewQuestionCSS.header}>

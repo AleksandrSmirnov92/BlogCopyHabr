@@ -15,8 +15,42 @@ interface ResponseData {
 }
 exports.tagInfo = async (req: Request, res: Response<ResponseData>) => {
   let nameTag;
-  let count;
   let { id } = req.params;
+  let countFollowers = async (nameTag: any) => {
+    let countFollowersData:any;
+    let { data, error } = await supabase
+      .from("followers")
+      .select("*", { count: "exact" })
+      .match({ [nameTag]: true });
+    if (data) {
+      return countFollowersData = `${data.length}`;
+    } else {
+      return countFollowersData = "0";
+    }
+  };
+  let getAnswers = async () => {
+    let { data, error } = await supabase.from("answers").select(`*`);
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+       return data
+    }
+  };
+  let questionTag = async (id: any) => {
+    let { data, error } = await supabase
+      .from("questions")
+      .select(`"*",tags("*")`)
+      .eq("question_tags", id);
+
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      let newob = data.map(((item:any) => ({ ...item,...item.tags})))
+       return newob;
+    }
+  };
   let { data, error } = await supabase
     .from("tags")
     .select()
@@ -27,12 +61,13 @@ exports.tagInfo = async (req: Request, res: Response<ResponseData>) => {
     console.log(error);
   }
   if (data) {
-    let { data, error } = await supabase
-      .from("followers")
-      .select("*", { count: "exact" })
-      .match({ [nameTag]: true });
-    count = data.length;
-  }
+    res.status(200).json({
+          message: "Вы получили информацию о тэге",
+          body: data,
+          countFollowers:  await countFollowers(nameTag),
+          questionsTag: await questionTag(id),
+          answers: await getAnswers()
+  })
 
   // Запрос в базу postgresql локальную
   // try {

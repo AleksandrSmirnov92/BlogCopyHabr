@@ -59,6 +59,7 @@ const Tags = () => {
     });
     const data: ResponseData = await res.json();
     setTags(data.tags);
+
     setCountFollowers(data.countFollowers);
   };
   useEffect(() => {
@@ -73,6 +74,7 @@ const Tags = () => {
     tag: Tag,
     countFollowers: CountFollowers | {}
   ): number => {
+    console.log(tag);
     let currentName = tag.name_tag;
     return countFollowers[currentName as keyof typeof countFollowers];
   };

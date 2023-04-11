@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,35 +50,103 @@ exports.__esModule = true;
 // import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
 exports.tagInfo = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var nameTag, count, id, _a, data, error, _b, data_1, error_1;
-    var _c;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
+    var nameTag, id, countFollowers, getAnswers, questionTag, _a, data, error, _b, _c, _d;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
             case 0:
                 id = req.params.id;
+                countFollowers = function (nameTag) { return __awaiter(void 0, void 0, void 0, function () {
+                    var countFollowersData, _a, data, error;
+                    var _b;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
+                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
+                                    .from("followers")
+                                    .select("*", { count: "exact" })
+                                    .match((_b = {}, _b[nameTag] = true, _b))];
+                            case 1:
+                                _a = _c.sent(), data = _a.data, error = _a.error;
+                                if (data) {
+                                    return [2 /*return*/, countFollowersData = "" + data.length];
+                                }
+                                else {
+                                    return [2 /*return*/, countFollowersData = "0"];
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
+                }); };
+                getAnswers = function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a, data, error;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase.from("answers").select("*")];
+                            case 1:
+                                _a = _b.sent(), data = _a.data, error = _a.error;
+                                if (error) {
+                                    console.log(error);
+                                }
+                                if (data) {
+                                    return [2 /*return*/, data];
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
+                }); };
+                questionTag = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a, data, error, newob;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
+                                    .from("questions")
+                                    .select("\"*\",tags(\"*\")")
+                                    .eq("question_tags", id)];
+                            case 1:
+                                _a = _b.sent(), data = _a.data, error = _a.error;
+                                if (error) {
+                                    console.log(error);
+                                }
+                                if (data) {
+                                    newob = data.map((function (item) { return (__assign(__assign({}, item), item.tags)); }));
+                                    return [2 /*return*/, newob];
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
+                }); };
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("tags")
                         .select()
                         .eq("tags_id", id)
                         .single()];
             case 1:
-                _a = _d.sent(), data = _a.data, error = _a.error;
+                _a = _e.sent(), data = _a.data, error = _a.error;
                 return [4 /*yield*/, data.name_tag.toLowerCase()];
             case 2:
-                nameTag = _d.sent();
+                nameTag = _e.sent();
                 if (error) {
                     console.log(error);
                 }
-                if (!data) return [3 /*break*/, 4];
-                return [4 /*yield*/, usersDataBase_js_1.supabase
-                        .from("followers")
-                        .select("*", { count: "exact" })
-                        .match((_c = {}, _c[nameTag] = true, _c))];
+                if (!data) return [3 /*break*/, 6];
+                _c = (_b = res.status(200)).json;
+                _d = {
+                    message: "Вы получили информацию о тэге",
+                    body: data
+                };
+                return [4 /*yield*/, countFollowers(nameTag)];
             case 3:
-                _b = _d.sent(), data_1 = _b.data, error_1 = _b.error;
-                count = data_1.length;
-                _d.label = 4;
-            case 4: return [2 /*return*/];
+                _d.countFollowers = _e.sent();
+                return [4 /*yield*/, questionTag(id)];
+            case 4:
+                _d.questionsTag = _e.sent();
+                return [4 /*yield*/, getAnswers()];
+            case 5:
+                _c.apply(_b, [(_d.answers = _e.sent(),
+                        _d)]);
+                _e.label = 6;
+            case 6:
+                ;
+                return [2 /*return*/];
         }
     });
 }); };
