@@ -1,0 +1,5 @@
+name tagsFollowers
+columns id,tag_id_from_tags,user_id_from_user  
+1 Получить все теги с количеством людей
+2 Получить свои теги 
+select * from tags;
