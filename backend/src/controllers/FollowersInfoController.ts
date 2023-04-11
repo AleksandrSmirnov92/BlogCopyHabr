@@ -1,11 +1,12 @@
 import express, { Request, Response } from "express";
-import { pool } from "../db.js";
+// import { pool } from "../db.js";
+import { supabase } from "../config/usersDataBase.js";
 interface RequestBody {
   nameTag: string;
 }
 interface ResponseData {
   message: string;
-  tags: [];
+  tags: any;
   countFollowers: {
     JavaScript: string;
     HTML: string;
@@ -20,67 +21,239 @@ exports.getInfoFollowers = async (
   req: Request<{ id: string }, {}, RequestBody>,
   res: Response<ResponseData>
 ) => {
-  try {
-    let { id } = req.params;
-    let { nameTag } = req.body;
-
-    let getTags;
-    if (id !== "null") {
-      let getFollower = await pool.query(
-        `SELECT ${nameTag.toLowerCase()} FROM followers WHERE followers_id_from_users = $1 `,
-        [id]
-      );
-      let updateFollower = await pool.query(
-        `UPDATE followers SET ${nameTag.toLowerCase()} = $1 WHERE followers_id_from_users = $2`,
-        [!getFollower.rows[0][nameTag.toLowerCase()], id]
-      );
-      getTags = await pool.query(
-        `SELECT (select count(*) from questions where question_tags = tags.tags_id),tags.tags_id,tags.name_tag,tags.img_tag,followers.followers_id_from_users,followers.followers_id,followers.javascript,followers.html,followers.css,followers.react,followers.vue,followers.git FROM tags join followers on followers_id_from_users = $1`,
-        [id]
-      );
-    } else {
-      getTags = await pool.query(
-        `SELECT (select count(*) from questions where question_tags = tags.tags_id),tags.tags_id,tags.name_tag,tags.img_tag FROM tags;`
-      );
+  let { id } = req.params;
+  let { nameTag } = req.body;
+  let getFollowers: any;
+  let getFollower = async (id: any, nameTag: any) => {
+    let { data, error } = await supabase
+      .from("followers")
+      .select(`${nameTag.toLowerCase()}`)
+      .eq("followers_id_from_users", id)
+      .single();
+    if (error) {
+      console.log(error);
     }
+    if (data) {
+      return data;
+    }
+  };
+  let updateFollower = async (id: any, followers: any, nameTag: any) => {
+    let { error } = await supabase
+      .from("followers")
+      .update({
+        [nameTag.toLowerCase()]: !followers[nameTag.toLowerCase()],
+      })
+      .eq("followers_id_from_users", id);
+    if (error) {
+      console.log(error);
+    }
+  };
+  let getFollowersData = async () => {
+    let { data, error } = await supabase.from("followers").select("*");
+    // getFollowers = data;
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      getFollowers = await data;
+      return getFollowers;
+    }
+  };
+  let countFollowers = async (tagsId: any) => {
+    let { data, error } = await supabase
+      .from("questions")
+      .select("*", { count: "exact" })
+      .match({ question_tags: tagsId });
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      return await `${data.length}`;
+    } else {
+      return await "0";
+    }
+  };
+  let getTags = async (data: any) => {
+    let newob = [];
+    for (const item of data) {
+      newob.push({
+        ...item,
+        ...getFollowers[0],
+        count: await countFollowers(item.tags_id),
+      });
+    }
+    return newob;
+  };
 
-    let countFollowersJavaScript = await pool.query(
-      "SELECT COUNT(*) FROM followers where javascript = $1",
-      ["true"]
-    );
-    let countFollowersHTML = await pool.query(
-      "SELECT COUNT(*) FROM followers where html = $1",
-      ["true"]
-    );
-    let countFollowersCSS = await pool.query(
-      "SELECT COUNT(*) FROM followers where css = $1",
-      ["true"]
-    );
-    let countFollowersReact = await pool.query(
-      "SELECT COUNT(*) FROM followers where react = $1",
-      ["true"]
-    );
-    let countFollowersVue = await pool.query(
-      "SELECT COUNT(*) FROM followers where vue = $1",
-      ["true"]
-    );
-    let countFollowersGit = await pool.query(
-      "SELECT COUNT(*) FROM followers where git = $1",
-      ["true"]
-    );
-    res.status(200).json({
-      message: "Вы получили информацию о всех тегах",
-      tags: getTags.rows,
-      countFollowers: {
-        JavaScript: countFollowersJavaScript.rows[0].count,
-        HTML: countFollowersHTML.rows[0].count,
-        CSS: countFollowersCSS.rows[0].count,
-        React: countFollowersReact.rows[0].count,
-        Vue: countFollowersVue.rows[0].count,
-        Git: countFollowersGit.rows[0].count,
-      },
-    });
-  } catch (err) {
-    console.log(err);
+  let countFollowersJavaScript = async (t: any) => {
+    let { data, error } = await supabase
+      .from("followers")
+      .select("*", { count: "exact" })
+      .eq("javascript", t);
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      return `${data.length}`;
+    } else {
+      return "0";
+    }
+  };
+  let countFollowersHTML = async (t: any) => {
+    let { data, error } = await supabase
+      .from("followers")
+      .select("*", { count: "exact" })
+      .eq("html", t);
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      return `${data.length}`;
+    } else {
+      return "0";
+    }
+  };
+  let countFollowersCSS = async (t: any) => {
+    let { data, error } = await supabase
+      .from("followers")
+      .select("*", { count: "exact" })
+      .eq("css", t);
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      return `${data.length}`;
+    } else {
+      return "0";
+    }
+  };
+  let countFollowersReact = async (t: any) => {
+    let { data, error } = await supabase
+      .from("followers")
+      .select("*", { count: "exact" })
+      .eq("react", t);
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      return `${data.length}`;
+    } else {
+      return "0";
+    }
+  };
+  let countFollowersVue = async (t: any) => {
+    let { data, error } = await supabase
+      .from("followers")
+      .select("*", { count: "exact" })
+      .eq("vue", t);
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      return `${data.length}`;
+    } else {
+      return "0";
+    }
+  };
+  let countFollowersGit = async (t: any) => {
+    let { data, error } = await supabase
+      .from("followers")
+      .select("*", { count: "exact" })
+      .eq("git", t);
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      return `${data.length}`;
+    } else {
+      return "0";
+    }
+  };
+
+  if (id !== "null") {
+    updateFollower(id, await getFollower(id, nameTag), nameTag);
+    await getFollowersData();
+    let { data, error } = await supabase
+      .from("tags")
+      .select("tags_id,name_tag,img_tag");
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      res.status(200).json({
+        message: "Вы получили информацию о всех тегах",
+        tags: await getTags(data),
+        countFollowers: {
+          JavaScript: await countFollowersJavaScript("true"),
+          HTML: await countFollowersHTML("true"),
+          CSS: await countFollowersCSS("true"),
+          React: await countFollowersReact("true"),
+          Vue: await countFollowersVue("true"),
+          Git: await countFollowersGit("true"),
+        },
+      });
+    }
+  } else {
   }
+  // try {
+  //   let { id } = req.params;
+  //   let { nameTag } = req.body;
+  //   let getTags;
+  //   if (id !== "null") {
+  //     let getFollower = await pool.query(
+  //       `SELECT ${nameTag.toLowerCase()} FROM followers WHERE followers_id_from_users = $1 `,
+  //       [id]
+  //     );
+  //     let updateFollower = await pool.query(
+  //       `UPDATE followers SET ${nameTag.toLowerCase()} = $1 WHERE followers_id_from_users = $2`,
+  //       [!getFollower.rows[0][nameTag.toLowerCase()], id]
+  //     );
+  //     getTags = await pool.query(
+  //       `SELECT (select count(*) from questions where question_tags = tags.tags_id),tags.tags_id,tags.name_tag,tags.img_tag,followers.followers_id_from_users,followers.followers_id,followers.javascript,followers.html,followers.css,followers.react,followers.vue,followers.git FROM tags join followers on followers_id_from_users = $1`,
+  //       [id]
+  //     );
+  //   } else {
+  //     getTags = await pool.query(
+  //       `SELECT (select count(*) from questions where question_tags = tags.tags_id),tags.tags_id,tags.name_tag,tags.img_tag FROM tags;`
+  //     );
+  //   }
+  //   let countFollowersJavaScript = await pool.query(
+  //     "SELECT COUNT(*) FROM followers where javascript = $1",
+  //     ["true"]
+  //   );
+  //   let countFollowersHTML = await pool.query(
+  //     "SELECT COUNT(*) FROM followers where html = $1",
+  //     ["true"]
+  //   );
+  //   let countFollowersCSS = await pool.query(
+  //     "SELECT COUNT(*) FROM followers where css = $1",
+  //     ["true"]
+  //   );
+  //   let countFollowersReact = await pool.query(
+  //     "SELECT COUNT(*) FROM followers where react = $1",
+  //     ["true"]
+  //   );
+  //   let countFollowersVue = await pool.query(
+  //     "SELECT COUNT(*) FROM followers where vue = $1",
+  //     ["true"]
+  //   );
+  //   let countFollowersGit = await pool.query(
+  //     "SELECT COUNT(*) FROM followers where git = $1",
+  //     ["true"]
+  //   );
+  //   res.status(200).json({
+  //     message: "Вы получили информацию о всех тегах",
+  //     tags: getTags.rows,
+  //     countFollowers: {
+  //       JavaScript: countFollowersJavaScript.rows[0].count,
+  //       HTML: countFollowersHTML.rows[0].count,
+  //       CSS: countFollowersCSS.rows[0].count,
+  //       React: countFollowersReact.rows[0].count,
+  //       Vue: countFollowersVue.rows[0].count,
+  //       Git: countFollowersGit.rows[0].count,
+  //     },
+  //   });
+  // } catch (err) {
+  //   console.log(err);
+  // }
 };
