@@ -50,24 +50,51 @@ exports.__esModule = true;
 // import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
 exports.getInfoFollowers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getTags, tagsFollowers, mFollowers, n;
+    var id, tagsId, isCheckedFollowers, deleteFollower, createFollowers, getTags, tagsFollowers, mFollowers, resTags;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
-                return [4 /*yield*/, usersDataBase_js_1.supabase.from("tags").select("*", { count: "exact" })];
+                tagsId = req.body.tagsId;
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("tagsFollowers")
+                        .select("*")
+                        .match({ user_id: id, tags_id: tagsId })
+                        .single()];
             case 1:
+                isCheckedFollowers = _a.sent();
+                if (!isCheckedFollowers.data) return [3 /*break*/, 3];
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("tagsFollowers")["delete"]()
+                        .match({ user_id: id, tags_id: tagsId })];
+            case 2:
+                deleteFollower = _a.sent();
+                return [3 /*break*/, 5];
+            case 3: return [4 /*yield*/, usersDataBase_js_1.supabase
+                    .from("tagsFollowers")
+                    .insert({ user_id: id, tags_id: tagsId })];
+            case 4:
+                createFollowers = _a.sent();
+                _a.label = 5;
+            case 5: return [4 /*yield*/, usersDataBase_js_1.supabase
+                    .from("tags")
+                    .select("\"*\",question_and_tags(tag_id_from_tags)", { count: "exact" })];
+            case 6:
                 getTags = _a.sent();
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("tagsFollowers")
                         .select("user_id,tags_id", { count: "exact" })
                         .eq("user_id", id)];
-            case 2:
+            case 7:
                 tagsFollowers = _a.sent();
                 mFollowers = [];
                 tagsFollowers.data.map(function (x) { return mFollowers.push(x.tags_id); });
-                n = getTags.data.map(function (x) { return (__assign(__assign({}, x), { isChecked: mFollowers.includes(x.tags_id), count: mFollowers.reduce() })); });
-                console.log(n);
+                resTags = getTags.data.map(function (x) { return (__assign(__assign({}, x), { isChecked: mFollowers.includes(x.tags_id), countFollowers: mFollowers.filter(function (tagId) { return tagId === x.tags_id; })
+                        .length, countQuestions: x.question_and_tags.length, btn: true })); });
+                res.status(200).json({
+                    message: "Вы получили информацию о всех тегах",
+                    tags: resTags
+                });
                 return [2 /*return*/];
         }
     });

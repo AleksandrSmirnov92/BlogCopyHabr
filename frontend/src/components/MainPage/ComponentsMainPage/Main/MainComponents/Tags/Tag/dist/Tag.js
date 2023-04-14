@@ -89,7 +89,6 @@ var Tag = function () {
                     return [4 /*yield*/, res.json()];
                 case 2:
                     data = _a.sent();
-                    console.log(data);
                     setAnswers(data.answers);
                     setQuestions(data.questionsTag);
                     setCount(data.countFollowers);

@@ -70,7 +70,6 @@ const Tag: React.FC = () => {
       headers: { "Content-Type": "application/json" },
     });
     let data: ResponseData = await res.json();
-    console.log(data);
     setAnswers(data.answers);
     setQuestions(data.questionsTag);
     setCount(data.countFollowers);

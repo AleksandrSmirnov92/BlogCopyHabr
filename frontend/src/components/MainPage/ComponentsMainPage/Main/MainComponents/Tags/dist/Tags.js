@@ -41,7 +41,6 @@ var react_router_dom_1 = require("react-router-dom");
 var Tags_module_css_1 = require("./Tags.module.css");
 var Tags = function () {
     var _a = react_1.useState([]), tags = _a[0], setTags = _a[1];
-    var _b = react_1.useState({}), countFollowers = _b[0], setCountFollowers = _b[1];
     var getInfoTags = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, data;
         return __generator(this, function (_a) {
@@ -56,62 +55,52 @@ var Tags = function () {
                 case 2:
                     data = _a.sent();
                     setTags(data.tags);
-                    setCountFollowers(data.countFollowers);
                     return [2 /*return*/];
             }
         });
     }); };
     react_1.useEffect(function () {
         getInfoTags();
-    });
-    var searchFollow = function (tag) {
-        var currentName = tag.name_tag.toLowerCase();
-        return tag["" + currentName.toLowerCase()];
-    };
-    var searchCountFollowers = function (tag, countFollowers) {
-        console.log(tag);
-        var currentName = tag.name_tag;
-        return countFollowers[currentName];
-    };
-    var subscribeFollower = function (nameTag) { return __awaiter(void 0, void 0, void 0, function () {
+    }, []);
+    var subscribeFollower = function (tagsId) { return __awaiter(void 0, void 0, void 0, function () {
         var res, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("/followers/" + localStorage.getItem("userId"), {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ nameTag: nameTag })
+                        body: JSON.stringify({ tagsId: tagsId })
                     })];
                 case 1:
                     res = _a.sent();
                     return [4 /*yield*/, res.json()];
                 case 2:
                     data = _a.sent();
-                    setCountFollowers(data.countFollowers);
+                    setTags(data.tags);
                     return [2 /*return*/];
             }
         });
     }); };
-    return (react_1["default"].createElement("div", { className: Tags_module_css_1["default"].tags_container },
+    return (react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-container"] },
         react_1["default"].createElement("h3", null, "\u0412\u0441\u0435 \u0442\u0435\u0433\u0438"),
-        react_1["default"].createElement("div", { className: Tags_module_css_1["default"].block }, tags.map(function (tag) {
-            return (react_1["default"].createElement("div", { key: tag.tags_id, className: Tags_module_css_1["default"].item },
+        react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-block"] }, tags.map(function (tag) {
+            return (react_1["default"].createElement("div", { key: tag.tags_id, className: Tags_module_css_1["default"]["tags-card"] + " " + Tags_module_css_1["default"]["tags-card_outline"] + " " + Tags_module_css_1["default"]["tags-card_p"] },
                 react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.tags_id },
-                    react_1["default"].createElement("div", { className: Tags_module_css_1["default"].item_img },
+                    react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-card__image"] },
                         react_1["default"].createElement("img", { src: tag.img_tag, alt: "" }))),
-                react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.tags_id, className: Tags_module_css_1["default"].item_title }, tag.name_tag),
-                react_1["default"].createElement(react_router_dom_1.Link, { to: "/tag/" + tag.tags_id, state: { question: "Вопросы" }, className: Tags_module_css_1["default"].count }, tag.count + " \u0432\u043E\u043F\u0440\u043E\u0441\u043E\u0432"),
-                react_1["default"].createElement("button", { className: tag.followers_id_from_users
-                        ? searchFollow(tag)
+                react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.tags_id, className: Tags_module_css_1["default"]["tags-card__title"] + " " + Tags_module_css_1["default"]["tags-card__title_p"] + " " + Tags_module_css_1["default"]["tags-card__title_size"] }, tag.name_tag),
+                react_1["default"].createElement(react_router_dom_1.Link, { to: "/tag/" + tag.tags_id, state: { question: "Вопросы" }, className: Tags_module_css_1["default"]["tags-card__questions"] + " " + Tags_module_css_1["default"]["tags-card__questions_outline"] + " " + Tags_module_css_1["default"]["tags-card__questions_p"] + " " + Tags_module_css_1["default"]["tags-card__questions_size"] }, tag.countQuestions + " \u0432\u043E\u043F\u0440\u043E\u0441\u043E\u0432"),
+                react_1["default"].createElement("button", { className: tag.btn
+                        ? tag.isChecked
                             ? Tags_module_css_1["default"].btn_unsubscribe
                             : Tags_module_css_1["default"].btn_subscribe
                         : Tags_module_css_1["default"].btn_none, onClick: function () {
-                        subscribeFollower(tag.name_tag);
+                        subscribeFollower(tag.tags_id);
                     } },
-                    searchFollow(tag) ? "Вы подписаны" : "Подписаться",
+                    tag.isChecked ? "Вы подписаны" : "Подписаться",
                     " |",
                     " ",
-                    searchCountFollowers(tag, countFollowers))));
+                    tag.countFollowers)));
         }))));
 };
 exports["default"] = Tags;

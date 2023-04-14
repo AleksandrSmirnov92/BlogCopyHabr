@@ -67,10 +67,10 @@ exports.tagInfo = function (req, res) { return __awaiter(void 0, void 0, void 0,
                             case 1:
                                 _a = _c.sent(), data = _a.data, error = _a.error;
                                 if (data) {
-                                    return [2 /*return*/, countFollowersData = "" + data.length];
+                                    return [2 /*return*/, (countFollowersData = "" + data.length)];
                                 }
                                 else {
-                                    return [2 /*return*/, countFollowersData = "0"];
+                                    return [2 /*return*/, (countFollowersData = "0")];
                                 }
                                 return [2 /*return*/];
                         }
@@ -107,7 +107,7 @@ exports.tagInfo = function (req, res) { return __awaiter(void 0, void 0, void 0,
                                     console.log(error);
                                 }
                                 if (data) {
-                                    newob = data.map((function (item) { return (__assign(__assign({}, item), item.tags)); }));
+                                    newob = data.map(function (item) { return (__assign(__assign({}, item), item.tags)); });
                                     return [2 /*return*/, newob];
                                 }
                                 return [2 /*return*/];
@@ -144,9 +144,7 @@ exports.tagInfo = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 _c.apply(_b, [(_d.answers = _e.sent(),
                         _d)]);
                 _e.label = 6;
-            case 6:
-                ;
-                return [2 /*return*/];
+            case 6: return [2 /*return*/];
         }
     });
 }); };

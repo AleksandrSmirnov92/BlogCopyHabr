@@ -3,19 +3,11 @@ import express, { Request, Response } from "express";
 // import { pool } from "../db.js";
 import { supabase } from "../config/usersDataBase.js";
 interface RequestBody {
-  nameTag: string;
+  tagsId: string;
 }
 interface ResponseData {
   message: string;
   tags: any;
-  countFollowers: {
-    JavaScript: string;
-    HTML: string;
-    CSS: string;
-    React: string;
-    Vue: string;
-    Git: string;
-  };
 }
 
 exports.getInfoFollowers = async (
@@ -23,19 +15,43 @@ exports.getInfoFollowers = async (
   res: Response<ResponseData>
 ) => {
   let { id } = req.params;
-  let getTags = await supabase.from("tags").select("*", { count: "exact" });
+  let { tagsId } = req.body;
+  let isCheckedFollowers = await supabase
+    .from("tagsFollowers")
+    .select("*")
+    .match({ user_id: id, tags_id: tagsId })
+    .single();
+  if (isCheckedFollowers.data) {
+    let deleteFollower = await supabase
+      .from("tagsFollowers")
+      .delete()
+      .match({ user_id: id, tags_id: tagsId });
+  } else {
+    let createFollowers = await supabase
+      .from("tagsFollowers")
+      .insert({ user_id: id, tags_id: tagsId });
+  }
+  let getTags = await supabase
+    .from("tags")
+    .select(`"*",question_and_tags(tag_id_from_tags)`, { count: "exact" });
   let tagsFollowers = await supabase
     .from("tagsFollowers")
     .select("user_id,tags_id", { count: "exact" })
     .eq("user_id", id);
   let mFollowers: any = [];
   tagsFollowers.data.map((x: any) => mFollowers.push(x.tags_id));
-  let n = getTags.data.map((x: any) => ({
+  let resTags = getTags.data.map((x: any) => ({
     ...x,
     isChecked: mFollowers.includes(x.tags_id),
-    count: mFollowers.reduce(),
+    countFollowers: mFollowers.filter((tagId: any) => tagId === x.tags_id)
+      .length,
+    countQuestions: x.question_and_tags.length,
+    btn: true,
   }));
-  console.log(n);
+  res.status(200).json({
+    message: "Вы получили информацию о всех тегах",
+    tags: resTags,
+  });
   // try {
   //   let { id } = req.params;
   //   let { nameTag } = req.body;

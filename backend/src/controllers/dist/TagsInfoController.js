@@ -49,267 +49,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
 exports.getInfoTags = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getTagsData, countFollowersJavaScript, countFollowersHTML, countFollowersCSS, countFollowersReact, countFollowersVue, countFollowersGit, _a, _b, _c, _d;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
+    var id, getTags, questions, mFollowers, resTags, tagsFollowers;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 id = req.params.id;
-                getTagsData = function (id) { return __awaiter(void 0, void 0, void 0, function () {
-                    var getFollowers, countFollowers, getFollowersData, _a, data, error, getTags;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0:
-                                countFollowers = function (tagsId) { return __awaiter(void 0, void 0, void 0, function () {
-                                    var _a, data, error;
-                                    return __generator(this, function (_b) {
-                                        switch (_b.label) {
-                                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                                                    .from("questions")
-                                                    .select("*", { count: "exact" })
-                                                    .match({ question_tags: tagsId })];
-                                            case 1:
-                                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                                if (error) {
-                                                    console.log(error);
-                                                }
-                                                if (!data) return [3 /*break*/, 3];
-                                                return [4 /*yield*/, "" + data.length];
-                                            case 2: return [2 /*return*/, _b.sent()];
-                                            case 3: return [4 /*yield*/, "0"];
-                                            case 4: return [2 /*return*/, _b.sent()];
-                                        }
-                                    });
-                                }); };
-                                getFollowersData = function () { return __awaiter(void 0, void 0, void 0, function () {
-                                    var _a, data, error;
-                                    return __generator(this, function (_b) {
-                                        switch (_b.label) {
-                                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase.from("followers").select("*")];
-                                            case 1:
-                                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                                // getFollowers = data;
-                                                if (error) {
-                                                    console.log(error);
-                                                }
-                                                if (!data) return [3 /*break*/, 3];
-                                                return [4 /*yield*/, data];
-                                            case 2:
-                                                getFollowers = _b.sent();
-                                                return [2 /*return*/, getFollowers];
-                                            case 3: return [2 /*return*/];
-                                        }
-                                    });
-                                }); };
-                                if (!(id !== "null")) return [3 /*break*/, 4];
-                                return [4 /*yield*/, getFollowersData()];
-                            case 1:
-                                _b.sent();
-                                return [4 /*yield*/, usersDataBase_js_1.supabase
-                                        .from("tags")
-                                        .select("tags_id,name_tag,img_tag")];
-                            case 2:
-                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                if (error) {
-                                    console.log(error);
-                                }
-                                if (!data) return [3 /*break*/, 4];
-                                getTags = function (data) { return __awaiter(void 0, void 0, void 0, function () {
-                                    var newob, _i, data_1, item, _a, _b, _c, _d;
-                                    return __generator(this, function (_e) {
-                                        switch (_e.label) {
-                                            case 0:
-                                                newob = [];
-                                                _i = 0, data_1 = data;
-                                                _e.label = 1;
-                                            case 1:
-                                                if (!(_i < data_1.length)) return [3 /*break*/, 4];
-                                                item = data_1[_i];
-                                                _b = (_a = newob).push;
-                                                _c = [__assign(__assign({}, item), getFollowers[0])];
-                                                _d = {};
-                                                return [4 /*yield*/, countFollowers(item.tags_id)];
-                                            case 2:
-                                                _b.apply(_a, [__assign.apply(void 0, _c.concat([(_d.count = _e.sent(), _d)]))]);
-                                                _e.label = 3;
-                                            case 3:
-                                                _i++;
-                                                return [3 /*break*/, 1];
-                                            case 4: return [2 /*return*/, newob];
-                                        }
-                                    });
-                                }); };
-                                return [4 /*yield*/, getTags(data)];
-                            case 3: return [2 /*return*/, _b.sent()];
-                            case 4: return [2 /*return*/];
-                        }
-                    });
-                }); };
-                countFollowersJavaScript = function (t) { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a, data, error;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                                    .from("followers")
-                                    .select("*", { count: "exact" })
-                                    .eq("javascript", t)];
-                            case 1:
-                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                if (error) {
-                                    console.log(error);
-                                }
-                                if (data) {
-                                    return [2 /*return*/, "" + data.length];
-                                }
-                                else {
-                                    return [2 /*return*/, "0"];
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                }); };
-                countFollowersHTML = function (t) { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a, data, error;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                                    .from("followers")
-                                    .select("*", { count: "exact" })
-                                    .eq("html", t)];
-                            case 1:
-                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                if (error) {
-                                    console.log(error);
-                                }
-                                if (data) {
-                                    return [2 /*return*/, "" + data.length];
-                                }
-                                else {
-                                    return [2 /*return*/, "0"];
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                }); };
-                countFollowersCSS = function (t) { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a, data, error;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                                    .from("followers")
-                                    .select("*", { count: "exact" })
-                                    .eq("css", t)];
-                            case 1:
-                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                if (error) {
-                                    console.log(error);
-                                }
-                                if (data) {
-                                    return [2 /*return*/, "" + data.length];
-                                }
-                                else {
-                                    return [2 /*return*/, "0"];
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                }); };
-                countFollowersReact = function (t) { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a, data, error;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                                    .from("followers")
-                                    .select("*", { count: "exact" })
-                                    .eq("react", t)];
-                            case 1:
-                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                if (error) {
-                                    console.log(error);
-                                }
-                                if (data) {
-                                    return [2 /*return*/, "" + data.length];
-                                }
-                                else {
-                                    return [2 /*return*/, "0"];
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                }); };
-                countFollowersVue = function (t) { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a, data, error;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                                    .from("followers")
-                                    .select("*", { count: "exact" })
-                                    .eq("vue", t)];
-                            case 1:
-                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                if (error) {
-                                    console.log(error);
-                                }
-                                if (data) {
-                                    return [2 /*return*/, "" + data.length];
-                                }
-                                else {
-                                    return [2 /*return*/, "0"];
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                }); };
-                countFollowersGit = function (t) { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a, data, error;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                                    .from("followers")
-                                    .select("*", { count: "exact" })
-                                    .eq("git", t)];
-                            case 1:
-                                _a = _b.sent(), data = _a.data, error = _a.error;
-                                if (error) {
-                                    console.log(error);
-                                }
-                                if (data) {
-                                    return [2 /*return*/, "" + data.length];
-                                }
-                                else {
-                                    return [2 /*return*/, "0"];
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                }); };
-                _b = (_a = res.status(200)).json;
-                _c = {
-                    message: "Вы получили информацию о всех тегах"
-                };
-                return [4 /*yield*/, getTagsData(id)];
+                return [4 /*yield*/, usersDataBase_js_1.supabase.from("tags").select("*", { count: "exact" })];
             case 1:
-                _c.tags = _e.sent();
-                _d = {};
-                return [4 /*yield*/, countFollowersJavaScript("true")];
+                getTags = _a.sent();
+                return [4 /*yield*/, usersDataBase_js_1.supabase.from("question_and_tags").select("*")];
             case 2:
-                _d.JavaScript = _e.sent();
-                return [4 /*yield*/, countFollowersHTML("true")];
+                questions = _a.sent();
+                mFollowers = [];
+                if (!(id !== "null")) return [3 /*break*/, 4];
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("tagsFollowers")
+                        .select("user_id,tags_id", { count: "exact" })
+                        .eq("user_id", id)];
             case 3:
-                _d.HTML = _e.sent();
-                return [4 /*yield*/, countFollowersCSS("true")];
+                tagsFollowers = _a.sent();
+                tagsFollowers.data.map(function (x) { return mFollowers.push(x.tags_id); });
+                resTags = getTags.data.map(function (x) { return (__assign(__assign({}, x), { isChecked: mFollowers.includes(x.tags_id), countFollowers: mFollowers.filter(function (tagId) { return tagId === x.tags_id; })
+                        .length, countQuestions: questions.data.filter(function (t) { return t.tag_id_from_tags === x.tags_id; }).length, btn: true })); });
+                return [3 /*break*/, 5];
             case 4:
-                _d.CSS = _e.sent();
-                return [4 /*yield*/, countFollowersReact("true")];
+                resTags = getTags.data.map(function (x) { return (__assign(__assign({}, x), { countQuestions: questions.data.filter(function (t) { return t.tag_id_from_tags === x.tags_id; }).length, btn: false })); });
+                _a.label = 5;
             case 5:
-                _d.React = _e.sent();
-                return [4 /*yield*/, countFollowersVue("true")];
-            case 6:
-                _d.Vue = _e.sent();
-                return [4 /*yield*/, countFollowersGit("true")];
-            case 7:
-                _b.apply(_a, [(_c.countFollowers = (_d.Git = _e.sent(),
-                        _d),
-                        _c)]);
+                res.status(200).json({
+                    message: "Вы получили информацию о всех тегах",
+                    tags: resTags
+                });
                 return [2 /*return*/];
         }
     });
