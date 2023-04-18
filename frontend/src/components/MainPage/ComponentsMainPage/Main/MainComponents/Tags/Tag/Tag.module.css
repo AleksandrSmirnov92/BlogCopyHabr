@@ -1,67 +1,90 @@
-.tag_container {
+.tag-container {
   padding-left: 40px;
   padding-right: 40px;
 }
-.header {
+.tag-header {
   padding-top: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.header > img {
+.tag-header__image {
   width: 100px;
   height: 100px;
 }
-.header > h1 {
+.tag-header__image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tag-header__title {
   padding-top: 20px;
   padding-bottom: 20px;
 }
-.tag_count {
-  font-size: 30px;
-  font-weight: 700;
+.tag-header__counter {
   color: #2d72d9;
 }
-.tag_followers {
-  font-size: 20px;
+.tag-header__counter_size {
+  font-size: 30px;
+  font-weight: 700;
+}
+.tag-header__subtitle {
   color: #9099a3;
+}
+.tag-header__subtitle_size {
   font-weight: 400;
+  font-size: 20px;
 }
 .nav {
-  margin-top: 40px;
   display: flex;
   justify-content: flex-start;
+}
+.nav_outline {
   border-top: 1px #9099a3 solid;
   border-bottom: 1px #9099a3 solid;
 }
-.nav > div {
+.nav_m {
+  margin-top: 40px;
+}
+.nav__item {
   cursor: pointer;
   padding: 8px;
   text-decoration: none;
   color: #9099a3;
 }
-.nav > div:hover {
+.nav__item:hover {
   color: black;
   text-decoration: underline;
 }
-.nav > div:focus {
+.nav__item:focus {
   color: black;
   border-bottom: 2px black solid;
 }
-main > div {
-  font-size: 15px;
-  padding-top: 20px;
+.nav__item_active {
+  color: black;
+  text-decoration: underline;
+}
+.nav__item_size {
+  font-weight: bold;
+}
+.tag-content {
   color: #333;
 }
-main > div > h4 {
+.tag-content_p {
+  padding-top: 20px;
+}
+.tag-content_size {
+  font-size: 15px;
+}
+.tag-content__title {
   color: #4f6173;
-  font-weight: 700px;
   margin: 0;
+}
+.tag-content__title_p {
   padding-bottom: 10px;
   padding-top: 10px;
 }
-.active {
-  font-weight: bold;
-  color: black;
-  text-decoration: underline;
+.tag-content__title_size {
+  font-weight: 700px;
 }

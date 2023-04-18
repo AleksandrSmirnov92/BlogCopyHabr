@@ -82,27 +82,59 @@ const Tag: React.FC = () => {
     window.history.replaceState({}, document.title);
   }, []);
   return (
-    <div className={TagCSS.tag_container}>
-      <header className={TagCSS.header}>
-        <img src={pathImg} alt="" />
-        <h1>{nameTag}</h1>
-        <span className={TagCSS.tag_count}>{count}</span>
-        <span className={TagCSS.tag_followers}>Подписчиков</span>
+    <div className={TagCSS["tag-container"]}>
+      <header className={TagCSS["tag-header"]}>
+        <div className={`${TagCSS["tag-header__image"]}`}>
+          <img src={pathImg} alt="" />
+        </div>
+        <h1 className={`${TagCSS["tag-header__title"]}`}>{nameTag}</h1>
+        <span
+          className={`${TagCSS["tag-header__counter"]} ${TagCSS["tag-header__counter_size"]}`}
+        >
+          {count}
+        </span>
+        <span
+          className={`${TagCSS["tag-header__subtitle"]} ${TagCSS["tag-header__subtitle_size"]}`}
+        >
+          Подписчиков
+        </span>
       </header>
       <main>
-        <nav className={TagCSS.nav}>
-          <div onClick={() => setLinkValue("Информация")}>
-            <span className={linkValue === "Информация" ? TagCSS.active : ""}>
+        <nav
+          className={`${TagCSS["nav"]} ${TagCSS["nav_outline"]} ${TagCSS["nav_m"]}`}
+        >
+          <div
+            className={`${TagCSS["nav__item"]}`}
+            onClick={() => setLinkValue("Информация")}
+          >
+            <span
+              className={
+                linkValue === "Информация"
+                  ? `${TagCSS["nav__item_active"]} ${TagCSS["nav__item_size"]}`
+                  : ""
+              }
+            >
               Информация
             </span>
           </div>
-          <div onClick={() => setLinkValue("Вопросы")}>
-            <span className={linkValue === "Вопросы" ? TagCSS.active : ""}>
+          <div
+            className={`${TagCSS["nav__item"]}`}
+            onClick={() => setLinkValue("Вопросы")}
+          >
+            <span
+              className={
+                linkValue === "Вопросы"
+                  ? `${TagCSS["nav__item_active"]} ${TagCSS["nav__item_size"]}`
+                  : ""
+              }
+            >
               Вопросы
             </span>
           </div>
         </nav>
-        <div>
+        <div
+          className={`${TagCSS["tag-content"]} ${TagCSS["tag-content_p"]} ${TagCSS["tag-content_size"]}`}
+        >
           {linkValue === "Информация" ? (
             description
           ) : questions.length > 0 ? (
@@ -118,7 +150,11 @@ const Tag: React.FC = () => {
               );
             })
           ) : (
-            <h4>Вопросов нет</h4>
+            <h4
+              className={`${TagCSS["tag-content__title"]} ${TagCSS["tag-content__title_p"]}`}
+            >
+              Вопросов нет
+            </h4>
           )}
         </div>
       </main>

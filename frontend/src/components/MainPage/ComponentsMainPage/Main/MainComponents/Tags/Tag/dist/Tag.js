@@ -103,20 +103,25 @@ var Tag = function () {
         getInformationTag();
         window.history.replaceState({}, document.title);
     }, []);
-    return (react_1["default"].createElement("div", { className: Tag_module_css_1["default"].tag_container },
-        react_1["default"].createElement("header", { className: Tag_module_css_1["default"].header },
-            react_1["default"].createElement("img", { src: pathImg, alt: "" }),
-            react_1["default"].createElement("h1", null, nameTag),
-            react_1["default"].createElement("span", { className: Tag_module_css_1["default"].tag_count }, count),
-            react_1["default"].createElement("span", { className: Tag_module_css_1["default"].tag_followers }, "\u041F\u043E\u0434\u043F\u0438\u0441\u0447\u0438\u043A\u043E\u0432")),
+    return (react_1["default"].createElement("div", { className: Tag_module_css_1["default"]["tag-container"] },
+        react_1["default"].createElement("header", { className: Tag_module_css_1["default"]["tag-header"] },
+            react_1["default"].createElement("div", { className: "" + Tag_module_css_1["default"]["tag-header__image"] },
+                react_1["default"].createElement("img", { src: pathImg, alt: "" })),
+            react_1["default"].createElement("h1", { className: "" + Tag_module_css_1["default"]["tag-header__title"] }, nameTag),
+            react_1["default"].createElement("span", { className: Tag_module_css_1["default"]["tag-header__counter"] + " " + Tag_module_css_1["default"]["tag-header__counter_size"] }, count),
+            react_1["default"].createElement("span", { className: Tag_module_css_1["default"]["tag-header__subtitle"] + " " + Tag_module_css_1["default"]["tag-header__subtitle_size"] }, "\u041F\u043E\u0434\u043F\u0438\u0441\u0447\u0438\u043A\u043E\u0432")),
         react_1["default"].createElement("main", null,
-            react_1["default"].createElement("nav", { className: Tag_module_css_1["default"].nav },
-                react_1["default"].createElement("div", { onClick: function () { return setLinkValue("Информация"); } },
-                    react_1["default"].createElement("span", { className: linkValue === "Информация" ? Tag_module_css_1["default"].active : "" }, "\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F")),
-                react_1["default"].createElement("div", { onClick: function () { return setLinkValue("Вопросы"); } },
-                    react_1["default"].createElement("span", { className: linkValue === "Вопросы" ? Tag_module_css_1["default"].active : "" }, "\u0412\u043E\u043F\u0440\u043E\u0441\u044B"))),
-            react_1["default"].createElement("div", null, linkValue === "Информация" ? (description) : questions.length > 0 ? (questions.map(function (question, index) {
+            react_1["default"].createElement("nav", { className: Tag_module_css_1["default"]["nav"] + " " + Tag_module_css_1["default"]["nav_outline"] + " " + Tag_module_css_1["default"]["nav_m"] },
+                react_1["default"].createElement("div", { className: "" + Tag_module_css_1["default"]["nav__item"], onClick: function () { return setLinkValue("Информация"); } },
+                    react_1["default"].createElement("span", { className: linkValue === "Информация"
+                            ? Tag_module_css_1["default"]["nav__item_active"] + " " + Tag_module_css_1["default"]["nav__item_size"]
+                            : "" }, "\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F")),
+                react_1["default"].createElement("div", { className: "" + Tag_module_css_1["default"]["nav__item"], onClick: function () { return setLinkValue("Вопросы"); } },
+                    react_1["default"].createElement("span", { className: linkValue === "Вопросы"
+                            ? Tag_module_css_1["default"]["nav__item_active"] + " " + Tag_module_css_1["default"]["nav__item_size"]
+                            : "" }, "\u0412\u043E\u043F\u0440\u043E\u0441\u044B"))),
+            react_1["default"].createElement("div", { className: Tag_module_css_1["default"]["tag-content"] + " " + Tag_module_css_1["default"]["tag-content_p"] + " " + Tag_module_css_1["default"]["tag-content_size"] }, linkValue === "Информация" ? (description) : questions.length > 0 ? (questions.map(function (question, index) {
                 return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime, countAnswers: countAnswers, answers: answers }));
-            })) : (react_1["default"].createElement("h4", null, "\u0412\u043E\u043F\u0440\u043E\u0441\u043E\u0432 \u043D\u0435\u0442"))))));
+            })) : (react_1["default"].createElement("h4", { className: Tag_module_css_1["default"]["tag-content__title"] + " " + Tag_module_css_1["default"]["tag-content__title_p"] }, "\u0412\u043E\u043F\u0440\u043E\u0441\u043E\u0432 \u043D\u0435\u0442"))))));
 };
 exports["default"] = Tag;
