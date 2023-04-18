@@ -29,16 +29,23 @@ const Users: React.FC = () => {
   }, [setUsers]);
 
   return (
-    <div className={UsersCSS.users_container}>
-      <h3>Пользователи</h3>
-      <div className={UsersCSS.users_block}>
+    <div className={`${UsersCSS["users-container"]}`}>
+      <h3
+        className={`${UsersCSS["users-container_title"]} ${UsersCSS["users-container_outline"]}`}
+      >
+        Пользователи
+      </h3>
+      <div className={`${UsersCSS["users-content"]}`}>
         {users
           .map((user: User, index: number) => {
             return (
-              <div className={UsersCSS.user_card} key={index}>
+              <div
+                className={`${UsersCSS["users-card"]} ${UsersCSS["users-card_p"]} ${UsersCSS["users-card_outline"]}`}
+                key={index}
+              >
                 <NavLink
                   to={`/users/${user.user_id}`}
-                  className={UsersCSS.user_avatar}
+                  className={`${UsersCSS["users-card__image"]}`}
                 >
                   <img
                     src={user.img !== "" ? user.img : UsersProfilIMG}
@@ -47,21 +54,25 @@ const Users: React.FC = () => {
                 </NavLink>
                 <NavLink
                   to={`/users/${user.user_id}`}
-                  className={UsersCSS.users_nickname}
+                  className={`${UsersCSS["users-card__nickname"]} ${UsersCSS["users-card__nickname_p"]} ${UsersCSS["users-card__nickname_size"]}`}
                 >
                   {user.fullname !== "" ? `${user.fullname}` : user.nickname}
                 </NavLink>
-                <div className={UsersCSS.users_stat}>
+                <div
+                  className={`${UsersCSS["users-card__stat"]} ${UsersCSS["users-card__stat_p"]} ${UsersCSS["users-card__stat_outline"]}`}
+                >
                   {user.answers !== "0" ? (
                     <Link
                       to={`/users/${user.user_id}`}
                       state={{ question: "Ответы" }}
-                      className={UsersCSS.users_count}
+                      className={`${UsersCSS["users-card__stat-link"]} ${UsersCSS["users-card__stat-link_p"]} ${UsersCSS["users-card__stat-link_size"]}`}
                     >
                       Ответов ({user.answers})
                     </Link>
                   ) : (
-                    <span className={UsersCSS.users_notcount}>
+                    <span
+                      className={`${UsersCSS["users-card__stat-link_inactive"]}`}
+                    >
                       Ответов ({user.answers})
                     </span>
                   )}
@@ -70,12 +81,14 @@ const Users: React.FC = () => {
                     <Link
                       to={`/users/${user.user_id}`}
                       state={{ question: "Вопросы" }}
-                      className={UsersCSS.users_count}
+                      className={`${UsersCSS["users-card__stat-link"]} ${UsersCSS["users-card__stat-link_p"]} ${UsersCSS["users-card__stat-link_size"]}`}
                     >
                       Вопросов ({user.questions})
                     </Link>
                   ) : (
-                    <span className={UsersCSS.users_notcount}>
+                    <span
+                      className={`${UsersCSS["users-card__stat-link_inactive"]}`}
+                    >
                       Вопросов ({user.questions})
                     </span>
                   )}

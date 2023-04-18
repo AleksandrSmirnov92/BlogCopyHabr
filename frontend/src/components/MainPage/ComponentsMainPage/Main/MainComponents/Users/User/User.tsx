@@ -146,51 +146,87 @@ const User: React.FC = () => {
     window.history.replaceState({}, document.title);
   }, []);
   return (
-    <div className={UserCSS.user_container}>
-      <header className={UserCSS.user_header}>
+    <div className={`${UserCSS["user-container"]}`}>
+      <header className={`${UserCSS["user-header"]}`}>
         <a
           href={`http://localhost:3000/users/${localStorage.getItem("userId")}`}
-          className={UserCSS.user_avatar}
+          className={`${UserCSS["user-header__image"]}`}
         >
           <img src={pathImg === "" ? photoProfilIMG : pathImg} alt="" />
         </a>
-        <span className={UserCSS.user_title}>
+        <span
+          className={`${UserCSS["user-header__title"]} ${UserCSS["user-header__title_size"]}`}
+        >
           {fullName} {lastName}
         </span>
-        <span className={UserCSS.user_subtitle}> {brieflyAboutYourself}</span>
+        <span
+          className={`${UserCSS["user-header__subtitle"]} ${UserCSS["user-header__subtitle_size"]}`}
+        >
+          {" "}
+          {brieflyAboutYourself}
+        </span>
       </header>
-      <nav className={UserCSS.nav}>
-        <div onClick={() => setLinkValue("Информация")}>
+      <nav className={`${UserCSS["nav"]} ${UserCSS["nav_outline"]}`}>
+        <div
+          className={`${UserCSS["nav__item"]}`}
+          onClick={() => setLinkValue("Информация")}
+        >
           <span className={linkValue === "Информация" ? UserCSS.active : ""}>
             Информация
           </span>
         </div>
-        <div onClick={() => setLinkValue("Вопросы")}>
+        <div
+          className={`${UserCSS["nav__item"]}`}
+          onClick={() => setLinkValue("Вопросы")}
+        >
           <span className={linkValue === "Вопросы" ? UserCSS.active : ""}>
             Вопросы
           </span>
         </div>
-        <div onClick={() => setLinkValue("Ответы")}>
+        <div
+          className={`${UserCSS["nav__item"]}`}
+          onClick={() => setLinkValue("Ответы")}
+        >
           <span className={linkValue === "Ответы" ? UserCSS.active : ""}>
             Ответы
           </span>
         </div>
       </nav>
 
-      <div className={UserCSS.user_info_block}>
+      <div className={`${UserCSS["user-content"]}`}>
         {linkValue === "Информация" ? (
           <>
-            <h4>{informattionAboutUser !== "" ? "Обо мне" : ""}</h4>
-            <span> {informattionAboutUser} </span>
-
-            <h4>{contacts !== "Контакты" ? "Контакты" : ""}</h4>
-            <span>
-              {contacts !== "Контакты" ? `${contacts} :` : ""}
-              <a href={linkToContacts}>{linkToContacts}</a>
+            <h4
+              className={`${UserCSS["user-content__title"]} ${UserCSS["user-content__title_p"]}`}
+            >
+              {informattionAboutUser !== "" ? "Обо мне" : ""}
+            </h4>
+            <span className={`${UserCSS["user-content__text"]}`}>
+              {" "}
+              {informattionAboutUser}{" "}
             </span>
 
-            <h4>{country !== "Страна" ? "Местоположение" : ""}</h4>
-            <span>
+            <h4
+              className={`${UserCSS["user-content__title"]} ${UserCSS["user-content__title_p"]}`}
+            >
+              {contacts !== "Контакты" ? "Контакты" : ""}
+            </h4>
+            <span className={`${UserCSS["user-content__text"]}`}>
+              {contacts !== "Контакты" ? `${contacts} :` : ""}
+              <a
+                className={`${UserCSS["user-content__link-to-contacts"]}`}
+                href={linkToContacts}
+              >
+                {linkToContacts}
+              </a>
+            </span>
+
+            <h4
+              className={`${UserCSS["user-content__title"]} ${UserCSS["user-content__title_p"]}`}
+            >
+              {country !== "Страна" ? "Местоположение" : ""}
+            </h4>
+            <span className={`${UserCSS["user-content__text"]}`}>
               {country !== "Страна" ? `${country},${region},${town}` : ""}
             </span>
           </>
@@ -208,7 +244,11 @@ const User: React.FC = () => {
               );
             })
           ) : (
-            <h4>Вопросов нет</h4>
+            <h4
+              className={`${UserCSS["user-content__title"]} ${UserCSS["user-content__title_p"]}`}
+            >
+              Вопросов нет
+            </h4>
           )
         ) : myAnswers.length > 0 ? (
           myAnswers.map((answer) => {
@@ -229,7 +269,11 @@ const User: React.FC = () => {
             );
           })
         ) : (
-          <h4>Ответов нет</h4>
+          <h4
+            className={`${UserCSS["user-content__title"]} ${UserCSS["user-content__title_p"]}`}
+          >
+            Ответов нет
+          </h4>
         )}
       </div>
     </div>
