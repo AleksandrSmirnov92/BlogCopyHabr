@@ -13,6 +13,7 @@ interface ResponseData {
   questionsTag: [];
   answers: [];
 }
+
 exports.tagInfo = async (req: Request, res: Response<ResponseData>) => {
   let nameTag;
   let { id } = req.params;
