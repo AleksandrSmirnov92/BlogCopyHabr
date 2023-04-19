@@ -9,11 +9,11 @@ interface MyValues {
   answers: string;
 }
 const QuestionInfo: React.FC = () => {
+  let { questionId } = useParams();
   let [pathImg, setPathImg] = useState("");
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
   let [pathMyImg, setPathMyImg] = useState("");
-  let [userActive, setUserActive] = useState("");
   let [questionUserId, setQusestionUserId] = useState("");
   let [tagsId, setTagsId] = useState("");
   let [nameTag, setNameTag] = useState("");
@@ -23,7 +23,7 @@ const QuestionInfo: React.FC = () => {
   let [questionTimeCreation, setQuestionTimeCreation] = useState("");
   let [answers, setAnswers] = useState([]);
   let [userId, setUserId] = useState("");
-  let { questionId } = useParams();
+  let [userActive, setUserActive] = useState("");
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
       style: "unit",
@@ -85,10 +85,9 @@ const QuestionInfo: React.FC = () => {
       currentTime(new Date(`${data.questionInfo.date_of_creation}`))
     );
     setAnswers(data.questionInfo.answers);
+    setPathMyImg(data.questionInfo.userId);
     //
     // setNameTag(data.questionInfo.name_tag);
-
-    // setPathMyImg(data.userInfo.img);
     // setUserActive(data.userInfo);
     // setUserId(data.userInfo.user_id);
   };
@@ -199,7 +198,7 @@ const QuestionInfo: React.FC = () => {
                 Это мой ответ на твой вопрос
               </span>
               <p className={QuestionInfoCSS.question_answer_text}>
-                {answer.answers}
+                {answer.answer}
               </p>
             </>
           );
@@ -256,6 +255,7 @@ const QuestionInfo: React.FC = () => {
           </button>
         </form>
       </div>
+      {/* -------------------------------------------------- */}
       <div
         className={
           userActive
