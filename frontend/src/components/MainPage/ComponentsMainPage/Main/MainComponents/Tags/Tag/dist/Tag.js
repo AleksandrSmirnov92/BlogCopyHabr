@@ -49,8 +49,7 @@ var Tag = function () {
     var _c = react_1.useState(""), nameTag = _c[0], setNameTag = _c[1];
     var _d = react_1.useState(""), count = _d[0], setCount = _d[1];
     var _e = react_1.useState([]), questions = _e[0], setQuestions = _e[1];
-    var _f = react_1.useState([]), answers = _f[0], setAnswers = _f[1];
-    var _g = react_1.useState(question ? "\u0412\u043E\u043F\u0440\u043E\u0441\u044B" : "Информация"), linkValue = _g[0], setLinkValue = _g[1];
+    var _f = react_1.useState(question ? "\u0412\u043E\u043F\u0440\u043E\u0441\u044B" : "Информация"), linkValue = _f[0], setLinkValue = _f[1];
     var currentTime = function (date) {
         var formatterHour = new Intl.NumberFormat("ru", {
             style: "unit",
@@ -72,10 +71,6 @@ var Tag = function () {
         var currentMinutes = currentTime.getMinutes() - date.getMinutes();
         return "\u041E\u043F\u0443\u0431\u043B\u0438\u043A\u043E\u0432\u0430\u043D " + formatterHour.format(currentHours) + " " + formatterMinutes.format(currentMinutes) + " \u043D\u0430\u0437\u0430\u0434";
     };
-    var countAnswers = function (idQuestions, answers) {
-        var countAnswers = answers.filter(function (element) { return element.question_id_from_questions === idQuestions; }).length;
-        return countAnswers;
-    };
     var getInformationTag = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, data;
         return __generator(this, function (_a) {
@@ -89,9 +84,7 @@ var Tag = function () {
                     return [4 /*yield*/, res.json()];
                 case 2:
                     data = _a.sent();
-                    setAnswers(data.answers);
-                    setQuestions(data.questionsTag);
-                    setCount(data.countFollowers);
+                    setCount(data.body.tagsFollowers);
                     setDescription(data.body.description);
                     setPathImg(data.body.img_tag);
                     setNameTag(data.body.name_tag);
@@ -99,7 +92,28 @@ var Tag = function () {
             }
         });
     }); };
+    var getInformationQuestion = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("/getQuestionsId/" + tagId, {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" }
+                    })];
+                case 1:
+                    res = _a.sent();
+                    return [4 /*yield*/, res.json()];
+                case 2:
+                    data = _a.sent();
+                    setQuestions(data.questions);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     react_1.useEffect(function () {
+        if (linkValue === "Вопросы") {
+            getInformationQuestion();
+        }
         getInformationTag();
         window.history.replaceState({}, document.title);
     }, []);
@@ -116,12 +130,12 @@ var Tag = function () {
                     react_1["default"].createElement("span", { className: linkValue === "Информация"
                             ? Tag_module_css_1["default"]["nav__item_active"] + " " + Tag_module_css_1["default"]["nav__item_size"]
                             : "" }, "\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F")),
-                react_1["default"].createElement("div", { className: "" + Tag_module_css_1["default"]["nav__item"], onClick: function () { return setLinkValue("Вопросы"); } },
+                react_1["default"].createElement("div", { className: "" + Tag_module_css_1["default"]["nav__item"], onClick: function () { return (setLinkValue("Вопросы"), getInformationQuestion()); } },
                     react_1["default"].createElement("span", { className: linkValue === "Вопросы"
                             ? Tag_module_css_1["default"]["nav__item_active"] + " " + Tag_module_css_1["default"]["nav__item_size"]
                             : "" }, "\u0412\u043E\u043F\u0440\u043E\u0441\u044B"))),
             react_1["default"].createElement("div", { className: Tag_module_css_1["default"]["tag-content"] + " " + Tag_module_css_1["default"]["tag-content_p"] + " " + Tag_module_css_1["default"]["tag-content_size"] }, linkValue === "Информация" ? (description) : questions.length > 0 ? (questions.map(function (question, index) {
-                return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime, countAnswers: countAnswers, answers: answers }));
+                return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime }));
             })) : (react_1["default"].createElement("h4", { className: Tag_module_css_1["default"]["tag-content__title"] + " " + Tag_module_css_1["default"]["tag-content__title_p"] }, "\u0412\u043E\u043F\u0440\u043E\u0441\u043E\u0432 \u043D\u0435\u0442"))))));
 };
 exports["default"] = Tag;

@@ -16,6 +16,7 @@ const getAnswersRouter = require("../dist/Routes/GetAnswerRoutes.js");
 const getMyFeedRouter = require("../dist/Routes/GetMyFeedRoutes.js");
 const getAllTagsRoute = require("../dist/Routes/GetAllTagsRoutes.js");
 const getAllQuestions = require("../dist/Routes/GetAllQuestionsRoutes.js");
+const getAllQuestionsId = require("../dist/Routes/getQuestionsIdRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -52,6 +53,8 @@ app.use("/myFeed", getMyFeedRouter);
 app.use("/tags", getAllTagsRoute);
 // ----------------------------------------
 app.use("/questions", getAllQuestions);
+// ----------------------------------------
+app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.post("/getAllInfo", async (req, res) => {
   let { search } = req.body;

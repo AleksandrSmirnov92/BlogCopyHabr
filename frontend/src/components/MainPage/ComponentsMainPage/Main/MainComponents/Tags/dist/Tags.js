@@ -84,18 +84,19 @@ var Tags = function () {
     return (react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-container"] },
         react_1["default"].createElement("h3", null, "\u0412\u0441\u0435 \u0442\u0435\u0433\u0438"),
         react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-block"] }, tags.map(function (tag) {
-            return (react_1["default"].createElement("div", { key: tag.tags_id, className: Tags_module_css_1["default"]["tags-card"] + " " + Tags_module_css_1["default"]["tags-card_outline"] + " " + Tags_module_css_1["default"]["tags-card_p"] },
-                react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.tags_id },
+            return (react_1["default"].createElement("div", { key: tag.id, className: Tags_module_css_1["default"]["tags-card"] + " " + Tags_module_css_1["default"]["tags-card_outline"] + " " + Tags_module_css_1["default"]["tags-card_p"] },
+                react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.id },
                     react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-card__image"] },
                         react_1["default"].createElement("img", { src: tag.img_tag, alt: "" }))),
-                react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.tags_id, className: Tags_module_css_1["default"]["tags-card__title"] + " " + Tags_module_css_1["default"]["tags-card__title_p"] + " " + Tags_module_css_1["default"]["tags-card__title_size"] }, tag.name_tag),
-                react_1["default"].createElement(react_router_dom_1.Link, { to: "/tag/" + tag.tags_id, state: { question: "Вопросы" }, className: Tags_module_css_1["default"]["tags-card__questions"] + " " + Tags_module_css_1["default"]["tags-card__questions_outline"] + " " + Tags_module_css_1["default"]["tags-card__questions_p"] + " " + Tags_module_css_1["default"]["tags-card__questions_size"] }, tag.countQuestions + " \u0432\u043E\u043F\u0440\u043E\u0441\u043E\u0432"),
+                react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.id, className: Tags_module_css_1["default"]["tags-card__title"] + " " + Tags_module_css_1["default"]["tags-card__title_p"] + " " + Tags_module_css_1["default"]["tags-card__title_size"] }, tag.name_tag),
+                react_1["default"].createElement(react_router_dom_1.Link, { to: "/tag/" + tag.id, state: { question: "Вопросы" }, className: Tags_module_css_1["default"]["tags-card__questions"] + " " + Tags_module_css_1["default"]["tags-card__questions_outline"] + " " + Tags_module_css_1["default"]["tags-card__questions_p"] + " " + Tags_module_css_1["default"]["tags-card__questions_size"] }, tag.countQuestions + " \u0432\u043E\u043F\u0440\u043E\u0441\u043E\u0432"),
                 react_1["default"].createElement("button", { className: tag.btn
                         ? tag.isChecked
                             ? Tags_module_css_1["default"].btn_unsubscribe
                             : Tags_module_css_1["default"].btn_subscribe
                         : Tags_module_css_1["default"].btn_none, onClick: function () {
-                        subscribeFollower(tag.tags_id);
+                        console.log(tag);
+                        subscribeFollower(tag.id);
                     } },
                     tag.isChecked ? "Вы подписаны" : "Подписаться",
                     " |",

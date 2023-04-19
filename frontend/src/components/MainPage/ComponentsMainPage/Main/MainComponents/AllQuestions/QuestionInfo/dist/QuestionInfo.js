@@ -106,22 +106,19 @@ var QuestionInfo = function () {
                 case 2:
                     data = _a.sent();
                     console.log(data);
-                    setPathImg(data.questionInfo.img);
-                    setName("" + (data.questionInfo.fullname !== ""
-                        ? data.questionInfo.fullname + " " + data.questionInfo.lastname
-                        : data.questionInfo.nickname));
-                    setEmail(data.questionInfo.email);
-                    setQusestionUserId(data.questionInfo.user_id_from_users);
-                    setTagsId(data.questionInfo.tags_id);
-                    setNameTag(data.questionInfo.name_tag);
-                    setTagImgPath(data.questionInfo.img_tag);
                     setQuestionTitle(data.questionInfo.question_title);
                     setQuestionDescription(data.questionInfo.question_details);
+                    setTagImgPath(data.questionInfo.img_tag);
+                    setNameTag(data.questionInfo.name_tag);
+                    setTagsId(data.questionInfo.tags_id);
+                    setEmail(data.questionInfo.user_email);
+                    setName("" + (data.questionInfo.fullname !== ""
+                        ? data.questionInfo.user_fullname + " " + data.questionInfo.user_lastname
+                        : data.questionInfo.nickname));
+                    setPathImg(data.questionInfo.user_img);
+                    setQusestionUserId(data.questionInfo.user_id);
                     setQuestionTimeCreation(currentTime(new Date("" + data.questionInfo.date_of_creation)));
-                    setAnswers(data.answers);
-                    setPathMyImg(data.userInfo.img);
-                    setUserActive(data.userInfo);
-                    setUserId(data.userInfo.user_id);
+                    setAnswers(data.questionInfo.answers);
                     return [2 /*return*/];
             }
         });
@@ -154,7 +151,6 @@ var QuestionInfo = function () {
     }); };
     react_1.useEffect(function () {
         getQuestion();
-        console.log("Страница вопроса");
     }, []);
     var _q = formik_1.useFormik({
         initialValues: {
@@ -190,9 +186,9 @@ var QuestionInfo = function () {
                 : QuestionInfo_module_css_1["default"].hide }, answers.map(function (answer, index) {
             return (react_1["default"].createElement(react_1["default"].Fragment, null,
                 react_1["default"].createElement("div", { className: QuestionInfo_module_css_1["default"].question_answer, key: index },
-                    react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/users/" + answer.user_id_from_users, className: QuestionInfo_module_css_1["default"].question_answer_img },
+                    react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/users/" + answer.responce_userId, className: QuestionInfo_module_css_1["default"].question_answer_img },
                         react_1["default"].createElement("img", { src: answer.img, alt: "" })),
-                    react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/users/" + answer.user_id_from_users, className: QuestionInfo_module_css_1["default"].question_answer_username },
+                    react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/users/" + answer.responce_userId, className: QuestionInfo_module_css_1["default"].question_answer_username },
                         react_1["default"].createElement("span", null, answer.fullname + " " + answer.lastname)),
                     react_1["default"].createElement("span", null, answer.email)),
                 react_1["default"].createElement("span", { className: QuestionInfo_module_css_1["default"].question_answer_clarification }, "\u042D\u0442\u043E \u043C\u043E\u0439 \u043E\u0442\u0432\u0435\u0442 \u043D\u0430 \u0442\u0432\u043E\u0439 \u0432\u043E\u043F\u0440\u043E\u0441"),

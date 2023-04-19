@@ -9,11 +9,12 @@ interface ResponseData {
     description: string;
     img_tag: string;
     name_tag: string;
-    tags_id: string;
+    // tags_id: string;
+    tagsFollowers: string;
   };
-  countFollowers: string;
-  questionsTag: {}[];
-  answers: [];
+  // countFollowers: string;
+  // questionsTag: {}[];
+  // answers: [];
 }
 const Tag: React.FC = () => {
   let location = useLocation();
@@ -24,7 +25,6 @@ const Tag: React.FC = () => {
   let [nameTag, setNameTag] = useState("");
   let [count, setCount] = useState("");
   let [questions, setQuestions] = useState([]);
-  let [answers, setAnswers] = useState([]);
   let [linkValue, setLinkValue] = useState(question ? `Вопросы` : "Информация");
 
   let currentTime = (date: Date) => {
@@ -57,27 +57,29 @@ const Tag: React.FC = () => {
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
-  let countAnswers = (idQuestions: string, answers: []): number => {
-    let countAnswers = answers.filter(
-      (element: any) => element.question_id_from_questions === idQuestions
-    ).length;
-
-    return countAnswers;
-  };
   const getInformationTag = async () => {
     let res = await fetch(`/tag/${tagId}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     let data: ResponseData = await res.json();
-    setAnswers(data.answers);
-    setQuestions(data.questionsTag);
-    setCount(data.countFollowers);
+    setCount(data.body.tagsFollowers);
     setDescription(data.body.description);
     setPathImg(data.body.img_tag);
     setNameTag(data.body.name_tag);
   };
+  let getInformationQuestion = async () => {
+    let res = await fetch(`/getQuestionsId/${tagId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    let data = await res.json();
+    setQuestions(data.questions);
+  };
   useEffect(() => {
+    if (linkValue === "Вопросы") {
+      getInformationQuestion();
+    }
     getInformationTag();
     window.history.replaceState({}, document.title);
   }, []);
@@ -119,7 +121,7 @@ const Tag: React.FC = () => {
           </div>
           <div
             className={`${TagCSS["nav__item"]}`}
-            onClick={() => setLinkValue("Вопросы")}
+            onClick={() => (setLinkValue("Вопросы"), getInformationQuestion())}
           >
             <span
               className={
@@ -144,8 +146,6 @@ const Tag: React.FC = () => {
                   key={index}
                   question={question}
                   currentTime={currentTime}
-                  countAnswers={countAnswers}
-                  answers={answers}
                 />
               );
             })

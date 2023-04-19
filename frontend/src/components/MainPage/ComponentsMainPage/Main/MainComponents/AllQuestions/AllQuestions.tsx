@@ -100,8 +100,8 @@ const AllQuestions = () => {
                   <Question
                     question={question}
                     currentTime={currentTime}
-                    countAnswers={countAnswers}
-                    answers={answers}
+                    // countAnswers={countAnswers}
+                    // answers={answers}
                   />
                 );
               })
@@ -111,8 +111,8 @@ const AllQuestions = () => {
                   <Question
                     question={question}
                     currentTime={currentTime}
-                    countAnswers={countAnswers}
-                    answers={answers}
+                    // countAnswers={countAnswers}
+                    // answers={answers}
                   />
                 );
               })

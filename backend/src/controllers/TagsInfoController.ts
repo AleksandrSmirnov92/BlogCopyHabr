@@ -19,11 +19,10 @@ exports.getInfoTags = async (req: Request, res: Response<ResponseTags>) => {
     tagsFollowers.data.map((x: any) => mFollowers.push(x.tags_id));
     resTags = getTags.data.map((x: any) => ({
       ...x,
-      isChecked: mFollowers.includes(x.tags_id),
-      countFollowers: mFollowers.filter((tagId: any) => tagId === x.tags_id)
-        .length,
+      isChecked: mFollowers.includes(x.id),
+      countFollowers: mFollowers.filter((tagId: any) => tagId === x.id).length,
       countQuestions: questions.data.filter(
-        (t: any) => t.tag_id_from_tags === x.tags_id
+        (t: any) => t.tag_id_from_tags === x.id
       ).length,
       btn: true,
     }));

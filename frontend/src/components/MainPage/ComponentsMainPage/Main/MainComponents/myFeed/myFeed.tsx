@@ -114,8 +114,8 @@ const MyFeed: React.FC = () => {
                     key={index}
                     question={question}
                     currentTime={currentTime}
-                    countAnswers={countAnswers}
-                    answers={answers}
+                    // countAnswers={countAnswers}
+                    // answers={answers}
                   />
                 );
               })
@@ -132,8 +132,8 @@ const MyFeed: React.FC = () => {
                     key={index}
                     question={question}
                     currentTime={currentTime}
-                    countAnswers={countAnswers}
-                    answers={answers}
+                    // countAnswers={countAnswers}
+                    // answers={answers}
                   />
                 );
               })

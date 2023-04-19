@@ -66,28 +66,31 @@ const QuestionInfo: React.FC = () => {
     });
     const data = await res.json();
     console.log(data);
-    setPathImg(data.questionInfo.img);
+    setQuestionTitle(data.questionInfo.question_title);
+    setQuestionDescription(data.questionInfo.question_details);
+    setTagImgPath(data.questionInfo.img_tag);
+    setNameTag(data.questionInfo.name_tag);
+    setTagsId(data.questionInfo.tags_id);
+    setEmail(data.questionInfo.user_email);
     setName(
       `${
         data.questionInfo.fullname !== ""
-          ? `${data.questionInfo.fullname} ${data.questionInfo.lastname}`
+          ? `${data.questionInfo.user_fullname} ${data.questionInfo.user_lastname}`
           : data.questionInfo.nickname
       }`
     );
-    setEmail(data.questionInfo.email);
-    setQusestionUserId(data.questionInfo.user_id_from_users);
-    setTagsId(data.questionInfo.tags_id);
-    setNameTag(data.questionInfo.name_tag);
-    setTagImgPath(data.questionInfo.img_tag);
-    setQuestionTitle(data.questionInfo.question_title);
-    setQuestionDescription(data.questionInfo.question_details);
+    setPathImg(data.questionInfo.user_img);
+    setQusestionUserId(data.questionInfo.user_id);
     setQuestionTimeCreation(
       currentTime(new Date(`${data.questionInfo.date_of_creation}`))
     );
-    setAnswers(data.answers);
-    setPathMyImg(data.userInfo.img);
-    setUserActive(data.userInfo);
-    setUserId(data.userInfo.user_id);
+    setAnswers(data.questionInfo.answers);
+    //
+    // setNameTag(data.questionInfo.name_tag);
+
+    // setPathMyImg(data.userInfo.img);
+    // setUserActive(data.userInfo);
+    // setUserId(data.userInfo.user_id);
   };
   const onSubmit = async () => {
     const res = await fetch("/answers", {
@@ -108,7 +111,6 @@ const QuestionInfo: React.FC = () => {
 
   useEffect(() => {
     getQuestion();
-    console.log("Страница вопроса");
   }, []);
   const {
     values,
@@ -180,13 +182,13 @@ const QuestionInfo: React.FC = () => {
             <>
               <div className={QuestionInfoCSS.question_answer} key={index}>
                 <NavLink
-                  to={`/users/${answer.user_id_from_users}`}
+                  to={`/users/${answer.responce_userId}`}
                   className={QuestionInfoCSS.question_answer_img}
                 >
                   <img src={answer.img} alt="" />
                 </NavLink>
                 <NavLink
-                  to={`/users/${answer.user_id_from_users}`}
+                  to={`/users/${answer.responce_userId}`}
                   className={QuestionInfoCSS.question_answer_username}
                 >
                   <span>{`${answer.fullname} ${answer.lastname}`}</span>

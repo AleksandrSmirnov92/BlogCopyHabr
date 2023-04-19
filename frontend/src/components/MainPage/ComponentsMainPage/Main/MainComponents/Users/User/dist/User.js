@@ -149,7 +149,7 @@ var User = function () {
                 react_1["default"].createElement("a", { className: "" + User_module_css_1["default"]["user-content__link-to-contacts"], href: linkToContacts }, linkToContacts)),
             react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, country !== "Страна" ? "Местоположение" : ""),
             react_1["default"].createElement("span", { className: "" + User_module_css_1["default"]["user-content__text"] }, country !== "Страна" ? country + "," + region + "," + town : ""))) : linkValue === "Вопросы" ? (questions.length > 0 ? (questions.map(function (question, index) {
-            return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime, countAnswers: countAnswers, answers: answers }));
+            return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime }));
         })) : (react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, "\u0412\u043E\u043F\u0440\u043E\u0441\u043E\u0432 \u043D\u0435\u0442"))) : myAnswers.length > 0 ? (myAnswers.map(function (answer) {
             return (react_1["default"].createElement("div", { className: User_module_css_1["default"].question_container },
                 react_1["default"].createElement("a", { href: "#", className: User_module_css_1["default"].question }, answer.question_title),

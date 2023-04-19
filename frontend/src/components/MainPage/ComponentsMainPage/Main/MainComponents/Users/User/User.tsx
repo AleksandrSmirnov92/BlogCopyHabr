@@ -238,8 +238,8 @@ const User: React.FC = () => {
                   key={index}
                   question={question}
                   currentTime={currentTime}
-                  countAnswers={countAnswers}
-                  answers={answers}
+                  // countAnswers={countAnswers}
+                  // answers={answers}
                 />
               );
             })

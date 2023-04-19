@@ -37,21 +37,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var react_1 = require("react");
-var myFeed_module_css_1 = require("./myFeed.module.css");
-var Question_1 = require("../AllQuestions/Question/Question");
+var AllQuestionsCSS_module_css_1 = require("./AllQuestionsCSS.module.css");
 var react_router_dom_1 = require("react-router-dom");
-function getCookie(name) {
-    var matches = document.cookie.match(new RegExp("(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"));
-    return matches ? decodeURIComponent(matches[1]) : "";
-}
-var MyFeed = function () {
+var Question_1 = require("./Question/Question");
+var AllQuestions = function () {
     var _a = react_1.useState([]), questions = _a[0], setQuestions = _a[1];
     var _b = react_1.useState([]), answers = _b[0], setAnswers = _b[1];
-    var _c = react_1.useState({}), nameTag = _c[0], setNameTag = _c[1];
-    var _d = react_1.useState("Интересные"), navValue = _d[0], setNavValue = _d[1];
-    var _e = react_1.useState(localStorage.getItem("userId")), userId = _e[0], setUserId = _e[1];
+    var _c = react_1.useState("Новые вопросы"), newQuestions = _c[0], setNewQuestions = _c[1];
+    var _d = react_1.useState("Новые вопросы"), valueLink = _d[0], setValueLink = _d[1];
     var currentTime = function (date) {
         var formatterHour = new Intl.NumberFormat("ru", {
             style: "unit",
@@ -77,16 +70,13 @@ var MyFeed = function () {
         var countAnswers = answers.filter(function (element) { return element.question_id_from_questions === idQuestions; }).length;
         return countAnswers;
     };
-    var getMyQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var getQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("/myFeed", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            id: userId
-                        })
+                case 0: return [4 /*yield*/, fetch("/questions", {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" }
                     })];
                 case 1:
                     res = _a.sent();
@@ -95,39 +85,38 @@ var MyFeed = function () {
                     data = _a.sent();
                     setQuestions(data.questions);
                     setAnswers(data.answers);
-                    setNameTag(data.followers);
                     return [2 /*return*/];
             }
         });
     }); };
     react_1.useEffect(function () {
-        if (userId !== null && getCookie("nickname")) {
-            getMyQuestions();
-        }
-        else {
-            window.location.href = "http://localhost:3000/SignIn";
-        }
+        getQuestions();
     }, []);
-    return (react_1["default"].createElement("div", { className: myFeed_module_css_1["default"].main_container },
-        react_1["default"].createElement("h3", null, "\u041C\u043E\u044F \u043B\u0435\u043D\u0442\u0430"),
-        react_1["default"].createElement("nav", { className: myFeed_module_css_1["default"].nav },
-            react_1["default"].createElement(react_router_dom_1.NavLink, { className: navValue === "Интересные" ? myFeed_module_css_1["default"].nav_focus : myFeed_module_css_1["default"].nav_link, to: "/myFeed", onClick: function () { return setNavValue("Интересные"); } }, "\u0418\u043D\u0442\u0435\u0440\u0435\u0441\u043D\u044B\u0435"),
-            react_1["default"].createElement(react_router_dom_1.NavLink, { className: navValue === "Без ответа" ? myFeed_module_css_1["default"].nav_focus : myFeed_module_css_1["default"].nav_link, to: "/myFeed", onClick: function () { return setNavValue("Без ответа"); } }, "\u0411\u0435\u0437 \u043E\u0442\u0432\u0435\u0442\u0430")),
-        react_1["default"].createElement("div", { className: myFeed_module_css_1["default"].questions_list }, navValue === "Без ответа"
+    return (react_1["default"].createElement("div", { className: AllQuestionsCSS_module_css_1["default"].all_questions_container },
+        react_1["default"].createElement("h3", null, "\u0412\u0441\u0435 \u0412\u043E\u043F\u0440\u043E\u0441\u044B"),
+        react_1["default"].createElement("nav", { className: AllQuestionsCSS_module_css_1["default"].nav },
+            react_1["default"].createElement(react_router_dom_1.NavLink, { className: valueLink === "Новые вопросы"
+                    ? AllQuestionsCSS_module_css_1["default"].nav_focus
+                    : AllQuestionsCSS_module_css_1["default"].nav_link, to: "/questions", onClick: function () {
+                    setNewQuestions("Новые вопросы");
+                    setValueLink("Новые вопросы");
+                } }, "\u041D\u043E\u0432\u044B\u0435 \u0432\u043E\u043F\u0440\u043E\u0441\u044B"),
+            react_1["default"].createElement(react_router_dom_1.NavLink, { className: valueLink === "Без ответа"
+                    ? AllQuestionsCSS_module_css_1["default"].nav_focus
+                    : AllQuestionsCSS_module_css_1["default"].nav_link, to: "/questions", onClick: function () {
+                    setNewQuestions("Без ответа");
+                    setValueLink("Без ответа");
+                } }, "\u0411\u0435\u0437 \u043E\u0442\u0432\u0435\u0442\u0430")),
+        react_1["default"].createElement("div", { className: AllQuestionsCSS_module_css_1["default"].questions_list }, newQuestions === "Без ответа"
             ? questions
-                .filter(function (question) {
-                return nameTag[question.name_tag.toLowerCase()] && countAnswers(question.questions_id, answers) === 0;
-            })
-                .map(function (question, index) {
-                return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime }));
+                .filter(function (question) { return countAnswers(question.questions_id, answers) === 0; })
+                .map(function (question) {
+                return (react_1["default"].createElement(Question_1["default"], { question: question, currentTime: currentTime }));
             })
             : questions
-                .filter(function (question) {
-                return nameTag[question.name_tag.toLowerCase()];
-            })
-                .map(function (question, index) {
-                return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime }));
+                .map(function (question) {
+                return (react_1["default"].createElement(Question_1["default"], { question: question, currentTime: currentTime }));
             })
                 .reverse())));
 };
-exports["default"] = MyFeed;
+exports["default"] = AllQuestions;

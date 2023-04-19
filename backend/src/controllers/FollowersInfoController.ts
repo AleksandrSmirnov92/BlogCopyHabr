@@ -16,6 +16,7 @@ exports.getInfoFollowers = async (
 ) => {
   let { id } = req.params;
   let { tagsId } = req.body;
+  console.log(tagsId);
   let isCheckedFollowers = await supabase
     .from("tagsFollowers")
     .select("*")
@@ -42,9 +43,8 @@ exports.getInfoFollowers = async (
   tagsFollowers.data.map((x: any) => mFollowers.push(x.tags_id));
   let resTags = getTags.data.map((x: any) => ({
     ...x,
-    isChecked: mFollowers.includes(x.tags_id),
-    countFollowers: mFollowers.filter((tagId: any) => tagId === x.tags_id)
-      .length,
+    isChecked: mFollowers.includes(x.id),
+    countFollowers: mFollowers.filter((tagId: any) => tagId === x.id).length,
     countQuestions: x.question_and_tags.length,
     btn: true,
   }));

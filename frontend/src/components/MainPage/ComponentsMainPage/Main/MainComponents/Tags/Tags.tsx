@@ -36,22 +36,22 @@ const Tags = () => {
         {tags.map((tag: any) => {
           return (
             <div
-              key={tag.tags_id}
+              key={tag.id}
               className={`${TagsCSS["tags-card"]} ${TagsCSS["tags-card_outline"]} ${TagsCSS["tags-card_p"]}`}
             >
-              <NavLink to={`/tag/${tag.tags_id}`}>
+              <NavLink to={`/tag/${tag.id}`}>
                 <div className={TagsCSS["tags-card__image"]}>
                   <img src={tag.img_tag} alt="" />
                 </div>
               </NavLink>
               <NavLink
-                to={`/tag/${tag.tags_id}`}
+                to={`/tag/${tag.id}`}
                 className={`${TagsCSS["tags-card__title"]} ${TagsCSS["tags-card__title_p"]} ${TagsCSS["tags-card__title_size"]}`}
               >
                 {tag.name_tag}
               </NavLink>
               <Link
-                to={`/tag/${tag.tags_id}`}
+                to={`/tag/${tag.id}`}
                 state={{ question: "Вопросы" }}
                 className={`${TagsCSS["tags-card__questions"]} ${TagsCSS["tags-card__questions_outline"]} ${TagsCSS["tags-card__questions_p"]} ${TagsCSS["tags-card__questions_size"]}`}
               >
@@ -66,7 +66,8 @@ const Tags = () => {
                     : TagsCSS.btn_none
                 }
                 onClick={() => {
-                  subscribeFollower(tag.tags_id);
+                  console.log(tag);
+                  subscribeFollower(tag.id);
                 }}
               >
                 {tag.isChecked ? "Вы подписаны" : "Подписаться"} |{" "}
