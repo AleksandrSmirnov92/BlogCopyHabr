@@ -50,13 +50,12 @@ exports.__esModule = true;
 // import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
 exports.getInfoFollowers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, tagsId, isCheckedFollowers, deleteFollower, createFollowers, getTags, tagsFollowers, mFollowers, resTags;
+    var id, tagsId, isCheckedFollowers, deleteFollower, createFollowers, getTags, tagsFollowers, mFollowers, countFollowers, resTags;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
                 tagsId = req.body.tagsId;
-                console.log(tagsId);
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("tagsFollowers")
                         .select("*")
@@ -90,7 +89,35 @@ exports.getInfoFollowers = function (req, res) { return __awaiter(void 0, void 0
                 tagsFollowers = _a.sent();
                 mFollowers = [];
                 tagsFollowers.data.map(function (x) { return mFollowers.push(x.tags_id); });
-                resTags = getTags.data.map(function (x) { return (__assign(__assign({}, x), { isChecked: mFollowers.includes(x.id), countFollowers: mFollowers.filter(function (tagId) { return tagId === x.id; }).length, countQuestions: x.question_and_tags.length, btn: true })); });
+                countFollowers = function (idTag) { return __awaiter(void 0, void 0, void 0, function () {
+                    var tagsAllFollowers, count;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
+                                    .from("tagsFollowers")
+                                    .select("user_id,tags_id", { count: "exact" })
+                                    .eq("tags_id", idTag)];
+                            case 1:
+                                tagsAllFollowers = _a.sent();
+                                count = tagsAllFollowers.data.length;
+                                return [2 /*return*/, count.toString()];
+                        }
+                    });
+                }); };
+                return [4 /*yield*/, Promise.all(getTags.data.map(function (x) { return __awaiter(void 0, void 0, void 0, function () {
+                        var _a, _b;
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
+                                case 0:
+                                    _a = [__assign({}, x)];
+                                    _b = { isChecked: mFollowers.includes(x.id) };
+                                    return [4 /*yield*/, countFollowers(x.id)];
+                                case 1: return [2 /*return*/, (__assign.apply(void 0, _a.concat([(_b.countFollowers = _c.sent(), _b.countQuestions = x.question_and_tags.length, _b.btn = true, _b)])))];
+                            }
+                        });
+                    }); }))];
+            case 8:
+                resTags = _a.sent();
                 res.status(200).json({
                     message: "Вы получили информацию о всех тегах",
                     tags: resTags

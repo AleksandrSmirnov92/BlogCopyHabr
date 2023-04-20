@@ -49,7 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
 exports.getInfoTags = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getTags, questions, mFollowers, resTags, tagsFollowers;
+    var id, getTags, questions, mFollowers, resTags, tagsFollowers, countFollowers_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -61,7 +61,8 @@ exports.getInfoTags = function (req, res) { return __awaiter(void 0, void 0, voi
             case 2:
                 questions = _a.sent();
                 mFollowers = [];
-                if (!(id !== "null")) return [3 /*break*/, 4];
+                resTags = [];
+                if (!(id !== "null")) return [3 /*break*/, 5];
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("tagsFollowers")
                         .select("user_id,tags_id", { count: "exact" })
@@ -69,12 +70,40 @@ exports.getInfoTags = function (req, res) { return __awaiter(void 0, void 0, voi
             case 3:
                 tagsFollowers = _a.sent();
                 tagsFollowers.data.map(function (x) { return mFollowers.push(x.tags_id); });
-                resTags = getTags.data.map(function (x) { return (__assign(__assign({}, x), { isChecked: mFollowers.includes(x.id), countFollowers: mFollowers.filter(function (tagId) { return tagId === x.id; }).length, countQuestions: questions.data.filter(function (t) { return t.tag_id_from_tags === x.id; }).length, btn: true })); });
-                return [3 /*break*/, 5];
+                countFollowers_1 = function (idTag) { return __awaiter(void 0, void 0, void 0, function () {
+                    var tagsAllFollowers, count;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
+                                    .from("tagsFollowers")
+                                    .select("user_id,tags_id", { count: "exact" })
+                                    .eq("tags_id", idTag)];
+                            case 1:
+                                tagsAllFollowers = _a.sent();
+                                count = tagsAllFollowers.data.length;
+                                return [2 /*return*/, count.toString()];
+                        }
+                    });
+                }); };
+                return [4 /*yield*/, Promise.all(getTags.data.map(function (x) { return __awaiter(void 0, void 0, Promise, function () {
+                        var _a, _b;
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
+                                case 0:
+                                    _a = [__assign({}, x)];
+                                    _b = { isChecked: mFollowers.includes(x.id) };
+                                    return [4 /*yield*/, countFollowers_1(x.id)];
+                                case 1: return [2 /*return*/, (__assign.apply(void 0, _a.concat([(_b.countFollowers = _c.sent(), _b.countQuestions = questions.data.filter(function (t) { return t.tag_id_from_tags === x.id; }).length, _b.btn = true, _b)])))];
+                            }
+                        });
+                    }); }))];
             case 4:
-                resTags = getTags.data.map(function (x) { return (__assign(__assign({}, x), { countQuestions: questions.data.filter(function (t) { return t.tag_id_from_tags === x.tags_id; }).length, btn: false })); });
-                _a.label = 5;
+                resTags = _a.sent();
+                return [3 /*break*/, 6];
             case 5:
+                resTags = getTags.data.map(function (x) { return (__assign(__assign({}, x), { countQuestions: questions.data.filter(function (t) { return t.tag_id_from_tags === x.id; }).length, btn: false })); });
+                _a.label = 6;
+            case 6:
                 res.status(200).json({
                     message: "Вы получили информацию о всех тегах",
                     tags: resTags

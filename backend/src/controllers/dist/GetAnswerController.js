@@ -38,76 +38,44 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 // import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
-exports.getQuestions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, userId, questionTagsId, userActive, getAboutUser, getQuestionInfo, getAnswersToQuestion, answers, _a, question_title, question_details, date_of_creation, users, about_user, tags;
+exports.getAnswers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, answer, questionId, tagsId, userId, insertAnswer, getAnswersToQuestion, answerData;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                id = req.params.id;
-                userId = req.body.userId;
-                questionTagsId = req.body.questionTagsId;
-                userActive = false;
-                if (!(userId !== "Пользователь не зарегестрирован")) return [3 /*break*/, 2];
-                userActive = true;
+                _a = req.body, answer = _a.answer, questionId = _a.questionId, tagsId = _a.tagsId, userId = _a.userId;
                 return [4 /*yield*/, usersDataBase_js_1.supabase
-                        .from("about_user")
-                        .select("\"img\",\"user_id_from_users\"")
-                        .eq("user_id_from_users", userId)
+                        .from("answers")
+                        .upsert({
+                        user_id_from_users: userId,
+                        answers: answer,
+                        question_id_from_questions: questionId,
+                        tags_id: tagsId,
+                        responce_userId: userId
+                    })
+                        .select()
                         .single()];
             case 1:
-                getAboutUser = _b.sent();
-                return [3 /*break*/, 3];
-            case 2:
-                userActive = false;
-                getAboutUser = "";
-                _b.label = 3;
-            case 3: return [4 /*yield*/, usersDataBase_js_1.supabase
-                    .from("questions")
-                    .select("\"*\",users(\"*\"),about_user(\"*\"),tags(\"*\")")
-                    .eq("questions_id", id)
-                    .single()];
-            case 4:
-                getQuestionInfo = _b.sent();
+                insertAnswer = _b.sent();
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("answers")
                         .select("\"*\",about_user(\"*\"),users(\"*\")")
-                        .match({ tags_id: questionTagsId, question_id_from_questions: id })];
-            case 5:
+                        .match({
+                        answer_id: insertAnswer.data.answer_id,
+                        tags_id: tagsId,
+                        question_id_from_questions: questionId
+                    })];
+            case 2:
                 getAnswersToQuestion = _b.sent();
-                answers = getAnswersToQuestion.data.map(function (obj) {
+                answerData = getAnswersToQuestion.data.map(function (obj) {
                     var _a = obj.about_user, img = _a.img, fullname = _a.fullname, lastname = _a.lastname;
                     var responce_userId = obj.responce_userId, answers = obj.answers;
                     var email = obj.users.email;
-                    return {
-                        img: img,
-                        responce_userId: responce_userId,
-                        fullname: fullname,
-                        lastname: lastname,
-                        email: email,
-                        answer: answers
-                    };
+                    return { img: img, responce_userId: responce_userId, fullname: fullname, lastname: lastname, email: email, answer: answers };
                 });
-                _a = getQuestionInfo.data, question_title = _a.question_title, question_details = _a.question_details, date_of_creation = _a.date_of_creation, users = _a.users, about_user = _a.about_user, tags = _a.tags;
                 res.status(200).json({
-                    message: "Вы получили информацию о вопросе",
-                    questionInfo: {
-                        question_title: question_title,
-                        question_details: question_details,
-                        date_of_creation: date_of_creation,
-                        img_tag: tags.img_tag,
-                        name_tag: tags.name_tag,
-                        tags_id: tags.id,
-                        user_email: users.email,
-                        nickname: users.nickname,
-                        user_fullname: about_user.fullname,
-                        user_lastname: about_user.lastname,
-                        user_img: about_user.img,
-                        user_id: about_user.user_id_from_users,
-                        answers: answers,
-                        userImg: getAboutUser !== "" ? getAboutUser.data.img : "",
-                        userId: getAboutUser !== "" ? getAboutUser.data.user_id_from_users : "",
-                        userActive: userActive
-                    }
+                    message: "Вы ответили",
+                    answer: answerData[0]
                 });
                 return [2 /*return*/];
         }

@@ -84,6 +84,7 @@ var Tags = function () {
     return (react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-container"] },
         react_1["default"].createElement("h3", null, "\u0412\u0441\u0435 \u0442\u0435\u0433\u0438"),
         react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-block"] }, tags.map(function (tag) {
+            console.log(tag);
             return (react_1["default"].createElement("div", { key: tag.id, className: Tags_module_css_1["default"]["tags-card"] + " " + Tags_module_css_1["default"]["tags-card_outline"] + " " + Tags_module_css_1["default"]["tags-card_p"] },
                 react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/tag/" + tag.id },
                     react_1["default"].createElement("div", { className: Tags_module_css_1["default"]["tags-card__image"] },

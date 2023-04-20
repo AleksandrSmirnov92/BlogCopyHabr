@@ -9,12 +9,8 @@ interface ResponseData {
     description: string;
     img_tag: string;
     name_tag: string;
-    // tags_id: string;
     tagsFollowers: string;
   };
-  // countFollowers: string;
-  // questionsTag: {}[];
-  // answers: [];
 }
 const Tag: React.FC = () => {
   let location = useLocation();

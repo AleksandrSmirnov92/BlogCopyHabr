@@ -4,11 +4,13 @@ import imageProfil from "../../../../../../../images/photoProfil.png";
 import lockImg from "../../../../../../../images/замок.png";
 import { useFormik } from "formik";
 import QuestionInfoCSS from "./QuestionInfo.module.css";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useLocation } from "react-router-dom";
 interface MyValues {
   answers: string;
 }
 const QuestionInfo: React.FC = () => {
+  let location = useLocation();
+  let questionTagsId: any = location.state;
   let { questionId } = useParams();
   let [pathImg, setPathImg] = useState("");
   let [name, setName] = useState("");
@@ -62,6 +64,7 @@ const QuestionInfo: React.FC = () => {
         userId: localStorage.getItem("userId")
           ? localStorage.getItem("userId")
           : "Пользователь не зарегестрирован",
+        questionTagsId: questionTagsId.questionTagsId,
       }),
     });
     const data = await res.json();
@@ -85,11 +88,11 @@ const QuestionInfo: React.FC = () => {
       currentTime(new Date(`${data.questionInfo.date_of_creation}`))
     );
     setAnswers(data.questionInfo.answers);
-    setPathMyImg(data.questionInfo.userId);
+    setPathMyImg(data.questionInfo.userImg);
+    setUserId(data.questionInfo.userId);
     //
     // setNameTag(data.questionInfo.name_tag);
-    // setUserActive(data.userInfo);
-    // setUserId(data.userInfo.user_id);
+    setUserActive(data.questionInfo.userActive);
   };
   const onSubmit = async () => {
     const res = await fetch("/answers", {
@@ -98,12 +101,11 @@ const QuestionInfo: React.FC = () => {
       body: JSON.stringify({
         answer: values.answers,
         questionId: questionId,
-        questionUserId: questionUserId,
+        tagsId: tagsId,
         userId: userId,
       }),
     });
     const data = await res.json();
-    console.log(data);
     setAnswers((prevState) => [...prevState, data.answer]);
     values.answers = "";
   };
@@ -128,42 +130,56 @@ const QuestionInfo: React.FC = () => {
   });
 
   return (
-    <div className={QuestionInfoCSS.main_сontainer}>
-      <div className={QuestionInfoCSS.question_head}>
+    <div className={`${QuestionInfoCSS["question-сontainer"]}`}>
+      <div className={`${QuestionInfoCSS["question-header"]}`}>
         <NavLink
           to={`/users/${questionUserId}`}
-          className={QuestionInfoCSS.question_head_img}
+          className={`${QuestionInfoCSS["question-header__image"]}`}
         >
           <img src={pathImg ? pathImg : imageProfil} alt="" />
         </NavLink>
         <NavLink
           to={`/users/${questionUserId}`}
-          className={QuestionInfoCSS.question_head_user_name}
+          className={`${QuestionInfoCSS["question-header__user-name"]}`}
         >
           {name}
         </NavLink>
-        <span>{email}</span>
+        <span className={`${QuestionInfoCSS["question-header__user-email"]}`}>
+          {email}
+        </span>
       </div>
 
-      <div className={QuestionInfoCSS.question_tags}>
-        <NavLink to={`/tag/${tagsId}`}>
+      <div className={`${QuestionInfoCSS["question-tag"]}`}>
+        <NavLink
+          to={`/tag/${tagsId}`}
+          className={`${QuestionInfoCSS["question-tag__image"]} `}
+        >
           <img src={tagImgPath} alt="" />
         </NavLink>
-        <NavLink to={`/tag/${tagsId}`}>
+        <NavLink
+          to={`/tag/${tagsId}`}
+          className={`${QuestionInfoCSS["question-tag__name-tag"]}`}
+        >
           <span>{nameTag}</span>
         </NavLink>
       </div>
-      <h1 className={QuestionInfoCSS.question_title}>{questionTitle}</h1>
-      <div className={QuestionInfoCSS.question_body}>
-        <p>
+      <h1 className={`${QuestionInfoCSS["question-title"]}`}>
+        {questionTitle}
+      </h1>
+      <div className={`${QuestionInfoCSS["question-body"]}`}>
+        <p className={`${QuestionInfoCSS["question-body__content"]}`}>
           <span>{questionDescription}</span>
         </p>
-        <span>{questionTimeCreation}</span>
+        <span
+          className={`${QuestionInfoCSS["question-body__date-of-creation"]}`}
+        >
+          {questionTimeCreation}
+        </span>
       </div>
       <h2
         className={
           answers.length !== 0
-            ? QuestionInfoCSS.question_answers_title
+            ? `${QuestionInfoCSS["question-answers__title"]}`
             : QuestionInfoCSS.hide
         }
       >
@@ -172,41 +188,46 @@ const QuestionInfo: React.FC = () => {
       <div
         className={
           answers.length !== 0
-            ? QuestionInfoCSS.question_answers_block
+            ? `${QuestionInfoCSS["question-answers__block"]}`
             : QuestionInfoCSS.hide
         }
       >
         {answers.map((answer, index) => {
           return (
             <>
-              <div className={QuestionInfoCSS.question_answer} key={index}>
+              <div
+                className={`${QuestionInfoCSS["question-answer"]}`}
+                key={index}
+              >
                 <NavLink
                   to={`/users/${answer.responce_userId}`}
-                  className={QuestionInfoCSS.question_answer_img}
+                  className={`${QuestionInfoCSS["question-answer__image"]}`}
                 >
                   <img src={answer.img} alt="" />
                 </NavLink>
                 <NavLink
                   to={`/users/${answer.responce_userId}`}
-                  className={QuestionInfoCSS.question_answer_username}
+                  className={`${QuestionInfoCSS["question-answer__user-name"]}`}
                 >
                   <span>{`${answer.fullname} ${answer.lastname}`}</span>
                 </NavLink>
-                <span>{answer.email}</span>
+                <span
+                  className={`${QuestionInfoCSS["question-answer__user-email"]}`}
+                >
+                  {answer.email}
+                </span>
               </div>
-              <span className={QuestionInfoCSS.question_answer_clarification}>
+              <span className={`${QuestionInfoCSS["question-answer__title"]}`}>
                 Это мой ответ на твой вопрос
               </span>
-              <p className={QuestionInfoCSS.question_answer_text}>
+              <p className={`${QuestionInfoCSS["question-answer__text"]}`}>
                 {answer.answer}
               </p>
             </>
           );
         })}
       </div>
-      <h2 className={QuestionInfoCSS.question_answers_title}>
-        Ваш ответ на вопрос
-      </h2>
+      <h2>Ваш ответ на вопрос</h2>
       <div
         className={
           localStorage.getItem("userId")
@@ -215,10 +236,10 @@ const QuestionInfo: React.FC = () => {
         }
       >
         <form onSubmit={handleSubmit}>
-          <div className={QuestionInfoCSS.question_answer_form}>
+          <div className={`${QuestionInfoCSS["input-group"]}`}>
             <NavLink
               to={`/users/${localStorage.getItem(`userId`)}`}
-              className={QuestionInfoCSS.my_answer__img_link}
+              className={`${QuestionInfoCSS["input-group__image"]}`}
             >
               <img
                 src={pathMyImg ? pathMyImg : imageProfil}
@@ -231,8 +252,8 @@ const QuestionInfo: React.FC = () => {
               id="answers"
               className={
                 errors.answers && touched.answers
-                  ? QuestionInfoCSS.form_control__error
-                  : QuestionInfoCSS.form_control
+                  ? `${QuestionInfoCSS["form-control-error"]}`
+                  : `${QuestionInfoCSS["form-control"]}`
               }
               value={values.answers}
               onChange={handleChange}
@@ -240,11 +261,11 @@ const QuestionInfo: React.FC = () => {
             ></textarea>
           </div>
           {errors.answers && touched.answers ? (
-            <div className={QuestionInfoCSS.form_control__error__message}>
+            <div className={`${QuestionInfoCSS["form-control-error__text"]}`}>
               <span>{errors.answers}</span>
             </div>
           ) : (
-            ""
+            " "
           )}
           <button
             type="submit"
@@ -270,9 +291,9 @@ const QuestionInfo: React.FC = () => {
           <h3>Войдите,чтобы написать ответ</h3>
           <NavLink
             to={"/SignIn"}
-            className={QuestionInfoCSS.link_to_authorisation_container}
+            className={`${QuestionInfoCSS["authorisation__btn"]}`}
           >
-            <span className={QuestionInfoCSS.link_to_authorisation_text}>
+            <span className={`${QuestionInfoCSS["authorisation__btn-text"]}`}>
               Войдите через центр авторицации
             </span>
           </NavLink>
@@ -281,4 +302,5 @@ const QuestionInfo: React.FC = () => {
     </div>
   );
 };
+
 export default QuestionInfo;

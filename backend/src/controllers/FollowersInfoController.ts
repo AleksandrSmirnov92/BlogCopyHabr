@@ -16,7 +16,6 @@ exports.getInfoFollowers = async (
 ) => {
   let { id } = req.params;
   let { tagsId } = req.body;
-  console.log(tagsId);
   let isCheckedFollowers = await supabase
     .from("tagsFollowers")
     .select("*")
@@ -41,13 +40,24 @@ exports.getInfoFollowers = async (
     .eq("user_id", id);
   let mFollowers: any = [];
   tagsFollowers.data.map((x: any) => mFollowers.push(x.tags_id));
-  let resTags = getTags.data.map((x: any) => ({
-    ...x,
-    isChecked: mFollowers.includes(x.id),
-    countFollowers: mFollowers.filter((tagId: any) => tagId === x.id).length,
-    countQuestions: x.question_and_tags.length,
-    btn: true,
-  }));
+  let countFollowers = async (idTag: any) => {
+    let tagsAllFollowers = await supabase
+      .from("tagsFollowers")
+      .select("user_id,tags_id", { count: "exact" })
+      .eq("tags_id", idTag);
+    let count = tagsAllFollowers.data.length;
+    return count.toString();
+  };
+  let resTags = await Promise.all(
+    getTags.data.map(async (x: any) => ({
+      ...x,
+      isChecked: mFollowers.includes(x.id),
+      countFollowers: await countFollowers(x.id),
+      countQuestions: x.question_and_tags.length,
+      btn: true,
+    }))
+  );
+
   res.status(200).json({
     message: "Вы получили информацию о всех тегах",
     tags: resTags,

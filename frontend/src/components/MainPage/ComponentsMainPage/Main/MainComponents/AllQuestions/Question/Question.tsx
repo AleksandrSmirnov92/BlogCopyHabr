@@ -1,12 +1,11 @@
 import React from "react";
 import NewQuestionCSS from "./Question.module.css";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 interface MyValue {
   question: any;
   currentTime: any;
 }
 const Question = ({ question, currentTime }: MyValue) => {
-  console.log(question.question_tags);
   return (
     <div className={NewQuestionCSS.question_container}>
       <header className={NewQuestionCSS.header}>
@@ -19,17 +18,23 @@ const Question = ({ question, currentTime }: MyValue) => {
       </header>
       <main className={NewQuestionCSS.content}>
         <div>
-          <NavLink to={`/questionInfo/${question.question_tags}`}>
+          <Link
+            to={`/questionInfo/${question.questions_id}`}
+            state={{ questionTagsId: question.question_tags }}
+          >
             {question.question_title}
-          </NavLink>
+          </Link>
           <br />
           <span>{currentTime(new Date(`${question.date_of_creation}`))}</span>
         </div>
-        <a href={`/questionInfo/${question.question_tags}`}>
+        <Link
+          to={`/questionInfo/${question.questions_id}`}
+          state={{ questionTagsId: question.question_tags }}
+        >
           <span>{question.countAnswers}</span>
           <br />
           Ответов
-        </a>
+        </Link>
       </main>
     </div>
   );

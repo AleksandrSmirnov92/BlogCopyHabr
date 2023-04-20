@@ -10,27 +10,39 @@ exports.getInfoTags = async (req: Request, res: Response<ResponseTags>) => {
   let getTags = await supabase.from("tags").select("*", { count: "exact" });
   let questions = await supabase.from("question_and_tags").select("*");
   let mFollowers: any = [];
-  let resTags;
+  let resTags = [];
   if (id !== "null") {
     let tagsFollowers = await supabase
       .from("tagsFollowers")
       .select("user_id,tags_id", { count: "exact" })
       .eq("user_id", id);
     tagsFollowers.data.map((x: any) => mFollowers.push(x.tags_id));
-    resTags = getTags.data.map((x: any) => ({
-      ...x,
-      isChecked: mFollowers.includes(x.id),
-      countFollowers: mFollowers.filter((tagId: any) => tagId === x.id).length,
-      countQuestions: questions.data.filter(
-        (t: any) => t.tag_id_from_tags === x.id
-      ).length,
-      btn: true,
-    }));
+    let countFollowers = async (idTag: any) => {
+      let tagsAllFollowers = await supabase
+        .from("tagsFollowers")
+        .select("user_id,tags_id", { count: "exact" })
+        .eq("tags_id", idTag);
+      let count = tagsAllFollowers.data.length;
+      return count.toString();
+    };
+    resTags = await Promise.all(
+      getTags.data.map(
+        async (x: any): Promise<number> => ({
+          ...x,
+          isChecked: mFollowers.includes(x.id),
+          countFollowers: await countFollowers(x.id),
+          countQuestions: questions.data.filter(
+            (t: any) => t.tag_id_from_tags === x.id
+          ).length,
+          btn: true,
+        })
+      )
+    );
   } else {
     resTags = getTags.data.map((x: any) => ({
       ...x,
       countQuestions: questions.data.filter(
-        (t: any) => t.tag_id_from_tags === x.tags_id
+        (t: any) => t.tag_id_from_tags === x.id
       ).length,
       btn: false,
     }));

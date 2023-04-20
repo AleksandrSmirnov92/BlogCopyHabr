@@ -1,39 +1,49 @@
 import express, { Request, Response } from "express";
-import { pool } from "../db.js";
+// import { pool } from "../db.js";
 import { supabase } from "../config/usersDataBase.js";
 exports.getQuestions = async (req: Request, res: Response) => {
   let { id } = req.params;
   let userId = req.body.userId;
-  if (req.body.userId !== "Пользователь не зарегестрирован") {
+  let questionTagsId = req.body.questionTagsId;
+  let userActive = false;
+  let getAboutUser;
+  if (userId !== "Пользователь не зарегестрирован") {
+    userActive = true;
+    getAboutUser = await supabase
+      .from("about_user")
+      .select(`"img","user_id_from_users"`)
+      .eq("user_id_from_users", userId)
+      .single();
   } else {
+    userActive = false;
+    getAboutUser = "";
   }
-  let getAboutUser = await supabase
-    .from("about_user")
-    .select(`"img"`)
-    .eq("user_id_from_users", userId)
-    .single();
-  // console.log(getAboutUser.data);
+
   // ------------------------------
   let getQuestionInfo = await supabase
     .from("questions")
-    .select(
-      `"question_title","question_details","date_of_creation",users("nickname","email"),about_user("fullname","lastname","img","user_id_from_users"),tags("img_tag","name_tag","id")`
-    )
-    .eq("question_tags", id)
+    .select(`"*",users("*"),about_user("*"),tags("*")`)
+    .eq("questions_id", id)
     .single();
-  // console.log(getQuestionInfo.data);
+  // -----------------------------
   let getAnswersToQuestion = await supabase
     .from("answers")
     .select(`"*",about_user("*"),users("*")`)
-    .eq("tags_id", id);
+    .match({ tags_id: questionTagsId, question_id_from_questions: id });
+
   let answers = getAnswersToQuestion.data.map((obj: any) => {
     let { img, fullname, lastname } = obj.about_user;
     let { responce_userId, answers } = obj;
     let { email } = obj.users;
-    return { img, responce_userId, fullname, lastname, email, answer: answers };
+    return {
+      img,
+      responce_userId,
+      fullname,
+      lastname,
+      email,
+      answer: answers,
+    };
   });
-  // console.log(getAnswersToQuestion.data);
-  // console.log(answers);
   let {
     question_title,
     question_details,
@@ -42,7 +52,6 @@ exports.getQuestions = async (req: Request, res: Response) => {
     about_user,
     tags,
   } = getQuestionInfo.data;
-
   res.status(200).json({
     message: "Вы получили информацию о вопросе",
     questionInfo: {
@@ -59,12 +68,12 @@ exports.getQuestions = async (req: Request, res: Response) => {
       user_img: about_user.img,
       user_id: about_user.user_id_from_users,
       answers: answers,
-      userId: getAboutUser.data.img,
+      userImg: getAboutUser !== "" ? getAboutUser.data.img : "",
+      userId: getAboutUser !== "" ? getAboutUser.data.user_id_from_users : "",
+      userActive: userActive,
     },
-    // questionInfo: getQuestionInfo.rows[0],
-    // answers: getAnswers.rows,
-    // userInfo: getInfoUser !== "" ? getInfoUser.rows[0] : "",
   });
+
   // try {
   //   let { id } = req.params;
 
