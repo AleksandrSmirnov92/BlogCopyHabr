@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { pool } from "../db.js";
+import { supabase } from "../config/usersDataBase.js";
 exports.getAllQuestions = async (req: Request, res: Response) => {
   try {
     let getQuestions =
@@ -17,4 +18,35 @@ exports.getAllQuestions = async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
   }
+};
+exports.getAllQuestionsId = async (req: Request, res: Response) => {
+  let { id } = req.params;
+  let getQuestionsId = await supabase
+    .from("questions")
+    .select(`"*",tags("*"),answers(*)`)
+    .eq("user_id", id);
+  let questionsInfo = getQuestionsId.data.map((obj: any) => {
+    let {
+      questions_id,
+      question_tags,
+      question_title,
+      date_of_creation,
+      tags,
+      answers,
+    } = obj;
+    return {
+      question_tags,
+      question_title,
+      date_of_creation,
+      name_tag: tags.name_tag,
+      img_tag: tags.img_tag,
+      countAnswers: answers.length,
+      questions_id,
+    };
+  });
+
+  res.status(200).json({
+    message: "Вы получили информацию о всех вопросах",
+    questions: questionsInfo,
+  });
 };

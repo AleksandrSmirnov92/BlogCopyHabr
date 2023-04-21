@@ -284,8 +284,8 @@ const QuestionInfo: React.FC = () => {
             : QuestionInfoCSS.showAuthorisation
         }
       >
-        <div className={QuestionInfoCSS.authorisation}>
-          <div className={QuestionInfoCSS.authorisation__img}>
+        <div className={`${QuestionInfoCSS["authorisation"]}`}>
+          <div className={`${QuestionInfoCSS["authorisation__image"]}`}>
             <img src={lockImg} alt="" />
           </div>
           <h3>Войдите,чтобы написать ответ</h3>

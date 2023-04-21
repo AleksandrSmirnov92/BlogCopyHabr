@@ -91,53 +91,50 @@
   color: black;
   text-decoration: underline;
 }
-.question_container {
+.answer-container {
   border-bottom: 1px solid #f0f0f0;
   padding-bottom: 20px;
 }
-.question {
+.answer-title {
   text-decoration: none;
   color: black;
   font-size: 21px;
   font-weight: 700;
 }
-.question:hover {
+.answer-title:hover {
   text-decoration: underline;
 }
-.answer_avatar {
+.answer-content {
   padding-top: 20px;
   padding-bottom: 10px;
   display: flex;
   align-items: center;
 }
-.answer_avatar > div {
+.answer-content__image {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
-.answer_avatar > div > img {
+.answer-content__image > img {
   border-radius: 50%;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.answer_avatar > span {
+.answer-content__nickname {
+  padding-left: 10px;
+  line-height: 1em;
+  color: black;
+  font-size: 15;
+  font-weight: 700;
+}
+.answer-content__email {
   padding-left: 10px;
   font-size: 14px;
   color: #9099a3;
   line-height: 1em;
 }
-.answer_avatar > a {
-  padding-left: 10px;
-  text-decoration: none;
-  color: black;
-  font-size: 15;
-  font-weight: 700;
-}
-.answer_avatar > a:hover {
-  text-decoration: underline;
-}
-.answer_details {
+.answer-content__details {
   padding: 20px;
   background-color: #f6f7f7;
   color: black;

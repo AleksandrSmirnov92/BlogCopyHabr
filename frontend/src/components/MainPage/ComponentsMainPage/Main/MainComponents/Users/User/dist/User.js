@@ -62,41 +62,6 @@ var currentTime = function (date) {
     var currentMinutes = currentTime.getMinutes() - date.getMinutes();
     return "\u041E\u043F\u0443\u0431\u043B\u0438\u043A\u043E\u0432\u0430\u043D " + formatterHour.format(currentHours) + " " + formatterMinutes.format(currentMinutes) + " \u043D\u0430\u0437\u0430\u0434";
 };
-var countAnswers = function (idQuestions, answers) {
-    var countAnswers = answers.filter(function (element) { return element.question_id_from_questions === idQuestions; }).length;
-    return countAnswers;
-};
-var getSettingsInformation = function (userId, setPathImg, setFullName, setLastName, setBrieflyAboutYourself, setInformattionAboutUser, setContacts, setLinkContacts, setCountry, setRegion, setTown, setQuestions, setAnswers, setMyAnswers) { return __awaiter(void 0, void 0, void 0, function () {
-    var res, data, _a, img, fullname, lastname, briefly_about_yourself, contacts, linktocontacts, country, region, town, informattion_about_user;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0: return [4 /*yield*/, fetch("/getInformationAboutUser/" + userId, {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" }
-                })];
-            case 1:
-                res = _b.sent();
-                return [4 /*yield*/, res.json()];
-            case 2:
-                data = _b.sent();
-                _a = data.body, img = _a.img, fullname = _a.fullname, lastname = _a.lastname, briefly_about_yourself = _a.briefly_about_yourself, contacts = _a.contacts, linktocontacts = _a.linktocontacts, country = _a.country, region = _a.region, town = _a.town, informattion_about_user = _a.informattion_about_user;
-                setPathImg(img);
-                setFullName(fullname);
-                setLastName(lastname);
-                setBrieflyAboutYourself(briefly_about_yourself);
-                setInformattionAboutUser(informattion_about_user);
-                setContacts(contacts);
-                setLinkContacts(linktocontacts);
-                setCountry(country);
-                setRegion(region);
-                setTown(town);
-                setQuestions(data.questions);
-                setAnswers(data.answers);
-                setMyAnswers(data.myAnswers);
-                return [2 /*return*/];
-        }
-    });
-}); };
 var User = function () {
     var userId = react_router_dom_1.useParams().userId;
     var location = react_router_dom_1.useLocation();
@@ -112,11 +77,79 @@ var User = function () {
     var _j = react_1.useState(""), town = _j[0], setTown = _j[1];
     var _k = react_1.useState(""), informattionAboutUser = _k[0], setInformattionAboutUser = _k[1];
     var _l = react_1.useState([]), questions = _l[0], setQuestions = _l[1];
-    var _m = react_1.useState([]), answers = _m[0], setAnswers = _m[1];
-    var _o = react_1.useState([]), myAnswers = _o[0], setMyAnswers = _o[1];
-    var _p = react_1.useState(question ? "" + question.question : "Информация"), linkValue = _p[0], setLinkValue = _p[1];
+    var _m = react_1.useState([]), myAnswers = _m[0], setMyAnswers = _m[1];
+    var _o = react_1.useState(question ? "" + question.question : "Информация"), linkValue = _o[0], setLinkValue = _o[1];
+    var getQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("/questions/" + userId, {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" }
+                    })];
+                case 1:
+                    res = _a.sent();
+                    return [4 /*yield*/, res.json()];
+                case 2:
+                    data = _a.sent();
+                    setQuestions(data.questions);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var getAnswers = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("/answers/" + userId, {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" }
+                    })];
+                case 1:
+                    res = _a.sent();
+                    return [4 /*yield*/, res.json()];
+                case 2:
+                    data = _a.sent();
+                    setMyAnswers(data.answers);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     react_1.useEffect(function () {
-        getSettingsInformation(userId, setPathImg, setFullName, setLastName, setBrieflyAboutYourself, setInformattionAboutUser, setContacts, setLinkContacts, setCountry, setRegion, setTown, setQuestions, setAnswers, setMyAnswers);
+        var getSettingsInformation = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var res, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch("/getInformationAboutUser/" + userId, {
+                            method: "GET",
+                            headers: { "Content-Type": "application/json" }
+                        })];
+                    case 1:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 2:
+                        data = _a.sent();
+                        setBrieflyAboutYourself(data.users.briefly_about_yourself);
+                        setContacts(data.users.contacts);
+                        setLinkContacts(data.users.linktocontacts);
+                        setCountry(data.users.country);
+                        setRegion(data.users.region);
+                        setTown(data.users.town);
+                        setFullName(data.users.fullname);
+                        setLastName(data.users.lastname);
+                        setPathImg(data.users.img);
+                        setInformattionAboutUser(data.users.informattion_about_user);
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        getSettingsInformation();
+        if (linkValue === "Вопросы") {
+            getQuestions();
+        }
+        if (linkValue === "Ответы") {
+            getAnswers();
+        }
         window.history.replaceState({}, document.title);
     }, []);
     return (react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["user-container"] },
@@ -133,9 +166,15 @@ var User = function () {
         react_1["default"].createElement("nav", { className: User_module_css_1["default"]["nav"] + " " + User_module_css_1["default"]["nav_outline"] },
             react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["nav__item"], onClick: function () { return setLinkValue("Информация"); } },
                 react_1["default"].createElement("span", { className: linkValue === "Информация" ? User_module_css_1["default"].active : "" }, "\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F")),
-            react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["nav__item"], onClick: function () { return setLinkValue("Вопросы"); } },
+            react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["nav__item"], onClick: function () {
+                    setLinkValue("Вопросы");
+                    getQuestions();
+                } },
                 react_1["default"].createElement("span", { className: linkValue === "Вопросы" ? User_module_css_1["default"].active : "" }, "\u0412\u043E\u043F\u0440\u043E\u0441\u044B")),
-            react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["nav__item"], onClick: function () { return setLinkValue("Ответы"); } },
+            react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["nav__item"], onClick: function () {
+                    setLinkValue("Ответы");
+                    getAnswers();
+                } },
                 react_1["default"].createElement("span", { className: linkValue === "Ответы" ? User_module_css_1["default"].active : "" }, "\u041E\u0442\u0432\u0435\u0442\u044B"))),
         react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["user-content"] }, linkValue === "Информация" ? (react_1["default"].createElement(react_1["default"].Fragment, null,
             react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, informattionAboutUser !== "" ? "Обо мне" : ""),
@@ -150,15 +189,15 @@ var User = function () {
             react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, country !== "Страна" ? "Местоположение" : ""),
             react_1["default"].createElement("span", { className: "" + User_module_css_1["default"]["user-content__text"] }, country !== "Страна" ? country + "," + region + "," + town : ""))) : linkValue === "Вопросы" ? (questions.length > 0 ? (questions.map(function (question, index) {
             return (react_1["default"].createElement(Question_1["default"], { key: index, question: question, currentTime: currentTime }));
-        })) : (react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, "\u0412\u043E\u043F\u0440\u043E\u0441\u043E\u0432 \u043D\u0435\u0442"))) : myAnswers.length > 0 ? (myAnswers.map(function (answer) {
-            return (react_1["default"].createElement("div", { className: User_module_css_1["default"].question_container },
-                react_1["default"].createElement("a", { href: "#", className: User_module_css_1["default"].question }, answer.question_title),
-                react_1["default"].createElement("div", { className: User_module_css_1["default"].answer_avatar },
-                    react_1["default"].createElement("div", null,
+        })) : (react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, "\u0412\u043E\u043F\u0440\u043E\u0441\u043E\u0432 \u043D\u0435\u0442"))) : myAnswers.length > 0 ? (myAnswers.map(function (answer, index) {
+            return (react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["answer-container"], key: index },
+                react_1["default"].createElement(react_router_dom_1.Link, { to: "/questionInfo/" + answer.questions_id, className: "" + User_module_css_1["default"]["answer-title"], state: { questionTagsId: answer.question_tags } }, answer.question_title),
+                react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["answer-content"] },
+                    react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["answer-content__image"] },
                         react_1["default"].createElement("img", { src: pathImg === "" ? photoProfil_png_1["default"] : pathImg })),
-                    react_1["default"].createElement("a", { href: "#" }, answer.nickname),
-                    react_1["default"].createElement("span", null, answer.email)),
-                react_1["default"].createElement("div", { className: User_module_css_1["default"].answer_details }, answer.answers)));
+                    react_1["default"].createElement("span", { className: "" + User_module_css_1["default"]["answer-content__nickname"] }, answer.nickname),
+                    react_1["default"].createElement("span", { className: "" + User_module_css_1["default"]["answer-content__email"] }, answer.email)),
+                react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["answer-content__details"] }, answer.answers)));
         })) : (react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, "\u041E\u0442\u0432\u0435\u0442\u043E\u0432 \u043D\u0435\u0442")))));
 };
 exports["default"] = User;

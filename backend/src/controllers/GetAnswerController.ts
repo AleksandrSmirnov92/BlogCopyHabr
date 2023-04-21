@@ -3,7 +3,6 @@ import express, { Request, Response } from "express";
 import { supabase } from "../config/usersDataBase.js";
 exports.getAnswers = async (req: Request, res: Response) => {
   let { answer, questionId, tagsId, userId } = req.body;
-
   const insertAnswer = await supabase
     .from("answers")
     .upsert({
@@ -51,4 +50,33 @@ exports.getAnswers = async (req: Request, res: Response) => {
   // } catch (err) {
   //   console.log(err);
   // }
+};
+exports.getAnswersId = async (req: Request, res: Response) => {
+  let { id } = req.params;
+  console.log(id);
+  let getInfoAnswers = await supabase
+    .from("answers")
+    .select(
+      `"answer_id","answers","question_id_from_questions","responce_userId","user_id_from_users",users("*"),questions("*")`
+    )
+    .eq("user_id_from_users", id);
+  console.log(getInfoAnswers.data);
+  let answers = getInfoAnswers.data.map((obj: any) => {
+    let { answers } = obj;
+    let { question_title, questions_id, question_tags } = obj.questions;
+    let { email, nickname, user_id } = obj.users;
+    return {
+      email,
+      nickname,
+      question_title,
+      answers,
+      questions_id,
+      question_tags,
+      user_id,
+    };
+  });
+  res.status(200).json({
+    message: "Вы получили все этого ответы этого пользователя",
+    answers: answers,
+  });
 };

@@ -12,19 +12,21 @@ interface User {
   questions: string;
   user_id: string;
 }
-const getInfomationAboutUser = async (
-  setUsers: React.Dispatch<React.SetStateAction<{}[]>>
-) => {
-  const res = await fetch("http://localhost:9999/getInformationAboutUser", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  const data = await res.json();
-  setUsers(data.body);
-};
+
 const Users: React.FC = () => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
+    const getInfomationAboutUser = async (
+      setUsers: React.Dispatch<React.SetStateAction<{}[]>>
+    ) => {
+      const res = await fetch("/getInformationAboutUser", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json();
+      console.log(data);
+      setUsers(data.body);
+    };
     getInfomationAboutUser(setUsers);
   }, [setUsers]);
 

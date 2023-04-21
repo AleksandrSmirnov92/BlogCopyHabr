@@ -81,3 +81,39 @@ exports.getAnswers = function (req, res) { return __awaiter(void 0, void 0, void
         }
     });
 }); };
+exports.getAnswersId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, getInfoAnswers, answers;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = req.params.id;
+                console.log(id);
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("answers")
+                        .select("\"answer_id\",\"answers\",\"question_id_from_questions\",\"responce_userId\",\"user_id_from_users\",users(\"*\"),questions(\"*\")")
+                        .eq("user_id_from_users", id)];
+            case 1:
+                getInfoAnswers = _a.sent();
+                console.log(getInfoAnswers.data);
+                answers = getInfoAnswers.data.map(function (obj) {
+                    var answers = obj.answers;
+                    var _a = obj.questions, question_title = _a.question_title, questions_id = _a.questions_id, question_tags = _a.question_tags;
+                    var _b = obj.users, email = _b.email, nickname = _b.nickname, user_id = _b.user_id;
+                    return {
+                        email: email,
+                        nickname: nickname,
+                        question_title: question_title,
+                        answers: answers,
+                        questions_id: questions_id,
+                        question_tags: question_tags,
+                        user_id: user_id
+                    };
+                });
+                res.status(200).json({
+                    message: "Вы получили все этого ответы этого пользователя",
+                    answers: answers
+                });
+                return [2 /*return*/];
+        }
+    });
+}); };

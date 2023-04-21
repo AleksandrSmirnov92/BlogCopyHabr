@@ -40,27 +40,28 @@ var react_1 = require("react");
 var Users_module_css_1 = require("./Users.module.css");
 var photoProfil_png_1 = require("../../../../../../images/photoProfil.png");
 var react_router_dom_1 = require("react-router-dom");
-var getInfomationAboutUser = function (setUsers) { return __awaiter(void 0, void 0, void 0, function () {
-    var res, data;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch("http://localhost:9999/getInformationAboutUser", {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" }
-                })];
-            case 1:
-                res = _a.sent();
-                return [4 /*yield*/, res.json()];
-            case 2:
-                data = _a.sent();
-                setUsers(data.body);
-                return [2 /*return*/];
-        }
-    });
-}); };
 var Users = function () {
     var _a = react_1.useState([]), users = _a[0], setUsers = _a[1];
     react_1.useEffect(function () {
+        var getInfomationAboutUser = function (setUsers) { return __awaiter(void 0, void 0, void 0, function () {
+            var res, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch("/getInformationAboutUser", {
+                            method: "GET",
+                            headers: { "Content-Type": "application/json" }
+                        })];
+                    case 1:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 2:
+                        data = _a.sent();
+                        console.log(data);
+                        setUsers(data.body);
+                        return [2 /*return*/];
+                }
+            });
+        }); };
         getInfomationAboutUser(setUsers);
     }, [setUsers]);
     return (react_1["default"].createElement("div", { className: "" + Users_module_css_1["default"]["users-container"] },

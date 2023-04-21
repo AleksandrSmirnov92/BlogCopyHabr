@@ -219,8 +219,8 @@ var QuestionInfo = function () {
         react_1["default"].createElement("div", { className: userActive
                 ? QuestionInfo_module_css_1["default"].hideAuthorisation
                 : QuestionInfo_module_css_1["default"].showAuthorisation },
-            react_1["default"].createElement("div", { className: QuestionInfo_module_css_1["default"].authorisation },
-                react_1["default"].createElement("div", { className: QuestionInfo_module_css_1["default"].authorisation__img },
+            react_1["default"].createElement("div", { className: "" + QuestionInfo_module_css_1["default"]["authorisation"] },
+                react_1["default"].createElement("div", { className: "" + QuestionInfo_module_css_1["default"]["authorisation__image"] },
                     react_1["default"].createElement("img", { src: ______png_1["default"], alt: "" })),
                 react_1["default"].createElement("h3", null, "\u0412\u043E\u0439\u0434\u0438\u0442\u0435,\u0447\u0442\u043E\u0431\u044B \u043D\u0430\u043F\u0438\u0441\u0430\u0442\u044C \u043E\u0442\u0432\u0435\u0442"),
                 react_1["default"].createElement(react_router_dom_1.NavLink, { to: "/SignIn", className: "" + QuestionInfo_module_css_1["default"]["authorisation__btn"] },
