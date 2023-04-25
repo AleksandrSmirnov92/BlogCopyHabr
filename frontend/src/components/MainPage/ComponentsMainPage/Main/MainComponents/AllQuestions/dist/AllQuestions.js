@@ -42,9 +42,7 @@ var react_router_dom_1 = require("react-router-dom");
 var Question_1 = require("./Question/Question");
 var AllQuestions = function () {
     var _a = react_1.useState([]), questions = _a[0], setQuestions = _a[1];
-    var _b = react_1.useState([]), answers = _b[0], setAnswers = _b[1];
-    var _c = react_1.useState("Новые вопросы"), newQuestions = _c[0], setNewQuestions = _c[1];
-    var _d = react_1.useState("Новые вопросы"), valueLink = _d[0], setValueLink = _d[1];
+    var _b = react_1.useState("Новые вопросы"), valueLink = _b[0], setValueLink = _b[1];
     var currentTime = function (date) {
         var formatterHour = new Intl.NumberFormat("ru", {
             style: "unit",
@@ -66,10 +64,6 @@ var AllQuestions = function () {
         var currentMinutes = currentTime.getMinutes() - date.getMinutes();
         return "\u041E\u043F\u0443\u0431\u043B\u0438\u043A\u043E\u0432\u0430\u043D " + formatterHour.format(currentHours) + " " + formatterMinutes.format(currentMinutes) + " \u043D\u0430\u0437\u0430\u0434";
     };
-    var countAnswers = function (idQuestions, answers) {
-        var countAnswers = answers.filter(function (element) { return element.question_id_from_questions === idQuestions; }).length;
-        return countAnswers;
-    };
     var getQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, data;
         return __generator(this, function (_a) {
@@ -84,7 +78,6 @@ var AllQuestions = function () {
                 case 2:
                     data = _a.sent();
                     setQuestions(data.questions);
-                    setAnswers(data.answers);
                     return [2 /*return*/];
             }
         });
@@ -92,24 +85,22 @@ var AllQuestions = function () {
     react_1.useEffect(function () {
         getQuestions();
     }, []);
-    return (react_1["default"].createElement("div", { className: AllQuestionsCSS_module_css_1["default"].all_questions_container },
+    return (react_1["default"].createElement("div", { className: AllQuestionsCSS_module_css_1["default"]["questions-container"] },
         react_1["default"].createElement("h3", null, "\u0412\u0441\u0435 \u0412\u043E\u043F\u0440\u043E\u0441\u044B"),
-        react_1["default"].createElement("nav", { className: AllQuestionsCSS_module_css_1["default"].nav },
+        react_1["default"].createElement("nav", { className: AllQuestionsCSS_module_css_1["default"]["nav"] },
             react_1["default"].createElement(react_router_dom_1.NavLink, { className: valueLink === "Новые вопросы"
-                    ? AllQuestionsCSS_module_css_1["default"].nav_focus
-                    : AllQuestionsCSS_module_css_1["default"].nav_link, to: "/questions", onClick: function () {
-                    setNewQuestions("Новые вопросы");
+                    ? AllQuestionsCSS_module_css_1["default"]["nav-item"] + " " + AllQuestionsCSS_module_css_1["default"]["nav-item_focus"]
+                    : AllQuestionsCSS_module_css_1["default"]["nav-item"], to: "/questions", onClick: function () {
                     setValueLink("Новые вопросы");
                 } }, "\u041D\u043E\u0432\u044B\u0435 \u0432\u043E\u043F\u0440\u043E\u0441\u044B"),
             react_1["default"].createElement(react_router_dom_1.NavLink, { className: valueLink === "Без ответа"
-                    ? AllQuestionsCSS_module_css_1["default"].nav_focus
-                    : AllQuestionsCSS_module_css_1["default"].nav_link, to: "/questions", onClick: function () {
-                    setNewQuestions("Без ответа");
+                    ? AllQuestionsCSS_module_css_1["default"]["nav-item"] + " " + AllQuestionsCSS_module_css_1["default"]["nav-item_focus"]
+                    : AllQuestionsCSS_module_css_1["default"]["nav-item"], to: "/questions", onClick: function () {
                     setValueLink("Без ответа");
                 } }, "\u0411\u0435\u0437 \u043E\u0442\u0432\u0435\u0442\u0430")),
-        react_1["default"].createElement("div", { className: AllQuestionsCSS_module_css_1["default"].questions_list }, newQuestions === "Без ответа"
+        react_1["default"].createElement("div", { className: AllQuestionsCSS_module_css_1["default"]["questions-list"] }, valueLink === "Без ответа"
             ? questions
-                .filter(function (question) { return countAnswers(question.questions_id, answers) === 0; })
+                .filter(function (question) { return question.countAnswers === 0; })
                 .map(function (question) {
                 return (react_1["default"].createElement(Question_1["default"], { question: question, currentTime: currentTime }));
             })

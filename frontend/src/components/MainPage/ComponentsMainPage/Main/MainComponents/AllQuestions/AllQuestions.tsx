@@ -4,8 +4,6 @@ import { NavLink } from "react-router-dom";
 import Question from "./Question/Question";
 const AllQuestions = () => {
   let [questions, setQuestions] = useState([]);
-  let [answers, setAnswers] = useState([]);
-  let [newQuestions, setNewQuestions] = useState("Новые вопросы");
   let [valueLink, setValueLink] = useState("Новые вопросы");
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
@@ -37,13 +35,6 @@ const AllQuestions = () => {
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
-  let countAnswers = (idQuestions: string, answers: {}[]): any => {
-    let countAnswers = answers.filter(
-      (element: any) => element.question_id_from_questions === idQuestions
-    ).length;
-
-    return countAnswers;
-  };
   let getQuestions = async () => {
     const res = await fetch(`/questions`, {
       method: "GET",
@@ -51,24 +42,22 @@ const AllQuestions = () => {
     });
     const data = await res.json();
     setQuestions(data.questions);
-    setAnswers(data.answers);
   };
   useEffect(() => {
     getQuestions();
   }, []);
   return (
-    <div className={AllQuestionsCSS.all_questions_container}>
+    <div className={AllQuestionsCSS["questions-container"]}>
       <h3>Все Вопросы</h3>
-      <nav className={AllQuestionsCSS.nav}>
+      <nav className={AllQuestionsCSS["nav"]}>
         <NavLink
           className={
             valueLink === "Новые вопросы"
-              ? AllQuestionsCSS.nav_focus
-              : AllQuestionsCSS.nav_link
+              ? `${AllQuestionsCSS["nav-item"]} ${AllQuestionsCSS["nav-item_focus"]}`
+              : AllQuestionsCSS["nav-item"]
           }
           to={`/questions`}
           onClick={() => {
-            setNewQuestions("Новые вопросы");
             setValueLink("Новые вопросы");
           }}
         >
@@ -77,43 +66,30 @@ const AllQuestions = () => {
         <NavLink
           className={
             valueLink === "Без ответа"
-              ? AllQuestionsCSS.nav_focus
-              : AllQuestionsCSS.nav_link
+              ? `${AllQuestionsCSS["nav-item"]} ${AllQuestionsCSS["nav-item_focus"]}`
+              : AllQuestionsCSS["nav-item"]
           }
           to={`/questions`}
           onClick={() => {
-            setNewQuestions("Без ответа");
             setValueLink("Без ответа");
           }}
         >
           Без ответа
         </NavLink>
       </nav>
-      <div className={AllQuestionsCSS.questions_list}>
-        {newQuestions === "Без ответа"
+      <div className={AllQuestionsCSS["questions-list"]}>
+        {valueLink === "Без ответа"
           ? questions
-              .filter(
-                (question) => countAnswers(question.questions_id, answers) === 0
-              )
+              .filter((question) => question.countAnswers === 0)
               .map((question) => {
                 return (
-                  <Question
-                    question={question}
-                    currentTime={currentTime}
-                    // countAnswers={countAnswers}
-                    // answers={answers}
-                  />
+                  <Question question={question} currentTime={currentTime} />
                 );
               })
           : questions
               .map((question) => {
                 return (
-                  <Question
-                    question={question}
-                    currentTime={currentTime}
-                    // countAnswers={countAnswers}
-                    // answers={answers}
-                  />
+                  <Question question={question} currentTime={currentTime} />
                 );
               })
               .reverse()}

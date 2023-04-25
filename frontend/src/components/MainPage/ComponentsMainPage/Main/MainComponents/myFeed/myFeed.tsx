@@ -14,10 +14,8 @@ function getCookie(name: string): RegExp | string {
 }
 const MyFeed: React.FC = () => {
   let [questions, setQuestions] = useState([]);
-  let [answers, setAnswers] = useState([]);
-  let [nameTag, setNameTag] = useState({});
   let [navValue, setNavValue] = useState("Интересные");
-  let [userId, setUserId] = useState(localStorage.getItem("userId"));
+  let userId = localStorage.getItem("userId");
 
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
@@ -49,13 +47,7 @@ const MyFeed: React.FC = () => {
       currentHours
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
-  let countAnswers = (idQuestions: string, answers: {}[]): any => {
-    let countAnswers = answers.filter(
-      (element: any) => element.question_id_from_questions === idQuestions
-    ).length;
 
-    return countAnswers;
-  };
   let getMyQuestions = async () => {
     const res = await fetch(`/myFeed`, {
       method: "POST",
@@ -65,9 +57,8 @@ const MyFeed: React.FC = () => {
       }),
     });
     const data = await res.json();
+    console.log(data);
     setQuestions(data.questions);
-    setAnswers(data.answers);
-    setNameTag(data.followers);
   };
   useEffect(() => {
     if (userId !== null && getCookie("nickname")) {
@@ -77,12 +68,14 @@ const MyFeed: React.FC = () => {
     }
   }, []);
   return (
-    <div className={MyFeedCSS.main_container}>
+    <div className={MyFeedCSS["main-container"]}>
       <h3>Моя лента</h3>
-      <nav className={MyFeedCSS.nav}>
+      <nav className={MyFeedCSS["nav"]}>
         <NavLink
           className={
-            navValue === "Интересные" ? MyFeedCSS.nav_focus : MyFeedCSS.nav_link
+            navValue === "Интересные"
+              ? `${MyFeedCSS["nav-item"]} ${MyFeedCSS["nav-item_focus"]}`
+              : MyFeedCSS["nav-item"]
           }
           to={`/myFeed`}
           onClick={() => setNavValue("Интересные")}
@@ -91,7 +84,9 @@ const MyFeed: React.FC = () => {
         </NavLink>
         <NavLink
           className={
-            navValue === "Без ответа" ? MyFeedCSS.nav_focus : MyFeedCSS.nav_link
+            navValue === "Без ответа"
+              ? `${MyFeedCSS["nav-item"]} ${MyFeedCSS["nav-item_focus"]}`
+              : MyFeedCSS["nav-item"]
           }
           to={`/myFeed`}
           onClick={() => setNavValue("Без ответа")}
@@ -99,33 +94,20 @@ const MyFeed: React.FC = () => {
           Без ответа
         </NavLink>
       </nav>
-      <div className={MyFeedCSS.questions_list}>
+      <div className={MyFeedCSS["questions-list"]}>
         {navValue === "Без ответа"
           ? questions
-              .filter(
-                (question) =>
-                  nameTag[
-                    question.name_tag.toLowerCase() as keyof typeof nameTag
-                  ] && countAnswers(question.questions_id, answers) === 0
-              )
+              .filter((question) => question.countAnswers === 0)
               .map((question, index) => {
                 return (
                   <Question
                     key={index}
                     question={question}
                     currentTime={currentTime}
-                    // countAnswers={countAnswers}
-                    // answers={answers}
                   />
                 );
               })
           : questions
-              .filter(
-                (question) =>
-                  nameTag[
-                    question.name_tag.toLowerCase() as keyof typeof nameTag
-                  ]
-              )
               .map((question, index) => {
                 return (
                   <Question

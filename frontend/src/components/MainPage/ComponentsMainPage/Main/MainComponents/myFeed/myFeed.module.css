@@ -1,11 +1,11 @@
-.main_container {
+.main-container {
   padding-left: 40px;
   padding-right: 40px;
 }
 .nav {
   display: inline-flex;
 }
-.nav_link {
+.nav-item {
   border: 0.5px rgb(210, 207, 207) solid;
   font-weight: 700;
   text-decoration: none;
@@ -13,10 +13,10 @@
   color: #4f6173;
   padding: 15px;
 }
-.nav_link:hover {
+.nav-item:hover {
   color: #2d72d9;
 }
-.nav_focus {
+.nav-item_focus {
   text-decoration: none;
   border: 0.5px #2d72d9 solid;
   color: #2d72d9;
@@ -24,6 +24,6 @@
   padding: 13px;
 }
 /* Questions */
-.questions_list {
+.questions-list {
   margin-top: 30px;
 }

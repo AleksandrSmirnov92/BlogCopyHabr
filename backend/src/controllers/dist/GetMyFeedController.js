@@ -38,65 +38,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 // import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
-exports.getAllQuestions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var getQuestions, questions;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                    .from("questions")
-                    .select("\"date_of_creation\",\"question_title\",\"questions_id\",\"question_tags\",tags(\"*\"),answers(*)")];
-            case 1:
-                getQuestions = _a.sent();
-                questions = getQuestions.data.map(function (obj) {
-                    var date_of_creation = obj.date_of_creation, question_title = obj.question_title, questions_id = obj.questions_id, question_tags = obj.question_tags, answers = obj.answers;
-                    var _a = obj.tags, name_tag = _a.name_tag, img_tag = _a.img_tag, tags_id = _a.tags_id;
-                    return {
-                        date_of_creation: date_of_creation,
-                        question_title: question_title,
-                        name_tag: name_tag,
-                        img_tag: img_tag,
-                        tags_id: tags_id,
-                        questions_id: questions_id,
-                        question_tags: question_tags,
-                        countAnswers: answers.length
-                    };
-                });
-                res.status(200).json({
-                    message: "Вы получили информацию о всех вопросах",
-                    questions: questions,
-                    answers: ""
-                });
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.getAllQuestionsId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getQuestionsId, questionsInfo;
+exports.getMyFeed = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, getFollowers, getQuestions, questions;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = req.params.id;
+                id = req.body.id;
                 return [4 /*yield*/, usersDataBase_js_1.supabase
-                        .from("questions")
-                        .select("\"*\",tags(\"*\"),answers(*)")
+                        .from("tagsFollowers")
+                        .select("\"*\"")
                         .eq("user_id", id)];
             case 1:
-                getQuestionsId = _a.sent();
-                questionsInfo = getQuestionsId.data.map(function (obj) {
-                    var questions_id = obj.questions_id, question_tags = obj.question_tags, question_title = obj.question_title, date_of_creation = obj.date_of_creation, tags = obj.tags, answers = obj.answers;
-                    return {
-                        question_tags: question_tags,
-                        question_title: question_title,
-                        date_of_creation: date_of_creation,
-                        name_tag: tags.name_tag,
-                        img_tag: tags.img_tag,
-                        countAnswers: answers.length,
-                        questions_id: questions_id
-                    };
+                getFollowers = _a.sent();
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("questions")
+                        .select("\"date_of_creation\",\"question_title\",\"questions_id\",\"question_tags\",tags(\"*\"),answers(*)")];
+            case 2:
+                getQuestions = _a.sent();
+                questions = [];
+                getFollowers.data.forEach(function (element) {
+                    getQuestions.data.forEach(function (obj) {
+                        if (element.tags_id === obj.question_tags) {
+                            var date_of_creation = obj.date_of_creation, question_title = obj.question_title, questions_id = obj.questions_id, question_tags = obj.question_tags, answers = obj.answers;
+                            var _a = obj.tags, name_tag = _a.name_tag, img_tag = _a.img_tag, tags_id = _a.tags_id;
+                            var newObj = {
+                                name_tag: name_tag,
+                                img_tag: img_tag,
+                                tags_id: tags_id,
+                                date_of_creation: date_of_creation,
+                                question_title: question_title,
+                                questions_id: questions_id,
+                                question_tags: question_tags,
+                                countAnswers: answers.length
+                            };
+                            questions.push(newObj);
+                        }
+                    });
                 });
                 res.status(200).json({
-                    message: "Вы получили информацию о всех вопросах по id",
-                    questions: questionsInfo
+                    message: "Вы получили информацию об интересных вам вопросах",
+                    questions: questions
                 });
                 return [2 /*return*/];
         }
