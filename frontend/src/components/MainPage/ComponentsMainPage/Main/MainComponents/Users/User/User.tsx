@@ -16,7 +16,7 @@ interface ResponseData {
     country: string;
     region: string;
     town: string;
-    informattion_about_user: string;
+    information_about_user: string;
   };
 }
 interface ResponseDataQuestions {
@@ -86,7 +86,7 @@ const User: React.FC = () => {
   let [country, setCountry] = useState("");
   let [region, setRegion] = useState("");
   let [town, setTown] = useState("");
-  let [informattionAboutUser, setInformattionAboutUser] = useState("");
+  let [informationAboutUser, setInformationAboutUser] = useState("");
   let [questions, setQuestions] = useState([]);
   let [myAnswers, setMyAnswers] = useState([]);
   let [linkValue, setLinkValue] = useState(
@@ -124,7 +124,7 @@ const User: React.FC = () => {
       setFullName(data.users.fullname);
       setLastName(data.users.lastname);
       setPathImg(data.users.img);
-      setInformattionAboutUser(data.users.informattion_about_user);
+      setInformationAboutUser(data.users.information_about_user);
     };
     getSettingsInformation();
     if (linkValue === "Вопросы") {
@@ -195,11 +195,11 @@ const User: React.FC = () => {
             <h4
               className={`${UserCSS["user-content__title"]} ${UserCSS["user-content__title_p"]}`}
             >
-              {informattionAboutUser !== "" ? "Обо мне" : ""}
+              {informationAboutUser !== "" ? "Обо мне" : ""}
             </h4>
             <span className={`${UserCSS["user-content__text"]}`}>
               {" "}
-              {informattionAboutUser}{" "}
+              {informationAboutUser}{" "}
             </span>
 
             <h4

@@ -104,10 +104,8 @@ var AllQuestions = function () {
                 .map(function (question) {
                 return (react_1["default"].createElement(Question_1["default"], { question: question, currentTime: currentTime }));
             })
-            : questions
-                .map(function (question) {
-                return (react_1["default"].createElement(Question_1["default"], { question: question, currentTime: currentTime }));
-            })
-                .reverse())));
+            : questions.map(function (question) {
+                return react_1["default"].createElement(Question_1["default"], { question: question, currentTime: currentTime });
+            }))));
 };
 exports["default"] = AllQuestions;

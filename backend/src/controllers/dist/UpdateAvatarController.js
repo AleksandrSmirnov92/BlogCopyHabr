@@ -37,50 +37,67 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
-exports.getAllInfoAboutUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var getInfoAboutUser, infoUsers;
+var path = require("path");
+var fs = require("fs");
+exports.uploadAvatar = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, file, apdateAboutUser, pathUpload;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                    .from("users")
-                    .select("\"email\",\"nickname\",\"user_id\",about_user(\"*\"),answers(\"*\"),questions(\"*\")")];
+            case 0:
+                id = req.params.id;
+                file = req.files.file;
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("about_user")
+                        .update({ img: "/uploads/" + file.name })
+                        .eq("user_id_from_users", id)];
             case 1:
-                getInfoAboutUser = _a.sent();
-                infoUsers = function () {
-                    var infoUsers = getInfoAboutUser.data.map(function (obj) {
-                        var nickname = obj.nickname, user_id = obj.user_id;
-                        var _a = obj.about_user, img = _a.img, fullname = _a.fullname;
-                        var answers = obj.answers.length;
-                        var questions = obj.questions.length;
-                        return { nickname: nickname, user_id: user_id, img: img, fullname: fullname, answers: answers, questions: questions };
+                apdateAboutUser = _a.sent();
+                pathUpload = path.resolve(__dirname, "../../../Frontend/public/uploads");
+                if (!req.files) {
+                    return [2 /*return*/, res.status(404).json({
+                            message: "Загрузите фотографию"
+                        })];
+                }
+                if (fs.existsSync(pathUpload + "/" + file.name)) {
+                    return [2 /*return*/, res.status(200).json({
+                            filePath: "/uploads/" + file.name
+                        })];
+                }
+                file.mv(pathUpload + "/" + file.name, function (err) {
+                    if (err) {
+                        return res.status(500).json({ err: err });
+                    }
+                    return res.status(200).json({
+                        filePath: "/uploads/" + file.name
                     });
-                    return infoUsers;
-                };
-                res.status(200).json({
-                    message: "Вы получили информацию о пользователе",
-                    body: infoUsers(),
-                    answers: getInfoAboutUser.data
                 });
                 return [2 /*return*/];
         }
     });
 }); };
-exports.getInfoAboutUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getInfoUser;
+exports.deleteAvatar = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, apdateAboutUser, filePath, pathUpload;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("about_user")
-                        .select("\"briefly_about_yourself\",\"contacts\",\"country\",\"region\",\"town\",\"linktocontacts\",\"fullname\",\"lastname\",\"img\",\"information_about_user\"")
-                        .eq("user_id_from_users", id)
-                        .single()];
+                        .update({ img: "" })
+                        .eq("user_id_from_users", id)];
             case 1:
-                getInfoUser = _a.sent();
-                res.status(200).json({
-                    message: "Вы получили информацию о пользователе",
-                    users: getInfoUser.data
+                apdateAboutUser = _a.sent();
+                filePath = req.body.path;
+                pathUpload = path.resolve(__dirname, "../../../Frontend/public/" + filePath);
+                fs.unlink(pathUpload, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.status(200).json({
+                            filePath: ""
+                        });
+                    }
                 });
                 return [2 /*return*/];
         }

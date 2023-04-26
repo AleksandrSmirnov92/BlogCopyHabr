@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { pool } from "../db.js";
+import { supabase } from "../config/usersDataBase.js";
 const path = require("path");
 const fs = require("fs");
 interface MulterRequest extends Request {
@@ -16,10 +17,11 @@ exports.uploadAvatar = async (
 ) => {
   let { id } = req.params;
   const file = (req as MulterRequest).files.file;
-  let addInformationInAboutUser = await pool.query(
-    `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
-    [`/uploads/${file.name}`, id]
-  );
+  const apdateAboutUser = await supabase
+    .from("about_user")
+    .update({ img: `/uploads/${file.name}` })
+    .eq("user_id_from_users", id);
+
   const pathUpload = path.resolve(
     __dirname,
     "../../../Frontend/public/uploads"
@@ -46,16 +48,20 @@ exports.uploadAvatar = async (
       });
     }
   );
+  // let addInformationInAboutUser = await pool.query(
+  //   `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
+  //   [`/uploads/${file.name}`, id]
+  // );
 };
 interface DeleteAvatar {
   filePath: string;
 }
 exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
   let { id } = req.params;
-  let addInformationInAboutUser = await pool.query(
-    `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
-    [``, id]
-  );
+  const apdateAboutUser = await supabase
+    .from("about_user")
+    .update({ img: `` })
+    .eq("user_id_from_users", id);
   let filePath = req.body.path;
   const pathUpload = path.resolve(
     __dirname,
@@ -70,4 +76,8 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
       });
     }
   });
+  // let addInformationInAboutUser = await pool.query(
+  //   `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
+  //   [``, id]
+  // );
 };

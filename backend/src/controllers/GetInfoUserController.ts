@@ -43,7 +43,7 @@ exports.getInfoAboutUser = async (req: Request, res: Response) => {
   let getInfoUser = await supabase
     .from("about_user")
     .select(
-      `"briefly_about_yourself","contacts","country","region","town","linktocontacts","fullname","lastname","img","informattion_about_user"`
+      `"briefly_about_yourself","contacts","country","region","town","linktocontacts","fullname","lastname","img","information_about_user"`
     )
     .eq("user_id_from_users", id)
     .single();

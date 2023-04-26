@@ -39,83 +39,21 @@ const resetContacts = (
   }
 };
 
-const sendAvatar = async (
-  selectedFile: File,
-  setPathImg: React.Dispatch<React.SetStateAction<string>>
-) => {
-  if (!selectedFile) {
-    alert("Пожалуйста загрузите файл");
-    return;
-  }
-  const formData = new FormData();
-  formData.set("file", selectedFile);
-  const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
-    method: "POST",
-    body: formData,
-  });
-  const data = await res.json();
-  console.log(data.filePath);
-  setPathImg(data.filePath);
-};
-const deleteImg = async (
-  filePath: string,
-  setPathImg: React.Dispatch<React.SetStateAction<string>>,
-  myRef: React.MutableRefObject<HTMLInputElement>
-) => {
-  const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      path: filePath,
-    }),
-  });
-  const data = await res.json();
-  setPathImg(data.filePath);
-  myRef.current.value = "";
-};
-const getSettingsInformation = async (
-  values: MyValues,
-  setValue: React.Dispatch<React.SetStateAction<string>>,
-  setPathImg: React.Dispatch<React.SetStateAction<string>>,
-  setLinkContactsValue: React.Dispatch<React.SetStateAction<string>>,
-  setCountry: React.Dispatch<React.SetStateAction<string>>,
-  setRegion: React.Dispatch<React.SetStateAction<string>>,
-  setTown: React.Dispatch<React.SetStateAction<string>>
-) => {
-  const res = await fetch(
-    `/getInformationAboutUser/${localStorage.getItem("userId")}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    }
-  );
-  const data = await res.json();
-  setValue(data.body);
-  setPathImg(data.body.img);
-  values.name = data.body.fullname;
-  values.lastName = data.body.lastname;
-  values.brieflyAboutYourself = data.body.briefly_about_yourself;
-  values.aboutMySelf = data.body.informattion_about_user;
-  values.contacts = data.body.contacts;
-  values.linkToContacts = data.body.linktocontacts;
-  setLinkContactsValue(data.body.linktocontacts);
-  setCountry(data.body.country);
-  values.country = data.body.country;
-  setRegion(data.body.region);
-  values.region = data.body.region;
-  setTown(data.body.town);
-  values.town = data.body.town;
-};
-
 const ProfileSettings: React.FC = () => {
   const { userId, setUserId } = useContext<Context>(userIdContext);
-  let [value, setValue] = useState("");
-  let [pathImg, setPathImg] = useState("");
+  let [name, setName] = useState("");
+  let [lastName, setLastName] = useState("");
+  let [brieflyAboutYourself, setBrieflyAboutYourself] = useState("");
+  let [aboutMySelf, setAboutMySelf] = useState("");
+  let [contacts, setContacts] = useState("");
   let [linkContactsValue, setLinkContactsValue] = useState("");
   let [country, setCountry] = useState("Страна");
   let [region, setRegion] = useState("Регион");
   let [town, setTown] = useState("Город");
+  let [pathImg, setPathImg] = useState("");
+
   const myRef = useRef<HTMLInputElement>();
+  // --------------------------------------------
   const locationCheck = (e: string) => {
     switch (e) {
       case "Страна":
@@ -127,40 +65,97 @@ const ProfileSettings: React.FC = () => {
         break;
     }
   };
+  // ----------------------------------------------
+  const sendAvatar = async (selectedFile: File) => {
+    if (!selectedFile) {
+      alert("Пожалуйста загрузите файл");
+      return;
+    }
+    const formData = new FormData();
+    formData.set("file", selectedFile);
+    const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    setPathImg(data.filePath);
+  };
+  // -----------------------------------------------
+  const deleteImg = async (
+    filePath: string,
+    setPathImg: React.Dispatch<React.SetStateAction<string>>,
+    myRef: React.MutableRefObject<HTMLInputElement>
+  ) => {
+    const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        path: filePath,
+      }),
+    });
+    const data = await res.json();
+    setPathImg(data.filePath);
+    myRef.current.value = "";
+  };
+  // --------------------------------------------------
   const onSubmit = async () => {
     const res = await fetch("/updateProfile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         id: localStorage.getItem("userId"),
-        fullName: values.name,
-        lastName: values.lastName,
-        contacts: values.contacts,
-        linkToContacts: (values.linkToContacts = linkContactsValue),
-        briefly_about_yourself: values.brieflyAboutYourself,
-        informattion_about_user: values.aboutMySelf,
-        country: (values.country = country),
-        region: (values.region = region),
-        town: (values.town = town),
+        fullName: name,
+        lastName: lastName,
+        contacts: contacts,
+        linkToContacts: linkContactsValue,
+        briefly_about_yourself: brieflyAboutYourself,
+        information_about_user: aboutMySelf,
+        country: country,
+        region: region,
+        town: town,
       }),
     });
+    let data = await res.json();
     setTimeout(() => {
       window.location.href = `http://localhost:3000/users/${localStorage.getItem(
         "userId"
       )}`;
-    }, 1000);
+    }, 500);
   };
+  // ------------------------------------------------------------------------
   useEffect(() => {
     if (userId !== null && getCookie("nickname")) {
-      getSettingsInformation(
-        values,
-        setValue,
-        setPathImg,
-        setLinkContactsValue,
-        setCountry,
-        setRegion,
-        setTown
-      );
+      const getSettingsInformation = async (values: MyValues) => {
+        const res = await fetch(
+          `/getInformationAboutUser/${localStorage.getItem("userId")}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const data = await res.json();
+        console.log(data);
+        values.name = data.users.fullname;
+        setName(data.users.fullname);
+        values.lastName = data.users.lastname;
+        setLastName(data.users.lastname);
+        values.brieflyAboutYourself = data.users.briefly_about_yourself;
+        setBrieflyAboutYourself(data.users.briefly_about_yourself);
+        values.aboutMySelf = data.users.informattion_about_user;
+        setAboutMySelf(data.users.information_about_user);
+        values.contacts = data.users.contacts;
+        setContacts(data.users.contacts);
+        values.linkToContacts = data.users.linktocontacts;
+        setLinkContactsValue(data.users.linktocontacts);
+        values.country = data.users.country;
+        setCountry(data.users.country);
+        values.region = data.users.region;
+        setRegion(data.users.region);
+        values.town = data.users.town;
+        setTown(data.users.town);
+        setPathImg(data.users.img);
+      };
+      getSettingsInformation(values);
     } else {
       window.location.href = `http://localhost:3000/SignIn`;
     }
@@ -184,136 +179,158 @@ const ProfileSettings: React.FC = () => {
     });
 
   return (
-    <div className={ProfileSettingsCSS.profile_container}>
+    <div className={ProfileSettingsCSS["profile-container"]}>
       <h3>Настройки профиля</h3>
-      <nav className={ProfileSettingsCSS.nav}>
-        <span>Анкета</span>
+      <nav className={ProfileSettingsCSS["nav"]}>
+        <span className={ProfileSettingsCSS["nav__item"]}>Анкета</span>
       </nav>
-      <div className={ProfileSettingsCSS.profile_avatar__uploader}>
-        <div className={ProfileSettingsCSS.profile_avatar__uploader__image}>
+      <div className={ProfileSettingsCSS["profile-avatar-block"]}>
+        <div className={ProfileSettingsCSS["profile-avatar-block__image"]}>
           <img src={!pathImg ? ProfilIMG : pathImg} alt="" />
         </div>
-        <span className={ProfileSettingsCSS.profile_avatar__uploader__info}>
+        <span className={ProfileSettingsCSS["profile-avatar-block__text"]}>
           Ваша фотография.
           <br />
           Размер загружаемого файла
           <br />
           не должен превышать 2 Мб.
         </span>
-        <div className={ProfileSettingsCSS.buttons}>
+        <div className={ProfileSettingsCSS["profile-avatar-block__btns"]}>
           <input
             ref={myRef}
             onChange={(e) => {
-              sendAvatar(e.target.files[0], setPathImg);
+              sendAvatar(e.target.files[0]);
             }}
             id="img"
             type="file"
             accept="image/*,.png,.jpg,.gif,.web"
           ></input>
-          <label className={ProfileSettingsCSS.btn__upload} htmlFor="img">
+          <label
+            className={ProfileSettingsCSS["profile-avatar-block__btn-upload"]}
+            htmlFor="img"
+          >
             Загрузить
           </label>
           <button
             onClick={() => {
               deleteImg(pathImg, setPathImg, myRef);
             }}
-            className={ProfileSettingsCSS.btn__delete}
+            className={ProfileSettingsCSS["profile-avatar-block__btn-delete"]}
           >
             Удалить
           </button>
         </div>
       </div>
       {/* ------------------------------------------------------------------------------------------------------------------------------ */}
-      <form onSubmit={handleSubmit} className={ProfileSettingsCSS.input_group}>
-        <label>Имя</label>
+      <form
+        onSubmit={handleSubmit}
+        className={ProfileSettingsCSS["input-group"]}
+      >
+        <label className={ProfileSettingsCSS["form-label"]}>Имя</label>
         <input
           className={
             errors.name && touched.name
-              ? ProfileSettingsCSS.form_control__error
-              : ProfileSettingsCSS.form_control
+              ? ProfileSettingsCSS["form-control-error"]
+              : ProfileSettingsCSS["form-control"]
           }
           type="text"
           id="name"
-          value={values.name}
-          onChange={handleChange}
+          value={name}
+          onChange={(e) => {
+            handleChange(e);
+            setName(e.target.value);
+          }}
           onBlur={handleBlur}
         />
         {errors.name && touched.name ? (
-          <span className={ProfileSettingsCSS.form_control__error__message}>
+          <span className={ProfileSettingsCSS["form-control-error__text"]}>
             {errors.name}
           </span>
         ) : (
           ""
         )}
-        <label>Фамилия</label>
+        <label className={ProfileSettingsCSS["form-label"]}>Фамилия</label>
         <input
           className={
             errors.lastName && touched.lastName
-              ? ProfileSettingsCSS.form_control__error
-              : ProfileSettingsCSS.form_control
+              ? ProfileSettingsCSS["form-control-error"]
+              : ProfileSettingsCSS["form-control"]
           }
           type="text"
           id="lastName"
-          value={values.lastName}
-          onChange={handleChange}
+          value={lastName}
+          onChange={(e) => {
+            handleChange(e);
+            setLastName(e.target.value);
+          }}
           onBlur={handleBlur}
         />
         {errors.lastName && touched.lastName ? (
-          <span className={ProfileSettingsCSS.form_control__error__message}>
+          <span className={ProfileSettingsCSS["form-control-error__text"]}>
             {errors.lastName}
           </span>
         ) : (
           ""
         )}
-        <label>Кратко о себе</label>
+        <label className={ProfileSettingsCSS["form-label"]}>
+          Кратко о себе
+        </label>
         <input
           className={
             errors.brieflyAboutYourself && touched.brieflyAboutYourself
-              ? ProfileSettingsCSS.form_control__error
-              : ProfileSettingsCSS.form_control
+              ? ProfileSettingsCSS["form-control-error"]
+              : ProfileSettingsCSS["form-control"]
           }
           type="text"
           id="brieflyAboutYourself"
-          value={values.brieflyAboutYourself}
-          onChange={handleChange}
+          value={brieflyAboutYourself}
+          onChange={(e) => {
+            handleChange(e);
+            setBrieflyAboutYourself(e.target.value);
+          }}
           onBlur={handleBlur}
         />
         {errors.brieflyAboutYourself && touched.brieflyAboutYourself ? (
-          <span className={ProfileSettingsCSS.form_control__error__message}>
+          <span className={ProfileSettingsCSS["form-control-error__text"]}>
             {errors.brieflyAboutYourself}
           </span>
         ) : (
           ""
         )}
-        <label>О себе</label>
+        <label className={ProfileSettingsCSS["form-label"]}>О себе</label>
         <textarea
           className={
             errors.aboutMySelf && touched.aboutMySelf
-              ? ProfileSettingsCSS.form_control__error
-              : ProfileSettingsCSS.form_control
+              ? ProfileSettingsCSS["form-control-error"]
+              : ProfileSettingsCSS["form-control"]
           }
-          value={values.aboutMySelf}
+          value={aboutMySelf}
           id="aboutMySelf"
-          onChange={handleChange}
+          onChange={(e) => {
+            handleChange(e);
+            setAboutMySelf(e.target.value);
+          }}
           onBlur={handleBlur}
         ></textarea>
         {errors.aboutMySelf && touched.aboutMySelf ? (
-          <span className={ProfileSettingsCSS.form_control__error__message}>
+          <span className={ProfileSettingsCSS["form-control-error__text"]}>
             {errors.aboutMySelf}
           </span>
         ) : (
           ""
         )}
-        <label>Мои контакты</label>
-        <div className={ProfileSettingsCSS.form_select_block}>
+        <label className={ProfileSettingsCSS["form-label"]}>Мои контакты</label>
+        <div className={ProfileSettingsCSS["form-control__select-block"]}>
           <select
-            value={values.contacts}
+            value={contacts}
             onChange={(e) => {
               handleChange(e);
+              setContacts(e.target.value);
+              setLinkContactsValue("");
               resetContacts(e.target.value, setLinkContactsValue);
             }}
             onBlur={handleBlur}
-            className={`${ProfileSettingsCSS.form_select} ${ProfileSettingsCSS.fs_wd_sml}`}
+            className={`${ProfileSettingsCSS["form-control__select"]} ${ProfileSettingsCSS["form-control__select_wd-sml"]}`}
             id="contacts"
           >
             <option value={"Контакты"}>Koнтакты</option>
@@ -325,9 +342,9 @@ const ProfileSettings: React.FC = () => {
             className={
               errors.linkToContacts &&
               touched.linkToContacts &&
-              values.contacts !== "Контакты"
-                ? `${ProfileSettingsCSS.form_control__error} ${ProfileSettingsCSS.fc_wd_lrg}`
-                : `${ProfileSettingsCSS.form_control} ${ProfileSettingsCSS.fc_wd_lrg}`
+              contacts !== "Контакты"
+                ? `${ProfileSettingsCSS["form-control-error"]} ${ProfileSettingsCSS["form-control__select_wd-lrg"]}`
+                : `${ProfileSettingsCSS["form-control"]} ${ProfileSettingsCSS["form-control__select_wd-lrg"]}`
             }
             onChange={(e) => {
               handleChange(e);
@@ -337,33 +354,35 @@ const ProfileSettings: React.FC = () => {
             id="linkToContacts"
             type="text"
             placeholder={
-              values.contacts === "Контакты"
-                ? "Выберите контакт"
-                : "Вставьте ссылку на контакты"
+              contacts !== "Контакты"
+                ? "Вставьте ссылку на контакты"
+                : "Выберите контакт"
             }
             value={linkContactsValue}
-            disabled={values.contacts === "Контакты" ? true : false}
+            disabled={contacts === "Контакты" ? true : false}
           />
         </div>
         {errors.linkToContacts &&
         touched.linkToContacts &&
-        values.contacts !== "Контакты" ? (
-          <span className={ProfileSettingsCSS.form_control__error__message}>
+        contacts !== "Контакты" ? (
+          <span className={ProfileSettingsCSS["form-control-error__text"]}>
             {errors.linkToContacts}
           </span>
         ) : (
           ""
         )}
-        {values.contacts !== "Контакты" && values.linkToContacts === "" ? (
-          <span className={ProfileSettingsCSS.form_control__error__message}>
+        {contacts !== "Контакты" && linkContactsValue === "" ? (
+          <span className={ProfileSettingsCSS["form-control-error__text"]}>
             Обязательно поле для заполнения
           </span>
         ) : (
           ""
         )}
 
-        <label>Местоположение</label>
-        <div className={ProfileSettingsCSS.form_select_block}>
+        <label className={ProfileSettingsCSS["form-label"]}>
+          Местоположение
+        </label>
+        <div className={ProfileSettingsCSS["form-control__select-block"]}>
           <select
             id="country"
             value={country}
@@ -373,13 +392,13 @@ const ProfileSettings: React.FC = () => {
               locationCheck(e.target.value);
             }}
             onBlur={handleBlur}
-            className={`${ProfileSettingsCSS.form_select} ${ProfileSettingsCSS.fs_wd_md}`}
+            className={`${ProfileSettingsCSS["form-control__select"]} ${ProfileSettingsCSS["form-control__select_wd-md"]}`}
           >
             <option value={"Страна"}>Страна</option>
             <option value={"Россия"}>Россия</option>
           </select>
           <select
-            className={`${ProfileSettingsCSS.form_select} ${ProfileSettingsCSS.fs_wd_md}`}
+            className={`${ProfileSettingsCSS["form-control__select"]} ${ProfileSettingsCSS["form-control__select_wd-md"]}`}
             id="region"
             value={region}
             onChange={(e) => {
@@ -401,7 +420,7 @@ const ProfileSettings: React.FC = () => {
               setTown(e.target.value);
             }}
             onBlur={handleBlur}
-            className={`${ProfileSettingsCSS.form_select} ${ProfileSettingsCSS.fs_wd_md}`}
+            className={`${ProfileSettingsCSS["form-control__select"]} ${ProfileSettingsCSS["form-control__select_wd-md"]}`}
             disabled={region === "Регион" ? true : false}
           >
             <option value={"Город"}>Город</option>

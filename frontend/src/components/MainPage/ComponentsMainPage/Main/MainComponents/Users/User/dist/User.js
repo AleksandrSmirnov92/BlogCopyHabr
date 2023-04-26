@@ -75,7 +75,7 @@ var User = function () {
     var _g = react_1.useState(""), country = _g[0], setCountry = _g[1];
     var _h = react_1.useState(""), region = _h[0], setRegion = _h[1];
     var _j = react_1.useState(""), town = _j[0], setTown = _j[1];
-    var _k = react_1.useState(""), informattionAboutUser = _k[0], setInformattionAboutUser = _k[1];
+    var _k = react_1.useState(""), informationAboutUser = _k[0], setInformationAboutUser = _k[1];
     var _l = react_1.useState([]), questions = _l[0], setQuestions = _l[1];
     var _m = react_1.useState([]), myAnswers = _m[0], setMyAnswers = _m[1];
     var _o = react_1.useState(question ? "" + question.question : "Информация"), linkValue = _o[0], setLinkValue = _o[1];
@@ -138,7 +138,7 @@ var User = function () {
                         setFullName(data.users.fullname);
                         setLastName(data.users.lastname);
                         setPathImg(data.users.img);
-                        setInformattionAboutUser(data.users.informattion_about_user);
+                        setInformationAboutUser(data.users.information_about_user);
                         return [2 /*return*/];
                 }
             });
@@ -177,10 +177,10 @@ var User = function () {
                 } },
                 react_1["default"].createElement("span", { className: linkValue === "Ответы" ? User_module_css_1["default"].active : "" }, "\u041E\u0442\u0432\u0435\u0442\u044B"))),
         react_1["default"].createElement("div", { className: "" + User_module_css_1["default"]["user-content"] }, linkValue === "Информация" ? (react_1["default"].createElement(react_1["default"].Fragment, null,
-            react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, informattionAboutUser !== "" ? "Обо мне" : ""),
+            react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, informationAboutUser !== "" ? "Обо мне" : ""),
             react_1["default"].createElement("span", { className: "" + User_module_css_1["default"]["user-content__text"] },
                 " ",
-                informattionAboutUser,
+                informationAboutUser,
                 " "),
             react_1["default"].createElement("h4", { className: User_module_css_1["default"]["user-content__title"] + " " + User_module_css_1["default"]["user-content__title_p"] }, contacts !== "Контакты" ? "Контакты" : ""),
             react_1["default"].createElement("span", { className: "" + User_module_css_1["default"]["user-content__text"] },

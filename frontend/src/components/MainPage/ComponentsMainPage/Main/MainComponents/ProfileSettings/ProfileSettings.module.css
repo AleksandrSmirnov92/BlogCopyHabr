@@ -1,4 +1,4 @@
-.profile_container {
+.profile-container {
   padding-left: 40px;
   padding-right: 40px;
   align-items: center;
@@ -9,42 +9,42 @@
   border-top: 1px #9099a3 solid;
   border-bottom: 1px #9099a3 solid;
 }
-.nav > span {
+.nav__item {
   padding: 8px;
   color: #9099a3;
 }
-.profile_avatar__uploader {
+.profile-avatar-block {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding-top: 60px;
 }
-.profile_avatar__uploader__image {
+.profile-avatar-block__image {
   width: 70px;
   height: 70px;
   display: inline-block;
   border-radius: 50%;
   overflow: hidden;
 }
-.profile_avatar__uploader__image > img {
+.profile-avatar-block__image > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.profile_avatar__uploader__info {
+.profile-avatar-block__text {
   color: #9099a3;
   padding-top: 10px;
   font-size: 15px;
 }
-.buttons {
+.profile-avatar-block__btns {
   display: flex;
   justify-content: center;
   padding-top: 20px;
   width: 20%;
   margin: 0;
 }
-.btn__upload {
+.profile-avatar-block__btn-upload {
   margin-right: 10px;
   padding: 5px;
   background-color: white;
@@ -57,46 +57,45 @@
 input[type="file"] {
   display: none;
 }
-.btn__upload:hover {
+.profile-avatar-block__btn-upload:hover {
   border: 1px #689170 solid;
 }
-.btn__delete {
+.profile-avatar-block__btn-delete {
   margin-bottom: 30px;
   padding: 5px;
   background-color: white;
   color: #9099a3;
   border: 1px white solid;
 }
-.btn__delete:hover {
+.profile-avatar-block__btn-delete:hover {
   text-decoration: underline;
 }
-.input_group {
+.input-group {
   display: flex;
   flex-direction: column;
   border-top: 1px #f0f0f0 solid;
 }
-.input_group > label {
+.form-label {
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 15px;
   font-weight: 700;
   color: #333333;
 }
-
-.form_control {
+.form-control {
   padding-top: 5px;
   padding-bottom: 5px;
   border: 1px #d2d6d7 solid;
   border-radius: 4px;
 }
-.form_control:hover {
+.form-control:hover {
   border: 1px #2d72d9 solid;
 }
-.form_control:focus {
+.form-control:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-textarea.form_control {
+textarea.form-control {
   resize: vertical;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -104,39 +103,59 @@ textarea.form_control {
   border-radius: 4px;
   min-height: 100px;
 }
-textarea.form_control:hover {
+textarea.form-control:hover {
   border: 1px #2d72d9 solid;
 }
-textarea.form_control:focus {
+textarea.form-control:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-.form_select_block {
+.form-control-error {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+}
+.form-control-error:focus {
+  border: red 1px solid;
+}
+.form-control-error:hover {
+  border: red 1px solid;
+}
+.form-control-error__text {
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+.form-control__select-block {
   display: flex;
   justify-content: space-between;
   padding-top: 20px;
   padding-bottom: 20px;
 }
-.form_select {
+.form-control__select {
   border: 1px #d2d6d7 solid;
   border-radius: 4px;
   margin-right: 10px;
   padding: 5px;
 }
-.form_select:hover {
+.form-control__select:hover {
   border: 1px #2d72d9 solid;
 }
-.form_select:focus {
+.form-control__select:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-.fc_wd_lrg {
-  width: 80%;
-}
-.fs_wd_sml {
+.form-control__select_wd-sml {
   width: 15%;
 }
-.fs_wd_md {
+.form-control__select_wd-lrg {
+  width: 80%;
+}
+
+.form-control__select_wd-md {
   width: 30%;
 }
 
@@ -159,26 +178,6 @@ textarea.form_control:focus {
   font-size: 12px;
 }
 
-.form_control__error {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  border: red 1px solid;
-  border-radius: 4px;
-}
-.form_control__error:focus {
-  border: red 1px solid;
-}
-.form_control__error:hover {
-  border: red 1px solid;
-}
-.form_control__error__message {
-  color: red;
-  font-size: 13px;
-  font-weight: bold;
-  padding-bottom: 20px;
-}
-
 /* .inputErrorContacts {
   padding-top: 5px;
   padding-bottom: 5px;
@@ -194,15 +193,15 @@ textarea.form_control:focus {
 @media (max-width: 991px) {
 }
 @media (max-width: 767px) {
-  .fc_wd_lrg {
+  .form-control__select_wd-lrg {
     width: 75%;
   }
-  .fs_wd_sml {
+  .form-control__select_wd-sml {
     width: 25%;
   }
 }
 @media (max-width: 480px) {
-  .fs_wd_sml {
+  .form-control__select_wd-sml {
     width: 35%;
   }
   .btn {

@@ -37,50 +37,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
-exports.getAllInfoAboutUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var getInfoAboutUser, infoUsers;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, usersDataBase_js_1.supabase
-                    .from("users")
-                    .select("\"email\",\"nickname\",\"user_id\",about_user(\"*\"),answers(\"*\"),questions(\"*\")")];
-            case 1:
-                getInfoAboutUser = _a.sent();
-                infoUsers = function () {
-                    var infoUsers = getInfoAboutUser.data.map(function (obj) {
-                        var nickname = obj.nickname, user_id = obj.user_id;
-                        var _a = obj.about_user, img = _a.img, fullname = _a.fullname;
-                        var answers = obj.answers.length;
-                        var questions = obj.questions.length;
-                        return { nickname: nickname, user_id: user_id, img: img, fullname: fullname, answers: answers, questions: questions };
-                    });
-                    return infoUsers;
-                };
-                res.status(200).json({
-                    message: "Вы получили информацию о пользователе",
-                    body: infoUsers(),
-                    answers: getInfoAboutUser.data
-                });
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.getInfoAboutUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getInfoUser;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+exports.updateProfile = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, id, fullName, lastName, contacts, linkToContacts, briefly_about_yourself, information_about_user, country, region, town, apdateAboutUser;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                id = req.params.id;
+                _a = req.body, id = _a.id, fullName = _a.fullName, lastName = _a.lastName, contacts = _a.contacts, linkToContacts = _a.linkToContacts, briefly_about_yourself = _a.briefly_about_yourself, information_about_user = _a.information_about_user, country = _a.country, region = _a.region, town = _a.town;
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("about_user")
-                        .select("\"briefly_about_yourself\",\"contacts\",\"country\",\"region\",\"town\",\"linktocontacts\",\"fullname\",\"lastname\",\"img\",\"information_about_user\"")
-                        .eq("user_id_from_users", id)
-                        .single()];
+                        .update({
+                        fullname: fullName,
+                        lastname: lastName,
+                        contacts: contacts,
+                        linktocontacts: linkToContacts,
+                        briefly_about_yourself: briefly_about_yourself,
+                        information_about_user: information_about_user,
+                        country: country,
+                        region: region,
+                        town: town
+                    })
+                        .eq("id_about_user", id)];
             case 1:
-                getInfoUser = _a.sent();
+                apdateAboutUser = _b.sent();
                 res.status(200).json({
-                    message: "Вы получили информацию о пользователе",
-                    users: getInfoUser.data
+                    message: "Вы обновили форму о пользователе"
                 });
                 return [2 /*return*/];
         }

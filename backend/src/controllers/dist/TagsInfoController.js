@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+// import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
 exports.getInfoTags = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, getTags, questions, mFollowers, resTags, tagsFollowers, countFollowers_1;

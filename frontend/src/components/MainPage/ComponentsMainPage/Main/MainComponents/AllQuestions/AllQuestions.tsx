@@ -86,13 +86,9 @@ const AllQuestions = () => {
                   <Question question={question} currentTime={currentTime} />
                 );
               })
-          : questions
-              .map((question) => {
-                return (
-                  <Question question={question} currentTime={currentTime} />
-                );
-              })
-              .reverse()}
+          : questions.map((question) => {
+              return <Question question={question} currentTime={currentTime} />;
+            })}
       </div>
     </div>
   );
