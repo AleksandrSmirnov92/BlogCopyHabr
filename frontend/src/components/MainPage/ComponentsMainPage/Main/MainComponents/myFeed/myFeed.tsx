@@ -48,20 +48,20 @@ const MyFeed: React.FC = () => {
     )} ${formatterMinutes.format(currentMinutes)} назад`;
   };
 
-  let getMyQuestions = async () => {
-    const res = await fetch(`/myFeed`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: userId,
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-    setQuestions(data.questions);
-  };
   useEffect(() => {
     if (userId !== null && getCookie("nickname")) {
+      let getMyQuestions = async () => {
+        const res = await fetch(`/myFeed`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: userId,
+          }),
+        });
+        const data = await res.json();
+        console.log(data);
+        setQuestions(data.questions);
+      };
       getMyQuestions();
     } else {
       window.location.href = `http://localhost:3000/SignIn`;

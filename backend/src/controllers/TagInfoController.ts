@@ -13,6 +13,7 @@ interface ResponseData {
 
 exports.tagInfo = async (req: Request, res: Response<ResponseData>) => {
   let { id } = req.params;
+
   let getTagInfo = await supabase
     .from("tags")
     .select(`"*",tagsFollowers("*")`)

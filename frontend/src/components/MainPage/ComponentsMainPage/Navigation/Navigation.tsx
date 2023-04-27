@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import NavigationCSS from "./Navigation.module.css";
 import signInIMG from "../../../../images/signIn.png";
 import allQuestionsIMG from "../../../../images/allQuestions.png";
-import userIdContext from "../../../Context/Context";
+// import userIdContext from "../../../Context/Context";
 import ExitIMG from "../../../../images/Exit.png";
 import SettingsIMG from "../../../../images/Settings.png";
 import allTagsIMG from "../../../../images/allTags.png";
@@ -11,70 +11,62 @@ import ProfileImg from "../../../../images/photoProfil.png";
 import NavImg from "../../../../images/nav.png";
 import { NavLink } from "react-router-dom";
 
-const exit = (
-  setUserId: React.Dispatch<React.SetStateAction<string>>,
-  setUserRegistred: React.Dispatch<React.SetStateAction<boolean>>,
-  localStorage: any
-) => {
-  setTimeout(() => {
-    document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    setUserId(localStorage);
-    setUserRegistred(false);
-  }, 1000);
-};
-const getInformationAboutUser = async (
-  setPathImg: React.Dispatch<React.SetStateAction<string>>,
-  setFullName: React.Dispatch<React.SetStateAction<string>>,
-  setLastName: React.Dispatch<React.SetStateAction<string>>
-) => {
-  const res = await fetch(
-    `/getInformationAboutUser/${localStorage.getItem("userId")}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    }
+function getCookie(name: string): string {
+  let matches = document.cookie.match(
+    new RegExp(
+      "(?:^|; )" +
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
   );
-  const data = await res.json();
-  setPathImg(data.body.img);
-  if (data.body.fullname !== "" || data.body.lastname !== "") {
-    setFullName(data.body.fullname);
-    setLastName(data.body.lastname);
-    return;
-  }
-  setFullName(data.body.email);
-};
+  return matches ? decodeURIComponent(matches[1]) : "";
+}
 interface Props {
   toggleClass: boolean;
   setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;
   hideNavImg: boolean;
 }
-interface Context {
-  userId: string;
-  setUserId: React.Dispatch<React.SetStateAction<string>>;
-}
+// interface Context {
+//   userId: string;
+//   setUserId: React.Dispatch<React.SetStateAction<string>>;
+// }
 const Navigation: React.FC<Props> = ({
   toggleClass,
   setToggleClass,
   hideNavImg,
 }: Props) => {
   let [userRegistred, setUserRegistred] = useState(false);
-  const { userId, setUserId } = useContext<Context>(userIdContext);
+  // const { userId, setUserId } = useContext<Context>(userIdContext);
   let [pathImg, setPathImg] = useState("");
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
-
+  const exit = () => {
+    setTimeout(() => {
+      document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      localStorage.removeItem("userId");
+      setUserRegistred(false);
+    }, 1000);
+  };
   useEffect(() => {
-    getInformationAboutUser(setPathImg, setFullName, setLastName);
-    function getCookie(name: string): string {
-      let matches = document.cookie.match(
-        new RegExp(
-          "(?:^|; )" +
-            name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-            "=([^;]*)"
-        )
+    const getInformationAboutUser = async () => {
+      const res = await fetch(
+        `/getInformationAboutUser/${localStorage.getItem("userId")}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
       );
-      return matches ? decodeURIComponent(matches[1]) : "";
-    }
+      const data = await res.json();
+      setPathImg(data.users.img);
+      if (data.users.fullname !== "" || data.users.lastname !== "") {
+        setFullName(data.users.fullname);
+        setLastName(data.users.lastname);
+        return;
+      }
+      setFullName(data.body.email);
+    };
+    getInformationAboutUser();
+
     if (getCookie("nickname") !== "") {
       setUserRegistred(true);
     } else {
@@ -85,12 +77,12 @@ const Navigation: React.FC<Props> = ({
     <nav
       className={
         toggleClass
-          ? NavigationCSS.nav
-          : `${NavigationCSS.nav_active} ${NavigationCSS.nav}`
+          ? NavigationCSS["nav"]
+          : `${NavigationCSS["nav_active"]} ${NavigationCSS["nav"]}`
       }
     >
       <div
-        className={`${NavigationCSS.nav_btn} ${NavigationCSS.show_laptop}`}
+        className={`${NavigationCSS["nav__btn"]} ${NavigationCSS.show_laptop}`}
         onClick={() => {
           setToggleClass((prevState: boolean) => !prevState);
         }}
@@ -145,11 +137,7 @@ const Navigation: React.FC<Props> = ({
             to="./questions"
             className={NavigationCSS.nav_a}
             onClick={() => {
-              exit(
-                setUserId,
-                setUserRegistred,
-                localStorage.removeItem("userId")
-              );
+              exit();
               setToggleClass((prevState: boolean) => !prevState);
             }}
           >

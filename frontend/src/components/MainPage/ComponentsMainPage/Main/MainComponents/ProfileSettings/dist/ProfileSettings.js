@@ -176,7 +176,6 @@ var ProfileSettings = function () {
                             return [4 /*yield*/, res.json()];
                         case 2:
                             data = _a.sent();
-                            console.log(data);
                             values.name = data.users.fullname;
                             setName(data.users.fullname);
                             values.lastName = data.users.lastname;
@@ -324,7 +323,7 @@ var ProfileSettings = function () {
                     }, onBlur: handleBlur, className: ProfileSettings_module_css_1["default"]["form-control__select"] + " " + ProfileSettings_module_css_1["default"]["form-control__select_wd-md"], disabled: region === "Регион" ? true : false },
                     react_1["default"].createElement("option", { value: "Город" }, "\u0413\u043E\u0440\u043E\u0434"),
                     react_1["default"].createElement("option", { value: "Дубна" }, "\u0414\u0443\u0431\u043D\u0430"))),
-            react_1["default"].createElement("button", { type: "submit", className: ProfileSettings_module_css_1["default"].btn },
+            react_1["default"].createElement("button", { type: "submit", className: ProfileSettings_module_css_1["default"]["btn"] },
                 react_1["default"].createElement("span", null,
                     "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C",
                     react_1["default"].createElement("br", null),

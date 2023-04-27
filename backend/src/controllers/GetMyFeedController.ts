@@ -5,13 +5,14 @@ exports.getMyFeed = async (req: Request, res: Response) => {
   let { id } = req.body;
   let getFollowers = await supabase
     .from("tagsFollowers")
-    .select(`"*"`)
+    .select(`"tags_id"`)
     .eq("user_id", id);
   let getQuestions = await supabase
     .from("questions")
     .select(
       `"date_of_creation","question_title","questions_id","question_tags",tags("*"),answers(*)`
-    );
+    )
+    .eq("");
   let questions: {}[] = [];
   getFollowers.data.forEach((element: any) => {
     getQuestions.data.forEach((obj: any) => {
@@ -38,6 +39,7 @@ exports.getMyFeed = async (req: Request, res: Response) => {
       }
     });
   });
+
   res.status(200).json({
     message: "Вы получили информацию об интересных вам вопросах",
     questions: questions,

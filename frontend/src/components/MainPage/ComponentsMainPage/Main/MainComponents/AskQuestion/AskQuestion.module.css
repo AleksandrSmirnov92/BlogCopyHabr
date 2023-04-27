@@ -1,60 +1,85 @@
-.question_container {
+.question-container {
   padding-left: 40px;
   padding-right: 40px;
   height: 100%;
 }
-.question_title {
+.question-title {
   margin-top: 0;
   padding-top: 15px;
   border-bottom: 1px #f0f0f0 solid;
   padding-bottom: 25px;
 }
 
-.input_group {
+.input-group {
   display: flex;
   flex-direction: column;
 }
-.input_group > label {
+.form-label {
   color: black;
   font-size: 15px;
   font-weight: bold;
   padding-bottom: 20px;
 }
-.input_group_text {
+.form__text {
   color: #aeb8bc;
   font-size: 13px;
   padding-bottom: 10px;
 }
-.form_control {
+.form-control {
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 10px;
   border: 1px #f0f0f0 solid;
   border-radius: 4px;
 }
-.form_control:focus {
+.form-control:hover {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-.form_control__error {
+.form-control:focus {
+  outline: none;
+  border: 1px #2d72d9 solid;
+}
+.form-control-error {
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 10px;
   border: red 1px solid;
   border-radius: 4px;
 }
-.form_control__error:focus {
+.form-control-error:focus {
   outline: none;
   border: red 1px solid;
 }
-.form_control__error:hover {
+.form-control-error:hover {
   border: red 1px solid;
 }
-.form_control__error__message {
+.form-control-error__text {
   color: red;
   font-size: 13px;
   font-weight: bold;
   padding-bottom: 20px;
+}
+.pop-up-container {
+  position: relative;
+}
+.pop-up {
+  list-style-type: none;
+  position: absolute;
+  background-color: white;
+  border: 1px black solid;
+  cursor: pointer;
+}
+.pop-up__card {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.pop-up__card:hover {
+  background-color: rgb(180, 177, 177);
+}
+.pop-up__image {
+  width: 40px;
+  height: 40px;
 }
 textarea {
   resize: vertical;
@@ -75,34 +100,11 @@ textarea:focus {
   background-color: white;
   color: #93d3a0;
   border: 1px #93d3a0 solid;
-  /* padding-left: 10px;
-  padding-right: 10px; */
   width: 20%;
   cursor: pointer;
 }
-.btn > span {
+.btn__text {
   font-size: 12px;
-}
-.pop_up_container {
-  position: relative;
-}
-.pop_up_img {
-  width: 40px;
-  height: 40px;
-}
-.pop_up {
-  list-style-type: none;
-  position: absolute;
-  background-color: white;
-  border: 1px black solid;
-  cursor: pointer;
-}
-.pop_up_tag {
-  padding-left: 40px;
-  padding-right: 40px;
-}
-.pop_up_tag:hover {
-  background-color: rgb(180, 177, 177);
 }
 @media (max-width: 1350px) {
 }

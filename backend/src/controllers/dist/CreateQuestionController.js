@@ -38,49 +38,49 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 // import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
-exports.getMyFeed = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, getFollowers, getQuestions, questions;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+exports.createQuestion = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, questionTitle, questionTags, questionDetails, userId, question_id, insertQuestion, insertQuestionsAndTags;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                id = req.body.id;
-                return [4 /*yield*/, usersDataBase_js_1.supabase
-                        .from("tagsFollowers")
-                        .select("\"tags_id\"")
-                        .eq("user_id", id)];
-            case 1:
-                getFollowers = _a.sent();
+                _a = req.body, questionTitle = _a.questionTitle, questionTags = _a.questionTags, questionDetails = _a.questionDetails, userId = _a.userId, question_id = _a.question_id;
+                console.log();
+                if ((questionTitle ||
+                    questionTags ||
+                    questionDetails ||
+                    userId ||
+                    question_id) === undefined ||
+                    "" ||
+                    null) {
+                    return [2 /*return*/, res.status(404).json({
+                            status: "ERROR",
+                            message: "Не правильно заполненны поля"
+                        })];
+                }
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("questions")
-                        .select("\"date_of_creation\",\"question_title\",\"questions_id\",\"question_tags\",tags(\"*\"),answers(*)")
-                        .eq("")];
+                        .insert({
+                        question_title: questionTitle,
+                        question_tags: question_id,
+                        question_details: questionDetails,
+                        user_id: userId,
+                        user_id_from_about_user: userId
+                    })
+                        .select()];
+            case 1:
+                insertQuestion = _b.sent();
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("question_and_tags")
+                        .insert({
+                        tag_id_from_tags: question_id,
+                        user_id_from_users: userId
+                    })
+                        .select()];
             case 2:
-                getQuestions = _a.sent();
-                questions = [];
-                getFollowers.data.forEach(function (element) {
-                    getQuestions.data.forEach(function (obj) {
-                        if (element.tags_id === obj.question_tags) {
-                            var date_of_creation = obj.date_of_creation, question_title = obj.question_title, questions_id = obj.questions_id, question_tags = obj.question_tags, answers = obj.answers;
-                            var _a = obj.tags, name_tag = _a.name_tag, img_tag = _a.img_tag, tags_id = _a.tags_id;
-                            var newObj = {
-                                name_tag: name_tag,
-                                img_tag: img_tag,
-                                tags_id: tags_id,
-                                date_of_creation: date_of_creation,
-                                question_title: question_title,
-                                questions_id: questions_id,
-                                question_tags: question_tags,
-                                countAnswers: answers.length
-                            };
-                            questions.push(newObj);
-                        }
-                    });
-                });
-                res.status(200).json({
-                    message: "Вы получили информацию об интересных вам вопросах",
-                    questions: questions
-                });
-                return [2 /*return*/];
+                insertQuestionsAndTags = _b.sent();
+                return [2 /*return*/, res.status(200).json({
+                        status: "SUCCESS"
+                    })];
         }
     });
 }); };

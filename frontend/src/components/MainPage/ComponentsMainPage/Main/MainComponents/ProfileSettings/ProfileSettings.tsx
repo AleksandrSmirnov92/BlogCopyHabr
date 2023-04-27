@@ -134,7 +134,6 @@ const ProfileSettings: React.FC = () => {
           }
         );
         const data = await res.json();
-        console.log(data);
         values.name = data.users.fullname;
         setName(data.users.fullname);
         values.lastName = data.users.lastname;
@@ -428,7 +427,7 @@ const ProfileSettings: React.FC = () => {
           </select>
         </div>
 
-        <button type="submit" className={ProfileSettingsCSS.btn}>
+        <button type="submit" className={ProfileSettingsCSS["btn"]}>
           <span>
             Сохранить
             <br /> изменения

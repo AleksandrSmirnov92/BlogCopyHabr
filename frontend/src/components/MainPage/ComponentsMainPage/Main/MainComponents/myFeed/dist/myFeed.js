@@ -71,30 +71,30 @@ var MyFeed = function () {
         var currentMinutes = currentTime.getMinutes() - date.getMinutes();
         return "\u041E\u043F\u0443\u0431\u043B\u0438\u043A\u043E\u0432\u0430\u043D " + formatterHour.format(currentHours) + " " + formatterMinutes.format(currentMinutes) + " \u043D\u0430\u0437\u0430\u0434";
     };
-    var getMyQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var res, data;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("/myFeed", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            id: userId
-                        })
-                    })];
-                case 1:
-                    res = _a.sent();
-                    return [4 /*yield*/, res.json()];
-                case 2:
-                    data = _a.sent();
-                    console.log(data);
-                    setQuestions(data.questions);
-                    return [2 /*return*/];
-            }
-        });
-    }); };
     react_1.useEffect(function () {
         if (userId !== null && getCookie("nickname")) {
+            var getMyQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
+                var res, data;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, fetch("/myFeed", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    id: userId
+                                })
+                            })];
+                        case 1:
+                            res = _a.sent();
+                            return [4 /*yield*/, res.json()];
+                        case 2:
+                            data = _a.sent();
+                            console.log(data);
+                            setQuestions(data.questions);
+                            return [2 /*return*/];
+                    }
+                });
+            }); };
             getMyQuestions();
         }
         else {

@@ -3,10 +3,12 @@ import { useFormik } from "formik";
 import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions";
 import AskQuestionsCSS from "./AskQuestion.module.css";
 import userIdContext from "../../../../../Context/Context";
+
 interface MyValues {
   question_title: string;
   question_tags: string;
   question_details: string;
+  question_id: string | number;
 }
 interface Context {
   userId: string;
@@ -22,68 +24,69 @@ function getCookie(name: string): RegExp | string {
   );
   return matches ? decodeURIComponent(matches[1]) : "";
 }
-const correctName = (
-  nameTag: string,
-  massivTags: { name_tag: string; img_Tag: string }[]
-) => {
-  let include = massivTags
-    .map((item) => item.name_tag.toLowerCase())
-    .includes(nameTag.toLowerCase());
-  let find = massivTags.find(
-    (item) => item.name_tag.toLowerCase() === nameTag.toLowerCase()
-  );
-  if (!include) {
-    return "";
+let createQuestion = async (values: any) => {
+  let res = await fetch("/createQuestion", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      questionTitle: values.question_title,
+      questionTags: values.question_tags,
+      questionDetails: values.question_details,
+      question_id: values.question_id,
+      userId: localStorage.getItem("userId"),
+    }),
+  });
+  let data = await res.json();
+  console.log(data);
+  if (data.status === "SUCCESS") {
+    setTimeout(() => {
+      window.location.href = "http://localhost:3000/questions";
+    });
   }
-  return find.name_tag;
 };
-
-const AskQuestion: React.FC = () => {
+const AskQuestion = () => {
   const { userId, setUserId } = useContext<Context>(userIdContext);
   let [nameTag, setNameTag] = useState("");
+  let [correctNameTag, setCorrectNameTag] = useState("");
   let [error, setError] = useState("");
   let [massivTags, setMassivTags] = useState([]);
   useEffect(() => {
     if (userId !== null && getCookie("nickname")) {
-      fetch("/tags", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          setMassivTags(response.tags);
+      let getInfoTags = async () => {
+        let res = await fetch("/tags", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nameTag: nameTag,
+          }),
         });
+        let data = await res.json();
+        if (data.tags.length > 0) {
+          setMassivTags(data.tags);
+          setError("");
+        } else {
+          if (data.tags.length === 0 && nameTag !== "") {
+            setError("Такого тега не существует");
+            setMassivTags([]);
+          } else {
+            setError("");
+          }
+        }
+      };
+      getInfoTags();
     } else {
       window.location.href = `http://localhost:3000/SignIn`;
     }
-  }, [setMassivTags]);
+  }, [nameTag]);
   const onSubmit = async (values: MyValues, actions: any) => {
     values.question_tags = nameTag;
-    if (!correctName(values.question_tags, massivTags)) {
+    if (correctNameTag !== nameTag || correctNameTag === "") {
       setError("Такого тега не существует");
     } else {
       setError("");
-      fetch("/createQuestion", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          questionTitle: values.question_title,
-          questionTags: values.question_tags,
-          questionDetails: values.question_details,
-          userId: localStorage.getItem("userId"),
-        }),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response.status === "SUCCESS") {
-            setTimeout(() => {
-              window.location.href = "http://localhost:3000/questions";
-            });
-          }
-        });
+      createQuestion(values);
     }
   };
-
   const {
     values,
     errors,
@@ -97,17 +100,18 @@ const AskQuestion: React.FC = () => {
       question_title: "",
       question_tags: "",
       question_details: "",
+      question_id: "",
     },
     onSubmit,
     validationSchema: schemaForAskQuestions,
   });
 
   return (
-    <div className={AskQuestionsCSS.question_container}>
-      <h3 className={AskQuestionsCSS.question_title}>Новый вопрос</h3>
-      <form onSubmit={handleSubmit} className={AskQuestionsCSS.input_group}>
-        <label>Суть вопроса</label>
-        <span className={AskQuestionsCSS.input_group_text}>
+    <div className={AskQuestionsCSS["question-container"]}>
+      <h3 className={AskQuestionsCSS["question-title"]}>Новый вопрос</h3>
+      <form onSubmit={handleSubmit} className={AskQuestionsCSS["input-group"]}>
+        <label className={AskQuestionsCSS["form-label"]}>Суть вопроса</label>
+        <span className={AskQuestionsCSS["form__text"]}>
           Сформулируйте вопрос так, чтобы сразу было понятно, о чём речь.
         </span>
         <input
@@ -118,105 +122,92 @@ const AskQuestion: React.FC = () => {
           onBlur={handleBlur}
           className={
             errors.question_title && touched.question_title
-              ? AskQuestionsCSS.form_control__error
-              : AskQuestionsCSS.form_control
+              ? AskQuestionsCSS["form-control-error"]
+              : AskQuestionsCSS["form-control"]
           }
         />
         {errors.question_title && touched.question_title ? (
-          <span className={AskQuestionsCSS.form_control__error__message}>
+          <span className={AskQuestionsCSS["form-control-error__text"]}>
             {errors.question_title}
           </span>
         ) : (
           ""
         )}
-        <label>Тэги вопроса</label>
-        <span className={AskQuestionsCSS.input_group_text}>
+        <label className={AskQuestionsCSS["form-label"]}>Тэги вопроса</label>
+        <span className={AskQuestionsCSS["form__text"]}>
           Укажите тег — предметных областей (HTML,CSS,JavaScript,React,Vue,Git),
           к которым вопрос относится.
         </span>
         <input
+          autoComplete="off"
           id="question_tags"
           type="text"
           value={nameTag}
           onChange={(e) => {
             handleChange(e);
-            setNameTag(e.target.value);
+            setNameTag(e.target.value.trim());
           }}
           onBlur={(e) => {
             handleBlur(e);
-            if (!correctName(nameTag.trim(), massivTags)) {
-              if (nameTag.trim() === "") {
-                setNameTag(e.target.value.trim());
-                return setError("Это обязательное поле");
-              }
-              return setError("Такого тега не существует");
-            } else {
-              setNameTag(correctName(e.target.value.trim(), massivTags));
-              setError("");
-            }
+            setNameTag(e.target.value.trim());
           }}
           className={
             (errors.question_tags || error !== "") && touched.question_tags
-              ? AskQuestionsCSS.form_control__error
-              : AskQuestionsCSS.form_control
+              ? AskQuestionsCSS["form-control-error"]
+              : AskQuestionsCSS["form-control"]
           }
         />
         {errors.question_tags && touched.question_tags ? (
-          <span className={AskQuestionsCSS.form_control__error__message}>
+          <span className={AskQuestionsCSS["form-control-error__text"]}>
             {errors.question_tags}
           </span>
         ) : (
           ""
         )}
         {error ? (
-          <span className={AskQuestionsCSS.form_control__error__message}>
+          <span className={AskQuestionsCSS["form-control-error__text"]}>
             {error}
           </span>
         ) : (
           ""
         )}
-        <div className={AskQuestionsCSS.pop_up_container}>
+        <div className={AskQuestionsCSS["pop-up-container"]}>
           <ul
             className={
               nameTag !== "" &&
-              (!correctName(nameTag, massivTags) ||
-                correctName(nameTag, massivTags) !== nameTag) &&
-              massivTags.filter((item) =>
-                item.name_tag.toLowerCase().includes(nameTag.toLowerCase())
-              ).length > 0
-                ? AskQuestionsCSS.pop_up
+              massivTags.length > 0 &&
+              nameTag !== correctNameTag
+                ? AskQuestionsCSS["pop-up"]
                 : ""
             }
           >
-            {massivTags
-              .filter((item) =>
-                item.name_tag.toLowerCase().includes(nameTag.toLowerCase())
-              )
-              .map((item, index) => {
-                if (nameTag !== "" && nameTag !== item.name_tag) {
-                  return (
-                    <li
-                      onMouseDown={(e) => {
-                        setNameTag(item.name_tag);
-                      }}
-                      key={index}
-                      className={AskQuestionsCSS.pop_up_tag}
-                    >
-                      <img
-                        src={item.img_tag}
-                        alt=""
-                        className={AskQuestionsCSS.pop_up_img}
-                      />
-                      {item.name_tag}
-                    </li>
-                  );
-                }
-              })}
+            {massivTags.map((item, index) => {
+              if (nameTag !== "" && nameTag !== item.name_tag) {
+                return (
+                  <li
+                    onMouseDown={(e) => {
+                      setNameTag(item.name_tag);
+                      setCorrectNameTag(item.name_tag);
+                      values.question_id = item.id;
+                    }}
+                    key={index}
+                    className={AskQuestionsCSS["pop-up__card"]}
+                  >
+                    <img
+                      src={item.img_tag}
+                      alt=""
+                      className={AskQuestionsCSS["pop-up__image"]}
+                    />
+                    {item.name_tag}
+                  </li>
+                );
+              }
+            })}
           </ul>
         </div>
 
-        <label>Детали вопроса</label>
-        <span className={AskQuestionsCSS.input_group_text}>
+        <label className={AskQuestionsCSS["form-label"]}>Детали вопроса</label>
+        <span className={AskQuestionsCSS["form__text"]}>
           Опишите в подробностях свой вопрос, чтобы получить более точный ответ.
         </span>
         <textarea
@@ -226,12 +217,12 @@ const AskQuestion: React.FC = () => {
           onBlur={handleBlur}
           className={
             errors.question_details && touched.question_details
-              ? AskQuestionsCSS.form_control__error
-              : AskQuestionsCSS.form_control
+              ? AskQuestionsCSS["form-control-error"]
+              : AskQuestionsCSS["form-control"]
           }
         ></textarea>
         {errors.question_details && touched.question_details ? (
-          <span className={AskQuestionsCSS.form_control__error__message}>
+          <span className={AskQuestionsCSS["form-control-error__text"]}>
             {errors.question_details}
           </span>
         ) : (
@@ -239,13 +230,14 @@ const AskQuestion: React.FC = () => {
         )}
         <button
           type="submit"
-          className={AskQuestionsCSS.btn}
+          className={AskQuestionsCSS["btn"]}
           disabled={isSubmitting}
         >
-          <span>Опубликовать</span>
+          <span className={AskQuestionsCSS["btn__text"]}>Опубликовать</span>
         </button>
       </form>
     </div>
   );
 };
+
 export default AskQuestion;
