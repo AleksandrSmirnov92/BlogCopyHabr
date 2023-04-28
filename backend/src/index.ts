@@ -1,5 +1,6 @@
 import express from "express";
 import { pool } from "./db.js";
+import { supabase } from "./config/usersDataBase.js";
 const fileUpload = require("express-fileupload");
 const app = express();
 const signInRouter = require("../dist/Routes/SignInRouters");
@@ -58,56 +59,111 @@ app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.post("/getAllInfo", async (req, res) => {
   let { search } = req.body;
-  let searchValue = search ? "%" + search + "%" : search;
-  let upper = searchValue[1]
-    ? searchValue.charAt(0) +
-      searchValue.charAt(1).toUpperCase() +
-      searchValue.substr(2)
-    : searchValue;
-  let getSearchTags = await pool.query(
-    `SELECT name_tag,img_tag,tags_id FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;`,
-    [searchValue, upper]
-  );
-
-  let getSearchUsers = await pool.query(
-    `SELECT nickname,user_id FROM users where nickname LIKE $2 or nickname LIKE $1;`,
-    [searchValue, upper]
-  );
-  let getSearchQuestion = await pool.query(
-    `SELECT question_title,questions_id  FROM questions where question_title LIKE $2 or question_title LIKE $1;`,
-    [searchValue, upper]
-  );
-  let getSearchAnswers = await pool.query(
-    `SELECT a.answers,a.question_id_from_questions FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;`,
-    [searchValue, upper]
-  );
-  let searchCollection = [
-    ...getSearchTags.rows,
-    ...getSearchUsers.rows,
-    ...getSearchQuestion.rows,
-    ...getSearchAnswers.rows,
-  ];
-
-  let collection = async (m: any) => {
+  let updateCollection = async (m: any) => {
     await m.forEach((element: any) => {
       if ("name_tag" in element) {
         element.route = "tag";
+        element.id = element.id;
       }
       if ("nickname" in element) {
         element.route = "users";
+        element.id = element.user_id;
       }
       if ("question_title" in element) {
         element.route = "questionInfo";
+        element.id = element.questions_id;
       }
       if ("answers" in element) {
         element.route = "questionInfo";
+        element.id = element.question_id_from_questions;
       }
     });
   };
-  collection(searchCollection);
-  res.status(200).json({
-    message: "Вы получили информацию обо всех направлениях",
-    collection: searchCollection,
-  });
+  if (search !== "") {
+    let getSearchTags = await supabase
+      .from("tags")
+      .select("name_tag,img_tag,id")
+      .ilike("name_tag", `%${search}%`);
+    let getSearchUsers = await supabase
+      .from("users")
+      .select("nickname,user_id")
+      .ilike("nickname", `%${search}%`);
+    let getSearchQuestion = await supabase
+      .from("questions")
+      .select("question_title,questions_id")
+      .ilike("question_title", `%${search}%`);
+    let getSearchAnswers = await supabase
+      .from("answers")
+      .select("answers,question_id_from_questions")
+      .ilike("answers", `%${search}%`);
+    let collection = [
+      ...getSearchTags.data,
+      ...getSearchUsers.data,
+      ...getSearchQuestion.data,
+      ...getSearchAnswers.data,
+    ];
+    updateCollection(collection);
+    res.status(200).json({
+      message: "Вы получили информацию обо всех направлениях",
+      collection: collection,
+    });
+  } else {
+    res.status(200).json({
+      message: "Вы получили информацию обо всех направлениях",
+      collection: [],
+    });
+  }
+
+  // let searchValue = search ? "%" + search + "%" : search;
+  // let upper = searchValue[1]
+  //   ? searchValue.charAt(0) +
+  //     searchValue.charAt(1).toUpperCase() +
+  //     searchValue.substr(2)
+  //   : searchValue;
+  // let getSearchTags = await pool.query(
+  //   `SELECT name_tag,img_tag,tags_id FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;`,
+  //   [searchValue, upper]
+  // );
+
+  // let getSearchUsers = await pool.query(
+  //   `SELECT nickname,user_id FROM users where nickname LIKE $2 or nickname LIKE $1;`,
+  //   [searchValue, upper]
+  // );
+  // let getSearchQuestion = await pool.query(
+  //   `SELECT question_title,questions_id  FROM questions where question_title LIKE $2 or question_title LIKE $1;`,
+  //   [searchValue, upper]
+  // );
+  // let getSearchAnswers = await pool.query(
+  //   `SELECT a.answers,a.question_id_from_questions FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;`,
+  //   [searchValue, upper]
+  // );
+  // let searchCollection = [
+  //   ...getSearchTags.rows,
+  //   ...getSearchUsers.rows,
+  //   ...getSearchQuestion.rows,
+  //   ...getSearchAnswers.rows,
+  // ];
+
+  // let collection = async (m: any) => {
+  //   await m.forEach((element: any) => {
+  //     if ("name_tag" in element) {
+  //       element.route = "tag";
+  //     }
+  //     if ("nickname" in element) {
+  //       element.route = "users";
+  //     }
+  //     if ("question_title" in element) {
+  //       element.route = "questionInfo";
+  //     }
+  //     if ("answers" in element) {
+  //       element.route = "questionInfo";
+  //     }
+  //   });
+  // };
+  // collection(searchCollection);
+  // res.status(200).json({
+  // message: "Вы получили информацию обо всех направлениях",
+  // collection: searchCollection,
+  // });
 });
 module.exports = app;

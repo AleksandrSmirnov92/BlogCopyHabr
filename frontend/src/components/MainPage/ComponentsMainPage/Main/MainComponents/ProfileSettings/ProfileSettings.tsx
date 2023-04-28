@@ -99,6 +99,7 @@ const ProfileSettings: React.FC = () => {
   };
   // --------------------------------------------------
   const onSubmit = async () => {
+    console.log(brieflyAboutYourself, localStorage.getItem("userId"));
     const res = await fetch("/updateProfile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

@@ -9,8 +9,9 @@ interface MyValues {
   answers: string;
 }
 const QuestionInfo: React.FC = () => {
-  let location = useLocation();
-  let questionTagsId: any = location.state;
+  // let location = useLocation();
+  // let questionTagsId: any = location.state;
+
   let { questionId } = useParams();
   let [pathImg, setPathImg] = useState("");
   let [name, setName] = useState("");
@@ -64,7 +65,7 @@ const QuestionInfo: React.FC = () => {
         userId: localStorage.getItem("userId")
           ? localStorage.getItem("userId")
           : "Пользователь не зарегестрирован",
-        questionTagsId: questionTagsId.questionTagsId,
+        // questionTagsId: questionTagsId.questionTagsId,
       }),
     });
     const data = await res.json();
@@ -90,8 +91,6 @@ const QuestionInfo: React.FC = () => {
     setAnswers(data.questionInfo.answers);
     setPathMyImg(data.questionInfo.userImg);
     setUserId(data.questionInfo.userId);
-    //
-    // setNameTag(data.questionInfo.name_tag);
     setUserActive(data.questionInfo.userActive);
   };
   const onSubmit = async () => {
@@ -111,6 +110,7 @@ const QuestionInfo: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("Я тут");
     getQuestion();
   }, []);
   const {

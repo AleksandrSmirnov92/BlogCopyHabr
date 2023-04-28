@@ -51,8 +51,8 @@ var formik_1 = require("formik");
 var QuestionInfo_module_css_1 = require("./QuestionInfo.module.css");
 var react_router_dom_1 = require("react-router-dom");
 var QuestionInfo = function () {
-    var location = react_router_dom_1.useLocation();
-    var questionTagsId = location.state;
+    // let location = useLocation();
+    // let questionTagsId: any = location.state;
     var questionId = react_router_dom_1.useParams().questionId;
     var _a = react_1.useState(""), pathImg = _a[0], setPathImg = _a[1];
     var _b = react_1.useState(""), name = _b[0], setName = _b[1];
@@ -99,8 +99,7 @@ var QuestionInfo = function () {
                         body: JSON.stringify({
                             userId: localStorage.getItem("userId")
                                 ? localStorage.getItem("userId")
-                                : "Пользователь не зарегестрирован",
-                            questionTagsId: questionTagsId.questionTagsId
+                                : "Пользователь не зарегестрирован"
                         })
                     })];
                 case 1:
@@ -124,8 +123,6 @@ var QuestionInfo = function () {
                     setAnswers(data.questionInfo.answers);
                     setPathMyImg(data.questionInfo.userImg);
                     setUserId(data.questionInfo.userId);
-                    //
-                    // setNameTag(data.questionInfo.name_tag);
                     setUserActive(data.questionInfo.userActive);
                     return [2 /*return*/];
             }
@@ -157,6 +154,7 @@ var QuestionInfo = function () {
         });
     }); };
     react_1.useEffect(function () {
+        console.log("Я тут");
         getQuestion();
     }, []);
     var _q = formik_1.useFormik({

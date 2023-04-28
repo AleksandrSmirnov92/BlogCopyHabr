@@ -56,7 +56,7 @@ exports.updateProfile = function (req, res) { return __awaiter(void 0, void 0, v
                         region: region,
                         town: town
                     })
-                        .eq("id_about_user", id)];
+                        .eq("user_id_from_users", id)];
             case 1:
                 apdateAboutUser = _b.sent();
                 res.status(200).json({

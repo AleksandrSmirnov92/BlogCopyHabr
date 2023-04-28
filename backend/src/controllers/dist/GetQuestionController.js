@@ -39,13 +39,12 @@ exports.__esModule = true;
 // import { pool } from "../db.js";
 var usersDataBase_js_1 = require("../config/usersDataBase.js");
 exports.getQuestions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, userId, questionTagsId, userActive, getAboutUser, getQuestionInfo, getAnswersToQuestion, answers, _a, question_title, question_details, date_of_creation, users, about_user, tags;
+    var id, userId, userActive, getAboutUser, getQuestionInfo, getAnswersToQuestion, answers, _a, question_title, question_details, date_of_creation, users, about_user, tags;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 id = req.params.id;
                 userId = req.body.userId;
-                questionTagsId = req.body.questionTagsId;
                 userActive = false;
                 if (!(userId !== "Пользователь не зарегестрирован")) return [3 /*break*/, 2];
                 userActive = true;
@@ -68,10 +67,14 @@ exports.getQuestions = function (req, res) { return __awaiter(void 0, void 0, vo
                     .single()];
             case 4:
                 getQuestionInfo = _b.sent();
+                console.log(getQuestionInfo.data.question_tags);
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("answers")
                         .select("\"*\",about_user(\"*\"),users(\"*\")")
-                        .match({ tags_id: questionTagsId, question_id_from_questions: id })];
+                        .match({
+                        tags_id: getQuestionInfo.data.question_tags,
+                        question_id_from_questions: id
+                    })];
             case 5:
                 getAnswersToQuestion = _b.sent();
                 answers = getAnswersToQuestion.data.map(function (obj) {

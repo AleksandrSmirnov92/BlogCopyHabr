@@ -132,22 +132,24 @@ var ProfileSettings = function () {
         var res, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("/updateProfile", {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            id: localStorage.getItem("userId"),
-                            fullName: name,
-                            lastName: lastName,
-                            contacts: contacts,
-                            linkToContacts: linkContactsValue,
-                            briefly_about_yourself: brieflyAboutYourself,
-                            information_about_user: aboutMySelf,
-                            country: country,
-                            region: region,
-                            town: town
-                        })
-                    })];
+                case 0:
+                    console.log(brieflyAboutYourself, localStorage.getItem("userId"));
+                    return [4 /*yield*/, fetch("/updateProfile", {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                id: localStorage.getItem("userId"),
+                                fullName: name,
+                                lastName: lastName,
+                                contacts: contacts,
+                                linkToContacts: linkContactsValue,
+                                briefly_about_yourself: brieflyAboutYourself,
+                                information_about_user: aboutMySelf,
+                                country: country,
+                                region: region,
+                                town: town
+                            })
+                        })];
                 case 1:
                     res = _a.sent();
                     return [4 /*yield*/, res.json()];

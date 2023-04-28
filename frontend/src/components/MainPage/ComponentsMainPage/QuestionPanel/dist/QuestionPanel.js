@@ -54,6 +54,7 @@ var QuestionPanel = function (_a) {
     var _c = react_1.useState("hide_search"), classHideSearch = _c[0], setClassHideSearch = _c[1];
     var _d = react_1.useState(""), inputValue = _d[0], setInputValue = _d[1];
     var _e = react_1.useState([]), collectionSearch = _e[0], setCollectionSearch = _e[1];
+    var inputEl = react_1.useRef(null);
     var getAllInfo = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, data;
         return __generator(this, function (_a) {
@@ -77,7 +78,7 @@ var QuestionPanel = function (_a) {
     }); };
     react_1.useEffect(function () {
         getAllInfo();
-        setUserId(JSON.parse(localStorage.getItem("userId")));
+        console.log(inputEl.current.value);
     }, [inputValue]);
     return (react_1["default"].createElement("div", { className: toggleClass
             ? QuestionPanel_module_css_1["default"].question_panel
@@ -93,10 +94,7 @@ var QuestionPanel = function (_a) {
                 } }, "\u0417\u0430\u043A\u0440\u044B\u0442\u044C"),
             react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].show_search__modal },
                 react_1["default"].createElement("ul", { className: QuestionPanel_module_css_1["default"].show_search__menu }, collectionSearch.map(function (item, index) {
-                    return (react_1["default"].createElement("a", { href: "http://localhost:3000/" + item.route + "/" + (item.tags_id ||
-                            item.user_id ||
-                            item.questions_id ||
-                            item.question_id_from_questions), onClick: function () {
+                    return (react_1["default"].createElement("a", { href: "http://localhost:3000/" + item.route + "/" + item.id, onClick: function () {
                             setInputValue("");
                         }, key: index },
                         react_1["default"].createElement("li", { className: "" + QuestionPanel_module_css_1["default"].show_search__menu__item },
@@ -116,15 +114,12 @@ var QuestionPanel = function (_a) {
             react_1["default"].createElement("h1", null, "\u0421\u043C\u0438\u0440"),
             react_1["default"].createElement("span", null, "Q&A")),
         react_1["default"].createElement("div", { className: QuestionPanel_module_css_1["default"].form_control__wrapper + " " + QuestionPanel_module_css_1["default"].hide_mobile },
-            react_1["default"].createElement("input", { className: "" + QuestionPanel_module_css_1["default"].form_control, value: inputValue, type: "text", placeholder: "\u041D\u0430\u0439\u0434\u0438 \u0432\u043E\u043F\u0440\u043E\u0441,\u043E\u0442\u0432\u0435\u0442,\u0442\u0435\u0433 \u0438\u043B\u0438 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F", onChange: function (e) {
+            react_1["default"].createElement("input", { ref: inputEl, className: "" + QuestionPanel_module_css_1["default"].form_control, value: inputValue, type: "text", placeholder: "\u041D\u0430\u0439\u0434\u0438 \u0432\u043E\u043F\u0440\u043E\u0441,\u043E\u0442\u0432\u0435\u0442,\u0442\u0435\u0433 \u0438\u043B\u0438 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F", onChange: function (e) {
                     setInputValue(e.target.value);
                 } }),
             react_1["default"].createElement("div", { className: "" + QuestionPanel_module_css_1["default"].form_control__search_menu_wrapper },
                 react_1["default"].createElement("ul", { className: "" + QuestionPanel_module_css_1["default"].form_control__search_menu }, collectionSearch.map(function (item, index) {
-                    return (react_1["default"].createElement("a", { href: "http://localhost:3000/" + item.route + "/" + (item.tags_id ||
-                            item.user_id ||
-                            item.questions_id ||
-                            item.question_id_from_questions), onClick: function () {
+                    return (react_1["default"].createElement("a", { href: "http://localhost:3000/" + item.route + "/" + item.id, onClick: function () {
                             setInputValue("");
                         }, key: index },
                         react_1["default"].createElement("li", { className: "" + QuestionPanel_module_css_1["default"].form_control__search_menu__item },

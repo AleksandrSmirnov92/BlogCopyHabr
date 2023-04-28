@@ -4,7 +4,7 @@ import { supabase } from "../config/usersDataBase.js";
 exports.getQuestions = async (req: Request, res: Response) => {
   let { id } = req.params;
   let userId = req.body.userId;
-  let questionTagsId = req.body.questionTagsId;
+  // let questionTagsId = req.body.questionTagsId;
   let userActive = false;
   let getAboutUser;
   if (userId !== "Пользователь не зарегестрирован") {
@@ -25,11 +25,16 @@ exports.getQuestions = async (req: Request, res: Response) => {
     .select(`"*",users("*"),about_user("*"),tags("*")`)
     .eq("questions_id", id)
     .single();
+  console.log(getQuestionInfo.data.question_tags);
   // -----------------------------
   let getAnswersToQuestion = await supabase
     .from("answers")
     .select(`"*",about_user("*"),users("*")`)
-    .match({ tags_id: questionTagsId, question_id_from_questions: id });
+    .match({
+      tags_id: getQuestionInfo.data.question_tags,
+      question_id_from_questions: id,
+    });
+  // console.log(getAnswersToQuestion.data);
 
   let answers = getAnswersToQuestion.data.map((obj: any) => {
     let { img, fullname, lastname } = obj.about_user;

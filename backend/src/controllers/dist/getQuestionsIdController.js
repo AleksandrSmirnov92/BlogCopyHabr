@@ -43,6 +43,7 @@ exports.GetQuestionsId = function (req, res) { return __awaiter(void 0, void 0, 
         switch (_a.label) {
             case 0:
                 id = req.params.id;
+                console.log("Тут должен быть", id);
                 return [4 /*yield*/, usersDataBase_js_1.supabase
                         .from("questions")
                         .select("\"*\",tags(\"*\"),answers(*)")

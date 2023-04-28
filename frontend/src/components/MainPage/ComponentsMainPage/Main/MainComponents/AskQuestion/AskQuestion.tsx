@@ -84,6 +84,7 @@ const AskQuestion = () => {
       setError("Такого тега не существует");
     } else {
       setError("");
+
       createQuestion(values);
     }
   };

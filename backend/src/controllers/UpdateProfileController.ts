@@ -45,7 +45,7 @@ exports.updateProfile = async (
       region: region,
       town: town,
     })
-    .eq("id_about_user", id);
+    .eq("user_id_from_users", id);
   res.status(200).json({
     message: "Вы обновили форму о пользователе",
   });

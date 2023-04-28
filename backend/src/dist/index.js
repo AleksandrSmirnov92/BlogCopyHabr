@@ -44,7 +44,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 exports.__esModule = true;
 var express_1 = require("express");
-var db_js_1 = require("./db.js");
+var usersDataBase_js_1 = require("./config/usersDataBase.js");
 var fileUpload = require("express-fileupload");
 var app = express_1["default"]();
 var signInRouter = require("../dist/Routes/SignInRouters");
@@ -101,45 +101,30 @@ app.use("/questions", getAllQuestions);
 app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.post("/getAllInfo", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var search, searchValue, upper, getSearchTags, getSearchUsers, getSearchQuestion, getSearchAnswers, searchCollection, collection;
+    var search, updateCollection, getSearchTags, getSearchUsers, getSearchQuestion, getSearchAnswers, collection;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 search = req.body.search;
-                searchValue = search ? "%" + search + "%" : search;
-                upper = searchValue[1]
-                    ? searchValue.charAt(0) +
-                        searchValue.charAt(1).toUpperCase() +
-                        searchValue.substr(2)
-                    : searchValue;
-                return [4 /*yield*/, db_js_1.pool.query("SELECT name_tag,img_tag,tags_id FROM tags as tags where tags.name_tag LIKE $2 or name_tag LIKE $1;", [searchValue, upper])];
-            case 1:
-                getSearchTags = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT nickname,user_id FROM users where nickname LIKE $2 or nickname LIKE $1;", [searchValue, upper])];
-            case 2:
-                getSearchUsers = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT question_title,questions_id  FROM questions where question_title LIKE $2 or question_title LIKE $1;", [searchValue, upper])];
-            case 3:
-                getSearchQuestion = _a.sent();
-                return [4 /*yield*/, db_js_1.pool.query("SELECT a.answers,a.question_id_from_questions FROM answers as a where a.answers LIKE $2 or a.answers LIKE $1;", [searchValue, upper])];
-            case 4:
-                getSearchAnswers = _a.sent();
-                searchCollection = __spreadArrays(getSearchTags.rows, getSearchUsers.rows, getSearchQuestion.rows, getSearchAnswers.rows);
-                collection = function (m) { return __awaiter(void 0, void 0, void 0, function () {
+                updateCollection = function (m) { return __awaiter(void 0, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0: return [4 /*yield*/, m.forEach(function (element) {
                                     if ("name_tag" in element) {
                                         element.route = "tag";
+                                        element.id = element.id;
                                     }
                                     if ("nickname" in element) {
                                         element.route = "users";
+                                        element.id = element.user_id;
                                     }
                                     if ("question_title" in element) {
                                         element.route = "questionInfo";
+                                        element.id = element.questions_id;
                                     }
                                     if ("answers" in element) {
                                         element.route = "questionInfo";
+                                        element.id = element.question_id_from_questions;
                                     }
                                 })];
                             case 1:
@@ -148,12 +133,45 @@ app.post("/getAllInfo", function (req, res) { return __awaiter(void 0, void 0, v
                         }
                     });
                 }); };
-                collection(searchCollection);
+                if (!(search !== "")) return [3 /*break*/, 5];
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("tags")
+                        .select("name_tag,img_tag,id")
+                        .ilike("name_tag", "%" + search + "%")];
+            case 1:
+                getSearchTags = _a.sent();
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("users")
+                        .select("nickname,user_id")
+                        .ilike("nickname", "%" + search + "%")];
+            case 2:
+                getSearchUsers = _a.sent();
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("questions")
+                        .select("question_title,questions_id")
+                        .ilike("question_title", "%" + search + "%")];
+            case 3:
+                getSearchQuestion = _a.sent();
+                return [4 /*yield*/, usersDataBase_js_1.supabase
+                        .from("answers")
+                        .select("answers,question_id_from_questions")
+                        .ilike("answers", "%" + search + "%")];
+            case 4:
+                getSearchAnswers = _a.sent();
+                collection = __spreadArrays(getSearchTags.data, getSearchUsers.data, getSearchQuestion.data, getSearchAnswers.data);
+                updateCollection(collection);
                 res.status(200).json({
                     message: "Вы получили информацию обо всех направлениях",
-                    collection: searchCollection
+                    collection: collection
                 });
-                return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 5:
+                res.status(200).json({
+                    message: "Вы получили информацию обо всех направлениях",
+                    collection: []
+                });
+                _a.label = 6;
+            case 6: return [2 /*return*/];
         }
     });
 }); });

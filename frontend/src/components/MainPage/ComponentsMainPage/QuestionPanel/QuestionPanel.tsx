@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import QuestionPanelCSS from "./QuestionPanel.module.css";
 import userIdContext from "../../../Context/Context";
@@ -30,7 +30,7 @@ const QuestionPanel: React.FC<Props> = ({
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
   const [inputValue, setInputValue] = useState("");
   const [collectionSearch, setCollectionSearch] = useState([]);
-
+  const inputEl = useRef(null);
   const getAllInfo = async () => {
     const res = await fetch(`/getAllInfo`, {
       method: "POST",
@@ -44,7 +44,7 @@ const QuestionPanel: React.FC<Props> = ({
   };
   useEffect(() => {
     getAllInfo();
-    setUserId(JSON.parse(localStorage.getItem("userId")));
+    console.log(inputEl.current.value);
   }, [inputValue]);
   return (
     <div
@@ -83,12 +83,7 @@ const QuestionPanel: React.FC<Props> = ({
             {collectionSearch.map((item, index): any => {
               return (
                 <a
-                  href={`http://localhost:3000/${item.route}/${
-                    item.tags_id ||
-                    item.user_id ||
-                    item.questions_id ||
-                    item.question_id_from_questions
-                  }`}
+                  href={`http://localhost:3000/${item.route}/${item.id}`}
                   onClick={() => {
                     setInputValue("");
                   }}
@@ -134,6 +129,7 @@ const QuestionPanel: React.FC<Props> = ({
         className={`${QuestionPanelCSS.form_control__wrapper} ${QuestionPanelCSS.hide_mobile}`}
       >
         <input
+          ref={inputEl}
           className={`${QuestionPanelCSS.form_control}`}
           value={inputValue}
           type="text"
@@ -149,12 +145,7 @@ const QuestionPanel: React.FC<Props> = ({
             {collectionSearch.map((item, index): any => {
               return (
                 <a
-                  href={`http://localhost:3000/${item.route}/${
-                    item.tags_id ||
-                    item.user_id ||
-                    item.questions_id ||
-                    item.question_id_from_questions
-                  }`}
+                  href={`http://localhost:3000/${item.route}/${item.id}`}
                   onClick={() => {
                     setInputValue("");
                   }}
