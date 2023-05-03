@@ -22,7 +22,7 @@ const Question = ({ question, currentTime }: MyValue) => {
       <main className={`${NewQuestionCSS["question-content-container"]}`}>
         <div className={`${NewQuestionCSS["question-content__title-wrapper"]}`}>
           <Link
-            to={`/questionInfo/${question.questions_id}`}
+            to={`/questionInfo/${question.id}`}
             state={{ questionTagsId: question.question_tags }}
             className={`${NewQuestionCSS["question-content__title"]}`}
           >
@@ -36,7 +36,7 @@ const Question = ({ question, currentTime }: MyValue) => {
           </span>
         </div>
         <Link
-          to={`/questionInfo/${question.questions_id}`}
+          to={`/questionInfo/${question.id}`}
           state={{ questionTagsId: question.question_tags }}
           className={`${NewQuestionCSS["question-content__answers-counter"]}`}
         >

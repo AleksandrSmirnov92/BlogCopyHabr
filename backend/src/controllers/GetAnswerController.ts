@@ -11,6 +11,8 @@ exports.getAnswers = async (req: Request, res: Response) => {
       question_id_from_questions: questionId,
       tags_id: tagsId,
       responce_userId: userId,
+      route: "questionInfo",
+      id: questionId,
     })
     .select()
     .single();
@@ -63,14 +65,14 @@ exports.getAnswersId = async (req: Request, res: Response) => {
   console.log(getInfoAnswers.data);
   let answers = getInfoAnswers.data.map((obj: any) => {
     let { answers } = obj;
-    let { question_title, questions_id, question_tags } = obj.questions;
+    let { question_title, id, question_tags } = obj.questions;
     let { email, nickname, user_id } = obj.users;
     return {
       email,
       nickname,
       question_title,
       answers,
-      questions_id,
+      id,
       question_tags,
       user_id,
     };

@@ -46,8 +46,8 @@ exports.createQuestion = async (
   let insertQuestionsAndTags = await supabase
     .from("question_and_tags")
     .insert({
-      tag_id_from_tags: question_id,
-      user_id_from_users: userId,
+      tags_id: question_id,
+      user_id: userId,
     })
     .select();
   return res.status(200).json({

@@ -10,20 +10,15 @@ exports.getMyFeed = async (req: Request, res: Response) => {
   let getQuestions = await supabase
     .from("questions")
     .select(
-      `"date_of_creation","question_title","questions_id","question_tags",tags("*"),answers(*)`
+      `"date_of_creation","question_title","id","question_tags",tags("*"),answers(*)`
     )
     .eq("");
   let questions: {}[] = [];
   getFollowers.data.forEach((element: any) => {
     getQuestions.data.forEach((obj: any) => {
       if (element.tags_id === obj.question_tags) {
-        let {
-          date_of_creation,
-          question_title,
-          questions_id,
-          question_tags,
-          answers,
-        } = obj;
+        let { date_of_creation, question_title, id, question_tags, answers } =
+          obj;
         let { name_tag, img_tag, tags_id } = obj.tags;
         let newObj = {
           name_tag,
@@ -31,7 +26,7 @@ exports.getMyFeed = async (req: Request, res: Response) => {
           tags_id,
           date_of_creation,
           question_title,
-          questions_id,
+          id,
           question_tags,
           countAnswers: answers.length,
         };

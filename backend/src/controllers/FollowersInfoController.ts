@@ -33,7 +33,8 @@ exports.getInfoFollowers = async (
   }
   let getTags = await supabase
     .from("tags")
-    .select(`"*",question_and_tags(tag_id_from_tags)`, { count: "exact" });
+    .select(`"*",question_and_tags(tags_id)`, { count: "exact" });
+  console.log(getTags);
   let tagsFollowers = await supabase
     .from("tagsFollowers")
     .select("user_id,tags_id", { count: "exact" })

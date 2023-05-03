@@ -59,8 +59,8 @@ app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.post("/getAllInfo", async (req, res) => {
   let { search } = req.body;
-  let updateCollection = async (m: any) => {
-    await m.forEach((element: any) => {
+  let updateCollection = (m: {}[]) => {
+    m.forEach((element: any) => {
       if ("name_tag" in element) {
         element.route = "tag";
         element.id = element.id;
@@ -79,40 +79,42 @@ app.post("/getAllInfo", async (req, res) => {
       }
     });
   };
-  if (search !== "") {
-    let getSearchTags = await supabase
-      .from("tags")
-      .select("name_tag,img_tag,id")
-      .ilike("name_tag", `%${search}%`);
-    let getSearchUsers = await supabase
-      .from("users")
-      .select("nickname,user_id")
-      .ilike("nickname", `%${search}%`);
-    let getSearchQuestion = await supabase
-      .from("questions")
-      .select("question_title,questions_id")
-      .ilike("question_title", `%${search}%`);
-    let getSearchAnswers = await supabase
-      .from("answers")
-      .select("answers,question_id_from_questions")
-      .ilike("answers", `%${search}%`);
-    let collection = [
-      ...getSearchTags.data,
-      ...getSearchUsers.data,
-      ...getSearchQuestion.data,
-      ...getSearchAnswers.data,
-    ];
-    updateCollection(collection);
+
+  let getSearchTags = await supabase
+    .from("tags")
+    .select("name_tag,img_tag,id,route")
+    .ilike("name_tag", `%${search}%`);
+  let getSearchUsers = await supabase
+    .from("users")
+    .select("nickname,id,route")
+    .ilike("nickname", `%${search}%`);
+  let getSearchQuestion = await supabase
+    .from("questions")
+    .select("question_title,id,route")
+    .ilike("question_title", `%${search}%`);
+  let getSearchAnswers = await supabase
+    .from("answers")
+    .select("answers,id,route")
+    .ilike("answers", `%${search}%`);
+  let collection = [
+    ...getSearchTags.data,
+    ...getSearchUsers.data,
+    ...getSearchQuestion.data,
+    ...getSearchAnswers.data,
+  ];
+  // updateCollection(collection);
+  Promise.all([
+    getSearchTags,
+    getSearchUsers,
+    getSearchQuestion,
+    getSearchQuestion,
+    getSearchAnswers,
+  ]).then(() => {
     res.status(200).json({
       message: "Вы получили информацию обо всех направлениях",
-      collection: collection,
+      collection: search === "" ? [] : collection.slice(0, 5),
     });
-  } else {
-    res.status(200).json({
-      message: "Вы получили информацию обо всех направлениях",
-      collection: [],
-    });
-  }
+  });
 
   // let searchValue = search ? "%" + search + "%" : search;
   // let upper = searchValue[1]

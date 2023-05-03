@@ -8,14 +8,8 @@ exports.GetQuestionsId = async (req: Request, res: Response) => {
     .select(`"*",tags("*"),answers(*)`)
     .eq("question_tags", id);
   let questionsInfo = getTagInfo.data.map((obj: any) => {
-    let {
-      questions_id,
-      question_tags,
-      question_title,
-      date_of_creation,
-      tags,
-      answers,
-    } = obj;
+    let { id, question_tags, question_title, date_of_creation, tags, answers } =
+      obj;
     return {
       question_tags,
       question_title,
@@ -23,7 +17,7 @@ exports.GetQuestionsId = async (req: Request, res: Response) => {
       name_tag: tags.name_tag,
       img_tag: tags.img_tag,
       countAnswers: answers.length,
-      questions_id,
+      id,
     };
   });
   res.status(200).json({

@@ -23,7 +23,7 @@ exports.getQuestions = async (req: Request, res: Response) => {
   let getQuestionInfo = await supabase
     .from("questions")
     .select(`"*",users("*"),about_user("*"),tags("*")`)
-    .eq("questions_id", id)
+    .eq("id", id)
     .single();
   console.log(getQuestionInfo.data.question_tags);
   // -----------------------------

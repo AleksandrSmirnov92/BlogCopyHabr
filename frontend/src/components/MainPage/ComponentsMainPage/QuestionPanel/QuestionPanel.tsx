@@ -31,7 +31,7 @@ const QuestionPanel: React.FC<Props> = ({
   const [inputValue, setInputValue] = useState("");
   const [collectionSearch, setCollectionSearch] = useState([]);
   const inputEl = useRef(null);
-  const getAllInfo = async () => {
+  const getAllInfo = async (inputValue: any) => {
     const res = await fetch(`/getAllInfo`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -42,10 +42,10 @@ const QuestionPanel: React.FC<Props> = ({
     const data = await res.json();
     setCollectionSearch(data.collection);
   };
-  useEffect(() => {
-    getAllInfo();
-    console.log(inputEl.current.value);
-  }, [inputValue]);
+  // useEffect(() => {
+  //   getAllInfo();
+  //   console.log(inputEl.current.value);
+  // }, [inputValue]);
   return (
     <div
       className={
@@ -135,6 +135,18 @@ const QuestionPanel: React.FC<Props> = ({
           type="text"
           placeholder="Найди вопрос,ответ,тег или пользователя"
           onChange={(e) => {
+            fetch("/getAllInfo", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                search: e.target.value,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                setCollectionSearch(data.collection);
+                console.log(data.collection);
+              });
             setInputValue(e.target.value);
           }}
         />

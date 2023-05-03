@@ -5,16 +5,16 @@ exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
   let getInfoAboutUser = await supabase
     .from("users")
     .select(
-      `"email","nickname","user_id",about_user("*"),answers("*"),questions("*")`
+      `"email","nickname","id",about_user("*"),answers("*"),questions("*")`
     );
 
   let infoUsers = () => {
     let infoUsers = getInfoAboutUser.data.map((obj: any) => {
-      let { nickname, user_id } = obj;
+      let { nickname, id } = obj;
       let { img, fullname } = obj.about_user;
       let answers = obj.answers.length;
       let questions = obj.questions.length;
-      return { nickname, user_id, img, fullname, answers, questions };
+      return { nickname, id, img, fullname, answers, questions };
     });
     return infoUsers;
   };

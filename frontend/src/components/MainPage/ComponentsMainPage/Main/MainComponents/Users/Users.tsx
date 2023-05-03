@@ -10,7 +10,7 @@ interface User {
   lastname: string;
   nickname: string;
   questions: string;
-  user_id: string;
+  id: string;
 }
 
 const Users: React.FC = () => {
@@ -24,7 +24,6 @@ const Users: React.FC = () => {
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
-      console.log(data);
       setUsers(data.body);
     };
     getInfomationAboutUser(setUsers);
@@ -46,7 +45,7 @@ const Users: React.FC = () => {
                 key={index}
               >
                 <NavLink
-                  to={`/users/${user.user_id}`}
+                  to={`/users/${user.id}`}
                   className={`${UsersCSS["users-card__image"]}`}
                 >
                   <img
@@ -55,7 +54,7 @@ const Users: React.FC = () => {
                   />
                 </NavLink>
                 <NavLink
-                  to={`/users/${user.user_id}`}
+                  to={`/users/${user.id}`}
                   className={`${UsersCSS["users-card__nickname"]} ${UsersCSS["users-card__nickname_p"]} ${UsersCSS["users-card__nickname_size"]}`}
                 >
                   {user.fullname !== "" ? `${user.fullname}` : user.nickname}
@@ -65,7 +64,7 @@ const Users: React.FC = () => {
                 >
                   {user.answers !== "0" ? (
                     <Link
-                      to={`/users/${user.user_id}`}
+                      to={`/users/${user.id}`}
                       state={{ question: "Ответы" }}
                       className={`${UsersCSS["users-card__stat-link"]} ${UsersCSS["users-card__stat-link_p"]} ${UsersCSS["users-card__stat-link_size"]}`}
                     >
@@ -81,7 +80,7 @@ const Users: React.FC = () => {
                   |
                   {user.questions !== "0" ? (
                     <Link
-                      to={`/users/${user.user_id}`}
+                      to={`/users/${user.id}`}
                       state={{ question: "Вопросы" }}
                       className={`${UsersCSS["users-card__stat-link"]} ${UsersCSS["users-card__stat-link_p"]} ${UsersCSS["users-card__stat-link_size"]}`}
                     >

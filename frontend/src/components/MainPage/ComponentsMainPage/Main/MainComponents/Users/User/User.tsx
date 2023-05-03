@@ -249,7 +249,7 @@ const User: React.FC = () => {
             return (
               <div className={`${UserCSS["answer-container"]}`} key={index}>
                 <Link
-                  to={`/questionInfo/${answer.questions_id}`}
+                  to={`/questionInfo/${answer.id}`}
                   className={`${UserCSS["answer-title"]}`}
                   state={{ questionTagsId: answer.question_tags }}
                 >

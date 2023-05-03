@@ -35,7 +35,7 @@ const SignIn: React.FC = () => {
           document.cookie = `nickname=${response.user.nickname};max-age=${date}`;
           localStorage.setItem(
             "userId",
-            JSON.stringify(Number(response.user.user_id))
+            JSON.stringify(Number(response.user.id))
           );
         }
         if (response.status === "ERROR") {

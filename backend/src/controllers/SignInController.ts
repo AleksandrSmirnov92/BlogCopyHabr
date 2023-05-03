@@ -17,7 +17,7 @@ exports.signIn = async (
   const { email, password } = req.body;
   let { data, error } = await supabase
     .from("users")
-    .select("user_id,nickname")
+    .select("id,nickname")
     .match({ email: email, password: password })
     .single();
   if (error) {

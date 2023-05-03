@@ -31,9 +31,8 @@ exports.getInfoTags = async (req: Request, res: Response<ResponseTags>) => {
           ...x,
           isChecked: mFollowers.includes(x.id),
           countFollowers: await countFollowers(x.id),
-          countQuestions: questions.data.filter(
-            (t: any) => t.tag_id_from_tags === x.id
-          ).length,
+          countQuestions: questions.data.filter((t: any) => t.tags_id === x.id)
+            .length,
           btn: true,
         })
       )
@@ -41,9 +40,8 @@ exports.getInfoTags = async (req: Request, res: Response<ResponseTags>) => {
   } else {
     resTags = getTags.data.map((x: any) => ({
       ...x,
-      countQuestions: questions.data.filter(
-        (t: any) => t.tag_id_from_tags === x.id
-      ).length,
+      countQuestions: questions.data.filter((t: any) => t.tags_id === x.id)
+        .length,
       btn: false,
     }));
   }

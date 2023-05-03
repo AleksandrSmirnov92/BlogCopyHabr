@@ -5,16 +5,10 @@ exports.getAllQuestions = async (req: Request, res: Response) => {
   let getQuestions = await supabase
     .from("questions")
     .select(
-      `"date_of_creation","question_title","questions_id","question_tags",tags("*"),answers(*)`
+      `"date_of_creation","question_title","id","question_tags",tags("*"),answers(*)`
     );
   let questions = getQuestions.data.map((obj: any) => {
-    let {
-      date_of_creation,
-      question_title,
-      questions_id,
-      question_tags,
-      answers,
-    } = obj;
+    let { date_of_creation, question_title, id, question_tags, answers } = obj;
     let { name_tag, img_tag, tags_id } = obj.tags;
     return {
       date_of_creation,
@@ -22,7 +16,7 @@ exports.getAllQuestions = async (req: Request, res: Response) => {
       name_tag,
       img_tag,
       tags_id,
-      questions_id,
+      id,
       question_tags,
       countAnswers: answers.length,
     };
@@ -56,14 +50,8 @@ exports.getAllQuestionsId = async (req: Request, res: Response) => {
     .select(`"*",tags("*"),answers(*)`)
     .eq("user_id", id);
   let questionsInfo = getQuestionsId.data.map((obj: any) => {
-    let {
-      questions_id,
-      question_tags,
-      question_title,
-      date_of_creation,
-      tags,
-      answers,
-    } = obj;
+    let { id, question_tags, question_title, date_of_creation, tags, answers } =
+      obj;
     return {
       question_tags,
       question_title,
@@ -71,7 +59,7 @@ exports.getAllQuestionsId = async (req: Request, res: Response) => {
       name_tag: tags.name_tag,
       img_tag: tags.img_tag,
       countAnswers: answers.length,
-      questions_id,
+      id,
     };
   });
 
