@@ -81,13 +81,23 @@ const AllQuestions = () => {
         {valueLink === "Без ответа"
           ? questions
               .filter((question) => question.countAnswers === 0)
-              .map((question) => {
+              .map((question, index) => {
                 return (
-                  <Question question={question} currentTime={currentTime} />
+                  <Question
+                    question={question}
+                    currentTime={currentTime}
+                    key={index}
+                  />
                 );
               })
-          : questions.map((question) => {
-              return <Question question={question} currentTime={currentTime} />;
+          : questions.map((question, index) => {
+              return (
+                <Question
+                  question={question}
+                  currentTime={currentTime}
+                  key={index}
+                />
+              );
             })}
       </div>
     </div>

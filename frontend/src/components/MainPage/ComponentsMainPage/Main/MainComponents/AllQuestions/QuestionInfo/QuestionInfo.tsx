@@ -4,14 +4,11 @@ import imageProfil from "../../../../../../../images/photoProfil.png";
 import lockImg from "../../../../../../../images/замок.png";
 import { useFormik } from "formik";
 import QuestionInfoCSS from "./QuestionInfo.module.css";
-import { NavLink, useParams, useLocation } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 interface MyValues {
   answers: string;
 }
 const QuestionInfo: React.FC = () => {
-  // let location = useLocation();
-  // let questionTagsId: any = location.state;
-
   let { questionId } = useParams();
   let [pathImg, setPathImg] = useState("");
   let [name, setName] = useState("");
@@ -65,11 +62,9 @@ const QuestionInfo: React.FC = () => {
         userId: localStorage.getItem("userId")
           ? localStorage.getItem("userId")
           : "Пользователь не зарегестрирован",
-        // questionTagsId: questionTagsId.questionTagsId,
       }),
     });
     const data = await res.json();
-    console.log(data);
     setQuestionTitle(data.questionInfo.question_title);
     setQuestionDescription(data.questionInfo.question_details);
     setTagImgPath(data.questionInfo.img_tag);
@@ -110,7 +105,6 @@ const QuestionInfo: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Я тут");
     getQuestion();
   }, []);
   const {
@@ -128,7 +122,6 @@ const QuestionInfo: React.FC = () => {
     onSubmit,
     validationSchema: schemaAnswers,
   });
-
   return (
     <div className={`${QuestionInfoCSS["question-сontainer"]}`}>
       <div className={`${QuestionInfoCSS["question-header"]}`}>
@@ -194,16 +187,13 @@ const QuestionInfo: React.FC = () => {
       >
         {answers.map((answer, index) => {
           return (
-            <>
-              <div
-                className={`${QuestionInfoCSS["question-answer"]}`}
-                key={index}
-              >
+            <div key={index}>
+              <div className={`${QuestionInfoCSS["question-answer"]}`}>
                 <NavLink
                   to={`/users/${answer.responce_userId}`}
                   className={`${QuestionInfoCSS["question-answer__image"]}`}
                 >
-                  <img src={answer.img} alt="" />
+                  <img src={pathImg ? pathImg : imageProfil} alt="" />
                 </NavLink>
                 <NavLink
                   to={`/users/${answer.responce_userId}`}
@@ -223,7 +213,7 @@ const QuestionInfo: React.FC = () => {
               <p className={`${QuestionInfoCSS["question-answer__text"]}`}>
                 {answer.answer}
               </p>
-            </>
+            </div>
           );
         })}
       </div>

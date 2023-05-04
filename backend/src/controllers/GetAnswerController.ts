@@ -1,14 +1,13 @@
 import express, { Request, Response } from "express";
-// import { pool } from "../db.js";
 import { supabase } from "../config/usersDataBase.js";
 exports.getAnswers = async (req: Request, res: Response) => {
   let { answer, questionId, tagsId, userId } = req.body;
   const insertAnswer = await supabase
     .from("answers")
     .upsert({
-      user_id_from_users: userId,
+      user_id: userId,
       answers: answer,
-      question_id_from_questions: questionId,
+      question_id: questionId,
       tags_id: tagsId,
       responce_userId: userId,
       route: "questionInfo",
@@ -22,7 +21,7 @@ exports.getAnswers = async (req: Request, res: Response) => {
     .match({
       answer_id: insertAnswer.data.answer_id,
       tags_id: tagsId,
-      question_id_from_questions: questionId,
+      question_id: questionId,
     });
   let answerData = getAnswersToQuestion.data.map((obj: any) => {
     let { img, fullname, lastname } = obj.about_user;
@@ -35,23 +34,6 @@ exports.getAnswers = async (req: Request, res: Response) => {
     message: "Вы ответили",
     answer: answerData[0],
   });
-  // console.log(userId);
-  // try {
-  //   let addInformationInAnswers = await pool.query(
-  //     `INSERT INTO answers (question_id_from_questions,user_id_from_users,answers,responce_userid) VALUES($1,$2,$3,$4)`,
-  //     [questionId, questionUserId, answer, userId]
-  //   );
-  //   let getAnswers = await pool.query(
-  //     `SELECT answers.answers,p2.fullname,p2.lastname,p2.img,users.email FROM answers JOIN about_user p2 ON answers.responce_userid = p2.user_id_from_users JOIN users ON p2.user_id_from_users = user_id ORDER BY answer_id`
-  //   );
-  //   console.log(getAnswers.rows);
-  //   res.status(200).json({
-  //     message: "Вы ответили",
-  //     answer: getAnswers.rows.at(-1),
-  //   });
-  // } catch (err) {
-  //   console.log(err);
-  // }
 };
 exports.getAnswersId = async (req: Request, res: Response) => {
   let { id } = req.params;
@@ -59,10 +41,9 @@ exports.getAnswersId = async (req: Request, res: Response) => {
   let getInfoAnswers = await supabase
     .from("answers")
     .select(
-      `"answer_id","answers","question_id_from_questions","responce_userId","user_id_from_users",users("*"),questions("*")`
+      `"answer_id","answers","question_id","responce_userId","user_id",users("*"),questions("*")`
     )
-    .eq("user_id_from_users", id);
-  console.log(getInfoAnswers.data);
+    .eq("user_id", id);
   let answers = getInfoAnswers.data.map((obj: any) => {
     let { answers } = obj;
     let { question_title, id, question_tags } = obj.questions;

@@ -1,5 +1,4 @@
 import * as yup from "yup";
-
 export const schemaForSignUp = yup.object().shape({
   email: yup
     .string()

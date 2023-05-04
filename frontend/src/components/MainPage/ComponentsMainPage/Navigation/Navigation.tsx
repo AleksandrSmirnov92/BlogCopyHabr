@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import NavigationCSS from "./Navigation.module.css";
 import signInIMG from "../../../../images/signIn.png";
 import allQuestionsIMG from "../../../../images/allQuestions.png";
-// import userIdContext from "../../../Context/Context";
 import ExitIMG from "../../../../images/Exit.png";
 import SettingsIMG from "../../../../images/Settings.png";
 import allTagsIMG from "../../../../images/allTags.png";
@@ -26,17 +25,12 @@ interface Props {
   setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;
   hideNavImg: boolean;
 }
-// interface Context {
-//   userId: string;
-//   setUserId: React.Dispatch<React.SetStateAction<string>>;
-// }
 const Navigation: React.FC<Props> = ({
   toggleClass,
   setToggleClass,
   hideNavImg,
 }: Props) => {
   let [userRegistred, setUserRegistred] = useState(false);
-  // const { userId, setUserId } = useContext<Context>(userIdContext);
   let [pathImg, setPathImg] = useState("");
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
@@ -63,7 +57,7 @@ const Navigation: React.FC<Props> = ({
         setLastName(data.users.lastname);
         return;
       }
-      setFullName(data.body.email);
+      setFullName(data.users.users.email);
     };
     getInformationAboutUser();
 

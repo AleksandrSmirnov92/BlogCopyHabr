@@ -1,40 +1,36 @@
 import express, { Request, Response } from "express";
-// import { pool } from "../db.js";
 import { supabase } from "../config/usersDataBase.js";
 exports.getQuestions = async (req: Request, res: Response) => {
   let { id } = req.params;
   let userId = req.body.userId;
-  // let questionTagsId = req.body.questionTagsId;
   let userActive = false;
   let getAboutUser;
   if (userId !== "Пользователь не зарегестрирован") {
     userActive = true;
     getAboutUser = await supabase
       .from("about_user")
-      .select(`"img","user_id_from_users"`)
-      .eq("user_id_from_users", userId)
+      .select(`"img","user_id"`)
+      .eq("user_id", userId)
       .single();
   } else {
     userActive = false;
     getAboutUser = "";
   }
-
   // ------------------------------
   let getQuestionInfo = await supabase
     .from("questions")
     .select(`"*",users("*"),about_user("*"),tags("*")`)
     .eq("id", id)
     .single();
-  console.log(getQuestionInfo.data.question_tags);
   // -----------------------------
   let getAnswersToQuestion = await supabase
     .from("answers")
     .select(`"*",about_user("*"),users("*")`)
     .match({
       tags_id: getQuestionInfo.data.question_tags,
-      question_id_from_questions: id,
+      question_id: id,
     });
-  // console.log(getAnswersToQuestion.data);
+  // --------------------------------
 
   let answers = getAnswersToQuestion.data.map((obj: any) => {
     let { img, fullname, lastname } = obj.about_user;
@@ -71,43 +67,11 @@ exports.getQuestions = async (req: Request, res: Response) => {
       user_fullname: about_user.fullname,
       user_lastname: about_user.lastname,
       user_img: about_user.img,
-      user_id: about_user.user_id_from_users,
+      user_id: about_user.user_id,
       answers: answers,
       userImg: getAboutUser !== "" ? getAboutUser.data.img : "",
-      userId: getAboutUser !== "" ? getAboutUser.data.user_id_from_users : "",
+      userId: getAboutUser !== "" ? getAboutUser.data.user_id : "",
       userActive: userActive,
     },
   });
-
-  // try {
-  //   let { id } = req.params;
-
-  //   let userId;
-  //   let getInfoUser;
-  //   if (req.body.userId !== "Пользователь не зарегестрирован") {
-  //     userId = req.body.userId;
-  //     getInfoUser = await pool.query(
-  //       `SELECT * from users JOIN about_user on about_user.user_id_from_users = $1 WHERE users.user_id = $1`,
-  //       [userId]
-  //     );
-  //   } else {
-  //     getInfoUser = "";
-  //   }
-  //   let getAnswers = await pool.query(
-  //     `SELECT answers.answers,users.email,users.nickname,about_user.fullname,about_user.lastname,about_user.img,about_user.user_id_from_users from answers as answers JOIN users on users.user_id = answers.responce_userid JOIN about_user on about_user.user_id_from_users = answers.responce_userid WHERE answers.question_id_from_questions = $1 ORDER BY answer_id`,
-  //     [id]
-  //   );
-  //   let getQuestionInfo = await pool.query(
-  //     `SELECT * FROM questions as q JOIN tags on tags_id = q.question_tags JOIN users on users.user_id = q.user_id JOIN about_user on about_user.user_id_from_users = q.user_id WHERE q.questions_id = $1 `,
-  //     [id]
-  //   );
-  //   res.status(200).json({
-  //     message: "Вы получили информацию о вопросе",
-  //     questionInfo: getQuestionInfo.rows[0],
-  //     answers: getAnswers.rows,
-  //     userInfo: getInfoUser !== "" ? getInfoUser.rows[0] : "",
-  //   });
-  // } catch (err) {
-  //   console.log(err);
-  // }
 };

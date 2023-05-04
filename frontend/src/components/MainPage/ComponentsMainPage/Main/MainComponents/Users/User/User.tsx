@@ -257,7 +257,10 @@ const User: React.FC = () => {
                 </Link>
                 <div className={`${UserCSS["answer-content"]}`}>
                   <div className={`${UserCSS["answer-content__image"]}`}>
-                    <img src={pathImg === "" ? photoProfilIMG : pathImg}></img>
+                    <img
+                      src={pathImg === "" ? photoProfilIMG : pathImg}
+                      alt=""
+                    ></img>
                   </div>
                   <span className={`${UserCSS["answer-content__nickname"]}`}>
                     {answer.nickname}

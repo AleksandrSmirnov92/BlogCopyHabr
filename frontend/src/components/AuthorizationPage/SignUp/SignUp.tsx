@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { useFormik, FormikValues } from "formik";
 import { schemaForSignUp } from "../../Schemas/SchemaSignUp";
 import { NavLink } from "react-router-dom";
@@ -34,12 +33,14 @@ const SignUp: React.FC = () => {
           }, 1000);
           let date = new Date();
           date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-          document.cookie = `nickname=${response.nickName};max-age=${date}`;
+          let newCookie = `nickname=${
+            response.nickName
+          };expires= ${date.toUTCString()};`;
+          document.cookie = newCookie;
           localStorage.setItem(
             "userId",
             JSON.stringify(Number(response.userId))
           );
-          console.log(response.message);
         }
         if (response.status === "ERROR") {
           setError({ status: response.status, message: response.message });

@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { pool } from "../db.js";
 import { supabase } from "../config/usersDataBase.js";
 const path = require("path");
 const fs = require("fs");
@@ -20,8 +19,7 @@ exports.uploadAvatar = async (
   const apdateAboutUser = await supabase
     .from("about_user")
     .update({ img: `/uploads/${file.name}` })
-    .eq("user_id_from_users", id);
-
+    .eq("user_id", id);
   const pathUpload = path.resolve(
     __dirname,
     "../../../Frontend/public/uploads"
@@ -48,10 +46,6 @@ exports.uploadAvatar = async (
       });
     }
   );
-  // let addInformationInAboutUser = await pool.query(
-  //   `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
-  //   [`/uploads/${file.name}`, id]
-  // );
 };
 interface DeleteAvatar {
   filePath: string;
@@ -76,8 +70,4 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
       });
     }
   });
-  // let addInformationInAboutUser = await pool.query(
-  //   `UPDATE about_user SET img = $1 WHERE user_id_from_users = $2`,
-  //   [``, id]
-  // );
 };

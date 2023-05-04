@@ -16,7 +16,6 @@ const MyFeed: React.FC = () => {
   let [questions, setQuestions] = useState([]);
   let [navValue, setNavValue] = useState("Интересные");
   let userId = localStorage.getItem("userId");
-
   let currentTime = (date: Date) => {
     let formatterHour = new Intl.NumberFormat("ru", {
       style: "unit",
@@ -59,7 +58,6 @@ const MyFeed: React.FC = () => {
           }),
         });
         const data = await res.json();
-        console.log(data);
         setQuestions(data.questions);
       };
       getMyQuestions();

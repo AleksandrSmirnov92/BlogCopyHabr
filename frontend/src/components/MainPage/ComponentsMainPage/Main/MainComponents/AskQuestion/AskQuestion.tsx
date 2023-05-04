@@ -37,7 +37,6 @@ let createQuestion = async (values: any) => {
     }),
   });
   let data = await res.json();
-  console.log(data);
   if (data.status === "SUCCESS") {
     setTimeout(() => {
       window.location.href = "http://localhost:3000/questions";
@@ -84,7 +83,6 @@ const AskQuestion = () => {
       setError("Такого тега не существует");
     } else {
       setError("");
-
       createQuestion(values);
     }
   };

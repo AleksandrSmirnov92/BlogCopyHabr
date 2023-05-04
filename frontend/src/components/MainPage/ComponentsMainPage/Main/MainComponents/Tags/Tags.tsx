@@ -34,7 +34,6 @@ const Tags = () => {
       <h3>Все теги</h3>
       <div className={TagsCSS["tags-block"]}>
         {tags.map((tag: any) => {
-          console.log(tag);
           return (
             <div
               key={tag.id}
@@ -67,7 +66,6 @@ const Tags = () => {
                     : TagsCSS.btn_none
                 }
                 onClick={() => {
-                  console.log(tag);
                   subscribeFollower(tag.id);
                 }}
               >
