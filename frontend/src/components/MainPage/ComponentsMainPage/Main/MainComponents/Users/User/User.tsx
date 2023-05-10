@@ -3,6 +3,7 @@ import UserCSS from "./User.module.css";
 import photoProfilIMG from "../../../../../../../images/photoProfil.png";
 import Question from "../../AllQuestions/Question/Question";
 import { useParams, useLocation, Link } from "react-router-dom";
+import currentTime from "../../../../../../../helpers/currentTime";
 interface ResponseData {
   message: string;
   users: {
@@ -43,36 +44,7 @@ interface ResponseDataAnswers {
     user_id: number;
   }[];
 }
-let currentTime = (date: Date) => {
-  let formatterHour = new Intl.NumberFormat("ru", {
-    style: "unit",
-    unit: "hour",
-    unitDisplay: "long",
-  });
-  let formatterMinutes = new Intl.NumberFormat("ru", {
-    style: "unit",
-    unit: "minute",
-    unitDisplay: "long",
-  });
-  let currentTime = new Date();
-  if (
-    date.getDate() !== currentTime.getDate() ||
-    date.getMonth() !== currentTime.getMonth() ||
-    date.getFullYear() !== currentTime.getFullYear()
-  ) {
-    return `Опубликован ${date.getDate()}.${
-      date.getMonth() + 1
-    }.${date.getFullYear()} в  ${formatterHour.format(
-      date.getHours()
-    )} ${formatterMinutes.format(date.getMinutes())}`;
-  }
-  let currentHours = currentTime.getHours() - date.getHours();
-  let currentMinutes = currentTime.getMinutes() - date.getMinutes();
 
-  return `Опубликован ${formatterHour.format(
-    currentHours
-  )} ${formatterMinutes.format(currentMinutes)} назад`;
-};
 const User: React.FC = () => {
   let { userId } = useParams();
   let location = useLocation();

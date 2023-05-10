@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, useRoutes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
 import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";

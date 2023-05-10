@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TagCSS from "./Tag.module.css";
 import { useParams, useLocation } from "react-router-dom";
 import Question from "../../AllQuestions/Question/Question";
-
+import currentTime from "../../../../../../../helpers/currentTime";
 interface ResponseData {
   message: string;
   body: {
@@ -22,63 +22,32 @@ const Tag: React.FC = () => {
   let [count, setCount] = useState("");
   let [questions, setQuestions] = useState([]);
   let [linkValue, setLinkValue] = useState(question ? `Вопросы` : "Информация");
-
-  let currentTime = (date: Date) => {
-    let formatterHour = new Intl.NumberFormat("ru", {
-      style: "unit",
-      unit: "hour",
-      unitDisplay: "long",
-    });
-    let formatterMinutes = new Intl.NumberFormat("ru", {
-      style: "unit",
-      unit: "minute",
-      unitDisplay: "long",
-    });
-    let currentTime = new Date();
-    if (
-      date.getDate() !== currentTime.getDate() ||
-      date.getMonth() !== currentTime.getMonth() ||
-      date.getFullYear() !== currentTime.getFullYear()
-    ) {
-      return `Опубликован ${date.getDate()}.${
-        date.getMonth() + 1
-      }.${date.getFullYear()} в  ${formatterHour.format(
-        date.getHours()
-      )} ${formatterMinutes.format(date.getMinutes())}`;
-    }
-    let currentHours = currentTime.getHours() - date.getHours();
-    let currentMinutes = currentTime.getMinutes() - date.getMinutes();
-
-    return `Опубликован ${formatterHour.format(
-      currentHours
-    )} ${formatterMinutes.format(currentMinutes)} назад`;
-  };
-  const getInformationTag = async () => {
-    let res = await fetch(`/tag/${tagId}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    let data: ResponseData = await res.json();
-    setCount(data.body.tagsFollowers);
-    setDescription(data.body.description);
-    setPathImg(data.body.img_tag);
-    setNameTag(data.body.name_tag);
-  };
-  let getInformationQuestion = async () => {
-    let res = await fetch(`/getQuestionsId/${tagId}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    let data = await res.json();
-    setQuestions(data.questions);
-  };
   useEffect(() => {
     if (linkValue === "Вопросы") {
+      let getInformationQuestion = async () => {
+        let res = await fetch(`/getQuestionsId/${tagId}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        let data = await res.json();
+        setQuestions(data.questions);
+      };
       getInformationQuestion();
     }
+    const getInformationTag = async () => {
+      let res = await fetch(`/tag/${tagId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      let data: ResponseData = await res.json();
+      setCount(data.body.tagsFollowers);
+      setDescription(data.body.description);
+      setPathImg(data.body.img_tag);
+      setNameTag(data.body.name_tag);
+    };
     getInformationTag();
     window.history.replaceState({}, document.title);
-  }, []);
+  }, [linkValue, questions, tagId]);
   return (
     <div className={TagCSS["tag-container"]}>
       <header className={TagCSS["tag-header"]}>
@@ -117,7 +86,7 @@ const Tag: React.FC = () => {
           </div>
           <div
             className={`${TagCSS["nav__item"]}`}
-            onClick={() => (setLinkValue("Вопросы"), getInformationQuestion())}
+            onClick={() => setLinkValue("Вопросы")}
           >
             <span
               className={

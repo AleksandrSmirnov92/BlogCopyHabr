@@ -2,39 +2,10 @@ import React, { useEffect, useState } from "react";
 import AllQuestionsCSS from "./AllQuestionsCSS.module.css";
 import { NavLink } from "react-router-dom";
 import Question from "./Question/Question";
+import currentTime from "../../../../../../helpers/currentTime";
 const AllQuestions = () => {
   let [questions, setQuestions] = useState([]);
   let [valueLink, setValueLink] = useState("Новые вопросы");
-  let currentTime = (date: Date) => {
-    let formatterHour = new Intl.NumberFormat("ru", {
-      style: "unit",
-      unit: "hour",
-      unitDisplay: "long",
-    });
-    let formatterMinutes = new Intl.NumberFormat("ru", {
-      style: "unit",
-      unit: "minute",
-      unitDisplay: "long",
-    });
-    let currentTime = new Date();
-    if (
-      date.getDate() !== currentTime.getDate() ||
-      date.getMonth() !== currentTime.getMonth() ||
-      date.getFullYear() !== currentTime.getFullYear()
-    ) {
-      return `Опубликован ${date.getDate()}.${
-        date.getMonth() + 1
-      }.${date.getFullYear()} в  ${formatterHour.format(
-        date.getHours()
-      )} ${formatterMinutes.format(date.getMinutes())}`;
-    }
-    let currentHours = currentTime.getHours() - date.getHours();
-    let currentMinutes = currentTime.getMinutes() - date.getMinutes();
-
-    return `Опубликован ${formatterHour.format(
-      currentHours
-    )} ${formatterMinutes.format(currentMinutes)} назад`;
-  };
   let getQuestions = async () => {
     const res = await fetch(`/questions`, {
       method: "GET",
