@@ -3,17 +3,8 @@ import MyFeedCSS from "./myFeed.module.css";
 import Question from "../AllQuestions/Question/Question";
 import { NavLink } from "react-router-dom";
 import currentTime from "../../../../../../helpers/currentTime";
-function getCookie(name: string): RegExp | string {
-  let matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : "";
-}
-const MyFeed: React.FC = () => {
+import getCookie from "../../../../../../helpers/getCookie";
+const MyFeed = ({ checkId }: any) => {
   let [questions, setQuestions] = useState([]);
   let [navValue, setNavValue] = useState("Интересные");
   let userId = localStorage.getItem("userId");
@@ -34,7 +25,7 @@ const MyFeed: React.FC = () => {
     } else {
       window.location.href = `http://localhost:3000/SignIn`;
     }
-  }, []);
+  }, [userId]);
   return (
     <div className={MyFeedCSS["main-container"]}>
       <h3>Моя лента</h3>

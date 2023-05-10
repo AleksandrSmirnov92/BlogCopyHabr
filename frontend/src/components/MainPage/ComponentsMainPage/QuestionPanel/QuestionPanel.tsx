@@ -4,16 +4,8 @@ import QuestionPanelCSS from "./QuestionPanel.module.css";
 import userIdContext from "../../../Context/Context";
 import PlusImg from "../../../../images/plus.png";
 import SearchImg from "../../../../images/searh.png";
-function getCookie(name: string): RegExp | string {
-  let matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : "";
-}
+import getCookie from "../../../../helpers/getCookie";
+
 interface Props {
   toggleClass: boolean;
   setHideNavImg: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +18,7 @@ const QuestionPanel: React.FC<Props> = ({
   toggleClass,
   setHideNavImg,
 }: Props) => {
-  const { userId, setUserId } = useContext<Context>(userIdContext);
+  const userId = useContext<Context>(userIdContext);
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
   const [inputValue, setInputValue] = useState("");
   const [collectionSearch, setCollectionSearch] = useState([]);

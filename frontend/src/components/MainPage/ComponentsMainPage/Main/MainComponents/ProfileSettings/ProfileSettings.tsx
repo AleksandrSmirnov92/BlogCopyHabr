@@ -4,6 +4,7 @@ import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSe
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
 import userIdContext from "../../../../../Context/Context";
+import getCookie from "../../../../../../helpers/getCookie";
 interface MyValues {
   img: string;
   name: string;
@@ -20,27 +21,9 @@ interface Context {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
-function getCookie(name: string): RegExp | string {
-  let matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : "";
-}
-const resetContacts = (
-  e: string,
-  setLinkContactsValue: React.Dispatch<React.SetStateAction<string>>
-) => {
-  if (e === "Контакты") {
-    setLinkContactsValue("");
-  }
-};
 
 const ProfileSettings: React.FC = () => {
-  const { userId, setUserId } = useContext<Context>(userIdContext);
+  const userId = useContext<Context>(userIdContext);
   let [name, setName] = useState("");
   let [lastName, setLastName] = useState("");
   let [brieflyAboutYourself, setBrieflyAboutYourself] = useState("");
@@ -53,6 +36,12 @@ const ProfileSettings: React.FC = () => {
   let [pathImg, setPathImg] = useState("");
 
   const myRef = useRef<HTMLInputElement>();
+  // ---------------------------------------------
+  const resetContacts = (e: string) => {
+    if (e === "Контакты") {
+      setLinkContactsValue("");
+    }
+  };
   // --------------------------------------------
   const locationCheck = (e: string) => {
     switch (e) {
@@ -99,8 +88,7 @@ const ProfileSettings: React.FC = () => {
   };
   // --------------------------------------------------
   const onSubmit = async () => {
-    console.log(brieflyAboutYourself, localStorage.getItem("userId"));
-    const res = await fetch("/updateProfile", {
+    fetch("/updateProfile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -116,7 +104,6 @@ const ProfileSettings: React.FC = () => {
         town: town,
       }),
     });
-    let data = await res.json();
     setTimeout(() => {
       window.location.href = `http://localhost:3000/users/${localStorage.getItem(
         "userId"
@@ -124,9 +111,10 @@ const ProfileSettings: React.FC = () => {
     }, 500);
   };
   // ------------------------------------------------------------------------
+
   useEffect(() => {
     if (userId !== null && getCookie("nickname")) {
-      const getSettingsInformation = async (values: MyValues) => {
+      const getSettingsInformation = async () => {
         const res = await fetch(
           `/getInformationAboutUser/${localStorage.getItem("userId")}`,
           {
@@ -155,11 +143,11 @@ const ProfileSettings: React.FC = () => {
         setTown(data.users.town);
         setPathImg(data.users.img);
       };
-      getSettingsInformation(values);
+      getSettingsInformation();
     } else {
       window.location.href = `http://localhost:3000/SignIn`;
     }
-  }, [pathImg]);
+  }, [pathImg, userId]);
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
     useFormik<MyValues>({
       initialValues: {
@@ -177,7 +165,6 @@ const ProfileSettings: React.FC = () => {
       onSubmit,
       validationSchema: schemaForProfileSettings,
     });
-
   return (
     <div className={ProfileSettingsCSS["profile-container"]}>
       <h3>Настройки профиля</h3>
@@ -327,7 +314,7 @@ const ProfileSettings: React.FC = () => {
               handleChange(e);
               setContacts(e.target.value);
               setLinkContactsValue("");
-              resetContacts(e.target.value, setLinkContactsValue);
+              resetContacts(e.target.value);
             }}
             onBlur={handleBlur}
             className={`${ProfileSettingsCSS["form-control__select"]} ${ProfileSettingsCSS["form-control__select_wd-sml"]}`}

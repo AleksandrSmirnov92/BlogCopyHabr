@@ -10,6 +10,7 @@ import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
 import QuestionInfo from "./MainComponents/AllQuestions/QuestionInfo/QuestionInfo";
+
 const Main = ({ toggleClass }: any) => {
   return (
     <main

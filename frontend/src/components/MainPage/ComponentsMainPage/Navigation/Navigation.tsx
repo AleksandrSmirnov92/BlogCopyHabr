@@ -9,17 +9,8 @@ import usersIMG from "../../../../images/users.png";
 import ProfileImg from "../../../../images/photoProfil.png";
 import NavImg from "../../../../images/nav.png";
 import { NavLink } from "react-router-dom";
+import getCookie from "../../../../helpers/getCookie";
 
-function getCookie(name: string): string {
-  let matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : "";
-}
 interface Props {
   toggleClass: boolean;
   setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;

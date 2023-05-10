@@ -26,40 +26,6 @@ const QuestionInfo: React.FC = () => {
   let [userId, setUserId] = useState("");
   let [userActive, setUserActive] = useState("");
 
-  let getQuestion = async () => {
-    const res = await fetch(`/question/${questionId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: localStorage.getItem("userId")
-          ? localStorage.getItem("userId")
-          : "Пользователь не зарегестрирован",
-      }),
-    });
-    const data = await res.json();
-    setQuestionTitle(data.questionInfo.question_title);
-    setQuestionDescription(data.questionInfo.question_details);
-    setTagImgPath(data.questionInfo.img_tag);
-    setNameTag(data.questionInfo.name_tag);
-    setTagsId(data.questionInfo.tags_id);
-    setEmail(data.questionInfo.user_email);
-    setName(
-      `${
-        data.questionInfo.fullname !== ""
-          ? `${data.questionInfo.user_fullname} ${data.questionInfo.user_lastname}`
-          : data.questionInfo.nickname
-      }`
-    );
-    setPathImg(data.questionInfo.user_img);
-    setQusestionUserId(data.questionInfo.user_id);
-    setQuestionTimeCreation(
-      currentTime(new Date(`${data.questionInfo.date_of_creation}`))
-    );
-    setAnswers(data.questionInfo.answers);
-    setPathMyImg(data.questionInfo.userImg);
-    setUserId(data.questionInfo.userId);
-    setUserActive(data.questionInfo.userActive);
-  };
   const onSubmit = async () => {
     const res = await fetch("/answers", {
       method: "POST",
@@ -77,8 +43,42 @@ const QuestionInfo: React.FC = () => {
   };
 
   useEffect(() => {
+    let getQuestion = async () => {
+      const res = await fetch(`/question/${questionId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: localStorage.getItem("userId")
+            ? localStorage.getItem("userId")
+            : "Пользователь не зарегестрирован",
+        }),
+      });
+      const data = await res.json();
+      setQuestionTitle(data.questionInfo.question_title);
+      setQuestionDescription(data.questionInfo.question_details);
+      setTagImgPath(data.questionInfo.img_tag);
+      setNameTag(data.questionInfo.name_tag);
+      setTagsId(data.questionInfo.tags_id);
+      setEmail(data.questionInfo.user_email);
+      setName(
+        `${
+          data.questionInfo.fullname !== ""
+            ? `${data.questionInfo.user_fullname} ${data.questionInfo.user_lastname}`
+            : data.questionInfo.nickname
+        }`
+      );
+      setPathImg(data.questionInfo.user_img);
+      setQusestionUserId(data.questionInfo.user_id);
+      setQuestionTimeCreation(
+        currentTime(new Date(`${data.questionInfo.date_of_creation}`))
+      );
+      setAnswers(data.questionInfo.answers);
+      setPathMyImg(data.questionInfo.userImg);
+      setUserId(data.questionInfo.userId);
+      setUserActive(data.questionInfo.userActive);
+    };
     getQuestion();
-  }, []);
+  }, [questionId]);
   const {
     values,
     errors,

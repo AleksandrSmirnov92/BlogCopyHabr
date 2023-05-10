@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions";
 import AskQuestionsCSS from "./AskQuestion.module.css";
 import userIdContext from "../../../../../Context/Context";
-
+import getCookie from "../../../../../../helpers/getCookie";
 interface MyValues {
   question_title: string;
   question_tags: string;
@@ -14,16 +14,16 @@ interface Context {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
-function getCookie(name: string): RegExp | string {
-  let matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : "";
-}
+// function getCookie(name: string): RegExp | string {
+//   let matches = document.cookie.match(
+//     new RegExp(
+//       "(?:^|; )" +
+//         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+//         "=([^;]*)"
+//     )
+//   );
+//   return matches ? decodeURIComponent(matches[1]) : "";
+// }
 let createQuestion = async (values: any) => {
   let res = await fetch("/createQuestion", {
     method: "POST",
@@ -44,7 +44,7 @@ let createQuestion = async (values: any) => {
   }
 };
 const AskQuestion = () => {
-  const { userId, setUserId } = useContext<Context>(userIdContext);
+  const userId = useContext<Context>(userIdContext);
   let [nameTag, setNameTag] = useState("");
   let [correctNameTag, setCorrectNameTag] = useState("");
   let [error, setError] = useState("");
@@ -76,7 +76,7 @@ const AskQuestion = () => {
     } else {
       window.location.href = `http://localhost:3000/SignIn`;
     }
-  }, [nameTag]);
+  }, [nameTag, userId]);
   const onSubmit = async (values: MyValues, actions: any) => {
     values.question_tags = nameTag;
     if (correctNameTag !== nameTag || correctNameTag === "") {
@@ -200,6 +200,8 @@ const AskQuestion = () => {
                     {item.name_tag}
                   </li>
                 );
+              } else {
+                return null;
               }
             })}
           </ul>

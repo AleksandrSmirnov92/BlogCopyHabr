@@ -8,15 +8,15 @@ interface ResponseData {
 
 const Tags = () => {
   const [tags, setTags] = useState([]);
-  const getInfoTags = async () => {
-    const res = await fetch(`/tags/${localStorage.getItem("userId")}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data: ResponseData = await res.json();
-    setTags(data.tags);
-  };
   useEffect(() => {
+    const getInfoTags = async () => {
+      const res = await fetch(`/tags/${localStorage.getItem("userId")}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data: ResponseData = await res.json();
+      setTags(data.tags);
+    };
     getInfoTags();
   }, []);
   const subscribeFollower = async (tagsId: string) => {

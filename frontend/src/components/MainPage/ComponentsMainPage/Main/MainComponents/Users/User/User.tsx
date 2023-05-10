@@ -64,22 +64,6 @@ const User: React.FC = () => {
   let [linkValue, setLinkValue] = useState(
     question ? `${question.question}` : "Информация"
   );
-  let getQuestions = async () => {
-    const res = await fetch(`/questions/${userId}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data: ResponseDataQuestions = await res.json();
-    setQuestions(data.questions);
-  };
-  let getAnswers = async () => {
-    const res = await fetch(`/answers/${userId}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data: ResponseDataAnswers = await res.json();
-    setMyAnswers(data.answers);
-  };
   useEffect(() => {
     const getSettingsInformation = async () => {
       const res = await fetch(`/getInformationAboutUser/${userId}`, {
@@ -99,14 +83,32 @@ const User: React.FC = () => {
       setInformationAboutUser(data.users.information_about_user);
     };
     getSettingsInformation();
+  }, [userId]);
+  useEffect(() => {
     if (linkValue === "Вопросы") {
+      let getQuestions = async () => {
+        const res = await fetch(`/questions/${userId}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data: ResponseDataQuestions = await res.json();
+        setQuestions(data.questions);
+      };
       getQuestions();
     }
     if (linkValue === "Ответы") {
+      let getAnswers = async () => {
+        const res = await fetch(`/answers/${userId}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data: ResponseDataAnswers = await res.json();
+        setMyAnswers(data.answers);
+      };
       getAnswers();
     }
     window.history.replaceState({}, document.title);
-  }, []);
+  }, [linkValue, userId]);
   return (
     <div className={`${UserCSS["user-container"]}`}>
       <header className={`${UserCSS["user-header"]}`}>
@@ -141,7 +143,6 @@ const User: React.FC = () => {
           className={`${UserCSS["nav__item"]}`}
           onClick={() => {
             setLinkValue("Вопросы");
-            getQuestions();
           }}
         >
           <span className={linkValue === "Вопросы" ? UserCSS.active : ""}>
@@ -152,7 +153,6 @@ const User: React.FC = () => {
           className={`${UserCSS["nav__item"]}`}
           onClick={() => {
             setLinkValue("Ответы");
-            getAnswers();
           }}
         >
           <span className={linkValue === "Ответы" ? UserCSS.active : ""}>

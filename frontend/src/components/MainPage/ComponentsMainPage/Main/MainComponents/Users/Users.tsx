@@ -16,9 +16,7 @@ interface User {
 const Users: React.FC = () => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
-    const getInfomationAboutUser = async (
-      setUsers: React.Dispatch<React.SetStateAction<{}[]>>
-    ) => {
+    const getInfomationAboutUser = async () => {
       const res = await fetch("/getInformationAboutUser", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -26,8 +24,8 @@ const Users: React.FC = () => {
       const data = await res.json();
       setUsers(data.body);
     };
-    getInfomationAboutUser(setUsers);
-  }, [setUsers]);
+    getInfomationAboutUser();
+  }, [users]);
 
   return (
     <div className={`${UsersCSS["users-container"]}`}>
