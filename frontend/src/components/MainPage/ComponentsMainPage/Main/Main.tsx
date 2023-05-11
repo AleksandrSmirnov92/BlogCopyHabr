@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
@@ -11,21 +11,8 @@ import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
 import QuestionInfo from "./MainComponents/AllQuestions/QuestionInfo/QuestionInfo";
 import getCookie from "../../../../helpers/getCookie";
-// import SignIn from "../../../AuthorizationPage/SignIn/SignIn";
 const Main = ({ toggleClass }: any) => {
   let userId = localStorage.getItem("userId");
-  // let [checkAuthorization, setCheckAuthorization] = useState(
-  //   userId === null && !getCookie("nickname") ? false : true
-  // );
-  // let checkAuthorization = (
-  //   userId: string,
-  //   getCookie: (name: string) => string | RegExp
-  // ) => {
-  //   if (userId === null && !getCookie("nickname")) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
   const RequireAuth: any = ({ children }: any) => {
     const userIsLogged =
       userId === null && !getCookie("nickname") ? false : true;

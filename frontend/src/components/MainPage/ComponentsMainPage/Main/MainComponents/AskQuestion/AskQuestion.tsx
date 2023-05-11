@@ -14,16 +14,6 @@ interface Context {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
-// function getCookie(name: string): RegExp | string {
-//   let matches = document.cookie.match(
-//     new RegExp(
-//       "(?:^|; )" +
-//         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-//         "=([^;]*)"
-//     )
-//   );
-//   return matches ? decodeURIComponent(matches[1]) : "";
-// }
 let createQuestion = async (values: any) => {
   let res = await fetch("/createQuestion", {
     method: "POST",
@@ -50,7 +40,6 @@ const AskQuestion = () => {
   let [error, setError] = useState("");
   let [massivTags, setMassivTags] = useState([]);
   useEffect(() => {
-    // if (userId !== null && getCookie("nickname")) {
     let getInfoTags = async () => {
       let res = await fetch("/tags", {
         method: "POST",
@@ -73,9 +62,6 @@ const AskQuestion = () => {
       }
     };
     getInfoTags();
-    // } else {
-    //   window.location.href = `http://localhost:3000/SignIn`;
-    // }
   }, [nameTag, userId]);
   const onSubmit = async (values: MyValues, actions: any) => {
     values.question_tags = nameTag;

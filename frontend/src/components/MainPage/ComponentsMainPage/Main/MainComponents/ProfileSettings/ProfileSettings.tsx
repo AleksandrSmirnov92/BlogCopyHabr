@@ -4,7 +4,7 @@ import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSe
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
 import userIdContext from "../../../../../Context/Context";
-import getCookie from "../../../../../../helpers/getCookie";
+// import getCookie from "../../../../../../helpers/getCookie";
 interface MyValues {
   img: string;
   name: string;
@@ -113,7 +113,6 @@ const ProfileSettings: React.FC = () => {
   // ------------------------------------------------------------------------
 
   useEffect(() => {
-    // if (userId !== null && getCookie("nickname")) {
     const getSettingsInformation = async () => {
       const res = await fetch(
         `/getInformationAboutUser/${localStorage.getItem("userId")}`,
@@ -144,9 +143,6 @@ const ProfileSettings: React.FC = () => {
       setPathImg(data.users.img);
     };
     getSettingsInformation();
-    // } else {
-    //   window.location.href = `http://localhost:3000/SignIn`;
-    // }
   }, [pathImg, userId]);
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
     useFormik<MyValues>({
