@@ -210,6 +210,11 @@ const QuestionPanel: React.FC<Props> = ({
               ? "./askQuestions"
               : "./SignIn"
           }
+          onClick={() => {
+            if (getCookie("nickname") === "") {
+              window.location.href = `http://localhost:3000/SignIn`;
+            }
+          }}
         >
           <img src={PlusImg} alt="" className={QuestionPanelCSS.plus_img} />
         </NavLink>
