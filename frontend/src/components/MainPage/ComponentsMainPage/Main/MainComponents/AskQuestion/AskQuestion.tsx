@@ -50,32 +50,32 @@ const AskQuestion = () => {
   let [error, setError] = useState("");
   let [massivTags, setMassivTags] = useState([]);
   useEffect(() => {
-    if (userId !== null && getCookie("nickname")) {
-      let getInfoTags = async () => {
-        let res = await fetch("/tags", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nameTag: nameTag,
-          }),
-        });
-        let data = await res.json();
-        if (data.tags.length > 0) {
-          setMassivTags(data.tags);
-          setError("");
+    // if (userId !== null && getCookie("nickname")) {
+    let getInfoTags = async () => {
+      let res = await fetch("/tags", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nameTag: nameTag,
+        }),
+      });
+      let data = await res.json();
+      if (data.tags.length > 0) {
+        setMassivTags(data.tags);
+        setError("");
+      } else {
+        if (data.tags.length === 0 && nameTag !== "") {
+          setError("Такого тега не существует");
+          setMassivTags([]);
         } else {
-          if (data.tags.length === 0 && nameTag !== "") {
-            setError("Такого тега не существует");
-            setMassivTags([]);
-          } else {
-            setError("");
-          }
+          setError("");
         }
-      };
-      getInfoTags();
-    } else {
-      window.location.href = `http://localhost:3000/SignIn`;
-    }
+      }
+    };
+    getInfoTags();
+    // } else {
+    //   window.location.href = `http://localhost:3000/SignIn`;
+    // }
   }, [nameTag, userId]);
   const onSubmit = async (values: MyValues, actions: any) => {
     values.question_tags = nameTag;

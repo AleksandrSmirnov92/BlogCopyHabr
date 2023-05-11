@@ -113,40 +113,40 @@ const ProfileSettings: React.FC = () => {
   // ------------------------------------------------------------------------
 
   useEffect(() => {
-    if (userId !== null && getCookie("nickname")) {
-      const getSettingsInformation = async () => {
-        const res = await fetch(
-          `/getInformationAboutUser/${localStorage.getItem("userId")}`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const data = await res.json();
-        values.name = data.users.fullname;
-        setName(data.users.fullname);
-        values.lastName = data.users.lastname;
-        setLastName(data.users.lastname);
-        values.brieflyAboutYourself = data.users.briefly_about_yourself;
-        setBrieflyAboutYourself(data.users.briefly_about_yourself);
-        values.aboutMySelf = data.users.informattion_about_user;
-        setAboutMySelf(data.users.information_about_user);
-        values.contacts = data.users.contacts;
-        setContacts(data.users.contacts);
-        values.linkToContacts = data.users.linktocontacts;
-        setLinkContactsValue(data.users.linktocontacts);
-        values.country = data.users.country;
-        setCountry(data.users.country);
-        values.region = data.users.region;
-        setRegion(data.users.region);
-        values.town = data.users.town;
-        setTown(data.users.town);
-        setPathImg(data.users.img);
-      };
-      getSettingsInformation();
-    } else {
-      window.location.href = `http://localhost:3000/SignIn`;
-    }
+    // if (userId !== null && getCookie("nickname")) {
+    const getSettingsInformation = async () => {
+      const res = await fetch(
+        `/getInformationAboutUser/${localStorage.getItem("userId")}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await res.json();
+      values.name = data.users.fullname;
+      setName(data.users.fullname);
+      values.lastName = data.users.lastname;
+      setLastName(data.users.lastname);
+      values.brieflyAboutYourself = data.users.briefly_about_yourself;
+      setBrieflyAboutYourself(data.users.briefly_about_yourself);
+      values.aboutMySelf = data.users.informattion_about_user;
+      setAboutMySelf(data.users.information_about_user);
+      values.contacts = data.users.contacts;
+      setContacts(data.users.contacts);
+      values.linkToContacts = data.users.linktocontacts;
+      setLinkContactsValue(data.users.linktocontacts);
+      values.country = data.users.country;
+      setCountry(data.users.country);
+      values.region = data.users.region;
+      setRegion(data.users.region);
+      values.town = data.users.town;
+      setTown(data.users.town);
+      setPathImg(data.users.img);
+    };
+    getSettingsInformation();
+    // } else {
+    //   window.location.href = `http://localhost:3000/SignIn`;
+    // }
   }, [pathImg, userId]);
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
     useFormik<MyValues>({

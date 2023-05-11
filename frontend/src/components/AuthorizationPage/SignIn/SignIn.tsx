@@ -33,7 +33,7 @@ const SignIn: React.FC = () => {
           let date = new Date();
           date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
           let newCookie = `nickname=${
-            response.nickName
+            response.user.nickname
           };expires= ${date.toUTCString()};`;
           document.cookie = newCookie;
           localStorage.setItem(

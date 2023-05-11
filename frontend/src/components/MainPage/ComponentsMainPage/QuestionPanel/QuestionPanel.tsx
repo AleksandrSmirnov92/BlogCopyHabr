@@ -5,7 +5,6 @@ import userIdContext from "../../../Context/Context";
 import PlusImg from "../../../../images/plus.png";
 import SearchImg from "../../../../images/searh.png";
 import getCookie from "../../../../helpers/getCookie";
-
 interface Props {
   toggleClass: boolean;
   setHideNavImg: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +17,7 @@ const QuestionPanel: React.FC<Props> = ({
   toggleClass,
   setHideNavImg,
 }: Props) => {
-  const userId = useContext<Context>(userIdContext);
+  const { userId, setUserId } = useContext<Context>(userIdContext);
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
   const [inputValue, setInputValue] = useState("");
   const [collectionSearch, setCollectionSearch] = useState([]);
@@ -184,6 +183,11 @@ const QuestionPanel: React.FC<Props> = ({
             : "./SignIn"
         }
         className={`${QuestionPanelCSS.button} ${QuestionPanelCSS.hide_tablet}`}
+        onClick={() => {
+          if (getCookie("nickname") === "") {
+            window.location.href = `http://localhost:3000/SignIn`;
+          }
+        }}
       >
         Задать вопрос
       </NavLink>

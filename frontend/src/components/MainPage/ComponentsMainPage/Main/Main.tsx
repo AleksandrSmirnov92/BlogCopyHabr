@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
@@ -10,8 +10,32 @@ import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
 import QuestionInfo from "./MainComponents/AllQuestions/QuestionInfo/QuestionInfo";
-
+import getCookie from "../../../../helpers/getCookie";
+// import SignIn from "../../../AuthorizationPage/SignIn/SignIn";
 const Main = ({ toggleClass }: any) => {
+  let userId = localStorage.getItem("userId");
+  // let [checkAuthorization, setCheckAuthorization] = useState(
+  //   userId === null && !getCookie("nickname") ? false : true
+  // );
+  // let checkAuthorization = (
+  //   userId: string,
+  //   getCookie: (name: string) => string | RegExp
+  // ) => {
+  //   if (userId === null && !getCookie("nickname")) {
+  //     return false;
+  //   }
+  //   return true;
+  // };
+  const RequireAuth: any = ({ children }: any) => {
+    const userIsLogged =
+      userId === null && !getCookie("nickname") ? false : true;
+
+    if (!userIsLogged) {
+      return (window.location.href = `http://localhost:3000/SignIn`);
+    }
+    return children;
+  };
+
   return (
     <main
       className={
@@ -19,11 +43,32 @@ const Main = ({ toggleClass }: any) => {
       }
     >
       <Routes>
-        <Route path="/settingsProfil" element={<ProfileSettings />} />
+        <Route
+          path="/settingsProfil"
+          element={
+            <RequireAuth>
+              <ProfileSettings />
+            </RequireAuth>
+          }
+        />
         <Route path="/" element={<AllQuestions />} />
         <Route path="/questions" element={<AllQuestions />} />
-        <Route path="/askQuestions" element={<AskQuestion />} />
-        <Route path="/myFeed" element={<MyFeed />} />
+        <Route
+          path="/askQuestions"
+          element={
+            <RequireAuth>
+              <AskQuestion />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/myFeed"
+          element={
+            <RequireAuth>
+              <MyFeed />
+            </RequireAuth>
+          }
+        />
         <Route path="/tags" element={<Tags />} />
         <Route path="/tag/:tagId" element={<Tag />} />
         <Route path="/users" element={<Users />} />

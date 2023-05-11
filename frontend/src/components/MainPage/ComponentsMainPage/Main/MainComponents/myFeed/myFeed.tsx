@@ -3,29 +3,34 @@ import MyFeedCSS from "./myFeed.module.css";
 import Question from "../AllQuestions/Question/Question";
 import { NavLink } from "react-router-dom";
 import currentTime from "../../../../../../helpers/currentTime";
-import getCookie from "../../../../../../helpers/getCookie";
-const MyFeed = ({ checkId }: any) => {
+// import getCookie from "../../../../../../helpers/getCookie";
+const MyFeed = ({ checkAuthorization }: any) => {
   let [questions, setQuestions] = useState([]);
   let [navValue, setNavValue] = useState("Интересные");
   let userId = localStorage.getItem("userId");
+
   useEffect(() => {
-    if (userId !== null && getCookie("nickname")) {
-      let getMyQuestions = async () => {
-        const res = await fetch(`/myFeed`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: userId,
-          }),
-        });
-        const data = await res.json();
-        setQuestions(data.questions);
-      };
-      getMyQuestions();
-    } else {
-      window.location.href = `http://localhost:3000/SignIn`;
-    }
+    // if (userId !== null && getCookie("nickname")) {
+    // if (checkAuthorization(userId, getCookie)) {
+    let getMyQuestions = async () => {
+      const res = await fetch(`/myFeed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: userId,
+        }),
+      });
+      const data = await res.json();
+      setQuestions(data.questions);
+    };
+    getMyQuestions();
+    // }
+    // }
+    // else {
+    //   window.location.href = `http://localhost:3000/SignIn`;
+    // }
   }, [userId]);
+
   return (
     <div className={MyFeedCSS["main-container"]}>
       <h3>Моя лента</h3>
