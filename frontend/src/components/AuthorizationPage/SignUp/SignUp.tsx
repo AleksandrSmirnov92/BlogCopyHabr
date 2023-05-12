@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik, FormikValues } from "formik";
 import { schemaForSignUp } from "../../Schemas/SchemaSignUp";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import SignUpCSS from "./SignUp.module.css";
 interface MyValues {
   email: string;
@@ -14,6 +14,7 @@ interface Error {
   message: string;
 }
 const SignUp: React.FC = () => {
+  let navigate = useNavigate();
   const [error, setError] = useState<Error>({ status: "", message: "" });
   const onSubmit = async (values: MyValues, actions: FormikValues) => {
     fetch("/signUp", {
@@ -29,7 +30,8 @@ const SignUp: React.FC = () => {
       .then((response) => {
         if (response.status === "SUCCESS") {
           setTimeout(() => {
-            window.location.href = "http://localhost:3000/myFeed";
+            // window.location.href = "http://localhost:3000/myFeed";
+            navigate("/myFeed");
           }, 1000);
           let date = new Date();
           date.setTime(date.getTime() + 24 * 60 * 60 * 1000);

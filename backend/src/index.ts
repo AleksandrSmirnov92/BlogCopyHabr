@@ -23,7 +23,9 @@ const path = require("path");
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
+// app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
+app.use(express.static(path.join(__dirname, "/Frontend/build/")));
+// console.log(path.join(__dirname,"/Frontend/build/index.html");
 app.use(fileUpload());
 
 app.use("/signIn", signInRouter);
@@ -57,4 +59,5 @@ app.use("/questions", getAllQuestions);
 app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
+
 module.exports = app;
