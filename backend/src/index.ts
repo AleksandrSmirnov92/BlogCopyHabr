@@ -59,5 +59,14 @@ app.use("/questions", getAllQuestions);
 app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
-
+app.get("/*", function (req, res) {
+  res.sendFile(
+    path.join(__dirname, "/Frontend/build/index.html"),
+    function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
+});
 module.exports = app;
