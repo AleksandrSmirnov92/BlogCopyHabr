@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
 import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";
@@ -9,20 +9,32 @@ import Tag from "./MainComponents/Tags/Tag/Tag";
 import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
+// import SignIn from "../../../AuthorizationPage/SignIn/SignIn";
 import QuestionInfo from "./MainComponents/AllQuestions/QuestionInfo/QuestionInfo";
 import getCookie from "../../../../helpers/getCookie";
+
 const Main = ({ toggleClass }: any) => {
-  let userId = localStorage.getItem("userId");
+  // let navigate = useNavigate();
+  // let [userIsLogged, setUseuserIsLogged] = useState(null);
   const RequireAuth: any = ({ children }: any) => {
-    const userIsLogged =
-      userId === null && !getCookie("nickname") ? false : true;
-
-    if (!userIsLogged) {
-      return (window.location.href = `http://localhost:3000/SignIn`);
+    let userIsLogged =
+      localStorage.getItem("userId") === null && getCookie("nickname") === ""
+        ? true
+        : false;
+    if (userIsLogged) {
+      console.log(window.location);
+      return (window.location.href = `http://${window.location.host}/SignIn`);
+    } else {
+      return children;
     }
-    return children;
   };
-
+  // useEffect(() => {
+  //   setUseuserIsLogged(
+  //     localStorage.getItem("userId") === null && getCookie("nickname") === ""
+  //       ? true
+  //       : false
+  //   );
+  // }, [userIsLogged]);
   return (
     <main
       className={

@@ -89,22 +89,18 @@ const Navigation: React.FC<Props> = ({
           }
         >
           <li className={NavigationCSS.profil}>
-            <a
-              href={`http://localhost:3000/users/${localStorage.getItem(
-                "userId"
-              )}`}
+            <NavLink
+              to={`/users/${localStorage.getItem("userId")}`}
               className={NavigationCSS.profil_photo}
             >
               <img src={pathImg !== "" ? pathImg : ProfileImg} alt="" />
-            </a>
-            <a
-              href={`http://localhost:3000/users/${localStorage.getItem(
-                "userId"
-              )}`}
+            </NavLink>
+            <NavLink
+              to={`/users/${localStorage.getItem("userId")}`}
               className={NavigationCSS.profil_nickname}
             >
               {`${fullName} ${lastName}`}
-            </a>
+            </NavLink>
           </li>
           <NavLink
             to="./settingsProfil"

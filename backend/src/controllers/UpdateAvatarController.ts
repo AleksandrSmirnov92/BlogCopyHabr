@@ -55,7 +55,7 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
   const apdateAboutUser = await supabase
     .from("about_user")
     .update({ img: `` })
-    .eq("user_id_from_users", id);
+    .eq("user_id", id);
   let filePath = req.body.path;
   const pathUpload = path.resolve(
     __dirname,

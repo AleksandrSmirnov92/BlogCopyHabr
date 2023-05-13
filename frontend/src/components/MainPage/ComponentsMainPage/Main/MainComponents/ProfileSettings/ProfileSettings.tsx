@@ -105,9 +105,7 @@ const ProfileSettings: React.FC = () => {
       }),
     });
     setTimeout(() => {
-      window.location.href = `http://localhost:3000/users/${localStorage.getItem(
-        "userId"
-      )}`;
+      window.location.href = `/users/${localStorage.getItem("userId")}`;
     }, 500);
   };
   // ------------------------------------------------------------------------

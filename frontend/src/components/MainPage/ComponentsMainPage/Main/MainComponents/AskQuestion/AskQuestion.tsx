@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 import { schemaForAskQuestions } from "../../../../../Schemas/SchemaAskQuestions";
 import AskQuestionsCSS from "./AskQuestion.module.css";
 import userIdContext from "../../../../../Context/Context";
-import getCookie from "../../../../../../helpers/getCookie";
+// import getCookie from "../../../../../../helpers/getCookie";
+
 interface MyValues {
   question_title: string;
   question_tags: string;
@@ -14,31 +16,33 @@ interface Context {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
-let createQuestion = async (values: any) => {
-  let res = await fetch("/createQuestion", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      questionTitle: values.question_title,
-      questionTags: values.question_tags,
-      questionDetails: values.question_details,
-      question_id: values.question_id,
-      userId: localStorage.getItem("userId"),
-    }),
-  });
-  let data = await res.json();
-  if (data.status === "SUCCESS") {
-    setTimeout(() => {
-      window.location.href = "http://localhost:3000/questions";
-    });
-  }
-};
+
 const AskQuestion = () => {
+  let navigate = useNavigate();
   const userId = useContext<Context>(userIdContext);
   let [nameTag, setNameTag] = useState("");
   let [correctNameTag, setCorrectNameTag] = useState("");
   let [error, setError] = useState("");
   let [massivTags, setMassivTags] = useState([]);
+  let createQuestion = async (values: any) => {
+    let res = await fetch("/createQuestion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        questionTitle: values.question_title,
+        questionTags: values.question_tags,
+        questionDetails: values.question_details,
+        question_id: values.question_id,
+        userId: localStorage.getItem("userId"),
+      }),
+    });
+    let data = await res.json();
+    if (data.status === "SUCCESS") {
+      setTimeout(() => {
+        navigate("/questions");
+      });
+    }
+  };
   useEffect(() => {
     let getInfoTags = async () => {
       let res = await fetch("/tags", {

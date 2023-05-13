@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import QuestionPanelCSS from "./QuestionPanel.module.css";
 import userIdContext from "../../../Context/Context";
 import PlusImg from "../../../../images/plus.png";
@@ -17,6 +17,7 @@ const QuestionPanel: React.FC<Props> = ({
   toggleClass,
   setHideNavImg,
 }: Props) => {
+  let navigate = useNavigate();
   const { userId, setUserId } = useContext<Context>(userIdContext);
   const [classHideSearch, setClassHideSearch] = useState("hide_search");
   const [inputValue, setInputValue] = useState("");
@@ -69,10 +70,11 @@ const QuestionPanel: React.FC<Props> = ({
           <ul className={QuestionPanelCSS.show_search__menu}>
             {collectionSearch.map((item, index): any => {
               return (
-                <a
-                  href={`http://localhost:3000/${item.route}/${item.id}`}
+                <NavLink
+                  to={`/${item.route}/${item.id}`}
                   onClick={() => {
                     setInputValue("");
+                    setCollectionSearch([]);
                   }}
                   key={index}
                 >
@@ -95,7 +97,7 @@ const QuestionPanel: React.FC<Props> = ({
                       </span>
                     </div>
                   </li>
-                </a>
+                </NavLink>
               );
             })}
           </ul>
@@ -142,10 +144,11 @@ const QuestionPanel: React.FC<Props> = ({
           <ul className={`${QuestionPanelCSS.form_control__search_menu}`}>
             {collectionSearch.map((item, index): any => {
               return (
-                <a
-                  href={`http://localhost:3000/${item.route}/${item.id}`}
+                <NavLink
+                  to={`/${item.route}/${item.id}`}
                   onClick={() => {
                     setInputValue("");
+                    setCollectionSearch([]);
                   }}
                   key={index}
                 >
@@ -170,27 +173,32 @@ const QuestionPanel: React.FC<Props> = ({
                       </span>
                     </div>
                   </li>
-                </a>
+                </NavLink>
               );
             })}
           </ul>
         </div>
       </div>
-      <NavLink
-        to={
-          userId !== null && getCookie("nickname")
-            ? "./askQuestions"
-            : "./SignIn"
-        }
+      <button
         className={`${QuestionPanelCSS.button} ${QuestionPanelCSS.hide_tablet}`}
         onClick={() => {
-          if (getCookie("nickname") === "") {
-            window.location.href = `http://localhost:3000/SignIn`;
+          if (
+            localStorage.getItem("userId") !== null &&
+            getCookie("nickname") !== ""
+          ) {
+            console.log("ask");
+
+            navigate(`/askQuestions`);
+          } else {
+            console.log(userId !== null);
+            console.log(localStorage.getItem("userId"));
+            navigate(`/SignIn`);
+            console.log("sign");
           }
         }}
       >
         Задать вопрос
-      </NavLink>
+      </button>
       <div
         className={`${QuestionPanelCSS.header__toolbar} ${QuestionPanelCSS.show_tablet}`}
       >
@@ -204,20 +212,20 @@ const QuestionPanel: React.FC<Props> = ({
           alt=""
           className={`${QuestionPanelCSS.searh_img} ${QuestionPanelCSS.show_mobile}`}
         />
-        <NavLink
-          to={
-            userId !== null && getCookie("nickname")
-              ? "./askQuestions"
-              : "./SignIn"
-          }
+        <button
           onClick={() => {
-            if (getCookie("nickname") === "") {
-              window.location.href = `http://localhost:3000/SignIn`;
+            if (
+              localStorage.getItem("userId") !== null &&
+              getCookie("nickname") !== ""
+            ) {
+              navigate(`/askQuestions`);
+            } else {
+              navigate(`/SignIn`);
             }
           }}
         >
           <img src={PlusImg} alt="" className={QuestionPanelCSS.plus_img} />
-        </NavLink>
+        </button>
       </div>
     </div>
   );

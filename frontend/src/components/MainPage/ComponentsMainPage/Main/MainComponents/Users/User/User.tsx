@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserCSS from "./User.module.css";
 import photoProfilIMG from "../../../../../../../images/photoProfil.png";
 import Question from "../../AllQuestions/Question/Question";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, Link, NavLink } from "react-router-dom";
 import currentTime from "../../../../../../../helpers/currentTime";
 interface ResponseData {
   message: string;
@@ -112,12 +112,12 @@ const User: React.FC = () => {
   return (
     <div className={`${UserCSS["user-container"]}`}>
       <header className={`${UserCSS["user-header"]}`}>
-        <a
-          href={`http://localhost:3000/users/${localStorage.getItem("userId")}`}
+        <NavLink
+          to={`/users/${localStorage.getItem("userId")}`}
           className={`${UserCSS["user-header__image"]}`}
         >
           <img src={pathImg === "" ? photoProfilIMG : pathImg} alt="" />
-        </a>
+        </NavLink>
         <span
           className={`${UserCSS["user-header__title"]} ${UserCSS["user-header__title_size"]}`}
         >
