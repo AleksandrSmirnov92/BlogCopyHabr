@@ -25,6 +25,7 @@ app.use(cors());
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 app.use(express.static(path.join(__dirname, "/Frontend/build/")));
+console.log(__dirname);
 // console.log(path.join(__dirname,"/Frontend/build/index.html");
 app.use(fileUpload());
 
