@@ -213,6 +213,7 @@ const QuestionPanel: React.FC<Props> = ({
           className={`${QuestionPanelCSS.searh_img} ${QuestionPanelCSS.show_mobile}`}
         />
         <button
+          className={QuestionPanelCSS["btn__plus-img"]}
           onClick={() => {
             if (
               localStorage.getItem("userId") !== null &&

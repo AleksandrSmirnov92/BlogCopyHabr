@@ -1,6 +1,11 @@
 h1 {
   margin: 0;
 }
+.btn__plus-img {
+  padding: 0;
+  border: none;
+  height: 24px;
+}
 .question_panel {
   z-index: 1;
   min-width: 380px;
@@ -57,6 +62,7 @@ h1 {
   font-size: 1vw;
   border: none;
   color: #ffff;
+  font-family: toster-text, Helvetica, Arial, sans-serif;
 }
 .button:hover {
   background-color: #0f6a53;
@@ -165,7 +171,7 @@ h1 {
 }
 .plus_img {
   width: 24px;
-  height: 24px;
+  height: 100%;
 }
 li {
   list-style-type: none;

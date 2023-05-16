@@ -8,6 +8,7 @@ import allTagsIMG from "../../../../images/allTags.png";
 import usersIMG from "../../../../images/users.png";
 import ProfileImg from "../../../../images/photoProfil.png";
 import NavImg from "../../../../images/nav.png";
+
 import { NavLink } from "react-router-dom";
 import getCookie from "../../../../helpers/getCookie";
 
@@ -110,7 +111,9 @@ const Navigation: React.FC<Props> = ({
             }}
           >
             <li className={NavigationCSS.profil_settings}>
-              <img src={SettingsIMG} alt="" className={NavigationCSS.nav_img} />
+              <div className={NavigationCSS.nav_img}>
+                <img src={SettingsIMG} alt="" />
+              </div>
               Настройки
             </li>
           </NavLink>
@@ -123,7 +126,9 @@ const Navigation: React.FC<Props> = ({
             }}
           >
             <li className={NavigationCSS.profil_settings}>
-              <img src={ExitIMG} alt="" className={NavigationCSS.nav_img} />
+              <div className={NavigationCSS.nav_img}>
+                <img src={ExitIMG} alt="" />
+              </div>
               Выход
             </li>
           </NavLink>
@@ -133,7 +138,9 @@ const Navigation: React.FC<Props> = ({
             onClick={() => setToggleClass((prevState: boolean) => !prevState)}
           >
             <li className={NavigationCSS.nav_li}>
-              <img src={allTagsIMG} alt="" className={NavigationCSS.nav_img} />
+              <div className={NavigationCSS.nav_img}>
+                <img src={allTagsIMG} alt="" />
+              </div>
               Моя лента
             </li>
           </NavLink>
@@ -149,7 +156,9 @@ const Navigation: React.FC<Props> = ({
         >
           <li className={NavigationCSS.profil_signin}>
             <NavLink to="/SignIn" className={NavigationCSS.nav_a}>
-              <img src={signInIMG} alt="" className={NavigationCSS.nav_img} />
+              <div className={NavigationCSS.nav_img}>
+                <img src={signInIMG} alt="" />
+              </div>
               Войти на сайт
             </NavLink>
           </li>
@@ -160,11 +169,9 @@ const Navigation: React.FC<Props> = ({
           onClick={() => setToggleClass((prevState: boolean) => !prevState)}
         >
           <li className={NavigationCSS.nav_li}>
-            <img
-              src={allQuestionsIMG}
-              alt=""
-              className={NavigationCSS.nav_img}
-            />
+            <div className={NavigationCSS.nav_img}>
+              <img src={allQuestionsIMG} alt="" />
+            </div>
             Все вопросы
           </li>
         </NavLink>
@@ -174,7 +181,10 @@ const Navigation: React.FC<Props> = ({
           onClick={() => setToggleClass((prevState: boolean) => !prevState)}
         >
           <li className={NavigationCSS.nav_li}>
-            <img src={allTagsIMG} alt="" className={NavigationCSS.nav_img} />
+            <div className={NavigationCSS.nav_img}>
+              {" "}
+              <img src={allTagsIMG} alt="" />
+            </div>
             Все теги
           </li>
         </NavLink>
@@ -184,7 +194,9 @@ const Navigation: React.FC<Props> = ({
           onClick={() => setToggleClass((prevState: boolean) => !prevState)}
         >
           <li className={NavigationCSS.nav_li}>
-            <img src={usersIMG} alt="" className={NavigationCSS.nav_img} />
+            <div>
+              <img src={usersIMG} alt="" className={NavigationCSS.nav_img} />
+            </div>
             Пользователи
           </li>
         </NavLink>

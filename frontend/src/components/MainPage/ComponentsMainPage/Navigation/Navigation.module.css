@@ -24,15 +24,29 @@ ul {
   width: 17px;
   height: 17px;
 }
+.nav_img > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .nav_li {
+  display: flex;
+  font-family: toster-text, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.5rem;
   list-style-type: none;
   padding: 10px 30px 10px 20px;
 }
 .nav_a {
+  display: flex;
+  font-family: toster-text, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.5rem;
   text-decoration: none;
-  font-size: 17px;
-  font-weight: 800;
+
   color: #a7b3cb;
 }
 .nav_a:hover {
@@ -65,9 +79,12 @@ ul {
   object-fit: cover;
 }
 .profil_nickname {
+  font-family: toster-text, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  line-height: 1.5rem;
   padding-right: 20px;
-  font-size: 17px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
   text-decoration: none;
   color: #fff;
 }
@@ -75,6 +92,12 @@ ul {
   text-decoration: underline;
 }
 .profil_settings {
+  display: flex;
+  width: 100%;
+  font-family: toster-text, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5rem;
   color: white;
   list-style-type: none;
   padding: 10px 30px 10px 20px;

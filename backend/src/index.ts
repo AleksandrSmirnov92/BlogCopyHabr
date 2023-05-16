@@ -24,9 +24,9 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
-app.use(express.static(path.join(__dirname, "/Frontend/build/")));
-console.log(__dirname);
-// console.log(path.join(__dirname,"/Frontend/build/index.html");
+// app.use(express.static(path.join(__dirname, "/Frontend/build/")));
+app.use(express.static(path.join(__dirname, "../Frontend/build/")));
+// console.log(path.join(__dirname,"../Front/build");
 app.use(fileUpload());
 
 app.use("/signIn", signInRouter);
@@ -62,7 +62,7 @@ app.use("/getQuestionsId", getAllQuestionsId);
 app.use("/getAllInfo", getAllInfo);
 app.get("/*", function (req, res) {
   res.sendFile(
-    path.join(__dirname, "/Frontend/build/index.html"),
+    path.join(__dirname, "../Frontend/build/index.html"),
     function (err) {
       if (err) {
         res.status(500).send(err);

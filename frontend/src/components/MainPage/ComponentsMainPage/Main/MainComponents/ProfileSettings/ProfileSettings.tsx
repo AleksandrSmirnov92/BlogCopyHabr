@@ -4,7 +4,6 @@ import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSe
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
 import userIdContext from "../../../../../Context/Context";
-// import getCookie from "../../../../../../helpers/getCookie";
 interface MyValues {
   img: string;
   name: string;
@@ -67,6 +66,7 @@ const ProfileSettings: React.FC = () => {
       body: formData,
     });
     const data = await res.json();
+    console.log(data.filePath);
     setPathImg(data.filePath);
   };
   // -----------------------------------------------

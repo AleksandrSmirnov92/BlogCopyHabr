@@ -5,6 +5,9 @@ const fs = require("fs");
 interface MulterRequest extends Request {
   files: any;
 }
+interface DeleteAvatar {
+  filePath: string;
+}
 interface UploadAvatarResponse {
   message?: string;
   filePath?: string;
@@ -16,14 +19,20 @@ exports.uploadAvatar = async (
 ) => {
   let { id } = req.params;
   const file = (req as MulterRequest).files.file;
+
   const apdateAboutUser = await supabase
     .from("about_user")
     .update({ img: `/uploads/${file.name}` })
     .eq("user_id", id);
+  // const pathUpload = path.resolve(
+  //   __dirname,
+  //   "../../../Frontend/public/uploads"
+  // );
   const pathUpload = path.resolve(
     __dirname,
-    "../../../Frontend/public/uploads"
+    "../../../Backend/Frontend/build/uploads/"
   );
+  console.log(pathUpload);
   if (!(req as MulterRequest).files) {
     return res.status(404).json({
       message: "Загрузите фотографию",
@@ -32,24 +41,20 @@ exports.uploadAvatar = async (
   if (fs.existsSync(`${pathUpload}/${file.name}`)) {
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
+      // filePath: `../../../../../../uploads/${file.name}`,
     });
   }
-  file.mv(
-    `${pathUpload}/${file.name}`,
-
-    (err: Error) => {
-      if (err) {
-        return res.status(500).json({ err: err });
-      }
-      return res.status(200).json({
-        filePath: `/uploads/${file.name}`,
-      });
+  file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
+    if (err) {
+      return res.status(500).json({ err: err });
     }
-  );
+    return res.status(200).json({
+      filePath: `/uploads/${file.name}`,
+      // filePath: `../../../../../../uploads/${file.name}`,
+    });
+  });
 };
-interface DeleteAvatar {
-  filePath: string;
-}
+
 exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
   let { id } = req.params;
   const apdateAboutUser = await supabase
@@ -57,9 +62,13 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
     .update({ img: `` })
     .eq("user_id", id);
   let filePath = req.body.path;
+  // const pathUpload = path.resolve(
+  //   __dirname,
+  //   `../../../Frontend/public/${filePath}`
+  // );
   const pathUpload = path.resolve(
     __dirname,
-    `../../../Frontend/public/${filePath}`
+    `../../../Backend/Frontend/build/${filePath}`
   );
   fs.unlink(pathUpload, (err: Error) => {
     if (err) {
