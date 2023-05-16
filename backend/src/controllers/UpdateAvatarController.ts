@@ -28,11 +28,14 @@ exports.uploadAvatar = async (
   //   __dirname,
   //   "../../../Frontend/public/uploads"
   // );
+  // const pathUpload = path.resolve(
+  //   __dirname,
+  //   "../../../Backend/Frontend/build/uploads/"
+  // );
   const pathUpload = path.resolve(
     __dirname,
-    "../../../Backend/Frontend/build/uploads/"
+    "../../../Backend/Frontend/uploads/"
   );
-  console.log(pathUpload);
   if (!(req as MulterRequest).files) {
     return res.status(404).json({
       message: "Загрузите фотографию",
@@ -66,9 +69,13 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
   //   __dirname,
   //   `../../../Frontend/public/${filePath}`
   // );
+  // const pathUpload = path.resolve(
+  //   __dirname,
+  //   `../../../Backend/Frontend/build/${filePath}`
+  // );
   const pathUpload = path.resolve(
     __dirname,
-    `../../../Backend/Frontend/build/${filePath}`
+    `../../../Backend/Frontend/${filePath}`
   );
   fs.unlink(pathUpload, (err: Error) => {
     if (err) {

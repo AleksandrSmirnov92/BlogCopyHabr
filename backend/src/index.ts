@@ -26,7 +26,7 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 // app.use(express.static(path.join(__dirname, "/Frontend/build/")));
 app.use(express.static(path.join(__dirname, "../Frontend/build/")));
-// console.log(path.join(__dirname,"../Front/build");
+app.use(express.static(path.join(__dirname, "../Frontend/")));
 app.use(fileUpload());
 
 app.use("/signIn", signInRouter);

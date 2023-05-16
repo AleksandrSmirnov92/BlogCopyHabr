@@ -1,9 +1,10 @@
-import express from "express";
+import express, { Router } from "express";
+const router: Router = express.Router();
 const {
   getAllQuestions,
   getAllQuestionsId,
 } = require("../controllers/GetAllQuestionsController");
-let Router = express.Router();
-Router.route("/").get(getAllQuestions);
-Router.route("/:id").get(getAllQuestionsId);
-module.exports = Router;
+
+router.route("/").get(getAllQuestions);
+router.route("/:id").get(getAllQuestionsId);
+module.exports = router;
