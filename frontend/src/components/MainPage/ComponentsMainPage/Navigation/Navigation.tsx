@@ -8,7 +8,7 @@ import allTagsIMG from "../../../../images/allTags.png";
 import usersIMG from "../../../../images/users.png";
 import ProfileImg from "../../../../images/photoProfil.png";
 import NavImg from "../../../../images/nav.png";
-
+import MyFeedImg from "../../../../images/myFeed.png";
 import { NavLink } from "react-router-dom";
 import getCookie from "../../../../helpers/getCookie";
 
@@ -77,7 +77,9 @@ const Navigation: React.FC<Props> = ({
           src={NavImg}
           alt=""
           className={
-            hideNavImg ? NavigationCSS.hide_img : NavigationCSS.nav_img
+            hideNavImg
+              ? NavigationCSS.hide_img
+              : `${NavigationCSS["nav-element__image"]}`
           }
         />
       </div>
@@ -105,44 +107,50 @@ const Navigation: React.FC<Props> = ({
           </li>
           <NavLink
             to="./settingsProfil"
-            className={(NavigationCSS.profil_settings, NavigationCSS.nav_a)}
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover-backgroung"]}`}
             onClick={() => {
               setToggleClass((prevState: boolean) => !prevState);
             }}
           >
-            <li className={NavigationCSS.profil_settings}>
-              <div className={NavigationCSS.nav_img}>
-                <img src={SettingsIMG} alt="" />
-              </div>
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={SettingsIMG} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-white"]}`}
+            >
               Настройки
-            </li>
+            </span>
           </NavLink>
           <NavLink
             to="./questions"
-            className={NavigationCSS.nav_a}
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover-backgroung"]}`}
             onClick={() => {
               exit();
               setToggleClass((prevState: boolean) => !prevState);
             }}
           >
-            <li className={NavigationCSS.profil_settings}>
-              <div className={NavigationCSS.nav_img}>
-                <img src={ExitIMG} alt="" />
-              </div>
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={ExitIMG} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-white"]}`}
+            >
               Выход
-            </li>
+            </span>
           </NavLink>
           <NavLink
             to="./myFeed"
-            className={NavigationCSS.nav_a}
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
             onClick={() => setToggleClass((prevState: boolean) => !prevState)}
           >
-            <li className={NavigationCSS.nav_li}>
-              <div className={NavigationCSS.nav_img}>
-                <img src={allTagsIMG} alt="" />
-              </div>
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={MyFeedImg} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-grey"]}`}
+            >
               Моя лента
-            </li>
+            </span>
           </NavLink>
         </div>
 
@@ -154,51 +162,56 @@ const Navigation: React.FC<Props> = ({
               : NavigationCSS.profil_block
           }
         >
-          <li className={NavigationCSS.profil_signin}>
-            <NavLink to="/SignIn" className={NavigationCSS.nav_a}>
-              <div className={NavigationCSS.nav_img}>
-                <img src={signInIMG} alt="" />
-              </div>
+          <NavLink
+            to="/SignIn"
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_pd"]}`}
+          >
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={signInIMG} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-grey"]}`}
+            >
               Войти на сайт
-            </NavLink>
-          </li>
+            </span>
+          </NavLink>
         </div>
         <NavLink
           to="/questions"
-          className={NavigationCSS.nav_a}
+          className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
           onClick={() => setToggleClass((prevState: boolean) => !prevState)}
         >
-          <li className={NavigationCSS.nav_li}>
-            <div className={NavigationCSS.nav_img}>
-              <img src={allQuestionsIMG} alt="" />
-            </div>
+          <div className={`${NavigationCSS["nav-element__image"]}`}>
+            <img src={allQuestionsIMG} alt="" />
+          </div>
+          <span className={`${NavigationCSS["nav-element__text_color-grey"]}`}>
             Все вопросы
-          </li>
+          </span>
         </NavLink>
         <NavLink
           to="./tags"
-          className={NavigationCSS.nav_a}
+          className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
           onClick={() => setToggleClass((prevState: boolean) => !prevState)}
         >
-          <li className={NavigationCSS.nav_li}>
-            <div className={NavigationCSS.nav_img}>
-              {" "}
-              <img src={allTagsIMG} alt="" />
-            </div>
+          <div className={`${NavigationCSS["nav-element__image"]}`}>
+            {" "}
+            <img src={allTagsIMG} alt="" />
+          </div>
+          <span className={`${NavigationCSS["nav-element__text_color-grey"]}`}>
             Все теги
-          </li>
+          </span>
         </NavLink>
         <NavLink
           to="./users"
-          className={NavigationCSS.nav_a}
+          className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
           onClick={() => setToggleClass((prevState: boolean) => !prevState)}
         >
-          <li className={NavigationCSS.nav_li}>
-            <div>
-              <img src={usersIMG} alt="" className={NavigationCSS.nav_img} />
-            </div>
+          <div className={`${NavigationCSS["nav-element__image"]}`}>
+            <img src={usersIMG} alt="" />
+          </div>
+          <span className={`${NavigationCSS["nav-element__text_color-grey"]}`}>
             Пользователи
-          </li>
+          </span>
         </NavLink>
       </ul>
     </nav>

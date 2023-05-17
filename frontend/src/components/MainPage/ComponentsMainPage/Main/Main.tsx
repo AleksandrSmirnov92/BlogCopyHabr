@@ -1,9 +1,10 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
 import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";
 import AskQuestion from "./MainComponents/AskQuestion/AskQuestion";
+
 import Tags from "./MainComponents/Tags/Tags";
 import Tag from "./MainComponents/Tags/Tag/Tag";
 import Users from "./MainComponents/Users/Users";
@@ -42,6 +43,8 @@ const Main = ({ toggleClass }: any) => {
       }
     >
       <Routes>
+        {/* <Route path="/*" element={<AllQuestions />} /> */}
+
         <Route
           path="/settingsProfil"
           element={
@@ -67,8 +70,11 @@ const Main = ({ toggleClass }: any) => {
             </RequireAuth>
           }
         />
-        <Route path="/*" element={<AllQuestions />} />
         <Route path="/questions" element={<AllQuestions />} />
+        <Route
+          path="/*"
+          element={<Navigate to="/questions" replace={true} />}
+        />
         <Route path="/tags" element={<Tags />} />
         <Route path="/tag/:tagId" element={<Tag />} />
         <Route path="/users" element={<Users />} />

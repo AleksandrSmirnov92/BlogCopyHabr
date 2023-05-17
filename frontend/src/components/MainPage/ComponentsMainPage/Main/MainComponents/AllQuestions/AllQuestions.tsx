@@ -6,18 +6,35 @@ import currentTime from "../../../../../../helpers/currentTime";
 const AllQuestions = () => {
   let [questions, setQuestions] = useState([]);
   let [valueLink, setValueLink] = useState("Новые вопросы");
-
+  const getQuestions = async () => {
+    const res = await fetch(`/questions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: localStorage.getItem("userId") }),
+    });
+    const data = await res.json();
+    setQuestions(data.questions);
+  };
   useEffect(() => {
-    const getQuestions = async () => {
-      const res = await fetch(`/questions`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await res.json();
-      setQuestions(data.questions);
-    };
     getQuestions();
-  }, [questions]);
+  }, []);
+
+  // const getQuestions = async () => {
+  //   const res = await fetch(`/questions`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   const data = await res.json();
+  //   setQuestions(data.questions);
+  // };
+  // useEffect(() => {
+  //   getQuestions();
+  // }, []);
+
   return (
     <div className={AllQuestionsCSS["questions-container"]}>
       <h3>Все Вопросы</h3>

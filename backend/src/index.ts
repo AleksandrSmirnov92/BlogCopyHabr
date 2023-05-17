@@ -1,6 +1,9 @@
 import express from "express";
+import { nextTick } from "process";
 const fileUpload = require("express-fileupload");
 const app = express();
+
+// app.disable("etag");
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
 const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
@@ -20,13 +23,15 @@ const getAllInfo = require("../dist/Routes/LiveSearchNavigationRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 // app.use(express.static(path.join(__dirname, "/Frontend/build/")));
-app.use(express.static(path.join(__dirname, "../Frontend/build/")));
 app.use(express.static(path.join(__dirname, "../Frontend/")));
+app.use(express.static(path.join(__dirname, "../Frontend/build/")));
+
 app.use(fileUpload());
 
 app.use("/signIn", signInRouter);
@@ -60,6 +65,7 @@ app.use("/questions", getAllQuestions);
 app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
+
 app.get("/*", function (req, res) {
   res.sendFile(
     path.join(__dirname, "../Frontend/build/index.html"),
@@ -70,4 +76,5 @@ app.get("/*", function (req, res) {
     }
   );
 });
+
 module.exports = app;

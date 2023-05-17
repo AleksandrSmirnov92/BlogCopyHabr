@@ -34,7 +34,7 @@ exports.uploadAvatar = async (
   // );
   const pathUpload = path.resolve(
     __dirname,
-    "../../../Backend/Frontend/uploads/"
+    "../../../Backend/Frontend/uploads"
   );
   if (!(req as MulterRequest).files) {
     return res.status(404).json({

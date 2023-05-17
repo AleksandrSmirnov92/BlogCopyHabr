@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
+const app = express();
 import { supabase } from "../config/usersDataBase.js";
+
 exports.getAllQuestions = async (req: Request, res: Response) => {
   let getQuestions = await supabase
     .from("questions")
