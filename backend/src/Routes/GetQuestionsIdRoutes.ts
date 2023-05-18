@@ -1,5 +1,5 @@
 import express from "express";
 const Router = express.Router();
-let { GetQuestionsId } = require("../controllers/GetQuestionsIdController");
-Router.route("/:id").get(GetQuestionsId);
+let { getQuestionsId } = require("../controllers/GetQuestionsIdController");
+Router.route("/:id").get(getQuestionsId);
 module.exports = Router;

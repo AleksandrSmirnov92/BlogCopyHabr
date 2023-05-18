@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { supabase } from "../config/usersDataBase.js";
-exports.GetQuestionsId = async (req: Request, res: Response) => {
+exports.getQuestionsId = async (req: Request, res: Response) => {
   let { id } = req.params;
   let getTagInfo = await supabase
     .from("questions")
