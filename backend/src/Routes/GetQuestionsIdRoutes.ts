@@ -1,8 +1,5 @@
-import express, { Router } from "express";
-
-const router: Router = express.Router();
-const {
-  GetQuestionsId,
-} = require("../../dist/controllers/GetQuestionsIdController");
-router.route("/:id").get(GetQuestionsId);
-module.exports = router;
+import express from "express";
+const Router = express.Router();
+let { GetQuestionsId } = require("../controllers/GetQuestionsIdController");
+Router.route("/:id").get(GetQuestionsId);
+module.exports = Router;
