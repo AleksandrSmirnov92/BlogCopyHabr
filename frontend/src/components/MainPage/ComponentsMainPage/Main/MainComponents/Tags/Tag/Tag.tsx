@@ -24,6 +24,7 @@ const Tag: React.FC = () => {
   let [linkValue, setLinkValue] = useState(question ? `Вопросы` : "Информация");
   useEffect(() => {
     if (linkValue === "Вопросы") {
+      console.log("log");
       let getInformationQuestion = async () => {
         let res = await fetch(`/getQuestionsId/${tagId}`, {
           method: "GET",
