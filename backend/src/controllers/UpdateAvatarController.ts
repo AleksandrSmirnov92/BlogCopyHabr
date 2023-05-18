@@ -24,14 +24,6 @@ exports.uploadAvatar = async (
     .from("about_user")
     .update({ img: `/uploads/${file.name}` })
     .eq("user_id", id);
-  // const pathUpload = path.resolve(
-  //   __dirname,
-  //   "../../../Frontend/public/uploads"
-  // );
-  // const pathUpload = path.resolve(
-  //   __dirname,
-  //   "../../../Backend/Frontend/build/uploads/"
-  // );
   const pathUpload = path.resolve(
     __dirname,
     "../../../Backend/Frontend/uploads"
@@ -44,7 +36,6 @@ exports.uploadAvatar = async (
   if (fs.existsSync(`${pathUpload}/${file.name}`)) {
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
-      // filePath: `../../../../../../uploads/${file.name}`,
     });
   }
   file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
@@ -53,7 +44,6 @@ exports.uploadAvatar = async (
     }
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
-      // filePath: `../../../../../../uploads/${file.name}`,
     });
   });
 };
