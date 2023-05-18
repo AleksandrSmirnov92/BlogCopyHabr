@@ -1,4 +1,4 @@
-let express = require("express");
+import express from "express";
 const Router = express.Router();
 let { getQuestions } = require("../controllers/GetQuestionsIdController");
 Router.route("/:id").get(getQuestions);
