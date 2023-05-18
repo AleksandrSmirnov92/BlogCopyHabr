@@ -4,19 +4,15 @@ import MainCSS from "./Main.module.css";
 import ProfileSettings from "./MainComponents/ProfileSettings/ProfileSettings";
 import AllQuestions from "./MainComponents/AllQuestions/AllQuestions";
 import AskQuestion from "./MainComponents/AskQuestion/AskQuestion";
-
 import Tags from "./MainComponents/Tags/Tags";
 import Tag from "./MainComponents/Tags/Tag/Tag";
 import Users from "./MainComponents/Users/Users";
 import User from "./MainComponents/Users/User/User";
 import MyFeed from "./MainComponents/myFeed/myFeed";
-
 import QuestionInfo from "./MainComponents/AllQuestions/QuestionInfo/QuestionInfo";
 import getCookie from "../../../../helpers/getCookie";
 
 const Main = ({ toggleClass }: any) => {
-  // let navigate = useNavigate();
-  // let [userIsLogged, setUseuserIsLogged] = useState(null);
   const RequireAuth: any = ({ children }: any) => {
     let userIsLogged =
       localStorage.getItem("userId") === null && getCookie("nickname") === ""
@@ -29,13 +25,7 @@ const Main = ({ toggleClass }: any) => {
       return children;
     }
   };
-  // useEffect(() => {
-  //   setUseuserIsLogged(
-  //     localStorage.getItem("userId") === null && getCookie("nickname") === ""
-  //       ? true
-  //       : false
-  //   );
-  // }, [userIsLogged]);
+
   return (
     <main
       className={
@@ -43,8 +33,6 @@ const Main = ({ toggleClass }: any) => {
       }
     >
       <Routes>
-        {/* <Route path="/*" element={<AllQuestions />} /> */}
-
         <Route
           path="/settingsProfil"
           element={

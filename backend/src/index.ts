@@ -60,7 +60,7 @@ app.use("/myFeed", getMyFeedRouter);
 // ----------------------------------------
 app.use("/tags", getAllTagsRoute);
 // ----------------------------------------
-app.use("/questions", getAllQuestions);
+app.use("/api/questions", getAllQuestions);
 // ----------------------------------------
 app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------

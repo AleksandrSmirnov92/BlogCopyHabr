@@ -40,7 +40,7 @@ ul {
   text-align: center;
   align-items: center;
 }
-.profil_photo {
+.profil__photo {
   display: inline-block;
   overflow: hidden;
   margin: 5px 10px 5px 10px;
@@ -48,12 +48,12 @@ ul {
   height: 45px;
   border-radius: 50%;
 }
-.profil_photo > img {
+.profil__photo > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.profil_nickname {
+.profil__nickname {
   font-family: toster-text, Helvetica, Arial, sans-serif;
   font-weight: 700;
   line-height: 1.5rem;
@@ -63,7 +63,7 @@ ul {
   text-decoration: none;
   color: #fff;
 }
-.profil_nickname:hover {
+.profil__nickname:hover {
   text-decoration: underline;
 }
 
