@@ -1,5 +1,5 @@
-import express from "express";
+let express = require("express");
 const Router = express.Router();
-let { getQuestionsId } = require("../controllers/GetQuestionsIdController");
-Router.route("/:id").get(getQuestionsId);
+let { getQuestions } = require("../controllers/GetQuestionsIdController");
+Router.route("/:id").get(getQuestions);
 module.exports = Router;
