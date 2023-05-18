@@ -1,3 +1,31 @@
 .main {
   grid-area: main;
 }
+@media (max-width: 1200px) {
+  .main {
+    transition: 0.5s;
+    transform: translateX(0%);
+  }
+  .main_active {
+    transition: 0.5s;
+    transform: translateX(20%);
+  }
+}
+@media (max-width: 991px) {
+  .main_active {
+    transition: 0.5s;
+    transform: translateX(25%);
+  }
+}
+@media (max-width: 767px) {
+  .main_active {
+    transition: 0.5s;
+    transform: translateX(40%);
+  }
+}
+@media (max-width: 480px) {
+  .main_active {
+    transition: 0.5s;
+    transform: translateX(50%);
+  }
+}

@@ -1,160 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { NavLink, Link } from "react-router-dom";
 import TagsCSS from "./Tags.module.css";
-import JavaScriptTag from "../../../../../../images/JavascriptTag.png";
-import HTMLTag from "../../../../../../images/HTMLtag.png";
-import CSSTag from "../../../../../../images/CSStag.png";
-import VueTag from "../../../../../../images/Vuetag.png";
-import ReactTag from "../../../../../../images/Reacttag.png";
-import GitTag from "../../../../../../images/Gittag.png";
+interface ResponseData {
+  message: string;
+  tags: {}[];
+}
+
 const Tags = () => {
-  const [allTags, setAllTags] = useState([
-    {
-      nameTag: "JavaScript",
-      imgTag: JavaScriptTag,
-      questionsTags: "103713",
-      folow: true,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "HTML",
-      imgTag: HTMLTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "CSS",
-      imgTag: CSSTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "React",
-      imgTag: ReactTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "Vue",
-      imgTag: VueTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-    {
-      nameTag: "Git",
-      imgTag: GitTag,
-      questionsTags: "103713",
-      folow: false,
-      allFolowers: "72K",
-    },
-  ]);
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    const getInfoTags = async () => {
+      const res = await fetch(`/tags/${localStorage.getItem("userId")}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data: ResponseData = await res.json();
+      setTags(data.tags);
+    };
+    getInfoTags();
+  }, []);
+  const subscribeFollower = async (tagsId: string) => {
+    const res = await fetch(`/followers/${localStorage.getItem("userId")}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tagsId: tagsId }),
+    });
+    const data: ResponseData = await res.json();
+    setTags(data.tags);
+  };
+
   return (
-    <div className={TagsCSS.mainContainer}>
+    <div className={TagsCSS["tags-container"]}>
       <h3>Все теги</h3>
-      <div className={TagsCSS.tagsContainer}>
-        {allTags.map((tag) => {
+      <div className={TagsCSS["tags-block"]}>
+        {tags.map((tag: any) => {
           return (
-            <div className={TagsCSS.tag}>
-              <a href="#">
-                <img src={tag.imgTag} className={TagsCSS.tagImg} />
-              </a>
-              <a href="#" className={TagsCSS.textTag}>
-                {tag.nameTag}
-              </a>
-              <a href="#" className={TagsCSS.countQuestion}>
-                {tag.questionsTags}
-              </a>
+            <div
+              key={tag.id}
+              className={`${TagsCSS["tags-card"]} ${TagsCSS["tags-card_outline"]} ${TagsCSS["tags-card_p"]}`}
+            >
+              <NavLink to={`/tag/${tag.id}`}>
+                <div className={TagsCSS["tags-card__image"]}>
+                  <img src={tag.img_tag} alt="" />
+                </div>
+              </NavLink>
+              <NavLink
+                to={`/tag/${tag.id}`}
+                className={`${TagsCSS["tags-card__title"]} ${TagsCSS["tags-card__title_p"]} ${TagsCSS["tags-card__title_size"]}`}
+              >
+                {tag.name_tag}
+              </NavLink>
+              <Link
+                to={`/tag/${tag.id}`}
+                state={{ question: "Вопросы" }}
+                className={`${TagsCSS["tags-card__questions"]} ${TagsCSS["tags-card__questions_outline"]} ${TagsCSS["tags-card__questions_p"]} ${TagsCSS["tags-card__questions_size"]}`}
+              >
+                {`${tag.countQuestions} вопросов`}
+              </Link>
               <button
                 className={
-                  tag.folow
-                    ? TagsCSS.buttonUnsubscribe
-                    : TagsCSS.buttonSubscribe
+                  tag.btn
+                    ? tag.isChecked
+                      ? TagsCSS.btn_unsubscribe
+                      : TagsCSS.btn_subscribe
+                    : TagsCSS.btn_none
                 }
+                onClick={() => {
+                  subscribeFollower(tag.id);
+                }}
               >
-                {tag.folow ? "Вы подписаны" : "Подписаться"} | {tag.allFolowers}
+                {tag.isChecked ? "Вы подписаны" : "Подписаться"} |{" "}
+                {tag.countFollowers}
               </button>
             </div>
           );
         })}
-        {/* <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={JavaScriptTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            JavaScript
-          </a>
-
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonUnsubscribe}>
-            Вы подписаны | 72К
-          </button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={HTMLTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            HTML
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            203713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={CSSTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            CSS
-          </a>
-
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={ReactTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            React
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={VueTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            Vue
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div>
-        <div className={TagsCSS.tag}>
-          <a href="#">
-            <img src={GitTag} className={TagsCSS.tagImg} />
-          </a>
-          <a href="#" className={TagsCSS.textTag}>
-            Git
-          </a>
-          <a href="#" className={TagsCSS.countQuestion}>
-            103713 вопросов
-          </a>
-          <button className={TagsCSS.buttonSubscribe}>Подписаться | 72К</button>
-        </div> */}
       </div>
     </div>
   );

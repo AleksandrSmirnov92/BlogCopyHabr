@@ -1,53 +1,78 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AllQuestionsCSS from "./AllQuestionsCSS.module.css";
-import JsIconIMG from "../../../../../../images/JsIcon.png";
+import { NavLink } from "react-router-dom";
+import Question from "./Question/Question";
+import currentTime from "../../../../../../helpers/currentTime";
 const AllQuestions = () => {
+  let [questions, setQuestions] = useState([]);
+  let [valueLink, setValueLink] = useState("Новые вопросы");
+  const getQuestions = async () => {
+    const res = await fetch(`/api/questions`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    setQuestions(data.questions);
+  };
   useEffect(() => {
-    console.log("все вопросы");
-  });
-  return (
-    <div className={AllQuestionsCSS.mainContainer}>
-      <h3>Все Вопросы</h3>
-      <div className={AllQuestionsCSS.questionCategoriesWrapper}>
-        <a href="#" className={AllQuestionsCSS.questionCategories}>
-          Новые вопросы
-        </a>
-        <a href="#" className={AllQuestionsCSS.questionCategories}>
-          Интересные{" "}
-        </a>
-        <a href="#" className={AllQuestionsCSS.questionCategories}>
-          Без ответа
-        </a>
-      </div>
-      <div className={AllQuestionsCSS.questionsContainer}>
-        <div className={AllQuestionsCSS.question}>
-          <div className={AllQuestionsCSS.questionHeader}>
-            <img
-              src={JsIconIMG}
-              className={AllQuestionsCSS.questionTagIcon}
-              alt=""
-            />
-            <a href="#" className={AllQuestionsCSS.questionTag}>
-              JAVASCRIPT
-            </a>
-          </div>
-          <div className={AllQuestionsCSS.questionMain}>
-            <div>
-              <a href="#" className={AllQuestionsCSS.questionMainSpan}>
-                Почему не работа onClick ?
-              </a>
-              <br />
-              <span className={AllQuestionsCSS.questionMainSpanTwo}>
-                1 подписчик &#96424 4 минуты назад #9642 12 просмотров
-              </span>
-            </div>
+    getQuestions();
+  }, []);
 
-            <a href="#" className={AllQuestionsCSS.countNumber}>
-              <span className={AllQuestionsCSS.counter}>0</span> <br />
-              Ответов
-            </a>
-          </div>
-        </div>
+  return (
+    <div className={AllQuestionsCSS["questions-container"]}>
+      <h3>Все Вопросы</h3>
+      <nav className={AllQuestionsCSS["nav"]}>
+        <NavLink
+          className={
+            valueLink === "Новые вопросы"
+              ? `${AllQuestionsCSS["nav-item"]} ${AllQuestionsCSS["nav-item_focus"]}`
+              : AllQuestionsCSS["nav-item"]
+          }
+          to={`/questions`}
+          onClick={() => {
+            setValueLink("Новые вопросы");
+          }}
+        >
+          Новые вопросы
+        </NavLink>
+        <NavLink
+          className={
+            valueLink === "Без ответа"
+              ? `${AllQuestionsCSS["nav-item"]} ${AllQuestionsCSS["nav-item_focus"]}`
+              : AllQuestionsCSS["nav-item"]
+          }
+          to={`/questions`}
+          onClick={() => {
+            setValueLink("Без ответа");
+          }}
+        >
+          Без ответа
+        </NavLink>
+      </nav>
+      <div className={AllQuestionsCSS["questions-list"]}>
+        {valueLink === "Без ответа"
+          ? questions
+              .filter((question) => question.countAnswers === 0)
+              .map((question, index) => {
+                return (
+                  <Question
+                    question={question}
+                    currentTime={currentTime}
+                    key={index}
+                  />
+                );
+              })
+          : questions.map((question, index) => {
+              return (
+                <Question
+                  question={question}
+                  currentTime={currentTime}
+                  key={index}
+                />
+              );
+            })}
       </div>
     </div>
   );

@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
-import { schemaForSignIn } from "../Schemas/ShemaSignIn";
+import { FormikValues, useFormik } from "formik";
+import { schemaForSignIn } from "../../Schemas/ShemaSignIn";
 import { NavLink } from "react-router-dom";
 import AccountCSS from "./SignIn.module.css";
+import { useNavigate } from "react-router-dom";
+
 interface MyValues {
   email: string;
   password: string;
 }
+interface State {
+  status: string;
+  message: string;
+}
 
-const SignIn = () => {
-  const [error, setError] = useState({ status: "", message: "" });
-  const onSubmit = async (values: MyValues, actions: any) => {
+const SignIn: React.FC = () => {
+  let navigate = useNavigate();
+  const [error, setError] = useState<State>({ status: "", message: "" });
+  const onSubmit = async (values: MyValues, actions: FormikValues) => {
     fetch("/signIn", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -23,20 +30,30 @@ const SignIn = () => {
       .then((response) => {
         if (response.status === "SUCCESS") {
           setTimeout(() => {
-            window.location.href = "http://localhost:3000/myFeed";
+            // window.location.href = "http://localhost:3000/myFeed";
+            navigate("/myFeed");
           }, 1000);
-          document.cookie = `nickname=${response.user.nickname};max-age=3600`;
-          console.log(response.user);
+          let date = new Date();
+          date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+          let newCookie = `nickname=${
+            response.user.nickname
+          };expires= ${date.toUTCString()};`;
+          document.cookie = newCookie;
+          localStorage.setItem(
+            "userId",
+            JSON.stringify(Number(response.user.id))
+          );
         }
         if (response.status === "ERROR") {
-          setError(response);
+          setError({ status: response.status, message: response.message });
           setTimeout(() => {
-            setError({ status: "", message: "" });
-          }, 1000);
-          console.log(response);
+            setError({
+              status: ``,
+              message: ``,
+            });
+          }, 1500);
         }
       });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     actions.resetForm();
   };
 
@@ -57,74 +74,109 @@ const SignIn = () => {
     validationSchema: schemaForSignIn,
   });
   return (
-    <div className={AccountCSS.container}>
-      <header className={AccountCSS.header}>
-        <div className={AccountCSS.headerText}>
-          <h1 className={AccountCSS.headerH1}>Смир</h1>
-          <h1 className={AccountCSS.headerAccount}>Акаунт</h1>
-        </div>
+    <div className={AccountCSS["form-container"]}>
+      <header className={AccountCSS["header"]}>
+        <h1 className={AccountCSS["header__title"]}>
+          Смир <span> Аккаунт</span>
+        </h1>
       </header>
-      <main className={AccountCSS.Main}>
-        <div className={AccountCSS.containerMain}>
-          <form onSubmit={handleSubmit}>
-            <h2>Вход</h2>
-            <label htmlFor="email" className={AccountCSS.email}>
+      <main className={AccountCSS["main-container"]}>
+        <form
+          onSubmit={handleSubmit}
+          className={`${AccountCSS["input-group"]} ${AccountCSS["input-group_outline"]} ${AccountCSS["input-group_p"]}`}
+        >
+          <h2>Вход</h2>
+          <label className={AccountCSS["form-label"]} htmlFor="email">
+            <span
+              className={`${AccountCSS["form-label__text"]} ${AccountCSS["form-label__text_color-black"]} ${AccountCSS["form-label__text_size"]}`}
+            >
               E-mail
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={
-                errors.email && touched.email ? AccountCSS.inputError : ""
-              }
-            />
-            {errors.email && touched.email ? (
-              <span className={AccountCSS.error}>{errors.password}</span>
-            ) : (
-              ""
-            )}
-            <label htmlFor="password">Пароль</label>
-            <input
-              type="password"
-              id="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={
-                errors.password && touched.password ? AccountCSS.inputError : ""
-              }
-            />
-            {errors.password && touched.password ? (
-              <span className={AccountCSS.error}>{errors.password}</span>
-            ) : (
-              ""
-            )}
-            <button
-              type="submit"
-              className={
-                error.status === "ERROR"
-                  ? AccountCSS.buttonError
-                  : AccountCSS.button
-              }
-              disabled={isSubmitting}
+            </span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={
+              errors.email && touched.email
+                ? `${AccountCSS["form-control-error"]} ${AccountCSS["form-control-error_outline"]} ${AccountCSS["form-control-error_p"]}`
+                : `${AccountCSS["form-control"]} ${AccountCSS["form-control_outline"]} ${AccountCSS["form-control_p"]}`
+            }
+          />
+          {errors.email && touched.email ? (
+            <span
+              className={`${AccountCSS["form-control-error__text"]} ${AccountCSS["form-control-error__text_color-red"]} ${AccountCSS["form-control-error__text_size"]}`}
+            >
+              {errors.email}
+            </span>
+          ) : (
+            ""
+          )}
+          <label className={AccountCSS["form-label"]} htmlFor="password">
+            <span
+              className={`${AccountCSS["form-label__text"]} ${AccountCSS["form-label__text_color-black"]} ${AccountCSS["form-label__text_size"]}`}
+            >
+              Пароль
+            </span>
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={
+              errors.password && touched.password
+                ? `${AccountCSS["form-control-error"]} ${AccountCSS["form-control-error_outline"]} ${AccountCSS["form-control-error_p"]}`
+                : `${AccountCSS["form-control"]} ${AccountCSS["form-control_outline"]} ${AccountCSS["form-control_p"]}`
+            }
+          />
+          {errors.password && touched.password ? (
+            <span
+              className={`${AccountCSS["form-control-error__text"]} ${AccountCSS["form-control-error__text_color-red"]} ${AccountCSS["form-control-error__text_size"]}`}
+            >
+              {errors.password}
+            </span>
+          ) : (
+            ""
+          )}
+          <button
+            type="submit"
+            className={
+              error.status === "ERROR"
+                ? `${AccountCSS["form-control-error-server"]} ${AccountCSS["form-control-error-server_outline"]} ${AccountCSS["form-control-error-server_p"]} ${AccountCSS["form-control-error-server_color"]}`
+                : `${AccountCSS["form-control-button"]} ${AccountCSS["form-control-button_outline"]} ${AccountCSS["form-control-button_p"]}`
+            }
+            disabled={isSubmitting}
+          >
+            <span
+              className={`${AccountCSS["form-control-button__text"]} ${AccountCSS["form-control-button__text_color"]}`}
             >
               Войти
-            </button>
-            {error.status === "ERROR" ? (
-              <span className={AccountCSS.errorResponse}>{error.message}</span>
-            ) : (
-              ""
-            )}
-          </form>
-          <div className={AccountCSS.questionAboutRegestration}>
-            <span>Еще нет аккаунта?</span>
-            <NavLink to="/SignUp" className={AccountCSS.registrationText}>
-              Зарегистрируйтесь
-            </NavLink>
-          </div>
+            </span>
+          </button>
+          {error.status === "ERROR" ? (
+            <span className={AccountCSS["form-control-error-server__text"]}>
+              {error.message}
+            </span>
+          ) : (
+            ""
+          )}
+        </form>
+        <div
+          className={`${AccountCSS["button-registration"]} ${AccountCSS["button-registration_outline"]} ${AccountCSS["button-registration_p"]}`}
+        >
+          <span className={`${AccountCSS["button-registration__text"]}`}>
+            Еще нет аккаунта?
+          </span>
+          <NavLink
+            className={`${AccountCSS["button-registration__link"]}`}
+            to="/SignUp"
+          >
+            Зарегистрируйтесь
+          </NavLink>
         </div>
       </main>
     </div>

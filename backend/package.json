@@ -5,14 +5,18 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w",
-    "start": "nodemon .//dist//index.js"
+    "start": "nodemon .//dist//server.js",
+    "build": "npm install"
   },
   "author": "Smirnov Aleksandr",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.15.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
     "pg": "^8.8.0"
   },
   "devDependencies": {

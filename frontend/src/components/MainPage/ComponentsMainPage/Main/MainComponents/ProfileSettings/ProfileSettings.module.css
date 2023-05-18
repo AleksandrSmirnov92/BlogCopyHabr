@@ -1,99 +1,101 @@
-.mainContainer {
+.profile-container {
   padding-left: 40px;
   padding-right: 40px;
   align-items: center;
 }
-.navigationPanel {
+.nav {
   display: flex;
   justify-content: flex-start;
   border-top: 1px #9099a3 solid;
   border-bottom: 1px #9099a3 solid;
 }
-a.links {
+.nav__item {
   padding: 8px;
-  text-decoration: none;
   color: #9099a3;
 }
-a.links:hover {
-  color: #333333;
-}
-a.links:focus {
-  color: #333333;
-  border-bottom: 2px #333333 solid;
-}
-.changeAvatar {
+.profile-avatar-block {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding-top: 60px;
 }
-.avatar {
+.profile-avatar-block__image {
   width: 70px;
   height: 70px;
+  display: inline-block;
   border-radius: 50%;
   overflow: hidden;
 }
-.imgAvatar {
-  width: 70px;
-  height: 70px;
+.profile-avatar-block__image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.changeAvatarText {
+.profile-avatar-block__text {
   color: #9099a3;
   padding-top: 10px;
   font-size: 15px;
 }
-.buttonContainer {
+.profile-avatar-block__btns {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 20px;
   width: 20%;
+  margin: 0;
 }
-.buttonUpload {
+.profile-avatar-block__btn-upload {
+  margin-right: 10px;
   padding: 5px;
   background-color: white;
   color: #93d3a0;
   border: 1px #93d3a0 solid;
+  margin-bottom: 30px;
+  font-size: 16px;
+  cursor: pointer;
 }
-.buttonUpload:hover {
+input[type="file"] {
+  display: none;
+}
+.profile-avatar-block__btn-upload:hover {
   border: 1px #689170 solid;
 }
-.buttonDelete {
+.profile-avatar-block__btn-delete {
+  margin-bottom: 30px;
   padding: 5px;
   background-color: white;
   color: #9099a3;
   border: 1px white solid;
 }
-.buttonDelete:hover {
+.profile-avatar-block__btn-delete:hover {
   text-decoration: underline;
 }
-.personalInformationContainer {
+.input-group {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
   border-top: 1px #f0f0f0 solid;
 }
-label.title {
+.form-label {
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 15px;
   font-weight: 700;
   color: #333333;
 }
-input.personalInfomation {
+.form-control {
   padding-top: 5px;
   padding-bottom: 5px;
   border: 1px #d2d6d7 solid;
   border-radius: 4px;
 }
-input.personalInfomation:hover {
+.form-control:hover {
   border: 1px #2d72d9 solid;
 }
-input.personalInfomation:focus {
+.form-control:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-textarea.personalInfomation {
+textarea.form-control {
   resize: vertical;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -101,90 +103,108 @@ textarea.personalInfomation {
   border-radius: 4px;
   min-height: 100px;
 }
-textarea.personalInfomation:hover {
+textarea.form-control:hover {
   border: 1px #2d72d9 solid;
 }
-textarea.personalInfomation:focus {
+textarea.form-control:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-.myContactsContainer {
+.form-control-error {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+}
+.form-control-error:focus {
+  border: red 1px solid;
+}
+.form-control-error:hover {
+  border: red 1px solid;
+}
+.form-control-error__text {
+  color: red;
+  font-size: 13px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+.form-control__select-block {
   display: flex;
   justify-content: space-between;
-}
-select.contacts {
-  width: 15%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border: 1px #d2d6d7 solid;
-  border-radius: 4px;
-}
-select.contacts:hover {
-  border: 1px #2d72d9 solid;
-}
-select.contacts:focus {
-  outline: none;
-  border: 1px #2d72d9 solid;
-}
-input.contacts {
-  width: 80%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border: 1px #d2d6d7 solid;
-  border-radius: 4px;
-}
-input.contacts:hover {
-  border: 1px #2d72d9 solid;
-}
-input.contacts:focus {
-  outline: none;
-  border: 1px #2d72d9 solid;
-}
-button.add {
-  margin-top: 5px;
-  width: 10%;
-  color: #9099a3;
-  border: none;
-  background-color: white;
-  font-weight: 700px;
-  font-size: 12px;
-}
-button.add:hover {
-  color: #2d72d9;
-  text-decoration: underline;
-}
-.myLocationContainer {
-  width: 100%;
   padding-top: 20px;
-  display: flex;
-  justify-content: space-around;
+  padding-bottom: 20px;
 }
-select.location {
-  width: 30%;
-  padding: 5px;
-  border-radius: 4px;
+.form-control__select {
   border: 1px #d2d6d7 solid;
+  border-radius: 4px;
+  margin-right: 10px;
+  padding: 5px;
 }
-select.location:hover {
+.form-control__select:hover {
   border: 1px #2d72d9 solid;
 }
-select.location:focus {
+.form-control__select:focus {
   outline: none;
   border: 1px #2d72d9 solid;
 }
-label.location {
-  padding-top: 30px;
+.form-control__select_wd-sml {
+  width: 15%;
 }
-button.saveСhanges {
+.form-control__select_wd-lrg {
+  width: 80%;
+}
+
+.form-control__select_wd-md {
+  width: 30%;
+}
+
+.btn {
   margin-top: 40px;
   width: 20%;
-  padding: 5px;
+  display: flex;
+  justify-content: center;
   background-color: white;
   color: #65c178;
   border: 1px #65c178 solid;
   margin-bottom: 40px;
 }
-button.saveСhanges:hover {
+.btn:hover {
   color: #63936d;
   border: 1px #63936d solid;
+}
+.btn > span {
+  margin: 5px;
+  font-size: 12px;
+}
+
+/* .inputErrorContacts {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border: red 1px solid;
+  border-radius: 4px;
+  width: 80%;
+} */
+@media (max-width: 1350px) {
+}
+@media (max-width: 1200px) {
+}
+@media (max-width: 991px) {
+}
+@media (max-width: 767px) {
+  .form-control__select_wd-lrg {
+    width: 75%;
+  }
+  .form-control__select_wd-sml {
+    width: 25%;
+  }
+}
+@media (max-width: 480px) {
+  .form-control__select_wd-sml {
+    width: 35%;
+  }
+  .btn {
+    width: 25%;
+  }
 }

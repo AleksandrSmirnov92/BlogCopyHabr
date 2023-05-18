@@ -3,3 +3,18 @@
   background-color: #eef1f4;
   margin-right: 50px;
 }
+@media (max-width: 1350px) {
+}
+@media (max-width: 1200px) {
+  .aside {
+    display: none;
+  }
+}
+@media (max-width: 1050px) {
+}
+@media (max-width: 991px) {
+}
+@media (max-width: 767px) {
+}
+@media (max-width: 480px) {
+}

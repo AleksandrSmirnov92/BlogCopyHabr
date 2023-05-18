@@ -2,10 +2,10 @@ import React from "react";
 import HeaderCSS from "./Header.module.css";
 const Header = () => {
   return (
-    <header className={HeaderCSS.header}>
-      <div className={HeaderCSS.headerText}>
-        <h1 className={HeaderCSS.headerH1}>Смир</h1>
-        <h1 className={HeaderCSS.headerQA}>Q&A</h1>
+    <header className={`${HeaderCSS.header} ${HeaderCSS.hide_tablet}`}>
+      <div className={HeaderCSS.header_title}>
+        <h1>Смир</h1>
+        <span className={HeaderCSS.headerQA}>Q&A</span>
       </div>
     </header>
   );

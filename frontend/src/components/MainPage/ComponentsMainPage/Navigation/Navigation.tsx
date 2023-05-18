@@ -2,33 +2,57 @@ import React, { useState, useEffect } from "react";
 import NavigationCSS from "./Navigation.module.css";
 import signInIMG from "../../../../images/signIn.png";
 import allQuestionsIMG from "../../../../images/allQuestions.png";
-
 import ExitIMG from "../../../../images/Exit.png";
 import SettingsIMG from "../../../../images/Settings.png";
 import allTagsIMG from "../../../../images/allTags.png";
 import usersIMG from "../../../../images/users.png";
-import myProfile from "../../../../images/photoProfil.png";
+import ProfileImg from "../../../../images/photoProfil.png";
+import NavImg from "../../../../images/nav.png";
+import MyFeedImg from "../../../../images/myFeed.png";
 import { NavLink } from "react-router-dom";
+import getCookie from "../../../../helpers/getCookie";
 
-const Navigation = () => {
+interface Props {
+  toggleClass: boolean;
+  setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;
+  hideNavImg: boolean;
+}
+const Navigation: React.FC<Props> = ({
+  toggleClass,
+  setToggleClass,
+  hideNavImg,
+}: Props) => {
   let [userRegistred, setUserRegistred] = useState(false);
-
-  const exit = (): any => {
+  let [pathImg, setPathImg] = useState("");
+  let [fullName, setFullName] = useState("");
+  let [lastName, setLastName] = useState("");
+  const exit = () => {
     setTimeout(() => {
       document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      localStorage.removeItem("userId");
+      setUserRegistred(false);
     }, 1000);
   };
   useEffect(() => {
-    function getCookie(name: string): string {
-      let matches = document.cookie.match(
-        new RegExp(
-          "(?:^|; )" +
-            name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-            "=([^;]*)"
-        )
+    const getInformationAboutUser = async () => {
+      const res = await fetch(
+        `/getInformationAboutUser/${localStorage.getItem("userId")}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
       );
-      return matches ? decodeURIComponent(matches[1]) : "";
-    }
+      const data = await res.json();
+      setPathImg(data.users.img);
+      if (data.users.fullname !== "" || data.users.lastname !== "") {
+        setFullName(data.users.fullname);
+        setLastName(data.users.lastname);
+        return;
+      }
+      setFullName(data.users.users.email);
+    };
+    getInformationAboutUser();
+
     if (getCookie("nickname") !== "") {
       setUserRegistred(true);
     } else {
@@ -36,98 +60,159 @@ const Navigation = () => {
     }
   }, []);
   return (
-    <nav className={NavigationCSS.navigation}>
-      <ul>
+    <nav
+      className={
+        toggleClass
+          ? NavigationCSS["nav"]
+          : `${NavigationCSS["nav_active"]} ${NavigationCSS["nav"]}`
+      }
+    >
+      <div
+        className={`${NavigationCSS["nav__btn"]} ${NavigationCSS.show_laptop}`}
+        onClick={() => {
+          setToggleClass((prevState: boolean) => !prevState);
+        }}
+      >
+        <img
+          src={NavImg}
+          alt=""
+          className={
+            hideNavImg
+              ? NavigationCSS.hide_img
+              : `${NavigationCSS["nav-element__image"]}`
+          }
+        />
+      </div>
+      <ul className={NavigationCSS.nav_links}>
         <div
           className={
             userRegistred
-              ? NavigationCSS.registered
-              : NavigationCSS.notRegistered
+              ? NavigationCSS.profil_block
+              : NavigationCSS.profil_hide
           }
         >
-          <li className={NavigationCSS.myProfile}>
-            <a href="#" className={NavigationCSS.photoProfil}>
-              <img src={myProfile} className={NavigationCSS.photoProfil} />
-            </a>
-            <a href="#" className={NavigationCSS.textProfil}>
-              Александр Смирнов
-            </a>
-          </li>
-          <li className={NavigationCSS.settings}>
-            <img src={SettingsIMG} alt="" />
+          <li className={`${NavigationCSS["profil"]}`}>
             <NavLink
-              to="./settingsProfil"
-              className={(NavigationCSS.settings, NavigationCSS.textProfil)}
+              to={`/users/${localStorage.getItem("userId")}`}
+              className={`${NavigationCSS["profil__photo"]}`}
+            >
+              <img src={pathImg !== "" ? pathImg : ProfileImg} alt="" />
+            </NavLink>
+            <NavLink
+              to={`/users/${localStorage.getItem("userId")}`}
+              className={`${NavigationCSS["profil__nickname"]}`}
+            >
+              {`${fullName} ${lastName}`}
+            </NavLink>
+          </li>
+          <NavLink
+            to="./settingsProfil"
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover-backgroung"]}`}
+            onClick={() => {
+              setToggleClass((prevState: boolean) => !prevState);
+            }}
+          >
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={SettingsIMG} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-white"]}`}
             >
               Настройки
-            </NavLink>
-          </li>
-          <li className={NavigationCSS.exit}>
-            <img src={ExitIMG} alt="" />
-            <NavLink
-              to="./questions"
-              className={(NavigationCSS.allQuestions, NavigationCSS.textProfil)}
-              onClick={() => {
-                exit();
-                setUserRegistred(false);
-              }}
+            </span>
+          </NavLink>
+          <NavLink
+            to="./questions"
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover-backgroung"]}`}
+            onClick={() => {
+              exit();
+              setToggleClass((prevState: boolean) => !prevState);
+            }}
+          >
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={ExitIMG} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-white"]}`}
             >
               Выход
-            </NavLink>
-          </li>
-          <li className={NavigationCSS.allTags}>
-            <img src={allTagsIMG} alt="" />
-            <NavLink
-              to="./myFeed"
-              className={(NavigationCSS.allTags, NavigationCSS.text)}
+            </span>
+          </NavLink>
+          <NavLink
+            to="./myFeed"
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
+            onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+          >
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={MyFeedImg} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-grey"]}`}
             >
               Моя лента
-            </NavLink>
-          </li>
+            </span>
+          </NavLink>
         </div>
 
         {/* ------------------------------------------------------------------------------ */}
         <div
           className={
             userRegistred
-              ? NavigationCSS.notRegistered
-              : NavigationCSS.registered
+              ? NavigationCSS.profil_hide
+              : NavigationCSS.profil_block
           }
         >
-          <li className={NavigationCSS.signIn}>
-            <img src={signInIMG} alt="" />
-            <NavLink to="/SignIn" className={NavigationCSS.signIn}>
+          <NavLink
+            to="/SignIn"
+            className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_pd"]}`}
+          >
+            <div className={`${NavigationCSS["nav-element__image"]}`}>
+              <img src={signInIMG} alt="" />
+            </div>
+            <span
+              className={`${NavigationCSS["nav-element__text_color-grey"]}`}
+            >
               Войти на сайт
-            </NavLink>
-          </li>
+            </span>
+          </NavLink>
         </div>
-        <li className={NavigationCSS.allQuestions}>
-          <img src={allQuestionsIMG} alt="" />
-          <NavLink
-            to="/questions"
-            className={(NavigationCSS.allQuestions, NavigationCSS.text)}
-          >
+        <NavLink
+          to="/questions"
+          className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
+          onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+        >
+          <div className={`${NavigationCSS["nav-element__image"]}`}>
+            <img src={allQuestionsIMG} alt="" />
+          </div>
+          <span className={`${NavigationCSS["nav-element__text_color-grey"]}`}>
             Все вопросы
-          </NavLink>
-        </li>
-        <li className={NavigationCSS.allTags}>
-          <img src={allTagsIMG} alt="" />
-          <NavLink
-            to="./tags"
-            className={(NavigationCSS.allTags, NavigationCSS.text)}
-          >
+          </span>
+        </NavLink>
+        <NavLink
+          to="./tags"
+          className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
+          onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+        >
+          <div className={`${NavigationCSS["nav-element__image"]}`}>
+            {" "}
+            <img src={allTagsIMG} alt="" />
+          </div>
+          <span className={`${NavigationCSS["nav-element__text_color-grey"]}`}>
             Все теги
-          </NavLink>
-        </li>
-        <li className={NavigationCSS.users}>
-          <img src={usersIMG} alt="" />
-          <NavLink
-            to="./users"
-            className={(NavigationCSS.users, NavigationCSS.text)}
-          >
+          </span>
+        </NavLink>
+        <NavLink
+          to="./users"
+          className={`${NavigationCSS["nav-element"]} ${NavigationCSS["nav-element_hover"]}`}
+          onClick={() => setToggleClass((prevState: boolean) => !prevState)}
+        >
+          <div className={`${NavigationCSS["nav-element__image"]}`}>
+            <img src={usersIMG} alt="" />
+          </div>
+          <span className={`${NavigationCSS["nav-element__text_color-grey"]}`}>
             Пользователи
-          </NavLink>
-        </li>
+          </span>
+        </NavLink>
       </ul>
     </nav>
   );

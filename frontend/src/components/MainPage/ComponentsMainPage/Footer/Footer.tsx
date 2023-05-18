@@ -1,9 +1,15 @@
 import React from "react";
 import FooterCSS from "./Footer.module.css";
 
-const Footer = () => {
+const Footer = ({ toggleClass }: any) => {
   return (
-    <footer className={FooterCSS.footer}>
+    <footer
+      className={
+        toggleClass
+          ? FooterCSS.footer
+          : `${FooterCSS.footer} ${FooterCSS.footer_active}`
+      }
+    >
       <a href="#" className={FooterCSS.feedBack}>
         Обратная связь
       </a>
