@@ -53,21 +53,32 @@
   text-decoration: none;
   color: #9099a3;
 }
-.nav__item:hover {
-  color: black;
-  text-decoration: underline;
-}
-.nav__item:focus {
-  color: black;
-  border-bottom: 2px black solid;
-}
-.nav__item_active {
-  color: black;
-  text-decoration: underline;
-}
-.nav__item_size {
+.nav__item-btn_active {
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  /* text-decoration: none;
+  color: #9099a3; */
   font-weight: bold;
+  color: black;
+  text-decoration: underline;
 }
+.nav__item-btn_inactive {
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  text-decoration: none;
+  color: #9099a3;
+}
+.nav__item-btn:hover {
+  color: black;
+  text-decoration: underline;
+}
+
 .tag-content {
   color: #333;
 }

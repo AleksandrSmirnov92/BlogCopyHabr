@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import TagCSS from "./Tag.module.css";
 import { useParams, useLocation } from "react-router-dom";
 import Question from "../../AllQuestions/Question/Question";
 import currentTime from "../../../../../../../helpers/currentTime";
+
 interface ResponseData {
   message: string;
   body: {
@@ -15,6 +16,7 @@ interface ResponseData {
 const Tag: React.FC = () => {
   let location = useLocation();
   let question: string = location.state;
+  const btnRef = useRef(null);
   let { tagId } = useParams();
   let [description, setDescription] = useState("");
   let [pathImg, setPathImg] = useState("");
@@ -22,19 +24,19 @@ const Tag: React.FC = () => {
   let [count, setCount] = useState("");
   let [questions, setQuestions] = useState([]);
   let [linkValue, setLinkValue] = useState(question ? `Вопросы` : "Информация");
+
   useEffect(() => {
-    if (linkValue === "Вопросы") {
-      console.log("log");
-      let getInformationQuestion = async () => {
-        let res = await fetch(`/getQuestionsId/${tagId}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        let data = await res.json();
-        setQuestions(data.questions);
-      };
-      getInformationQuestion();
-    }
+    let getInformationQuestion = async () => {
+      let res = await fetch(`/getQuestionsId/${tagId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      let data = await res.json();
+      setQuestions(data.questions);
+    };
+    getInformationQuestion();
+  }, [linkValue, questions, tagId]);
+  useEffect(() => {
     const getInformationTag = async () => {
       let res = await fetch(`/tag/${tagId}`, {
         method: "GET",
@@ -48,7 +50,7 @@ const Tag: React.FC = () => {
     };
     getInformationTag();
     window.history.replaceState({}, document.title);
-  }, [linkValue, questions, tagId]);
+  }, [tagId]);
   return (
     <div className={TagCSS["tag-container"]}>
       <header className={TagCSS["tag-header"]}>
@@ -71,34 +73,32 @@ const Tag: React.FC = () => {
         <nav
           className={`${TagCSS["nav"]} ${TagCSS["nav_outline"]} ${TagCSS["nav_m"]}`}
         >
-          <div
-            className={`${TagCSS["nav__item"]}`}
-            onClick={() => setLinkValue("Информация")}
+          <button
+            className={
+              linkValue === "Информация"
+                ? `${TagCSS["nav__item-btn_active"]}`
+                : `${TagCSS["nav__item-btn_inactive"]}`
+            }
+            onClick={() => {
+              setLinkValue("Информация");
+            }}
+            ref={btnRef}
           >
-            <span
-              className={
-                linkValue === "Информация"
-                  ? `${TagCSS["nav__item_active"]} ${TagCSS["nav__item_size"]}`
-                  : ""
-              }
-            >
-              Информация
-            </span>
-          </div>
-          <div
-            className={`${TagCSS["nav__item"]}`}
-            onClick={() => setLinkValue("Вопросы")}
+            <span>Информация</span>
+          </button>
+          <button
+            ref={btnRef}
+            className={
+              linkValue === "Вопросы"
+                ? `${TagCSS["nav__item-btn_active"]}`
+                : `${TagCSS["nav__item-btn_inactive"]}`
+            }
+            onClick={() => {
+              setLinkValue("Вопросы");
+            }}
           >
-            <span
-              className={
-                linkValue === "Вопросы"
-                  ? `${TagCSS["nav__item_active"]} ${TagCSS["nav__item_size"]}`
-                  : ""
-              }
-            >
-              Вопросы
-            </span>
-          </div>
+            <span>Вопросы</span>
+          </button>
         </nav>
         <div
           className={`${TagCSS["tag-content"]} ${TagCSS["tag-content_p"]} ${TagCSS["tag-content_size"]}`}
