@@ -87,11 +87,7 @@ const User: React.FC = () => {
   useEffect(() => {
     if (linkValue === "Вопросы") {
       let getQuestions = async () => {
-<<<<<<< HEAD
-        const res = await fetch(`/questions/${userId}`, {
-=======
         const res = await fetch(`/api/questions/${userId}`, {
->>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });

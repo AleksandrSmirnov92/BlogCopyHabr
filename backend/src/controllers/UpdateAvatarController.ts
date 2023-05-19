@@ -24,21 +24,12 @@ exports.uploadAvatar = async (
     .from("about_user")
     .update({ img: `/uploads/${file.name}` })
     .eq("user_id", id);
-<<<<<<< HEAD
+
   // const pathUpload = path.resolve(
   //   __dirname,
-  //   "../../../Frontend/public/uploads"
+  //   "../../../Backend/Frontend/uploads"
   // );
-  // const pathUpload = path.resolve(
-  //   __dirname,
-  //   "../../../Backend/Frontend/build/uploads/"
-  // );
-=======
->>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
-  const pathUpload = path.resolve(
-    __dirname,
-    "../../../Backend/Frontend/uploads"
-  );
+  const pathUpload = path.resolve(__dirname, "../../../Backend/public/uploads");
   if (!(req as MulterRequest).files) {
     return res.status(404).json({
       message: "Загрузите фотографию",
@@ -47,10 +38,6 @@ exports.uploadAvatar = async (
   if (fs.existsSync(`${pathUpload}/${file.name}`)) {
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
-<<<<<<< HEAD
-      // filePath: `../../../../../../uploads/${file.name}`,
-=======
->>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
     });
   }
   file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
@@ -59,10 +46,6 @@ exports.uploadAvatar = async (
     }
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
-<<<<<<< HEAD
-      // filePath: `../../../../../../uploads/${file.name}`,
-=======
->>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
     });
   });
 };
@@ -76,15 +59,11 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
   let filePath = req.body.path;
   // const pathUpload = path.resolve(
   //   __dirname,
-  //   `../../../Frontend/public/${filePath}`
-  // );
-  // const pathUpload = path.resolve(
-  //   __dirname,
-  //   `../../../Backend/Frontend/build/${filePath}`
+  //   `../../../Backend/Frontend/${filePath}`
   // );
   const pathUpload = path.resolve(
     __dirname,
-    `../../../Backend/Frontend/${filePath}`
+    `../../../Backend/public/${filePath}`
   );
   fs.unlink(pathUpload, (err: Error) => {
     if (err) {
