@@ -21,7 +21,7 @@ const getAllInfo = require("../dist/Routes/LiveSearchNavigationRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
+// ура
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
