@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.424e5af2.css",
+    "main.js": "/static/js/main.bfe5edf6.js",
+    "static/media/замок.png": "/static/media/замок.d65c3ee04380b1a8ccd9.png",
+    "index.html": "/index.html",
+    "main.424e5af2.css.map": "/static/css/main.424e5af2.css.map",
+    "main.bfe5edf6.js.map": "/static/js/main.bfe5edf6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.424e5af2.css",
+    "static/js/main.bfe5edf6.js"
+  ]
+}
