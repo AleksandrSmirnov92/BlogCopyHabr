@@ -16,7 +16,7 @@ const getAnswersRouter = require("../dist/Routes/GetAnswerRoutes.js");
 const getMyFeedRouter = require("../dist/Routes/GetMyFeedRoutes.js");
 const getAllTagsRoute = require("../dist/Routes/LiveSearchTagsRoutes.js");
 const getAllQuestions = require("../dist/Routes/GetAllQuestionsRoutes.js");
-const getAllQuestionsId = require("../dist/Routes/getQuestionsIdRoutes.js");
+// const getAllQuestionsId = require("../dist/Routes/getQuestionsIdRoutes.js");
 const getAllInfo = require("../dist/Routes/LiveSearchNavigationRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 // app.use(express.static(path.join(__dirname, "../Frontend/")));
 // app.use(express.static(path.join(__dirname, "../Frontend/build/")));
-app.use(express.static(path.join(__dirname, "../public/")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(fileUpload());
 
@@ -60,7 +60,7 @@ app.use("/tags", getAllTagsRoute);
 // ----------------------------------------
 app.use("/api/questions", getAllQuestions);
 // ----------------------------------------
-app.use("/getQuestionsId", getAllQuestionsId);
+// app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
 
