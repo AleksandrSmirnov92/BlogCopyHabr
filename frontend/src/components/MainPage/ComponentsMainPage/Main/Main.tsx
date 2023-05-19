@@ -19,7 +19,10 @@ const Main = ({ toggleClass }: any) => {
         ? true
         : false;
     if (userIsLogged) {
+<<<<<<< HEAD
       console.log(window.location);
+=======
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
       return (window.location.href = `http://${window.location.host}/SignIn`);
     } else {
       return children;

@@ -1,7 +1,13 @@
 import express, { Request, Response } from "express";
 import { supabase } from "../config/usersDataBase.js";
+<<<<<<< HEAD
 exports.GetQuestionsId = async (req: Request, res: Response) => {
   let { id } = req.params;
+=======
+exports.questionsId = async (req: Request, res: Response) => {
+  let { id } = req.params;
+  // console.log("n");
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
   let getTagInfo = await supabase
     .from("questions")
     .select(`"*",tags("*"),answers(*)`)

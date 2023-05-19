@@ -1,9 +1,14 @@
 import express from "express";
+<<<<<<< HEAD
 import { nextTick } from "process";
 const fileUpload = require("express-fileupload");
 const app = express();
 
 // app.disable("etag");
+=======
+const fileUpload = require("express-fileupload");
+const app = express();
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
 const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
@@ -27,8 +32,11 @@ const path = require("path");
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+<<<<<<< HEAD
 // app.use(express.static(path.join(__dirname, "../../Frontend/public/")));
 // app.use(express.static(path.join(__dirname, "/Frontend/build/")));
+=======
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
 app.use(express.static(path.join(__dirname, "../Frontend/")));
 app.use(express.static(path.join(__dirname, "../Frontend/build/")));
 

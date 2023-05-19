@@ -24,6 +24,7 @@ exports.uploadAvatar = async (
     .from("about_user")
     .update({ img: `/uploads/${file.name}` })
     .eq("user_id", id);
+<<<<<<< HEAD
   // const pathUpload = path.resolve(
   //   __dirname,
   //   "../../../Frontend/public/uploads"
@@ -32,6 +33,8 @@ exports.uploadAvatar = async (
   //   __dirname,
   //   "../../../Backend/Frontend/build/uploads/"
   // );
+=======
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
   const pathUpload = path.resolve(
     __dirname,
     "../../../Backend/Frontend/uploads"
@@ -44,7 +47,10 @@ exports.uploadAvatar = async (
   if (fs.existsSync(`${pathUpload}/${file.name}`)) {
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
+<<<<<<< HEAD
       // filePath: `../../../../../../uploads/${file.name}`,
+=======
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
     });
   }
   file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
@@ -53,7 +59,10 @@ exports.uploadAvatar = async (
     }
     return res.status(200).json({
       filePath: `/uploads/${file.name}`,
+<<<<<<< HEAD
       // filePath: `../../../../../../uploads/${file.name}`,
+=======
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
     });
   });
 };

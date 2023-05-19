@@ -53,6 +53,7 @@
   text-decoration: none;
   color: #9099a3;
 }
+
 .nav__item:hover {
   color: black;
   text-decoration: underline;
@@ -68,11 +69,40 @@
 .nav__item_size {
   font-weight: bold;
 }
+
+.nav__item-btn_active {
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  /* text-decoration: none;
+  color: #9099a3; */
+  font-weight: bold;
+  color: black;
+  text-decoration: underline;
+}
+.nav__item-btn_inactive {
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  text-decoration: none;
+  color: #9099a3;
+}
+.nav__item-btn:hover {
+  color: black;
+  text-decoration: underline;
+}
+
 .tag-content {
   color: #333;
 }
 .tag-content_p {
   /* padding-top: 20px; */
+
+  padding-top: 20px;
 }
 .tag-content_size {
   font-size: 15px;

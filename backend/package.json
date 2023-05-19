@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w",
+<<<<<<< HEAD
     "start": "nodemon .//dist//server.js",
     "build": "npm install"
+=======
+    "dev": "nodemon .//dist//server.js",
+    "build": "npm i && tsc",
+    "start": "node .//dist//server.js"
+>>>>>>> fe9ca836d143b5ada9a2ef432ba3eeba4dcc9fe0
   },
   "author": "Smirnov Aleksandr",
   "license": "ISC",
