@@ -22,7 +22,7 @@ exports.uploadAvatar = async (
 
   const apdateAboutUser = await supabase
     .from("about_user")
-    .update({ img: `/uploads/${file.name}` })
+    .update({ img: `../../../../../../uploads/${file.name}` })
     .eq("user_id", id);
 
   // const pathUpload = path.resolve(
@@ -37,7 +37,7 @@ exports.uploadAvatar = async (
   }
   if (fs.existsSync(`${pathUpload}/${file.name}`)) {
     return res.status(200).json({
-      filePath: `/uploads/${file.name}`,
+      filePath: `../../../../../../uploads/${file.name}`,
     });
   }
   file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
@@ -45,7 +45,7 @@ exports.uploadAvatar = async (
       return res.status(500).json({ err: err });
     }
     return res.status(200).json({
-      filePath: `/uploads/${file.name}`,
+      filePath: `../../../../../../uploads/${file.name}`,
     });
   });
 };
