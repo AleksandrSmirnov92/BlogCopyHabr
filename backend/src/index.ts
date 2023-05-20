@@ -30,7 +30,7 @@ var storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ dest: storage }).single("file");
 // ура
 app.use(express.json());
 app.use(cors());
@@ -82,7 +82,7 @@ let update = async (req: any, res: any, next: any) => {
     filePath: `/uploads/${req.file.originalname}`,
   });
 };
-app.post("/api/uploadfile/:id", upload.single("file"), update);
+app.post("/api/uploadfile/:id", update);
 
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {

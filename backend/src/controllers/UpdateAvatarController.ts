@@ -81,10 +81,11 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
   //   __dirname,
   //   `../../../Backend/Frontend/${filePath}`
   // );
-  const pathUpload = path.resolve(
-    __dirname,
-    `../../../Backend/public/${filePath}`
-  );
+  // const pathUpload = path.resolve(
+  //   __dirname,
+  //   `../../../Backend/public/${filePath}`
+  // );
+  const pathUpload = path.resolve(__dirname, `/public/${filePath}`);
   fs.unlink(pathUpload, (err: Error) => {
     if (err) {
       console.log(err);
