@@ -23,22 +23,39 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 // ура
-var storage = multer.diskStorage({
-  destination: `${path.join(__dirname, "../public/uploads")}`,
+// var storage = multer.diskStorage({
+//   destination: `${path.join(__dirname, "../public/uploads")}`,
+//   filename: function (req: any, file: any, cb: any) {
+//     cb(null, file.originalname);
+//   },
+//   filename: function (req: any, file: any, cb: any) {
+//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//     cb(null, file.fieldname + "-" + uniqueSuffix);
+//   },
+// });
+
+const storage = multer.diskStorage({
+  destination: function (req: any, file: any, cb: any) {
+    cb(null, process.cwd() + "/public/uploads");
+  },
   filename: function (req: any, file: any, cb: any) {
-    cb(null, file.originalname);
+    let { id } = req.params;
+    const originalName = encodeURIComponent(
+      path.parse(file.originalname).name
+    ).replace(/[^a-zA-Z0-9]/g, "");
+    // const timestamp = Date.now();
+    const extension = path.extname(file.originalname).toLowerCase();
+    cb(null, id + "_" + originalName + extension);
   },
 });
 
-const upload = multer({ dest: storage }).single("file");
+const upload = multer({ storage: storage });
 // ура
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 // app.use(fileUpload());
 app.use(express.static(path.join(__dirname, "../public")));
-// app.use(express.static(path.join(__dirname, "../public/uploads")));
-
 app.use("/signIn", signInRouter);
 // ----------------------------------------
 app.use("/signUp", signUpRouter);
@@ -75,14 +92,14 @@ let update = async (req: any, res: any, next: any) => {
   let { id } = req.params;
   const apdateAboutUser = await supabase
     .from("about_user")
-    .update({ img: `/uploads/${req.file.originalname}` })
+    .update({ img: `/uploads/${id}_${req.file.originalname}` })
     .eq("user_id", id);
   console.log(req.file.originalname + " file successfully uploaded !!");
   res.status(200).json({
-    filePath: `/uploads/${req.file.originalname}`,
+    filePath: `/uploads/${id}_${req.file.originalname}`,
   });
 };
-app.post("/api/uploadfile/:id", update);
+app.post("/api/uploadfile/:id", upload.single("file"), update);
 
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {
