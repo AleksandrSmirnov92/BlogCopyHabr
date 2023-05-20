@@ -47,11 +47,13 @@ exports.uploadAvatar = async (
     if (fs.existsSync(`${pathUpload}/${file.name}`)) {
       console.log("файл записан");
       return res.status(200).json({
+        message: `файл записан по адрессу = ${pathUpload}/${file.name}`,
         filePath: `../../../../../../uploads/${file.name}`,
       });
     } else {
       console.log("файл не записан");
       return res.status(200).json({
+        message: `файла по адрессу = ${pathUpload}/${file.name} не существует`,
         filePath: `../../../../../../uploads/${file.name}`,
       });
     }

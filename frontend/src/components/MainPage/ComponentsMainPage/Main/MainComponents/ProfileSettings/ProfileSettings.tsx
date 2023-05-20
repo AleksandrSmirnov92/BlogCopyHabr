@@ -66,7 +66,7 @@ const ProfileSettings: React.FC = () => {
       body: formData,
     });
     const data = await res.json();
-    console.log(data.filePath);
+    console.log(data);
     setPathImg(data.filePath);
   };
   // -----------------------------------------------
