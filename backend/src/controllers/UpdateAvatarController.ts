@@ -35,11 +35,11 @@ exports.uploadAvatar = async (
       message: "Загрузите фотографию",
     });
   }
-  if (fs.existsSync(`${pathUpload}/${file.name}`)) {
-    return res.status(200).json({
-      filePath: `../../../../../../uploads/${file.name}`,
-    });
-  }
+  // if (fs.existsSync(`${pathUpload}/${file.name}`)) {
+  //   return res.status(200).json({
+  //     filePath: `../../../../../../uploads/${file.name}`,
+  //   });
+  // }
   file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
     if (err) {
       return res.status(500).json({ err: err });
