@@ -1,7 +1,8 @@
 import express from "express";
-const fileUpload = require("express-fileupload");
+// const fileUpload = require("express-fileupload");
+import { supabase } from "./config/usersDataBase.js";
 const app = express();
-
+const multer = require("multer");
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
 const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
@@ -22,12 +23,22 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 // ура
+var storage = multer.diskStorage({
+  destination: `${path.join(__dirname, "../public/uploads")}`,
+  filename: function (req: any, file: any, cb: any) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+// ура
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use(express.static(path.join(__dirname, "../public")));
-app.use(express.static(path.join(__dirname, "../public/uploads")));
+// app.use(express.static(path.join(__dirname, "../public/uploads")));
+
 app.use("/signIn", signInRouter);
 // ----------------------------------------
 app.use("/signUp", signUpRouter);
@@ -59,6 +70,19 @@ app.use("/api/questions", getAllQuestions);
 // app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
+
+let update = async (req: any, res: any, next: any) => {
+  let { id } = req.params;
+  const apdateAboutUser = await supabase
+    .from("about_user")
+    .update({ img: `/uploads/${req.file.originalname}` })
+    .eq("user_id", id);
+  console.log(req.file.originalname + " file successfully uploaded !!");
+  res.status(200).json({
+    filePath: `/uploads/${req.file.originalname}`,
+  });
+};
+app.post("/api/uploadfile/:id", upload.single("file"), update);
 
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {

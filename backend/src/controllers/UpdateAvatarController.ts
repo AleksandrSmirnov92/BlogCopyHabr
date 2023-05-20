@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { supabase } from "../config/usersDataBase.js";
+// const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 interface MulterRequest extends Request {
@@ -35,29 +36,37 @@ exports.uploadAvatar = async (
       message: "Загрузите фотографию",
     });
   }
-  // if (fs.existsSync(`${pathUpload}/${file.name}`)) {
-  //   return res.status(200).json({
-  //     filePath: `../../../../../../uploads/${file.name}`,
-  //   });
-  // }
-  file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
-    if (err) {
-      return res.status(500).json({ err: err, message: "ошибка" });
-    }
-    if (fs.existsSync(`${pathUpload}/${file.name}`)) {
-      console.log("файл записан");
-      return res.status(200).json({
-        message: `файл записан по адрессу = ${pathUpload}/${file.name}`,
-        filePath: `../../../../../../uploads/${file.name}`,
-      });
-    } else {
-      console.log("файл не записан");
-      return res.status(200).json({
-        message: `файла по адрессу = ${pathUpload}/${file.name} не существует`,
-        filePath: `../../../../../../uploads/${file.name}`,
-      });
-    }
-  });
+  if (fs.existsSync(`${pathUpload}/${file.name}`)) {
+    return res.status(200).json({
+      filePath: `../../../../../../uploads/${file.name}`,
+    });
+  }
+  // var storage = multer.diskStorage({
+  //   destination: `${pathUpload}`,
+  //   filename: function (req: any, file: any, cb: any) {
+  //     cb(null, file.originalname);
+  //   },
+  // });
+  // const upload = multer({ storage: storage });
+  // upload.single("file");
+  // file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
+  //   if (err) {
+  //     return res.status(500).json({ err: err, message: "ошибка" });
+  //   }
+  //   if (fs.existsSync(`${pathUpload}/${file.name}`)) {
+  //     console.log("файл записан");
+  //     return res.status(200).json({
+  //       message: `файл записан по адрессу = ${pathUpload}/${file.name}`,
+  //       filePath: `../../../../../../uploads/${file.name}`,
+  //     });
+  //   } else {
+  //     console.log("файл не записан");
+  //     return res.status(200).json({
+  //       message: `файла по адрессу = ${pathUpload}/${file.name} не существует`,
+  //       filePath: `../../../../../../uploads/${file.name}`,
+  //     });
+  //   }
+  // });
 };
 
 exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
@@ -67,6 +76,7 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
     .update({ img: `` })
     .eq("user_id", id);
   let filePath = req.body.path;
+  console.log(filePath);
   // const pathUpload = path.resolve(
   //   __dirname,
   //   `../../../Backend/Frontend/${filePath}`

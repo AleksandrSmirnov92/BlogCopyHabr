@@ -61,10 +61,17 @@ const ProfileSettings: React.FC = () => {
     }
     const formData = new FormData();
     formData.set("file", selectedFile);
-    const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
-      method: "POST",
-      body: formData,
-    });
+    // const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
+    //   method: "POST",
+    //   body: formData,
+    // });
+    const res = await fetch(
+      `/api/uploadfile/${localStorage.getItem("userId")}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
     const data = await res.json();
     console.log(data);
     setPathImg(data.filePath);
