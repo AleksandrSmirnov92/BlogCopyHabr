@@ -42,7 +42,7 @@ exports.uploadAvatar = async (
   // }
   file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
     if (err) {
-      return res.status(500).json({ err: err });
+      return res.status(500).json({ err: err, message: "ошибка" });
     }
     if (fs.existsSync(`${pathUpload}/${file.name}`)) {
       console.log("файл записан");
