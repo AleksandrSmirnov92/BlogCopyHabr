@@ -15,9 +15,10 @@ interface DeleteAvatar {
 //   err?: Error;
 //   next: any;
 // }
+const pathUpload = `${path.join(__dirname, "../../public/uploads")}`;
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, __dirname + "../../../public/uploads");
+    cb(null, pathUpload);
   },
   filename: function (req: any, file: any, cb: any) {
     let { id } = req.params;
@@ -30,7 +31,7 @@ exports.upload = multer({ storage: storage });
 exports.uploadAvatar = async (req: any, res: any, file: any) => {
   let { id } = req.params;
   // const file = (req as MulterRequest).files.file;
-  const pathUpload = `${path.join(__dirname, "../../public/uploads")}`;
+
   if (!file) {
     return res.status(404).json({
       message: "Загрузите фотографию",
