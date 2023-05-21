@@ -69,7 +69,7 @@ const Navigation: React.FC<Props> = ({
     >
       <button
         className={`${NavigationCSS["nav__btn"]} ${NavigationCSS.show_laptop}`}
-        onTouchEnd={() => {
+        onClick={() => {
           setToggleClass((prevState: boolean) => !prevState);
         }}
       >

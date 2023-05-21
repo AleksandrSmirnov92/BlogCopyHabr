@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.7b2af6a2.css",
-    "main.js": "/static/js/main.8cc905a7.js",
+    "main.css": "/static/css/main.36e7037e.css",
+    "main.js": "/static/js/main.bb0b7178.js",
     "static/media/замок.png": "/static/media/замок.d65c3ee04380b1a8ccd9.png",
     "index.html": "/index.html",
-    "main.7b2af6a2.css.map": "/static/css/main.7b2af6a2.css.map",
-    "main.8cc905a7.js.map": "/static/js/main.8cc905a7.js.map"
+    "main.36e7037e.css.map": "/static/css/main.36e7037e.css.map",
+    "main.bb0b7178.js.map": "/static/js/main.bb0b7178.js.map"
   },
   "entrypoints": [
-    "static/css/main.7b2af6a2.css",
-    "static/js/main.8cc905a7.js"
+    "static/css/main.36e7037e.css",
+    "static/js/main.bb0b7178.js"
   ]
 }

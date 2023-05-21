@@ -14,7 +14,7 @@ ul {
   position: absolute;
   right: -45px;
   background-color: rgba(28, 28, 28, 0);
-
+  cursor: pointer;
   padding: 0;
   border: none;
   /* top: 20px; */
