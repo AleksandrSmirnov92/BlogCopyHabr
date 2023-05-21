@@ -26,20 +26,8 @@ exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
 };
 exports.getInfoAboutUser = async (req: Request, res: Response) => {
   let { id } = req.params;
-  // const pathUpload = `${path.join(__dirname, "../../public/uploads")}`;
-  // const getInfoImg = await supabase
-  //   .from("about_user")
-  //   .select("img")
-  //   .eq("user_id", id)
-  //   .single();
-  // if (getInfoImg.data.img !== "") {
-  //   if (!fs.existsSync(`${pathUpload}/${getInfoImg.data.img}`)) {
-  //     const apdateAboutUser = await supabase
-  //       .from("about_user")
-  //       .update({ img: `` })
-  //       .eq("user_id", id);
-  //   }
-  // }
+  // let apdateAboutUser;
+  const pathUpload = `${path.join(__dirname, "../../public")}`;
   let getInfoUser = await supabase
     .from("about_user")
     .select(
@@ -47,8 +35,24 @@ exports.getInfoAboutUser = async (req: Request, res: Response) => {
     )
     .eq("user_id", id)
     .single();
+  // console.log(pathUpload);
+  // console.log(fs.existsSync(`${pathUpload}/${getInfoUser.data.img}`));
+  if (!fs.existsSync(`${pathUpload}/${getInfoUser.data.img}`)) {
+    let apdateAboutUser = await supabase
+      .from("about_user")
+      .update({ img: `` })
+      .eq("user_id", id)
+      .single();
+  }
+  let img = await supabase
+    .from("about_user")
+    .select("img")
+    .eq("user_id", id)
+    .single();
+
   res.status(200).json({
     message: "Вы получили информацию о пользователе",
     users: getInfoUser.data,
+    avatar: img.data.img,
   });
 };

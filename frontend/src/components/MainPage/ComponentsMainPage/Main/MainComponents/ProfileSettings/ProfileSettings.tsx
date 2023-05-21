@@ -61,10 +61,6 @@ const ProfileSettings: React.FC = () => {
     }
     const formData = new FormData();
     formData.set("file", selectedFile);
-    // const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
-    //   method: "POST",
-    //   body: formData,
-    // });
     const res = await fetch(
       `/api/uploadfile/${localStorage.getItem("userId")}`,
       {
@@ -164,7 +160,7 @@ const ProfileSettings: React.FC = () => {
       setRegion(data.users.region);
       values.town = data.users.town;
       setTown(data.users.town);
-      setPathImg(data.users.img);
+      setPathImg(data.avatar);
     };
 
     getSettingsInformation();
