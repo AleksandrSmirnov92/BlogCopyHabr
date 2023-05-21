@@ -26,8 +26,6 @@ exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
 };
 exports.getInfoAboutUser = async (req: Request, res: Response) => {
   let { id } = req.params;
-  // let apdateAboutUser;
-  const pathUpload = `${path.join(__dirname, "../../public")}`;
   let getInfoUser = await supabase
     .from("about_user")
     .select(
@@ -35,15 +33,6 @@ exports.getInfoAboutUser = async (req: Request, res: Response) => {
     )
     .eq("user_id", id)
     .single();
-  // console.log(pathUpload);
-  // console.log(fs.existsSync(`${pathUpload}/${getInfoUser.data.img}`));
-  // if (!fs.existsSync(`${pathUpload}/${getInfoUser.data.img}`)) {
-  //   let apdateAboutUser = await supabase
-  //     .from("about_user")
-  //     .update({ img: `` })
-  //     .eq("user_id", id);
-  // }
-
   res.status(200).json({
     message: "Вы получили информацию о пользователе",
     users: getInfoUser.data,

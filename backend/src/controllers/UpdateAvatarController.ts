@@ -26,7 +26,7 @@ exports.upload = multer({ storage: storage });
 exports.uploadAvatar = async (req: any, res: any, file: any) => {
   let { id } = req.params;
   console.log(pathUpload);
-  console.log(path.join(__dirname, "../../../public/uploads"));
+  console.log(path.join(__dirname, "../../public/uploads"));
   // const file = (req as MulterRequest).files.file;
   if (!file) {
     return res.status(404).json({
