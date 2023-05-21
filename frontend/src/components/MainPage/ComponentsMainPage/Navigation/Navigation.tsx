@@ -69,7 +69,7 @@ const Navigation: React.FC<Props> = ({
     >
       <button
         className={`${NavigationCSS["nav__btn"]} ${NavigationCSS.show_laptop}`}
-        onTouchEndCapture={() => {
+        onTouchEnd={() => {
           setToggleClass((prevState: boolean) => !prevState);
         }}
       >
@@ -79,7 +79,7 @@ const Navigation: React.FC<Props> = ({
           className={
             hideNavImg
               ? NavigationCSS.hide_img
-              : `${NavigationCSS["nav-element__image"]}`
+              : `${NavigationCSS["nav-element__image-btn"]}`
           }
         />
       </button>
