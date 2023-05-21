@@ -13,7 +13,7 @@ interface DeleteAvatar {
 const pathUpload = `${path.join(__dirname, "../../public/uploads")}`;
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, __dirname + "../../../public/uploads/");
+    cb(null, __dirname + "../../public/uploads/");
   },
   filename: function (req: any, file: any, cb: any) {
     let { id } = req.params;
