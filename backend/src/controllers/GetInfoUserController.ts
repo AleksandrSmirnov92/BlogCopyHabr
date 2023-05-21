@@ -26,7 +26,7 @@ exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
 };
 exports.getInfoAboutUser = async (req: Request, res: Response) => {
   let { id } = req.params;
-  const pathUpload = `${path.join(__dirname, "../../public")}`;
+  // const pathUpload = `${path.join(__dirname, "../../public/uploads")}`;
 
   // const getInfoImg = await supabase
   //   .from("about_user")
