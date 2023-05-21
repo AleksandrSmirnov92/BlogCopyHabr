@@ -160,7 +160,7 @@ const ProfileSettings: React.FC = () => {
       setRegion(data.users.region);
       values.town = data.users.town;
       setTown(data.users.town);
-      setPathImg(data.avatar);
+      setPathImg(data.users.img);
     };
 
     getSettingsInformation();
