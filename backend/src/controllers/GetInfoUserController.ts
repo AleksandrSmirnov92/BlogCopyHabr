@@ -46,13 +46,13 @@ exports.getInfoAboutUser = async (req: Request, res: Response) => {
   }
   let img = await supabase
     .from("about_user")
-    .select("img")
+    .select()
     .eq("user_id", id)
     .single();
 
   res.status(200).json({
     message: "Вы получили информацию о пользователе",
     users: getInfoUser.data,
-    avatar: img.data.img,
+    avatar: img.data.img !== null ? img.data.img : "",
   });
 };
