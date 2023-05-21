@@ -16,13 +16,13 @@ interface MyValues {
   region: string;
   town: string;
 }
-interface Context {
-  userId: string;
-  setUserId: React.Dispatch<React.SetStateAction<string>>;
-}
+// interface Context {
+//   userId: string;
+//   setUserId: React.Dispatch<React.SetStateAction<string>>;
+// }
 
 const ProfileSettings: React.FC = () => {
-  const userId = useContext<Context>(userIdContext);
+  // const userId = useContext<Context>(userIdContext);
   let [name, setName] = useState("");
   let [lastName, setLastName] = useState("");
   let [brieflyAboutYourself, setBrieflyAboutYourself] = useState("");
@@ -79,16 +79,18 @@ const ProfileSettings: React.FC = () => {
   // -----------------------------------------------
   const deleteImg = async (
     filePath: string,
-    setPathImg: React.Dispatch<React.SetStateAction<string>>,
     myRef: React.MutableRefObject<HTMLInputElement>
   ) => {
-    const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        path: filePath,
-      }),
-    });
+    const res = await fetch(
+      `/api/uploadfile/${localStorage.getItem("userId")}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filePath: filePath,
+        }),
+      }
+    );
     const data = await res.json();
     setPathImg(data.filePath);
     myRef.current.value = "";
@@ -117,6 +119,23 @@ const ProfileSettings: React.FC = () => {
   };
   // ------------------------------------------------------------------------
 
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
+    useFormik<MyValues>({
+      initialValues: {
+        img: "",
+        name: "",
+        lastName: "",
+        brieflyAboutYourself: "",
+        aboutMySelf: "",
+        contacts: "Контакты",
+        linkToContacts: "",
+        country: "Страна",
+        region: "Регион",
+        town: "Город",
+      },
+      onSubmit,
+      validationSchema: schemaForProfileSettings,
+    });
   useEffect(() => {
     const getSettingsInformation = async () => {
       const res = await fetch(
@@ -147,25 +166,9 @@ const ProfileSettings: React.FC = () => {
       setTown(data.users.town);
       setPathImg(data.users.img);
     };
+
     getSettingsInformation();
-  }, [pathImg, userId]);
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik<MyValues>({
-      initialValues: {
-        img: "",
-        name: "",
-        lastName: "",
-        brieflyAboutYourself: "",
-        aboutMySelf: "",
-        contacts: "Контакты",
-        linkToContacts: "",
-        country: "Страна",
-        region: "Регион",
-        town: "Город",
-      },
-      onSubmit,
-      validationSchema: schemaForProfileSettings,
-    });
+  }, [values]);
   return (
     <div className={ProfileSettingsCSS["profile-container"]}>
       <h3>Настройки профиля</h3>
@@ -201,7 +204,7 @@ const ProfileSettings: React.FC = () => {
           </label>
           <button
             onClick={() => {
-              deleteImg(pathImg, setPathImg, myRef);
+              deleteImg(pathImg, myRef);
             }}
             className={ProfileSettingsCSS["profile-avatar-block__btn-delete"]}
           >

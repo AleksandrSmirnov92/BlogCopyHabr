@@ -1,8 +1,8 @@
 import express from "express";
 // const fileUpload = require("express-fileupload");
-import { supabase } from "./config/usersDataBase.js";
+// import { supabase } from "./config/usersDataBase.js";
 const app = express();
-const multer = require("multer");
+
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
 const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
@@ -34,20 +34,6 @@ const path = require("path");
 //   },
 // });
 
-const storage = multer.diskStorage({
-  destination: function (req: any, file: any, cb: any) {
-    cb(null, process.cwd() + "/public/uploads");
-  },
-  filename: function (req: any, file: any, cb: any) {
-    let { id } = req.params;
-    const originalName = encodeURIComponent(path.parse(file.originalname).name);
-    // const timestamp = Date.now();
-    const extension = path.extname(file.originalname).toLowerCase();
-    cb(null, id + "_" + originalName + extension);
-  },
-});
-
-const upload = multer({ storage: storage });
 // ура
 app.use(express.json());
 app.use(cors());
@@ -64,7 +50,7 @@ app.use("/createQuestion", createQuestion);
 // ----------------------------------------
 app.use("/updateProfile", updateProfileRouter);
 // ----------------------------------------
-app.use("/updateAvatar", updateAvatarRouter);
+app.use("/api/uploadfile", updateAvatarRouter);
 // ----------------------------------------
 app.use("/tag", tagInfoRouter);
 // ----------------------------------------
@@ -86,18 +72,18 @@ app.use("/api/questions", getAllQuestions);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
 
-let update = async (req: any, res: any, next: any) => {
-  let { id } = req.params;
-  const apdateAboutUser = await supabase
-    .from("about_user")
-    .update({ img: `/uploads/${id}_${req.file.originalname}` })
-    .eq("user_id", id);
-  console.log(req.file.originalname + " file successfully uploaded !!");
-  res.status(200).json({
-    filePath: `/uploads/${id}_${req.file.originalname}`,
-  });
-};
-app.post("/api/uploadfile/:id", upload.single("file"), update);
+// let update = async (req: any, res: any, next: any) => {
+//   let { id } = req.params;
+//   const apdateAboutUser = await supabase
+//     .from("about_user")
+//     .update({ img: `/uploads/${id}_${req.file.originalname}` })
+//     .eq("user_id", id);
+//   console.log(req.file.originalname + " file successfully uploaded !!");
+//   res.status(200).json({
+//     filePath: `/uploads/${id}_${req.file.originalname}`,
+//   });
+// };
+// app.post("/api/uploadfile/:id", upload.single("file"), update);
 
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {

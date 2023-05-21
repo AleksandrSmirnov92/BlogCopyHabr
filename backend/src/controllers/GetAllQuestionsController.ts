@@ -8,6 +8,11 @@ exports.getAllQuestions = async (req: Request, res: Response) => {
     .select(
       `"date_of_creation","question_title","id","question_tags",tags("*"),answers(*)`
     );
+  if (getQuestions.data === null) {
+    res.status(522).json({
+      message: "соединение не отвечает",
+    });
+  }
   let questions = getQuestions.data.map((obj: any) => {
     let { date_of_creation, question_title, id, question_tags, answers } = obj;
     let { name_tag, img_tag, tags_id } = obj.tags;
