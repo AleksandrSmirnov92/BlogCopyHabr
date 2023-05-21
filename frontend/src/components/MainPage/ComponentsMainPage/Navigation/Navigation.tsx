@@ -67,9 +67,9 @@ const Navigation: React.FC<Props> = ({
           : `${NavigationCSS["nav_active"]} ${NavigationCSS["nav"]}`
       }
     >
-      <div
+      <button
         className={`${NavigationCSS["nav__btn"]} ${NavigationCSS.show_laptop}`}
-        onClick={() => {
+        onTouchEndCapture={() => {
           setToggleClass((prevState: boolean) => !prevState);
         }}
       >
@@ -82,7 +82,7 @@ const Navigation: React.FC<Props> = ({
               : `${NavigationCSS["nav-element__image"]}`
           }
         />
-      </div>
+      </button>
       <ul className={NavigationCSS.nav_links}>
         <div
           className={

@@ -25,7 +25,7 @@ const Users: React.FC = () => {
       setUsers(data.body);
     };
     getInfomationAboutUser();
-  }, [users]);
+  }, []);
 
   return (
     <div className={`${UsersCSS["users-container"]}`}>
