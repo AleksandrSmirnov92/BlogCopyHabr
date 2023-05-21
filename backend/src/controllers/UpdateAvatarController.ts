@@ -9,12 +9,7 @@ interface MulterRequest extends Request {
 interface DeleteAvatar {
   filePath: string;
 }
-// interface UploadAvatarResponse {
-//   message?: string;
-//   filePath?: string;
-//   err?: Error;
-//   next: any;
-// }
+
 const pathUpload = `${path.join(__dirname, "../../public/uploads")}`;
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
@@ -52,33 +47,6 @@ exports.uploadAvatar = async (req: any, res: any, file: any) => {
       message: "the file is not in the directory uploads",
     });
   }
-
-  // var storage = multer.diskStorage({
-  //   destination: `${pathUpload}`,
-  //   filename: function (req: any, file: any, cb: any) {
-  //     cb(null, file.originalname);
-  //   },
-  // });
-  // const upload = multer({ storage: storage });
-  // upload.single("file");
-  // file.mv(`${pathUpload}/${file.name}`, (err: Error) => {
-  //   if (err) {
-  //     return res.status(500).json({ err: err, message: "ошибка" });
-  //   }
-  //   if (fs.existsSync(`${pathUpload}/${file.name}`)) {
-  //     console.log("файл записан");
-  //     return res.status(200).json({
-  //       message: `файл записан по адрессу = ${pathUpload}/${file.name}`,
-  //       filePath: `../../../../../../uploads/${file.name}`,
-  //     });
-  //   } else {
-  //     console.log("файл не записан");
-  //     return res.status(200).json({
-  //       message: `файла по адрессу = ${pathUpload}/${file.name} не существует`,
-  //       filePath: `../../../../../../uploads/${file.name}`,
-  //     });
-  //   }
-  // });
 };
 
 exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
@@ -100,29 +68,4 @@ exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
       });
     }
   });
-
-  // const apdateAboutUser = await supabase
-  //   .from("about_user")
-  //   .update({ img: `` })
-  //   .eq("user_id", id);
-
-  // const pathUpload = path.resolve(
-  //   __dirname,
-  //   `../../../Backend/Frontend/${filePath}`
-  // );
-  // const pathUpload = path.resolve(
-  //   __dirname,
-  //   `../../../Backend/public/${filePath}`
-  // );
-
-  // const pathUpload = path.resolve(__dirname, `/public/${filePath}`);
-  // fs.unlink(pathUpload, (err: Error) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     res.status(200).json({
-  //       filePath: ``,
-  //     });
-  //   }
-  // });
 };

@@ -1,6 +1,4 @@
 import express from "express";
-// const fileUpload = require("express-fileupload");
-// import { supabase } from "./config/usersDataBase.js";
 const app = express();
 
 const signInRouter = require("../dist/Routes/SignInRouters");
@@ -17,28 +15,15 @@ const getAnswersRouter = require("../dist/Routes/GetAnswerRoutes.js");
 const getMyFeedRouter = require("../dist/Routes/GetMyFeedRoutes.js");
 const getAllTagsRoute = require("../dist/Routes/LiveSearchTagsRoutes.js");
 const getAllQuestions = require("../dist/Routes/GetAllQuestionsRoutes.js");
-// const getAllQuestionsId = require("../dist/Routes/getQuestionsIdRoutes.js");
+const getAllQuestionsId = require("../dist/Routes/GetQuestionsIdRoutes.js");
 const getAllInfo = require("../dist/Routes/LiveSearchNavigationRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-// ура
-// var storage = multer.diskStorage({
-//   destination: `${path.join(__dirname, "../public/uploads")}`,
-//   filename: function (req: any, file: any, cb: any) {
-//     cb(null, file.originalname);
-//   },
-//   filename: function (req: any, file: any, cb: any) {
-//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-//     cb(null, file.fieldname + "-" + uniqueSuffix);
-//   },
-// });
 
-// ура
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-// app.use(fileUpload());
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/signIn", signInRouter);
 // ----------------------------------------
@@ -68,23 +53,9 @@ app.use("/tags", getAllTagsRoute);
 // ----------------------------------------
 app.use("/api/questions", getAllQuestions);
 // ----------------------------------------
-// app.use("/getQuestionsId", getAllQuestionsId);
+app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
-
-// let update = async (req: any, res: any, next: any) => {
-//   let { id } = req.params;
-//   const apdateAboutUser = await supabase
-//     .from("about_user")
-//     .update({ img: `/uploads/${id}_${req.file.originalname}` })
-//     .eq("user_id", id);
-//   console.log(req.file.originalname + " file successfully uploaded !!");
-//   res.status(200).json({
-//     filePath: `/uploads/${id}_${req.file.originalname}`,
-//   });
-// };
-// app.post("/api/uploadfile/:id", upload.single("file"), update);
-
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {
     if (err) {
