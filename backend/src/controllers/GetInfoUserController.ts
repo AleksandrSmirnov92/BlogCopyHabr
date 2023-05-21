@@ -37,12 +37,12 @@ exports.getInfoAboutUser = async (req: Request, res: Response) => {
     .single();
   // console.log(pathUpload);
   // console.log(fs.existsSync(`${pathUpload}/${getInfoUser.data.img}`));
-  if (!fs.existsSync(`${pathUpload}/${getInfoUser.data.img}`)) {
-    let apdateAboutUser = await supabase
-      .from("about_user")
-      .update({ img: `` })
-      .eq("user_id", id);
-  }
+  // if (!fs.existsSync(`${pathUpload}/${getInfoUser.data.img}`)) {
+  //   let apdateAboutUser = await supabase
+  //     .from("about_user")
+  //     .update({ img: `` })
+  //     .eq("user_id", id);
+  // }
 
   res.status(200).json({
     message: "Вы получили информацию о пользователе",
