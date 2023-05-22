@@ -1,6 +1,7 @@
 import express from "express";
 const app = express();
-
+var fileUpload = require("express-fileupload");
+app.use(fileUpload());
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
 const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");

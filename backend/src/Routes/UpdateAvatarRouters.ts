@@ -7,6 +7,7 @@ const {
 const router = express.Router();
 router
   .route("/:id")
-  .post(upload.single("file"), uploadAvatar)
+  // .post(upload.single("file"), uploadAvatar)
+  .post(uploadAvatar)
   .delete(deleteAvatar);
 module.exports = router;

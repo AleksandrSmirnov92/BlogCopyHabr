@@ -4,6 +4,11 @@ import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSe
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
 import userIdContext from "../../../../../Context/Context";
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  "https://kwbwgorqvpvraiucnkqq.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3Yndnb3JxdnB2cmFpdWNua3FxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODA4NTcyMzAsImV4cCI6MTk5NjQzMzIzMH0.VmWDc7nyEelhmjSO60IjxYnxZU9PZLw3KzaHluvHdxs"
+);
 interface MyValues {
   img: string;
   name: string;
@@ -55,6 +60,10 @@ const ProfileSettings: React.FC = () => {
   };
   // ----------------------------------------------
   const sendAvatar = async (selectedFile: File) => {
+    // const uploadImages = await supabase.storage
+    //   .from("uploads")
+    //   .upload(localStorage.getItem("userId") + "/", selectedFile);
+    // console.log(uploadImages);
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
       return;
@@ -186,11 +195,12 @@ const ProfileSettings: React.FC = () => {
           <input
             ref={myRef}
             onChange={(e) => {
+              console.log(e.target.files);
               sendAvatar(e.target.files[0]);
             }}
             id="img"
             type="file"
-            accept="image/*,.png,.jpg,.gif,.web"
+            accept="image/*,.png,.jpg"
           ></input>
           <label
             className={ProfileSettingsCSS["profile-avatar-block__btn-upload"]}
