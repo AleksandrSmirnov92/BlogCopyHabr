@@ -8,6 +8,6 @@ const router = express.Router();
 router
   .route("/:id")
   // .post(upload.single("file"), uploadAvatar)
-  .post(uploadAvatar)
+  .get(uploadAvatar)
   .delete(deleteAvatar);
 module.exports = router;

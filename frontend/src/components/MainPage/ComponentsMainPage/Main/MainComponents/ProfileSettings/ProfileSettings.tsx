@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
-import userIdContext from "../../../../../Context/Context";
+// import userIdContext from "../../../../../Context/Context";
 import { createClient } from "@supabase/supabase-js";
 const supabase = createClient(
   "https://kwbwgorqvpvraiucnkqq.supabase.co",
@@ -60,26 +60,49 @@ const ProfileSettings: React.FC = () => {
   };
   // ----------------------------------------------
   const sendAvatar = async (selectedFile: File) => {
-    // const uploadImages = await supabase.storage
-    //   .from("uploads")
-    //   .upload(localStorage.getItem("userId") + "/", selectedFile);
-    // console.log(uploadImages);
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
       return;
     }
-    const formData = new FormData();
-    formData.set("file", selectedFile);
+    if (localStorage.getItem("userId")) {
+      const uploadImages = await supabase.storage
+        .from("uploads")
+        .upload(
+          `image_${localStorage.getItem("userId")}` +
+            "/" +
+            localStorage.getItem("userId"),
+          selectedFile
+        );
+      if (uploadImages.error !== null) {
+        alert("Сначала удалите аватарку");
+      }
+    } else {
+      console.log("notAutorization");
+    }
     const res = await fetch(
       `/api/uploadfile/${localStorage.getItem("userId")}`,
       {
-        method: "POST",
-        body: formData,
+        method: "GET",
+        // body: JSON.stringify({
+        //   nameFile: selectedFile.name,
+        // }),
       }
     );
     const data = await res.json();
     console.log(data);
     setPathImg(data.filePath);
+    // const formData = new FormData();
+    // formData.set("file", selectedFile);
+    // const res = await fetch(
+    //   `/api/uploadfile/${localStorage.getItem("userId")}`,
+    //   {
+    //     method: "POST",
+    //     body: formData,
+    //   }
+    // );
+    // const data = await res.json();
+    // console.log(data);
+    // setPathImg(data.filePath);
   };
   // -----------------------------------------------
   const deleteImg = async (
@@ -173,7 +196,7 @@ const ProfileSettings: React.FC = () => {
     };
 
     getSettingsInformation();
-  }, [values]);
+  }, []);
   return (
     <div className={ProfileSettingsCSS["profile-container"]}>
       <h3>Настройки профиля</h3>

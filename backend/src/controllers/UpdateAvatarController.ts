@@ -10,7 +10,7 @@ interface MulterRequest extends Request {
 interface DeleteAvatar {
   filePath: string;
 }
-
+let url = `https://kwbwgorqvpvraiucnkqq.supabase.co/storage/v1/object/public/uploads/image`;
 // const pathUpload = `${path.join(__dirname, "../../public/uploads")}`;
 // const storage = multer.diskStorage({
 //   destination: function (req: any, file: any, cb: any) {
@@ -26,14 +26,25 @@ interface DeleteAvatar {
 // exports.upload = multer({ storage: storage });
 exports.uploadAvatar = async (req: any, res: any) => {
   let { id } = req.params;
+  // console.log(req.body);
+  const apdateAboutUser = await supabase
+    .from("about_user")
+    .update({ img: `${url}_${id}/${id}` })
+    .eq("user_id", id);
+  return res.status(200).json({
+    message: " file successfully uploaded !!",
+    filePath: `${url}_${id}/${id}`,
+  });
+  // const uploadImages = await supabase.storage
+  //   .from("uploads")
+  //   .
+
   // let { filePath } = req.body;
-  const file = (req as MulterRequest).files.file;
-  const uploadImages = await supabase.storage
-    .from("uploads")
-    .upload(id + "/", file.data);
+  // const file = (req as MulterRequest).files.file;
+
   // const getImages = await supabase.storage.from("uploads").list(id + "/");
   // console.log(file);
-  console.log(req.files);
+  // console.log(uploadImages);
   // console.log(uploadImages);
   // console.log("N", req.files);
   // console.log(path.join(__dirname, "../../public/uploads"));
@@ -62,21 +73,42 @@ exports.uploadAvatar = async (req: any, res: any) => {
 
 exports.deleteAvatar = async (req: Request, res: Response<DeleteAvatar>) => {
   let { id } = req.params;
-  let { filePath } = req.body;
-  const pathUpload = `${path.join(__dirname, `../../public/${filePath}`)}`;
-  if (fs.existsSync(`${pathUpload}`)) {
-    const apdateAboutUser = await supabase
+  // let { filePath } = req.body;
+  const { error } = await supabase.storage
+    .from("uploads")
+    .remove([`image_${id}/` + id]);
+  const apdateAboutUser = await supabase
+    .from("about_user")
+    .update({ img: `` })
+    .eq("user_id", id);
+  if (error) {
+    console.log(error);
+  } else {
+    const getImage = await supabase
       .from("about_user")
-      .update({ img: `` })
+      .select("img")
       .eq("user_id", id);
+    console.log(error);
+    res.status(200).json({
+      filePath: getImage.data[0].img,
+    });
   }
-  fs.unlink(pathUpload, (err: Error) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.status(200).json({
-        filePath: ``,
-      });
-    }
-  });
+
+  // console.log(filePath);
+  // const pathUpload = `${path.join(__dirname, `../../public/${filePath}`)}`;
+  // if (fs.existsSync(`${pathUpload}`)) {
+  //   const apdateAboutUser = await supabase
+  //     .from("about_user")
+  //     .update({ img: `` })
+  //     .eq("user_id", id);
+  // }
+  // fs.unlink(pathUpload, (err: Error) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     res.status(200).json({
+  //       filePath: ``,
+  //     });
+  //   }
+  // });
 };
