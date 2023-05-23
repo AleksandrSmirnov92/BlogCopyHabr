@@ -1,14 +1,9 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
-// import userIdContext from "../../../../../Context/Context";
-import { createClient } from "@supabase/supabase-js";
-const supabase = createClient(
-  "https://kwbwgorqvpvraiucnkqq.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3Yndnb3JxdnB2cmFpdWNua3FxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODA4NTcyMzAsImV4cCI6MTk5NjQzMzIzMH0.VmWDc7nyEelhmjSO60IjxYnxZU9PZLw3KzaHluvHdxs"
-);
+import supabase from "../../../../../../config/supaBaseDB";
 interface MyValues {
   img: string;
   name: string;
@@ -21,13 +16,8 @@ interface MyValues {
   region: string;
   town: string;
 }
-// interface Context {
-//   userId: string;
-//   setUserId: React.Dispatch<React.SetStateAction<string>>;
-// }
 
 const ProfileSettings: React.FC = () => {
-  // const userId = useContext<Context>(userIdContext);
   let [name, setName] = useState("");
   let [lastName, setLastName] = useState("");
   let [brieflyAboutYourself, setBrieflyAboutYourself] = useState("");
@@ -60,6 +50,7 @@ const ProfileSettings: React.FC = () => {
   };
   // ----------------------------------------------
   const sendAvatar = async (selectedFile: File) => {
+    let r = Math.random();
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
       return;
@@ -68,7 +59,7 @@ const ProfileSettings: React.FC = () => {
       const uploadImages = await supabase.storage
         .from("uploads")
         .upload(
-          `image_${localStorage.getItem("userId")}` +
+          `image_${localStorage.getItem("userId")}_${r}` +
             "/" +
             localStorage.getItem("userId"),
           selectedFile
@@ -82,27 +73,15 @@ const ProfileSettings: React.FC = () => {
     const res = await fetch(
       `/api/uploadfile/${localStorage.getItem("userId")}`,
       {
-        method: "GET",
-        // body: JSON.stringify({
-        //   nameFile: selectedFile.name,
-        // }),
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          random: r,
+        }),
       }
     );
     const data = await res.json();
-    console.log(data);
     setPathImg(data.filePath);
-    // const formData = new FormData();
-    // formData.set("file", selectedFile);
-    // const res = await fetch(
-    //   `/api/uploadfile/${localStorage.getItem("userId")}`,
-    //   {
-    //     method: "POST",
-    //     body: formData,
-    //   }
-    // );
-    // const data = await res.json();
-    // console.log(data);
-    // setPathImg(data.filePath);
   };
   // -----------------------------------------------
   const deleteImg = async (
@@ -121,6 +100,7 @@ const ProfileSettings: React.FC = () => {
     );
     const data = await res.json();
     setPathImg(data.filePath);
+
     myRef.current.value = "";
   };
   // --------------------------------------------------
@@ -218,7 +198,6 @@ const ProfileSettings: React.FC = () => {
           <input
             ref={myRef}
             onChange={(e) => {
-              console.log(e.target.files);
               sendAvatar(e.target.files[0]);
             }}
             id="img"

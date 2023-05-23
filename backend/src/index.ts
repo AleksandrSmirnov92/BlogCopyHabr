@@ -1,7 +1,5 @@
 import express from "express";
 const app = express();
-var fileUpload = require("express-fileupload");
-app.use(fileUpload());
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
 const getInfoAboutUserRouter = require("../dist/Routes/GetInfoUserRoutes");
@@ -21,7 +19,6 @@ const getAllInfo = require("../dist/Routes/LiveSearchNavigationRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
