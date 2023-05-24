@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-// import { pool } from "../db.js";
 import { supabase } from "../config/usersDataBase.js";
 interface ResponseTags {
   message: string;
