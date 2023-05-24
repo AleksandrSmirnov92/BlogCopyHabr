@@ -1,5 +1,4 @@
 import express from "express";
-const fileUpload = require("express-fileupload");
 const app = express();
 const signInRouter = require("../dist/Routes/SignInRouters");
 const signUpRouter = require("../dist/Routes/SignUpRouters");
@@ -15,20 +14,15 @@ const getAnswersRouter = require("../dist/Routes/GetAnswerRoutes.js");
 const getMyFeedRouter = require("../dist/Routes/GetMyFeedRoutes.js");
 const getAllTagsRoute = require("../dist/Routes/LiveSearchTagsRoutes.js");
 const getAllQuestions = require("../dist/Routes/GetAllQuestionsRoutes.js");
-const getAllQuestionsId = require("../dist/Routes/getQuestionsIdRoutes.js");
+const getAllQuestionsId = require("../dist/Routes/GetQuestionsIdRoutes.js");
 const getAllInfo = require("../dist/Routes/LiveSearchNavigationRoutes.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "../Frontend/")));
-app.use(express.static(path.join(__dirname, "../Frontend/build/")));
-
-app.use(fileUpload());
-
+app.use(express.static(path.join(__dirname, "../public")));
 app.use("/signIn", signInRouter);
 // ----------------------------------------
 app.use("/signUp", signUpRouter);
@@ -39,7 +33,7 @@ app.use("/createQuestion", createQuestion);
 // ----------------------------------------
 app.use("/updateProfile", updateProfileRouter);
 // ----------------------------------------
-app.use("/updateAvatar", updateAvatarRouter);
+app.use("/api/uploadfile", updateAvatarRouter);
 // ----------------------------------------
 app.use("/tag", tagInfoRouter);
 // ----------------------------------------
@@ -60,16 +54,12 @@ app.use("/api/questions", getAllQuestions);
 app.use("/getQuestionsId", getAllQuestionsId);
 // ----------------------------------------
 app.use("/getAllInfo", getAllInfo);
-
 app.get("/*", function (req, res) {
-  res.sendFile(
-    path.join(__dirname, "../Frontend/build/index.html"),
-    function (err) {
-      if (err) {
-        res.status(500).send(err);
-      }
+  res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
     }
-  );
+  });
 });
 
 module.exports = app;

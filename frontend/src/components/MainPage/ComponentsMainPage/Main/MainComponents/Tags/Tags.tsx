@@ -16,6 +16,7 @@ const Tags = () => {
       });
       const data: ResponseData = await res.json();
       setTags(data.tags);
+      console.log(data);
     };
     getInfoTags();
   }, []);

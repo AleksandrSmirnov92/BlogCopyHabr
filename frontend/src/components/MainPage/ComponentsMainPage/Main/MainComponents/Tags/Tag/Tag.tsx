@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+
 import TagCSS from "./Tag.module.css";
 import { useParams, useLocation } from "react-router-dom";
 import Question from "../../AllQuestions/Question/Question";
@@ -16,7 +17,9 @@ interface ResponseData {
 const Tag: React.FC = () => {
   let location = useLocation();
   let question: string = location.state;
+
   const btnRef = useRef(null);
+
   let { tagId } = useParams();
   let [description, setDescription] = useState("");
   let [pathImg, setPathImg] = useState("");

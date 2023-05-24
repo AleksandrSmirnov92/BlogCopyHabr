@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import { supabase } from "../config/usersDataBase.js";
+const path = require("path");
+const fs = require("fs");
 exports.getAllInfoAboutUser = async (req: Request, res: Response) => {
   let getInfoAboutUser = await supabase
     .from("users")

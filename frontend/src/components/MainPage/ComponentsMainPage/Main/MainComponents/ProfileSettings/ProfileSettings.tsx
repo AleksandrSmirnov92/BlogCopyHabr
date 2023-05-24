@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { schemaForProfileSettings } from "../../../../../Schemas/SchemaProfileSettings";
 import ProfileSettingsCSS from "./ProfileSettings.module.css";
 import ProfilIMG from "../../../../../../images/photoProfil.png";
-import userIdContext from "../../../../../Context/Context";
+import supabase from "../../../../../../config/supaBaseDB";
 interface MyValues {
   img: string;
   name: string;
@@ -16,13 +16,8 @@ interface MyValues {
   region: string;
   town: string;
 }
-interface Context {
-  userId: string;
-  setUserId: React.Dispatch<React.SetStateAction<string>>;
-}
 
 const ProfileSettings: React.FC = () => {
-  const userId = useContext<Context>(userIdContext);
   let [name, setName] = useState("");
   let [lastName, setLastName] = useState("");
   let [brieflyAboutYourself, setBrieflyAboutYourself] = useState("");
@@ -55,35 +50,57 @@ const ProfileSettings: React.FC = () => {
   };
   // ----------------------------------------------
   const sendAvatar = async (selectedFile: File) => {
+    let r = Math.random();
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
       return;
     }
-    const formData = new FormData();
-    formData.set("file", selectedFile);
-    const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
-      method: "POST",
-      body: formData,
-    });
+    if (localStorage.getItem("userId")) {
+      const uploadImages = await supabase.storage
+        .from("uploads")
+        .upload(
+          `image_${localStorage.getItem("userId")}_${r}` +
+            "/" +
+            localStorage.getItem("userId"),
+          selectedFile
+        );
+      if (uploadImages.error !== null) {
+        alert("Сначала удалите аватарку");
+      }
+    } else {
+      console.log("notAutorization");
+    }
+    const res = await fetch(
+      `/api/uploadfile/${localStorage.getItem("userId")}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          random: r,
+        }),
+      }
+    );
     const data = await res.json();
-    console.log(data.filePath);
     setPathImg(data.filePath);
   };
   // -----------------------------------------------
   const deleteImg = async (
     filePath: string,
-    setPathImg: React.Dispatch<React.SetStateAction<string>>,
     myRef: React.MutableRefObject<HTMLInputElement>
   ) => {
-    const res = await fetch(`/updateAvatar/${localStorage.getItem("userId")}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        path: filePath,
-      }),
-    });
+    const res = await fetch(
+      `/api/uploadfile/${localStorage.getItem("userId")}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filePath: filePath,
+        }),
+      }
+    );
     const data = await res.json();
     setPathImg(data.filePath);
+
     myRef.current.value = "";
   };
   // --------------------------------------------------
@@ -110,6 +127,23 @@ const ProfileSettings: React.FC = () => {
   };
   // ------------------------------------------------------------------------
 
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
+    useFormik<MyValues>({
+      initialValues: {
+        img: "",
+        name: "",
+        lastName: "",
+        brieflyAboutYourself: "",
+        aboutMySelf: "",
+        contacts: "Контакты",
+        linkToContacts: "",
+        country: "Страна",
+        region: "Регион",
+        town: "Город",
+      },
+      onSubmit,
+      validationSchema: schemaForProfileSettings,
+    });
   useEffect(() => {
     const getSettingsInformation = async () => {
       const res = await fetch(
@@ -140,25 +174,9 @@ const ProfileSettings: React.FC = () => {
       setTown(data.users.town);
       setPathImg(data.users.img);
     };
+
     getSettingsInformation();
-  }, [pathImg, userId]);
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik<MyValues>({
-      initialValues: {
-        img: "",
-        name: "",
-        lastName: "",
-        brieflyAboutYourself: "",
-        aboutMySelf: "",
-        contacts: "Контакты",
-        linkToContacts: "",
-        country: "Страна",
-        region: "Регион",
-        town: "Город",
-      },
-      onSubmit,
-      validationSchema: schemaForProfileSettings,
-    });
+  }, []);
   return (
     <div className={ProfileSettingsCSS["profile-container"]}>
       <h3>Настройки профиля</h3>
@@ -184,7 +202,7 @@ const ProfileSettings: React.FC = () => {
             }}
             id="img"
             type="file"
-            accept="image/*,.png,.jpg,.gif,.web"
+            accept="image/*,.png,.jpg"
           ></input>
           <label
             className={ProfileSettingsCSS["profile-avatar-block__btn-upload"]}
@@ -194,7 +212,7 @@ const ProfileSettings: React.FC = () => {
           </label>
           <button
             onClick={() => {
-              deleteImg(pathImg, setPathImg, myRef);
+              deleteImg(pathImg, myRef);
             }}
             className={ProfileSettingsCSS["profile-avatar-block__btn-delete"]}
           >

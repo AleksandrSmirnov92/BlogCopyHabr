@@ -67,7 +67,7 @@ const Navigation: React.FC<Props> = ({
           : `${NavigationCSS["nav_active"]} ${NavigationCSS["nav"]}`
       }
     >
-      <div
+      <button
         className={`${NavigationCSS["nav__btn"]} ${NavigationCSS.show_laptop}`}
         onClick={() => {
           setToggleClass((prevState: boolean) => !prevState);
@@ -79,10 +79,10 @@ const Navigation: React.FC<Props> = ({
           className={
             hideNavImg
               ? NavigationCSS.hide_img
-              : `${NavigationCSS["nav-element__image"]}`
+              : `${NavigationCSS["nav-element__image-btn"]}`
           }
         />
-      </div>
+      </button>
       <ul className={NavigationCSS.nav_links}>
         <div
           className={

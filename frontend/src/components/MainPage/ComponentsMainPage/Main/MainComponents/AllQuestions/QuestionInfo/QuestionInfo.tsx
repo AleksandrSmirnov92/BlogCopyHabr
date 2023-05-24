@@ -72,6 +72,7 @@ const QuestionInfo: React.FC = () => {
       setQuestionTimeCreation(
         currentTime(new Date(`${data.questionInfo.date_of_creation}`))
       );
+      console.log(data.questionInfo.answers);
       setAnswers(data.questionInfo.answers);
       setPathMyImg(data.questionInfo.userImg);
       setUserId(data.questionInfo.userId);
@@ -165,7 +166,10 @@ const QuestionInfo: React.FC = () => {
                   to={`/users/${answer.responce_userId}`}
                   className={`${QuestionInfoCSS["question-answer__image"]}`}
                 >
-                  <img src={pathImg ? pathImg : imageProfil} alt="" />
+                  <img
+                    src={answer.img !== "" ? answer.img : imageProfil}
+                    alt=""
+                  />
                 </NavLink>
                 <NavLink
                   to={`/users/${answer.responce_userId}`}
