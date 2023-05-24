@@ -23,6 +23,13 @@ exports.getAnswers = async (req: Request, res: Response) => {
       tags_id: tagsId,
       question_id: questionId,
     });
+  if (getAnswersToQuestion.data === null) {
+    console.log("соединение не отвечает");
+    console.log(getAnswersToQuestion.error);
+    res.status(522).json({
+      message: "соединение не отвечает",
+    });
+  }
   let answerData = getAnswersToQuestion.data.map((obj: any) => {
     let { img, fullname, lastname } = obj.about_user;
     let { responce_userId, answers } = obj;
@@ -37,13 +44,19 @@ exports.getAnswers = async (req: Request, res: Response) => {
 };
 exports.getAnswersId = async (req: Request, res: Response) => {
   let { id } = req.params;
-  console.log(id);
   let getInfoAnswers = await supabase
     .from("answers")
     .select(
       `"answer_id","answers","question_id","responce_userId","user_id",users("*"),questions("*")`
     )
     .eq("user_id", id);
+  if (getInfoAnswers.data === null) {
+    console.log("соединение не отвечает");
+    console.log(getInfoAnswers.error);
+    res.status(522).json({
+      message: "соединение не отвечает",
+    });
+  }
   let answers = getInfoAnswers.data.map((obj: any) => {
     let { answers } = obj;
     let { question_title, id, question_tags } = obj.questions;

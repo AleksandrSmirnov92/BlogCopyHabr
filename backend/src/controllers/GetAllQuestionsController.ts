@@ -9,6 +9,8 @@ exports.getAllQuestions = async (req: Request, res: Response) => {
       `"date_of_creation","question_title","id","question_tags",tags("*"),answers(*)`
     );
   if (getQuestions.data === null) {
+    console.log("соединение не отвечает");
+    console.log(getQuestions.error);
     res.status(522).json({
       message: "соединение не отвечает",
     });
@@ -40,6 +42,13 @@ exports.getAllQuestionsId = async (req: Request, res: Response) => {
     .from("questions")
     .select(`"*",tags("*"),answers(*)`)
     .eq("user_id", id);
+  if (getQuestionsId === null) {
+    console.log("соединение не отвечает");
+    console.log(getQuestionsId.error);
+    res.status(522).json({
+      message: "соединение не отвечает",
+    });
+  }
   let questionsInfo = getQuestionsId.data.map((obj: any) => {
     let { id, question_tags, question_title, date_of_creation, tags, answers } =
       obj;
