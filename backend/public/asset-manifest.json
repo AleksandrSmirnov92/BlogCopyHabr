@@ -1,5 +1,6 @@
 {
   "files": {
+
     "main.css": "/static/css/main.0301366a.css",
     "main.js": "/static/js/main.cba2ac55.js",
     "static/media/замок.png": "/static/media/замок.d65c3ee04380b1a8ccd9.png",
@@ -10,5 +11,17 @@
   "entrypoints": [
     "static/css/main.0301366a.css",
     "static/js/main.cba2ac55.js"
+=======
+    "main.css": "/static/css/main.362153c2.css",
+    "main.js": "/static/js/main.450abaa8.js",
+    "static/media/замок.png": "/static/media/замок.d65c3ee04380b1a8ccd9.png",
+    "index.html": "/index.html",
+    "main.362153c2.css.map": "/static/css/main.362153c2.css.map",
+    "main.450abaa8.js.map": "/static/js/main.450abaa8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.362153c2.css",
+    "static/js/main.450abaa8.js"
+
   ]
 }

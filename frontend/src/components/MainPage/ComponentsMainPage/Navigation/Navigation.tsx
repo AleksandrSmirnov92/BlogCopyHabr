@@ -17,6 +17,22 @@ interface Props {
   setToggleClass: React.Dispatch<React.SetStateAction<boolean>>;
   hideNavImg: boolean;
 }
+interface ResponseServer {
+  users: {
+    briefly_about_yourself: string;
+    contacts: string;
+    country: string;
+    fullname: string;
+    img: string;
+    information_about_user: string;
+    lastname: string;
+    linktocontacts: string;
+    region: string;
+    town: string;
+    users: { email: string };
+  };
+  message: string;
+}
 const Navigation: React.FC<Props> = ({
   toggleClass,
   setToggleClass,
@@ -26,7 +42,7 @@ const Navigation: React.FC<Props> = ({
   let [pathImg, setPathImg] = useState("");
   let [fullName, setFullName] = useState("");
   let [lastName, setLastName] = useState("");
-  const exit = () => {
+  const exit = (): void => {
     setTimeout(() => {
       document.cookie = "nickname= ; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
       localStorage.removeItem("userId");
@@ -35,25 +51,27 @@ const Navigation: React.FC<Props> = ({
   };
   useEffect(() => {
     const getInformationAboutUser = async () => {
-      const res = await fetch(
+      const res: Response = await fetch(
         `/getInformationAboutUser/${localStorage.getItem("userId")}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         }
       );
-      const data = await res.json();
-      setPathImg(data.users.img);
-      if (data.users.fullname !== "" || data.users.lastname !== "") {
-        setFullName(data.users.fullname);
-        setLastName(data.users.lastname);
-        return;
+      const data: ResponseServer = await res.json();
+      if (data.users) {
+        setPathImg(data.users.img);
+        if (data.users.fullname || data.users.lastname) {
+          setFullName(data.users.fullname);
+          setLastName(data.users.lastname);
+          return;
+        }
+        setFullName(data.users.users.email);
       }
-      setFullName(data.users.users.email);
     };
     getInformationAboutUser();
 
-    if (getCookie("nickname") !== "") {
+    if (getCookie("nickname")) {
       setUserRegistred(true);
     } else {
       console.log("пользователь не зарегестрирова");
