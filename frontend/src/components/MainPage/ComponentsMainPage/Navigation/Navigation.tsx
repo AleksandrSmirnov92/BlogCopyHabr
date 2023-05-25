@@ -56,7 +56,7 @@ const Navigation: React.FC<Props> = ({
     if (getCookie("nickname") !== "") {
       setUserRegistred(true);
     } else {
-      console.log("пользователь не зарегестрирова");
+      console.log("пользователь не зарегестрирован");
     }
   }, []);
   return (
