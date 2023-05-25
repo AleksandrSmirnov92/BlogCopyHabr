@@ -1,6 +1,4 @@
-import { equal } from "assert";
 import express, { Request, Response } from "express";
-// import { pool } from "../db.js";
 import { supabase } from "../config/usersDataBase.js";
 interface RequestBody {
   tagsId: string;

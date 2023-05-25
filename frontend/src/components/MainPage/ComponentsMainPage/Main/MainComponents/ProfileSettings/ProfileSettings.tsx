@@ -50,11 +50,15 @@ const ProfileSettings: React.FC = () => {
   };
   // ----------------------------------------------
   const sendAvatar = async (selectedFile: File) => {
-    let r = Math.random();
+
+
+    let nameAvatar = selectedFile.name;
+
     if (!selectedFile) {
       alert("Пожалуйста загрузите файл");
       return;
     }
+
     if (localStorage.getItem("userId")) {
       const uploadImages = await supabase.storage
         .from("uploads")
@@ -70,18 +74,38 @@ const ProfileSettings: React.FC = () => {
     } else {
       console.log("notAutorization");
     }
+
+    if (!localStorage.getItem("userId")) {
+      return console.log("notAutorization");
+    }
+    const uploadImages = await supabase.storage
+      .from("uploads")
+      .upload(
+        `image_${localStorage.getItem("userId")}` + "/" + nameAvatar,
+        selectedFile
+      );
+
     const res = await fetch(
       `/api/uploadfile/${localStorage.getItem("userId")}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+
           random: r,
         }),
       }
     );
     const data = await res.json();
     setPathImg(data.filePath);
+
+          nameAvatar: nameAvatar,
+        }),
+      }
+    );
+    const resdata = await res.json();
+    setPathImg(resdata.filePath);
+
   };
   // -----------------------------------------------
   const deleteImg = async (

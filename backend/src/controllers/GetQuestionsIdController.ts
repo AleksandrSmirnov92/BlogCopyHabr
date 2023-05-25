@@ -3,6 +3,12 @@ import { supabase } from "../config/usersDataBase.js";
 
 exports.questionsId = async (req: Request, res: Response) => {
   let { id } = req.params;
+<<<<<<< HEAD
+=======
+
+ 
+
+>>>>>>> 30873131c7c00174b26dd830bfba14cf7d764daf
 
   let getTagInfo = await supabase
     .from("questions")
